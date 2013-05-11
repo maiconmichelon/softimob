@@ -3,11 +3,19 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Softimob
 Bundle-SymbolicName: br.com.michelon.softimob; singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: br.com.michelon.softimob.Activator
+Bundle-Activator: br.com.michelon.softimob.aplicacao.main.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.core.databinding.beans;bundle-version="1.2.100",
+ org.eclipse.core.databinding.observable;bundle-version="1.4.0",
+ org.eclipse.core.databinding.property;bundle-version="1.4.0",
+ org.eclipse.jface.databinding;bundle-version="1.5.0",
+ org.eclipse.wb.rcp.nebula;bundle-version="1.5.0",
+ org.eclipse.ui.forms;bundle-version="3.5.101",
+ org.apache.commons.lang;bundle-version="2.4.0",
+ org.eclipse.core.databinding;bundle-version="1.4.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: lib/de.ralfebert.rcputils.jar,

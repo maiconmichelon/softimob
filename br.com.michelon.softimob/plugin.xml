@@ -7,7 +7,7 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="br.com.michelon.softimob.Application">
+               class="br.com.michelon.softimob.aplicacao.main.Application">
          </run>
       </application>
    </extension>
@@ -15,9 +15,154 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             name="RCP Perspective"
-            class="br.com.michelon.softimob.Perspective"
+            class="br.com.michelon.softimob.aplicacao.main.Perspective"
             id="br.com.michelon.softimob.perspective">
       </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.ant.ui.views"
+            class="view.TipoComodoView"
+            id="view.TipoComodoView"
+            name="Cômodos"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="Cadastro">
+            <command
+                  commandId="br.com.michelon.softimob.command.cmdChave"
+                  label="Chave"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command.cmdImovel"
+                  label="Imóvel"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command.cmdCliente"
+                  label="Cliente"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command.cmdPlaca"
+                  label="Placa"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command.cmdComodo"
+                  label="Cômodo"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command.cmdFuncionario"
+                  label="Funcionário"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command.cmdTipoImovel"
+                  label="Tipo imóvel"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="br.com.michelon.softimob.tela.editor.ChaveEditor"
+            id="br.com.michelon.softimob.tela.editor.ChaveEditor"
+            name="Cadastro Chave">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
+            id="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
+            name="Cadastro Tipo de Imóvel">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.FuncionarioEditor"
+            id="br.com.michelon.softimob.tela.editor.FuncionarioEditor"
+            name="Cadastro Funcionário">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.PlacaEditor"
+            id="br.com.michelon.softimob.tela.editor.PlacaEditor"
+            name="Cadastro Placa">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.ClienteEditor"
+            id="br.com.michelon.softimob.tela.editor.ClienteEditor"
+            name="Cadastro Cliente">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.ComodoEditor"
+            id="br.com.michelon.softimob.tela.editor.ComodoEditor"
+            name="Cadastro Cômodo">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.ImovelEditor"
+            id="br.com.michelon.softimob.tela.editor.ImovelEditor"
+            name="Cadastro Imóvel">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdChave"
+            id="br.com.michelon.softimob.command.cmdChave"
+            name="Chave">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdCliente"
+            id="br.com.michelon.softimob.command.cmdCliente"
+            name="Cliente">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdPlaca"
+            id="br.com.michelon.softimob.command.cmdPlaca"
+            name="Placa">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdComodo"
+            id="br.com.michelon.softimob.command.cmdComodo"
+            name="Cômodo">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdFuncionario"
+            id="br.com.michelon.softimob.command.cmdFuncionario"
+            name="Funcionário">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdTipoImovel"
+            id="br.com.michelon.softimob.command.cmdTipoImovel"
+            name="Tipo Imóvel">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdImovel"
+            id="br.com.michelon.softimob.command.cmdImovel"
+            name="Imóvel">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdOpenShortcutEditorsDialog"
+            description="Abrir dialog de editors"
+            id="br.com.michelon.softimob.aplicacao.command.cmdOpenShortcutEditorsDialog"
+            name="Abrir dialog de editors">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="br.com.michelon.softimob.aplicacao.command.cmdOpenShortcutEditorsDialog"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="F1">
+      </key>
    </extension>
 
 </plugin>
