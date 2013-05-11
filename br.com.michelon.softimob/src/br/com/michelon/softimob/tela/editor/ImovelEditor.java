@@ -158,11 +158,10 @@ public class ImovelEditor extends SoftimobEditor{
 		lblFotos.setText("Fotos");
 		
 		text_3 = new Text(composite, SWT.BORDER);
-		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		
 		Button button_5 = new Button(composite, SWT.NONE);
 		button_5.setText("Selecionar");
-		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		
 		Label lblObservaes_3 = new Label(composite, SWT.NONE);
@@ -170,10 +169,9 @@ public class ImovelEditor extends SoftimobEditor{
 		lblObservaes_3.setText("Observações");
 		
 		text_6 = new Text(composite, SWT.BORDER);
-		GridData gd_text_6 = new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1);
+		GridData gd_text_6 = new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1);
 		gd_text_6.heightHint = 43;
 		text_6.setLayoutData(gd_text_6);
-		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		
 		btnVenda = new Button(composite, SWT.CHECK);
