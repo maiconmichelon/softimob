@@ -25,4 +25,5 @@ Bundle-ClassPath: .,
  lib/hibernate-validator-annotation-processor-5.0.0.CR5.jar,
  lib/hibernate-validator-cdi-5.0.0.CR5.jar,
  lib/validation-api-1.1.0.CR3.jar,
- lib/de.ralfebert.rcputils.jar
+ lib/de.ralfebert.rcputils.jar,
+ lib/org.eclipse.nebula.widgets.formattedtext_1.0.0.201305050742.jar
