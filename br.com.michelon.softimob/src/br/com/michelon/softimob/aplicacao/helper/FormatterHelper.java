@@ -1,7 +1,10 @@
 package br.com.michelon.softimob.aplicacao.helper;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import de.ralfebert.rcputils.properties.IValueFormatter;
 
 public class FormatterHelper {
 
@@ -13,6 +16,21 @@ public class FormatterHelper {
 	
 	public static SimpleDateFormat getSimpleDateFormat() {
 		return sdf;
+	}
+
+	public static IValueFormatter<BigDecimal, String> getCurrencyFormatter() {
+		return new IValueFormatter<BigDecimal, String>() {
+
+			@Override
+			public String format(BigDecimal arg0) {
+				return String.format("R$%s", arg0.toString().replace(".", ","));
+			}
+
+			@Override
+			public BigDecimal parse(String arg0) {
+				return new BigDecimal(arg0.replace(',', '.'));
+			}
+		};
 	}
 	
 }

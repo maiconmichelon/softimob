@@ -9,42 +9,49 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.widgets.Group;
+import br.com.michelon.softimob.tela.widget.PhoneTextField;
+import br.com.michelon.softimob.tela.widget.CPFTextField;
+import br.com.michelon.softimob.tela.widget.CEPTextField;
 
 public class ClienteEditor extends SoftimobEditor {
 	
-	public static final String ID = "br.michelon.softimob.tela.editor.ClienteEditor"; //$NON-NLS-1$
-	
-	private Text text;
-	private Text text_1;
+	public static final String ID = "br.com.michelon.softimob.tela.editor.ClienteEditor"; //$NON-NLS-1$
 	private Text text_2;
-	private Text text_3;
-	private Text text_5;
-	private Text text_7;
-	private Text text_4;
 	private Text text_6;
-	private Text text_8;
 	private Text text_9;
 	private Text text_10;
+	private Text text;
+	private Text text_3;
+	private Text text_5;
+	private Text text_4;
+	private Text text_7;
+	private Text text_1;
+	private Text text_8;
 	public ClienteEditor() {
 	}
 
 	@Override
 	public void afterCreatePartControl(Composite parent) {
-		parent.setLayout(new GridLayout(2, false));
+		GridLayout gl_parent = new GridLayout(4, false);
+		gl_parent.verticalSpacing = 10;
+		parent.setLayout(gl_parent);
 		parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 		
 		Label lblNome = new Label(parent, SWT.NONE);
 		lblNome.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNome.setText("Nome");
 		
-		text = new Text(parent, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text_3 = new Text(parent, SWT.BORDER);
+		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 		
 		Label lblEndereo = new Label(parent, SWT.NONE);
 		lblEndereo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEndereo.setText("CPF");
 		
-		text_1 = new Text(parent, SWT.BORDER);
+		CPFTextField textField = new CPFTextField(parent);
+		text_1 = textField.getControl();
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblCep = new Label(parent, SWT.NONE);
@@ -58,8 +65,8 @@ public class ClienteEditor extends SoftimobEditor {
 		lblRg.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblRg.setText("Filiação");
 		
-		text_3 = new Text(parent, SWT.BORDER);
-		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text_5 = new Text(parent, SWT.BORDER);
+		text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblCpf = new Label(parent, SWT.NONE);
 		lblCpf.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -73,48 +80,58 @@ public class ClienteEditor extends SoftimobEditor {
 		lblNacionalidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNacionalidade.setText("Nacionalidade");
 		
-		text_5 = new Text(parent, SWT.BORDER);
-		text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text = new Text(parent, SWT.BORDER);
+		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 		
 		Label lblTelefone_1 = new Label(parent, SWT.NONE);
 		lblTelefone_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblTelefone_1.setText("Telefone");
 		
-		text_4 = new Text(parent, SWT.BORDER);
+		PhoneTextField phoneTextField = new PhoneTextField(parent);
+		text_4 = phoneTextField.getControl();
 		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblCelular = new Label(parent, SWT.NONE);
 		lblCelular.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCelular.setText("Celular");
 		
-		text_6 = new Text(parent, SWT.BORDER);
-		text_6.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		PhoneTextField phoneTextField_1 = new PhoneTextField(parent);
+		text_7 = phoneTextField_1.getControl();
+		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblEmail = new Label(parent, SWT.NONE);
 		lblEmail.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEmail.setText("E-mail");
 		
-		text_7 = new Text(parent, SWT.BORDER);
-		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text_6 = new Text(parent, SWT.BORDER);
+		text_6.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 		
 		Group grpEndereo = new Group(parent, SWT.NONE);
 		grpEndereo.setText("Endereço");
-		grpEndereo.setLayout(new GridLayout(2, false));
-		grpEndereo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		GridLayout gl_grpEndereo = new GridLayout(4, false);
+		gl_grpEndereo.verticalSpacing = 10;
+		grpEndereo.setLayout(gl_grpEndereo);
+		grpEndereo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
 		
 		Label lblCep_1 = new Label(grpEndereo, SWT.NONE);
 		lblCep_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCep_1.setText("CEP");
 		
-		text_8 = new Text(grpEndereo, SWT.BORDER);
-		text_8.setText("");
+		CEPTextField textField_1 = new CEPTextField(grpEndereo);
+		text_8 = textField_1.getControl();
 		text_8.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(grpEndereo, SWT.NONE);
+		new Label(grpEndereo, SWT.NONE);
 		
 		Label lblUf = new Label(grpEndereo, SWT.NONE);
 		lblUf.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblUf.setText("UF");
 		
-		ComboViewer comboViewer_1 = new ComboViewer(grpEndereo, SWT.NONE);
+		ComboViewer comboViewer_1 = new ComboViewer(grpEndereo, SWT.READ_ONLY);
 		Combo combo_1 = comboViewer_1.getCombo();
 		combo_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -122,7 +139,7 @@ public class ClienteEditor extends SoftimobEditor {
 		lblCidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCidade.setText("Cidade");
 		
-		ComboViewer comboViewer_2 = new ComboViewer(grpEndereo, SWT.NONE);
+		ComboViewer comboViewer_2 = new ComboViewer(grpEndereo, SWT.READ_ONLY);
 		Combo combo_2 = comboViewer_2.getCombo();
 		combo_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -130,7 +147,7 @@ public class ClienteEditor extends SoftimobEditor {
 		lblBairro.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblBairro.setText("Bairro");
 		
-		ComboViewer comboViewer_3 = new ComboViewer(grpEndereo, SWT.NONE);
+		ComboViewer comboViewer_3 = new ComboViewer(grpEndereo, SWT.READ_ONLY);
 		Combo combo_3 = comboViewer_3.getCombo();
 		combo_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -138,7 +155,7 @@ public class ClienteEditor extends SoftimobEditor {
 		lblRua.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblRua.setText("Rua");
 		
-		ComboViewer comboViewer_4 = new ComboViewer(grpEndereo, SWT.NONE);
+		ComboViewer comboViewer_4 = new ComboViewer(grpEndereo, SWT.READ_ONLY);
 		Combo combo_4 = comboViewer_4.getCombo();
 		combo_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -149,6 +166,8 @@ public class ClienteEditor extends SoftimobEditor {
 		text_9 = new Text(grpEndereo, SWT.BORDER);
 		text_9.setText("");
 		text_9.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(grpEndereo, SWT.NONE);
+		new Label(grpEndereo, SWT.NONE);
 		
 		Label lblComplemento = new Label(grpEndereo, SWT.NONE);
 		lblComplemento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -157,6 +176,8 @@ public class ClienteEditor extends SoftimobEditor {
 		text_10 = new Text(grpEndereo, SWT.BORDER);
 		text_10.setText("");
 		text_10.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(grpEndereo, SWT.NONE);
+		new Label(grpEndereo, SWT.NONE);
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class TipoImovelEditor extends SoftimobEditor{
 	
-	public static final String ID = "br.michelon.softimob.tela.editor.TipoImovelEditor"; //$NON-NLS-1$
+	public static final String ID = "br.com.michelon.softimob.tela.editor.TipoImovelEditor"; //$NON-NLS-1$
 	
 	private Text text;
 	public TipoImovelEditor() {
@@ -25,10 +25,10 @@ public class TipoImovelEditor extends SoftimobEditor{
 		
 		Label lblTipoImvel = new Label(composite, SWT.NONE);
 		lblTipoImvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblTipoImvel.setText("Descrição");
+		lblTipoImvel.setText("Nome");
 		
 		text = new Text(composite, SWT.BORDER);
-		GridData gd_text = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		GridData gd_text = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_text.widthHint = 261;
 		text.setLayoutData(gd_text);
 	}

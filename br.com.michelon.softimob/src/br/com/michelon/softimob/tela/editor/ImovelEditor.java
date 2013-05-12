@@ -38,6 +38,9 @@ import org.eclipse.nebula.widgets.formattedtext.FormattedText;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import br.com.michelon.softimob.tela.widget.CEPTextField;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;
+import org.eclipse.wb.swt.ResourceManager;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class ImovelEditor extends SoftimobEditor{
 	
@@ -97,10 +100,12 @@ public class ImovelEditor extends SoftimobEditor{
 	private Text text_35;
 	private Text text_36;
 	private Text text_29;
-	private Text text_4;
 	private Text text_1;
 	private Text text_10;
 	private Text text_25;
+	private Text text_4;
+	private Text text_26;
+	private Text txtDescrio;
 	
 	public ImovelEditor() {
 	}
@@ -111,8 +116,8 @@ public class ImovelEditor extends SoftimobEditor{
 		
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		GridLayout gl_composite = new GridLayout(6, false);
-		gl_composite.verticalSpacing = 8;
+		GridLayout gl_composite = new GridLayout(8, false);
+		gl_composite.verticalSpacing = 6;
 		composite.setLayout(gl_composite);
 		
 		Label lblCdigo = new Label(composite, SWT.NONE);
@@ -124,15 +129,19 @@ public class ImovelEditor extends SoftimobEditor{
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
 		
 		Label lblValor = new Label(composite, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblValor.setText("Valor");
 		
-		text_4 = new Text(composite, SWT.BORDER);
-		GridData gd_text_4 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_text_4.widthHint = 94;
+		MoneyTextField moneyTextField = new MoneyTextField(composite);
+		text_4 = moneyTextField.getControl();
+		GridData gd_text_4 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text_4.widthHint = 101;
 		text_4.setLayoutData(gd_text_4);
+		new Label(composite, SWT.NONE);
 		
 		Label lblTipoImvel = new Label(composite, SWT.NONE);
 		lblTipoImvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -150,12 +159,18 @@ public class ImovelEditor extends SoftimobEditor{
 		txtProprietario.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		ListElementDialogHelper.addListElementDialogToText(txtProprietario, value , "proprietario");
 		
+		Button btnSelecionar_7 = new Button(composite, SWT.NONE);
+		btnSelecionar_7.setText("...");
+		
 		Label lblAngariad = new Label(composite, SWT.NONE);
 		lblAngariad.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblAngariad.setText("Angariador");
 		
 		text_2 = new Text(composite, SWT.BORDER);
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button btnNewButton = new Button(composite, SWT.NONE);
+		btnNewButton.setText("...");
 		
 		Label lblMetragem = new Label(composite, SWT.NONE);
 		lblMetragem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -170,14 +185,18 @@ public class ImovelEditor extends SoftimobEditor{
 		text_3 = new Text(composite, SWT.BORDER);
 		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
+		Button btnSelecionar_8 = new Button(composite, SWT.NONE);
+		btnSelecionar_8.setText("...");
+		
 		Label lblObservaes_3 = new Label(composite, SWT.NONE);
 		lblObservaes_3.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes_3.setText("Observações");
 		
 		text_6 = new Text(composite, SWT.BORDER);
-		GridData gd_text_6 = new GridData(SWT.FILL, SWT.CENTER, false, true, 4, 1);
+		GridData gd_text_6 = new GridData(SWT.FILL, SWT.CENTER, false, true, 5, 1);
 		gd_text_6.heightHint = 32;
 		text_6.setLayoutData(gd_text_6);
+		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		
@@ -194,15 +213,17 @@ public class ImovelEditor extends SoftimobEditor{
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
 		
-		CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		CTabFolder tfImovel = new CTabFolder(parent, SWT.BORDER);
+		tfImovel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		tfImovel.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
-		CTabItem tbtmDescrio_1 = new CTabItem(tabFolder, SWT.NONE);
+		CTabItem tbtmDescrio_1 = new CTabItem(tfImovel, SWT.NONE);
 		tbtmDescrio_1.setText("Cômodos");
 		
-		Composite composite_5 = new Composite(tabFolder, SWT.NONE);
+		Composite composite_5 = new Composite(tfImovel, SWT.NONE);
 		tbtmDescrio_1.setControl(composite_5);
 		composite_5.setLayout(new GridLayout(2, false));
 				
@@ -213,17 +234,49 @@ public class ImovelEditor extends SoftimobEditor{
 		criarTabelaComodo(composite_10);
 		
 		Button btnAdicionar = new Button(composite_5, SWT.NONE);
+		btnAdicionar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/novo/novo16.png"));
 		btnAdicionar.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
-		btnAdicionar.setText("Adicionar");
+		btnAdicionar.setText("Novo");
 		
 		Button btnRemover = new Button(composite_5, SWT.NONE);
+		btnRemover.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/delete/delete16.png"));
 		btnRemover.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
 		btnRemover.setText("Remover");
 		
-		CTabItem tbtmEndereo = new CTabItem(tabFolder, SWT.NONE);
+		Group grpCmodo = new Group(composite_5, SWT.NONE);
+		grpCmodo.setLayout(new GridLayout(3, false));
+		grpCmodo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		grpCmodo.setText("Cômodo");
+		
+		Label lblCmodo = new Label(grpCmodo, SWT.NONE);
+		lblCmodo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblCmodo.setText("Cômodo");
+		
+		text_26 = new Text(grpCmodo, SWT.BORDER);
+		text_26.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button btnSelecionar_9 = new Button(grpCmodo, SWT.NONE);
+		btnSelecionar_9.setText("...");
+		
+		Label lblDescrio_3 = new Label(grpCmodo, SWT.NONE);
+		lblDescrio_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDescrio_3.setText("Descrição");
+		
+		txtDescrio = new Text(grpCmodo, SWT.BORDER);
+		txtDescrio.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(grpCmodo, SWT.NONE);
+		new Label(grpCmodo, SWT.NONE);
+		new Label(grpCmodo, SWT.NONE);
+		
+		Button button_9 = new Button(grpCmodo, SWT.NONE);
+		button_9.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		button_9.setText("Adicionar");
+		button_9.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		
+		CTabItem tbtmEndereo = new CTabItem(tfImovel, SWT.NONE);
 		tbtmEndereo.setText("Endereço");
 		
-		Composite composite_1 = new Composite(tabFolder, SWT.NONE);
+		Composite composite_1 = new Composite(tfImovel, SWT.NONE);
 		tbtmEndereo.setControl(composite_1);
 		GridLayout gl_composite_1 = new GridLayout(3, false);
 		composite_1.setLayout(gl_composite_1);
@@ -297,10 +350,10 @@ public class ImovelEditor extends SoftimobEditor{
 		text_8.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_1, SWT.NONE);
 		
-		CTabItem tbtmChaves = new CTabItem(tabFolder, SWT.NONE);
+		CTabItem tbtmChaves = new CTabItem(tfImovel, SWT.NONE);
 		tbtmChaves.setText("Chaves");
 		
-		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
+		Composite composite_2 = new Composite(tfImovel, SWT.NONE);
 		tbtmChaves.setControl(composite_2);
 		composite_2.setLayout(new GridLayout(2, false));
 		
@@ -311,10 +364,17 @@ public class ImovelEditor extends SoftimobEditor{
 		criarTabelaChave(cpTvbChave);
 		
 		Button btnNovo = new Button(composite_2, SWT.NONE);
+		btnNovo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+		btnNovo.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/novo/novo16.png"));
 		btnNovo.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
-		btnNovo.setText("Adicionar");
+		btnNovo.setText("Novo");
 		
 		Button btnRemover_3 = new Button(composite_2, SWT.NONE);
+		btnRemover_3.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/delete/delete16.png"));
 		btnRemover_3.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
 		btnRemover_3.setText("Remover");
 		
@@ -339,17 +399,23 @@ public class ImovelEditor extends SoftimobEditor{
 		new Label(grpChave, SWT.NONE);
 		new Label(grpChave, SWT.NONE);
 		
-		Button btnSalvar_2 = new Button(grpChave, SWT.NONE);
-		GridData gd_btnSalvar_2 = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
-		gd_btnSalvar_2.heightHint = 43;
-		gd_btnSalvar_2.widthHint = 73;
-		btnSalvar_2.setLayoutData(gd_btnSalvar_2);
-		btnSalvar_2.setText("Salvar");
+		Button btnAddChave = new Button(grpChave, SWT.NONE);
+		btnAddChave.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		btnAddChave.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+		GridData gd_btnAddChave = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
+		gd_btnAddChave.heightHint = 30;
+		gd_btnAddChave.widthHint = 84;
+		btnAddChave.setLayoutData(gd_btnAddChave);
+		btnAddChave.setText("Adicionar");
 		
-		CTabItem tbtmHistricos = new CTabItem(tabFolder, SWT.NONE);
+		CTabItem tbtmHistricos = new CTabItem(tfImovel, SWT.NONE);
 		tbtmHistricos.setText("Históricos");
 		
-		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
+		Composite composite_3 = new Composite(tfImovel, SWT.NONE);
 		tbtmHistricos.setControl(composite_3);
 		composite_3.setLayout(new GridLayout(2, false));
 		
@@ -359,13 +425,15 @@ public class ImovelEditor extends SoftimobEditor{
 		
 		criarTabelaHistorico(cpTvbHistorico);
 		
-		Button btnAdicionarHistórico = new Button(composite_3, SWT.NONE);
-		btnAdicionarHistórico.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
-		btnAdicionarHistórico.setText("Novo");
+		Button button_10 = new Button(composite_3, SWT.NONE);
+		button_10.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
+		button_10.setText("Novo");
+		button_10.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/novo/novo16.png"));
 		
-		Button btnRemover_1 = new Button(composite_3, SWT.NONE);
-		btnRemover_1.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
-		btnRemover_1.setText("Remover");
+		Button button_15 = new Button(composite_3, SWT.NONE);
+		button_15.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
+		button_15.setText("Remover");
+		button_15.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/delete/delete16.png"));
 		
 		Group grpNovoHistrico = new Group(composite_3, SWT.NONE);
 		GridLayout gl_grpNovoHistrico = new GridLayout(3, false);
@@ -392,7 +460,7 @@ public class ImovelEditor extends SoftimobEditor{
 		text_12.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar_2 = new Button(grpNovoHistrico, SWT.NONE);
-		btnSelecionar_2.setText("Selecionar");
+		btnSelecionar_2.setText("...");
 		
 		Label lblClienteHistorico = new Label(grpNovoHistrico, SWT.NONE);
 		lblClienteHistorico.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -402,7 +470,7 @@ public class ImovelEditor extends SoftimobEditor{
 		text_14.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_4 = new Button(grpNovoHistrico, SWT.NONE);
-		button_4.setText("Selecionar");
+		button_4.setText("...");
 		
 		Label lblObservaes = new Label(grpNovoHistrico, SWT.NONE);
 		lblObservaes.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -415,17 +483,15 @@ public class ImovelEditor extends SoftimobEditor{
 		new Label(grpNovoHistrico, SWT.NONE);
 		new Label(grpNovoHistrico, SWT.NONE);
 		
-		Button btnSalvar = new Button(grpNovoHistrico, SWT.NONE);
-		GridData gd_btnSalvar = new GridData(SWT.RIGHT, SWT.BOTTOM, true, false, 1, 1);
-		gd_btnSalvar.heightHint = 41;
-		gd_btnSalvar.widthHint = 75;
-		btnSalvar.setLayoutData(gd_btnSalvar);
-		btnSalvar.setText("Salvar");
+		Button button_5 = new Button(grpNovoHistrico, SWT.NONE);
+		button_5.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		button_5.setText("Adicionar");
+		button_5.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
 		
-		CTabItem tbtmPropostas = new CTabItem(tabFolder, SWT.NONE);
+		CTabItem tbtmPropostas = new CTabItem(tfImovel, SWT.NONE);
 		tbtmPropostas.setText("Propostas");
 		
-		Composite composite_4 = new Composite(tabFolder, SWT.NONE);
+		Composite composite_4 = new Composite(tfImovel, SWT.NONE);
 		tbtmPropostas.setControl(composite_4);
 		composite_4.setLayout(new GridLayout(2, false));
 		
@@ -434,13 +500,15 @@ public class ImovelEditor extends SoftimobEditor{
 		
 		criarTabelaProposta(cpTvbProposta);
 		
-		Button btnNovo_1 = new Button(composite_4, SWT.NONE);
-		btnNovo_1.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
-		btnNovo_1.setText("Novo");
+		Button button_11 = new Button(composite_4, SWT.NONE);
+		button_11.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
+		button_11.setText("Novo");
+		button_11.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/novo/novo16.png"));
 		
-		Button btnRemover_2 = new Button(composite_4, SWT.NONE);
-		btnRemover_2.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
-		btnRemover_2.setText("Remover");
+		Button button_16 = new Button(composite_4, SWT.NONE);
+		button_16.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
+		button_16.setText("Remover");
+		button_16.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/delete/delete16.png"));
 		
 		Group grpProposta = new Group(composite_4, SWT.NONE);
 		grpProposta.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
@@ -467,7 +535,7 @@ public class ImovelEditor extends SoftimobEditor{
 		text_9.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar_1 = new Button(grpProposta, SWT.NONE);
-		btnSelecionar_1.setText("Selecionar");
+		btnSelecionar_1.setText("...");
 		
 		Label lblFuncionrio = new Label(grpProposta, SWT.NONE);
 		lblFuncionrio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -477,7 +545,7 @@ public class ImovelEditor extends SoftimobEditor{
 		text_11.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
 		Button button_2 = new Button(grpProposta, SWT.NONE);
-		button_2.setText("Selecionar");
+		button_2.setText("...");
 		
 		Label lblValor_1 = new Label(grpProposta, SWT.NONE);
 		lblValor_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -502,16 +570,14 @@ public class ImovelEditor extends SoftimobEditor{
 		new Label(grpProposta, SWT.NONE);
 		
 		Button button_3 = new Button(grpProposta, SWT.NONE);
-		GridData gd_button_3 = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
-		gd_button_3.heightHint = 36;
-		gd_button_3.widthHint = 78;
-		button_3.setLayoutData(gd_button_3);
-		button_3.setText("Salvar");
+		button_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		button_3.setText("Adicionar");
+		button_3.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
 		
-		CTabItem tbtmVistoria = new CTabItem(tabFolder, SWT.NONE);
+		CTabItem tbtmVistoria = new CTabItem(tfImovel, SWT.NONE);
 		tbtmVistoria.setText("Vistorias");
 		
-		Composite composite_8 = new Composite(tabFolder, SWT.NONE);
+		Composite composite_8 = new Composite(tfImovel, SWT.NONE);
 		tbtmVistoria.setControl(composite_8);
 		composite_8.setLayout(new GridLayout(2, false));
 		
@@ -520,13 +586,15 @@ public class ImovelEditor extends SoftimobEditor{
 		
 		criarTabelaVistoria(cpVistoria);
 		
-		Button btnNovaVistoria = new Button(composite_8, SWT.NONE);
-		btnNovaVistoria.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
-		btnNovaVistoria.setText("Novo");
+		Button button_12 = new Button(composite_8, SWT.NONE);
+		button_12.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
+		button_12.setText("Novo");
+		button_12.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/novo/novo16.png"));
 		
-		Button btnRemover_4 = new Button(composite_8, SWT.NONE);
-		btnRemover_4.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
-		btnRemover_4.setText("Remover");
+		Button button_17 = new Button(composite_8, SWT.NONE);
+		button_17.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
+		button_17.setText("Remover");
+		button_17.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/delete/delete16.png"));
 		
 		Group grpVistoria = new Group(composite_8, SWT.NONE);
 		GridLayout gl_grpVistoria = new GridLayout(3, false);
@@ -553,7 +621,7 @@ public class ImovelEditor extends SoftimobEditor{
 		text_16.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar = new Button(grpVistoria, SWT.NONE);
-		btnSelecionar.setText("Selecionar");
+		btnSelecionar.setText("...");
 		
 		Label lblInquilino = new Label(grpVistoria, SWT.NONE);
 		lblInquilino.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -563,7 +631,7 @@ public class ImovelEditor extends SoftimobEditor{
 		text_17.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button = new Button(grpVistoria, SWT.NONE);
-		button.setText("Selecionar");
+		button.setText("...");
 		
 		Label lblArquivo = new Label(grpVistoria, SWT.NONE);
 		lblArquivo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -573,7 +641,7 @@ public class ImovelEditor extends SoftimobEditor{
 		text_18.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_1 = new Button(grpVistoria, SWT.NONE);
-		button_1.setText("Selecionar");
+		button_1.setText("...");
 		
 		Label lblObservaes_1 = new Label(grpVistoria, SWT.NONE);
 		lblObservaes_1.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -586,40 +654,48 @@ public class ImovelEditor extends SoftimobEditor{
 		new Label(grpVistoria, SWT.NONE);
 		new Label(grpVistoria, SWT.NONE);
 		
-		Button btnSalvar_3 = new Button(grpVistoria, SWT.NONE);
-		GridData gd_btnSalvar_3 = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
-		gd_btnSalvar_3.heightHint = 38;
-		gd_btnSalvar_3.widthHint = 79;
-		btnSalvar_3.setLayoutData(gd_btnSalvar_3);
-		btnSalvar_3.setText("Salvar");
+		Button button_6 = new Button(grpVistoria, SWT.NONE);
+		button_6.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		button_6.setText("Adicionar");
+		button_6.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
 		
-		CTabItem tbtmChamada = new CTabItem(tabFolder, SWT.NONE);
+		CTabItem tbtmChamada = new CTabItem(tfImovel, SWT.NONE);
 		tbtmChamada.setText("Chamados");
 		
-		Composite composite_6 = new Composite(tabFolder, SWT.NONE);
+		Composite composite_6 = new Composite(tfImovel, SWT.NONE);
 		tbtmChamada.setControl(composite_6);
-		composite_6.setLayout(new GridLayout(1, false));
+		composite_6.setLayout(new GridLayout(2, false));
 		
 		Composite composite_7 = new Composite(composite_6, SWT.NONE);
 		composite_7.setLayout(new GridLayout(1, false));
-		GridData gd_composite_7 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-		gd_composite_7.heightHint = 108;
+		GridData gd_composite_7 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2);
+		gd_composite_7.heightHint = 120;
 		composite_7.setLayoutData(gd_composite_7);
 		
 		criarTabelaChamadosGerais(composite_7);
 		
+		Button button_13 = new Button(composite_6, SWT.NONE);
+		button_13.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
+		button_13.setText("Novo");
+		button_13.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/novo/novo16.png"));
+		
+		Button button_14 = new Button(composite_6, SWT.NONE);
+		button_14.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
+		button_14.setText("Remover");
+		button_14.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/delete/delete16.png"));
+		
 		Composite composite_9 = new Composite(composite_6, SWT.NONE);
 		composite_9.setLayout(new GridLayout(1, false));
-		composite_9.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		composite_9.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		
-		CTabFolder tabFolder_1 = new CTabFolder(composite_9, SWT.BORDER);
-		tabFolder_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		tabFolder_1.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		CTabFolder tfChamado = new CTabFolder(composite_9, SWT.BORDER);
+		tfChamado.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		tfChamado.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
-		CTabItem tbtmAbertura = new CTabItem(tabFolder_1, SWT.NONE);
+		CTabItem tbtmAbertura = new CTabItem(tfChamado, SWT.NONE);
 		tbtmAbertura.setText("Abertura");
 		
-		Composite composite_11 = new Composite(tabFolder_1, SWT.NONE);
+		Composite composite_11 = new Composite(tfChamado, SWT.NONE);
 		tbtmAbertura.setControl(composite_11);
 		composite_11.setLayout(new GridLayout(3, false));
 		
@@ -650,7 +726,7 @@ public class ImovelEditor extends SoftimobEditor{
 		text_22.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
 		Button btnSelecionar_3 = new Button(composite_11, SWT.NONE);
-		btnSelecionar_3.setText("Selecionar");
+		btnSelecionar_3.setText("...");
 		
 		Label lblFuncionrio_2 = new Label(composite_11, SWT.NONE);
 		lblFuncionrio_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -661,7 +737,7 @@ public class ImovelEditor extends SoftimobEditor{
 		
 		Button btnSelecionar_4 = new Button(composite_11, SWT.NONE);
 		btnSelecionar_4.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		btnSelecionar_4.setText("Selecionar");
+		btnSelecionar_4.setText("...");
 		
 		Label lblDescrio = new Label(composite_11, SWT.NONE);
 		lblDescrio.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -674,25 +750,33 @@ public class ImovelEditor extends SoftimobEditor{
 		new Label(composite_11, SWT.NONE);
 		new Label(composite_11, SWT.NONE);
 		
-		Button btnAdicionar_1 = new Button(composite_11, SWT.NONE);
-		GridData gd_btnAdicionar_1 = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
-		gd_btnAdicionar_1.widthHint = 74;
-		gd_btnAdicionar_1.heightHint = 39;
-		btnAdicionar_1.setLayoutData(gd_btnAdicionar_1);
-		btnAdicionar_1.setText("Adicionar");
+		Button button_7 = new Button(composite_11, SWT.NONE);
+		button_7.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		button_7.setText("Adicionar");
+		button_7.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
 		
-		CTabItem tbAndamento = new CTabItem(tabFolder_1, SWT.NONE);
+		CTabItem tbAndamento = new CTabItem(tfChamado, SWT.NONE);
 		tbAndamento.setText("Andamento");
 		
-		Composite composite_12 = new Composite(tabFolder_1, SWT.NONE);
+		Composite composite_12 = new Composite(tfChamado, SWT.NONE);
 		tbAndamento.setControl(composite_12);
-		composite_12.setLayout(new GridLayout(3, false));
+		composite_12.setLayout(new GridLayout(4, false));
 		
 		Composite composite_14 = new Composite(composite_12, SWT.NONE);
 		composite_14.setLayout(new GridLayout(1, false));
-		composite_14.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+		composite_14.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 2));
 		
 		criarTabelaAndamentoChamado(composite_14);
+		
+		Button button_18 = new Button(composite_12, SWT.NONE);
+		button_18.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
+		button_18.setText("Novo");
+		button_18.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/novo/novo16.png"));
+		
+		Button button_19 = new Button(composite_12, SWT.NONE);
+		button_19.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
+		button_19.setText("Remover");
+		button_19.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/delete/delete16.png"));
 		
 		Label lblData_4 = new Label(composite_12, SWT.NONE);
 		lblData_4.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -701,6 +785,7 @@ public class ImovelEditor extends SoftimobEditor{
 		DateTimeTextField dateTimeTextField = new DateTimeTextField(composite_12);
 		text_10 = dateTimeTextField.getControl();
 		text_10.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(composite_12, SWT.NONE);
 		new Label(composite_12, SWT.NONE);
 		
 		Label lblFuncionrio_3 = new Label(composite_12, SWT.NONE);
@@ -713,28 +798,28 @@ public class ImovelEditor extends SoftimobEditor{
 		
 		Button btnSelecionar_5 = new Button(composite_12, SWT.NONE);
 		btnSelecionar_5.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		btnSelecionar_5.setText("Selecionar");
+		btnSelecionar_5.setText("...");
+		new Label(composite_12, SWT.NONE);
 		
 		Label lblDescrio_1 = new Label(composite_12, SWT.NONE);
 		lblDescrio_1.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblDescrio_1.setText("Descrição");
 		
 		text_28 = new Text(composite_12, SWT.BORDER);
-		text_28.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 2, 1));
+		text_28.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 3, 1));
+		new Label(composite_12, SWT.NONE);
 		new Label(composite_12, SWT.NONE);
 		new Label(composite_12, SWT.NONE);
 		
-		Button btnSalvar_1 = new Button(composite_12, SWT.NONE);
-		GridData gd_btnSalvar_1 = new GridData(SWT.RIGHT, SWT.BOTTOM, false, false, 1, 1);
-		gd_btnSalvar_1.heightHint = 39;
-		gd_btnSalvar_1.widthHint = 75;
-		btnSalvar_1.setLayoutData(gd_btnSalvar_1);
-		btnSalvar_1.setText("Salvar");
+		Button button_8 = new Button(composite_12, SWT.NONE);
+		button_8.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		button_8.setText("Adicionar");
+		button_8.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
 		
-		CTabItem tbtmFinalizar = new CTabItem(tabFolder_1, SWT.NONE);
+		CTabItem tbtmFinalizar = new CTabItem(tfChamado, SWT.NONE);
 		tbtmFinalizar.setText("Finalizar");
 		
-		Composite composite_13 = new Composite(tabFolder_1, SWT.NONE);
+		Composite composite_13 = new Composite(tfChamado, SWT.NONE);
 		tbtmFinalizar.setControl(composite_13);
 		composite_13.setLayout(new GridLayout(3, false));
 		
@@ -757,7 +842,7 @@ public class ImovelEditor extends SoftimobEditor{
 		
 		Button btnSelecionar_6 = new Button(composite_13, SWT.NONE);
 		btnSelecionar_6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		btnSelecionar_6.setText("Selecionar");
+		btnSelecionar_6.setText("...");
 		new Label(composite_13, SWT.NONE);
 		
 		Composite composite_16 = new Composite(composite_13, SWT.NONE);
@@ -780,12 +865,15 @@ public class ImovelEditor extends SoftimobEditor{
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		
-		Button btnFecharChamado = new Button(composite_13, SWT.NONE);
-		GridData gd_btnFecharChamado = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
-		gd_btnFecharChamado.widthHint = 74;
-		gd_btnFecharChamado.heightHint = 42;
-		btnFecharChamado.setLayoutData(gd_btnFecharChamado);
-		btnFecharChamado.setText("Fechar");
+		Button btnFechar = new Button(composite_13, SWT.NONE);
+		btnFechar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		btnFechar.setText("Fechar");
+		btnFechar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/finalizar/finish16.png"));
+		
+		{
+			tfImovel.setSelection(0);
+			tfChamado.setSelection(0);
+		}
 		
 		value.setValue(new Imovel());
 		
@@ -857,97 +945,4 @@ public class ImovelEditor extends SoftimobEditor{
 		// TODO Auto-generated method stub
 		
 	}
-	
-//	@Override
-//	protected void salvar() {
-//	}
-//	protected DataBindingContext initDataBindings() {
-//		DataBindingContext bindingContext = new DataBindingContext();
-//		//
-//		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtProprietario);
-//		IObservableValue valueAngariadorObserveDetailValue = PojoProperties.value(Imovel.class, "proprietario.nome", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_1ObserveWidget, valueAngariadorObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_21ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_21);
-//		IObservableValue valueCodigoObserveDetailValue = PojoProperties.value(Imovel.class, "codigo", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_21ObserveWidget, valueCodigoObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
-//		IObservableValue valueAngariadorObserveDetailValue_1 = PojoProperties.value(Imovel.class, "angariador", Funcionario.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_2ObserveWidget, valueAngariadorObserveDetailValue_1, null, null);
-//		//
-//		IObservableValue observeSingleSelectionComboViewer_4 = ViewerProperties.singleSelection().observe(comboViewer_4);
-//		IObservableValue valueTipoObserveDetailValue = PojoProperties.value(Imovel.class, "tipo.descricao", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeSingleSelectionComboViewer_4, valueTipoObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
-//		IObservableValue valueMetragemObserveDetailValue = PojoProperties.value(Imovel.class, "metragem", BigDecimal.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_5ObserveWidget, valueMetragemObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeSelectionBtnVendaObserveWidget = WidgetProperties.selection().observe(btnVenda);
-//		IObservableValue valueVenderObserveDetailValue = PojoProperties.value(Imovel.class, "vender", Boolean.class).observeDetail(value);
-//		bindingContext.bindValue(observeSelectionBtnVendaObserveWidget, valueVenderObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeSelectionBtnAluguelObserveWidget = WidgetProperties.selection().observe(btnAluguel);
-//		IObservableValue valueAlugarObserveDetailValue = PojoProperties.value(Imovel.class, "alugar", Boolean.class).observeDetail(value);
-//		bindingContext.bindValue(observeSelectionBtnAluguelObserveWidget, valueAlugarObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_1ObserveWidget_1 = WidgetProperties.text(SWT.Modify).observe(text_1);
-//		IObservableValue valueEnderecocepObserveDetailValue = PojoProperties.value(Imovel.class, "endereco.cep", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_1ObserveWidget_1, valueEnderecocepObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeSingleSelectionComboViewer_3 = ViewerProperties.singleSelection().observe(comboViewer_3);
-//		IObservableValue valueEnderecoruanomeObserveDetailValue = PojoProperties.value(Imovel.class, "endereco.rua.nome", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeSingleSelectionComboViewer_3, valueEnderecoruanomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_7ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_7);
-//		IObservableValue valueEndereconumeroObserveDetailValue = PojoProperties.value(Imovel.class, "endereco.numero", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_7ObserveWidget, valueEndereconumeroObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_8ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_8);
-//		IObservableValue valueEnderecocomplementoObserveDetailValue = PojoProperties.value(Imovel.class, "endereco.complemento", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_8ObserveWidget, valueEnderecocomplementoObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_12ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_12);
-//		IObservableValue valueHistoricoFuncionarioObserveDetailValue = PojoProperties.value(HistoricoImovel.class, "funcionario.nome", String.class).observeDetail(valueHistorico);
-//		bindingContext.bindValue(observeTextText_12ObserveWidget, valueHistoricoFuncionarioObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_14ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_14);
-//		IObservableValue valueHistoricoClientenomeObserveDetailValue = PojoProperties.value(HistoricoImovel.class, "cliente.nome", String.class).observeDetail(valueHistorico);
-//		bindingContext.bindValue(observeTextText_14ObserveWidget, valueHistoricoClientenomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_13ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_13);
-//		IObservableValue valueHistoricoObservacoesObserveDetailValue = PojoProperties.value(HistoricoImovel.class, "observacoes", String.class).observeDetail(valueHistorico);
-//		bindingContext.bindValue(observeTextText_13ObserveWidget, valueHistoricoObservacoesObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_10ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_10);
-//		IObservableValue valuePropostaValorObserveDetailValue = PojoProperties.value(Proposta.class, "valor", BigDecimal.class).observeDetail(valueProposta);
-//		bindingContext.bindValue(observeTextText_10ObserveWidget, valuePropostaValorObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_9ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_9);
-//		IObservableValue valuePropostaCompradornomeObserveDetailValue = PojoProperties.value(Proposta.class, "comprador.nome", String.class).observeDetail(valueProposta);
-//		bindingContext.bindValue(observeTextText_9ObserveWidget, valuePropostaCompradornomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_11ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_11);
-//		IObservableValue valuePropostaFuncionarioObserveDetailValue = PojoProperties.value(Proposta.class, "funcionario", Funcionario.class).observeDetail(valueProposta);
-//		bindingContext.bindValue(observeTextText_11ObserveWidget, valuePropostaFuncionarioObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_20ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_20);
-//		IObservableValue valuePropostaObservacoesObserveDetailValue = PojoProperties.value(Proposta.class, "observacoes", String.class).observeDetail(valueProposta);
-//		bindingContext.bindValue(observeTextText_20ObserveWidget, valuePropostaObservacoesObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_16ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_16);
-//		IObservableValue valueVistoriaFuncionarionomeObserveDetailValue = PojoProperties.value(Vistoria.class, "funcionario.nome", String.class).observeDetail(valueVistoria);
-//		bindingContext.bindValue(observeTextText_16ObserveWidget, valueVistoriaFuncionarionomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_17ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_17);
-//		IObservableValue valueVistoriaInquilinonomeObserveDetailValue = PojoProperties.value(Vistoria.class, "inquilino.nome", String.class).observeDetail(valueVistoria);
-//		bindingContext.bindValue(observeTextText_17ObserveWidget, valueVistoriaInquilinonomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_19ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_19);
-//		IObservableValue valueVistoriaObservacoesObserveDetailValue = PojoProperties.value(Vistoria.class, "observacoes", String.class).observeDetail(valueVistoria);
-//		bindingContext.bindValue(observeTextText_19ObserveWidget, valueVistoriaObservacoesObserveDetailValue, null, null);
-//		//
-//		return bindingContext;
-//	}
 }

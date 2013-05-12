@@ -33,7 +33,9 @@ public class ModeloContratoEditor extends SoftimobEditor {
 		lblDescrio.setText("Descrição");
 		
 		text = new Text(parent, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text.widthHint = 260;
+		text.setLayoutData(gd_text);
 		new Label(parent, SWT.NONE);
 		
 		Label lblModelo = new Label(parent, SWT.NONE);
@@ -44,7 +46,7 @@ public class ModeloContratoEditor extends SoftimobEditor {
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar = new Button(parent, SWT.NONE);
-		btnSelecionar.setText("Selecionar");
+		btnSelecionar.setText("...");
 		
 	}
 

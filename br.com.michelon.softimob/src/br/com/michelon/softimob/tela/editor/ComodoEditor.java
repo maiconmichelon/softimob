@@ -10,12 +10,16 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
 
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.wb.swt.ResourceManager;
 
 public class ComodoEditor extends SoftimobEditor{
 
-	public static final String ID = "br.michelon.softimob.tela.editor.ComodoEditor"; //$NON-NLS-1$
+	public static final String ID = "br.com.michelon.softimob.tela.editor.ComodoEditor"; //$NON-NLS-1$
 	
 	private Text text;
+
+	private TableViewerBuilder tvb;
 
 	public ComodoEditor() {
 	}
@@ -37,27 +41,39 @@ public class ComodoEditor extends SoftimobEditor{
 		lblDescrio.setText("Descrição");
 		
 		text = new Text(composite, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(composite, SWT.NONE);
+		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text.widthHint = 160;
+		text.setLayoutData(gd_text);
 		new Label(composite, SWT.NONE);
 		
-		Composite cpTipoImovel = new Composite(composite, SWT.NONE);
+		Group gpTipoImovel = new Group(composite, SWT.NONE);
+		gpTipoImovel.setText("Imóveis");
+		gpTipoImovel.setLayout(new GridLayout(2, false));
+		GridData gd_gpTipoImovel = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
+		gd_gpTipoImovel.heightHint = 127;
+		gpTipoImovel.setLayoutData(gd_gpTipoImovel);
+		
+		Composite cpTipoImovel = new Composite(gpTipoImovel, SWT.NONE);
+		cpTipoImovel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
 		cpTipoImovel.setLayout(new GridLayout(1, false));
-		cpTipoImovel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 2));
 		
-		Button btnAdicionar = new Button(composite, SWT.NONE);
-		btnAdicionar.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, false, 1, 1));
+		criarTipoImovel(cpTipoImovel);	
+		
+		Button btnAdicionar = new Button(gpTipoImovel, SWT.NONE);
+		btnAdicionar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		btnAdicionar.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
 		btnAdicionar.setText("Adicionar");
-		new Label(composite, SWT.NONE);
 		
-		Button btnRemover = new Button(composite, SWT.NONE);
-		btnRemover.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
+		Button btnRemover = new Button(gpTipoImovel, SWT.NONE);
+		btnRemover.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/delete/delete16.png"));
+		btnRemover.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
 		btnRemover.setText("Remover");
-		
-		TableViewerBuilder tvb = new TableViewerBuilder(cpTipoImovel);
+	}
+
+	private void criarTipoImovel(Composite cpTipoImovel) {
+		tvb = new TableViewerBuilder(cpTipoImovel);
 		
 		tvb.createColumn("Descrição").bindToProperty("tipoImovel.descricao").build();
 		tvb.createColumn("Pré-selecionado").bindToProperty("preSelecionado").makeEditable(new CheckboxCellEditor()).build();
-		
 	}
 }

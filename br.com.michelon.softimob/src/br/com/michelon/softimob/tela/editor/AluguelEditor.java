@@ -12,18 +12,26 @@ import org.eclipse.swt.widgets.Group;
 
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import org.eclipse.wb.swt.SWTResourceManager;
+import br.com.michelon.softimob.tela.widget.DateTimeTextField;
+import br.com.michelon.softimob.tela.widget.DateTextField;
+import br.com.michelon.softimob.tela.widget.MoneyTextField;
+import org.eclipse.wb.swt.ResourceManager;
 
 public class AluguelEditor extends SoftimobEditor{
 	private Text text;
 	private Text text_1;
-	private Text text_2;
 	private Text text_4;
+	private Text text_3;
+	private Text text_2;
+	private TableViewerBuilder tvbComissao;
 	public AluguelEditor() {
 	}
 
 	@Override
 	public void afterCreatePartControl(Composite parent) {
-		parent.setLayout(new GridLayout(4, false));
+		GridLayout gl_parent = new GridLayout(4, false);
+		gl_parent.verticalSpacing = 10;
+		parent.setLayout(gl_parent);
 		
 		Label lblImvel = new Label(parent, SWT.NONE);
 		lblImvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -33,7 +41,7 @@ public class AluguelEditor extends SoftimobEditor{
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		
 		Button btnSelecionar = new Button(parent, SWT.NONE);
-		btnSelecionar.setText("Selecionar");
+		btnSelecionar.setText("...");
 		
 		Label lblValor = new Label(parent, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -43,16 +51,16 @@ public class AluguelEditor extends SoftimobEditor{
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		
 		Button button = new Button(parent, SWT.NONE);
-		button.setText("Selecionar");
+		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		button.setText("...");
 		
 		Label lblValor_1 = new Label(parent, SWT.NONE);
 		lblValor_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblValor_1.setText("Valor");
 		
-		text_2 = new Text(parent, SWT.BORDER);
-		GridData gd_text_2 = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-		gd_text_2.widthHint = 128;
-		text_2.setLayoutData(gd_text_2);
+		MoneyTextField moneyTextField = new MoneyTextField(parent);
+		text_2 = moneyTextField.getControl();
+		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		
@@ -60,7 +68,9 @@ public class AluguelEditor extends SoftimobEditor{
 		lblData.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblData.setText("Data");
 		
-		DateTime dateTime = new DateTime(parent, SWT.BORDER);
+		DateTextField dateTextField = new DateTextField(parent);
+		text_3 = dateTextField.getControl();
+		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		
@@ -84,20 +94,27 @@ public class AluguelEditor extends SoftimobEditor{
 		Composite composite = new Composite(grpComisso, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 2));
 		
-		TableViewerBuilder tvbComissao = new TableViewerBuilder(composite);
-		tvbComissao.createColumn("Nome").bindToProperty("funcionario.nome").build();
-		tvbComissao.createColumn("Valor").bindToProperty("valor").makeEditable().build();
+		criarTabelaComissao(composite);
 		
 		Button btnAdicionar = new Button(grpComisso, SWT.NONE);
-		btnAdicionar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		btnAdicionar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		btnAdicionar.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
 		btnAdicionar.setText("Adicionar");
 		
 		Button btnRemover = new Button(grpComisso, SWT.NONE);
-		btnRemover.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		btnRemover.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/delete/delete16.png"));
+		btnRemover.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
 		btnRemover.setText("Remover");
 		
 	}
 
+	private void criarTabelaComissao(Composite composite){
+		TableViewerBuilder tvbComissao = new TableViewerBuilder(composite);
+		
+		tvbComissao.createColumn("Nome").bindToProperty("funcionario.nome").build();
+		tvbComissao.createColumn("Valor").bindToProperty("valor").makeEditable().build();
+	}
+	
 	@Override
 	protected void salvar() {
 		

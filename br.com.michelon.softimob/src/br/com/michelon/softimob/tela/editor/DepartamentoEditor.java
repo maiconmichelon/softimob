@@ -38,7 +38,9 @@ public class DepartamentoEditor extends SoftimobEditor {
 		lblNome.setText("Descrição");
 		
 		text = new Text(parent, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text.widthHint = 206;
+		text.setLayoutData(gd_text);
 		
 		m_bindingContext = initDataBindings();
 		

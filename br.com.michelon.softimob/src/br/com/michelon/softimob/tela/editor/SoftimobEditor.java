@@ -12,6 +12,8 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.ResourceManager;
 
 public abstract class SoftimobEditor extends EditorPart {
 
@@ -29,13 +31,14 @@ public abstract class SoftimobEditor extends EditorPart {
 		cpPrincipal.setLayout(new GridLayout(2, false));
 		
 		Composite cpOpcoes = new Composite(composite, SWT.NONE);
-		cpOpcoes.setLayout(new GridLayout(2, false));
+		cpOpcoes.setLayout(new GridLayout(1, false));
 		cpOpcoes.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSalvar = new Button(cpOpcoes, SWT.NONE);
+		btnSalvar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/save/save32.png"));
 		GridData gd_btnSalvar = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnSalvar.heightHint = 50;
-		gd_btnSalvar.widthHint = 70;
+		gd_btnSalvar.widthHint = 91;
 		btnSalvar.setLayoutData(gd_btnSalvar);
 		btnSalvar.setText("Salvar");
 		btnSalvar.addSelectionListener(new SelectionAdapter() {
@@ -46,13 +49,6 @@ public abstract class SoftimobEditor extends EditorPart {
 			}
 
 		});
-		
-		Button btnCancelar = new Button(cpOpcoes, SWT.NONE);
-		GridData gd_btnCancelar = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnCancelar.heightHint = 50;
-		gd_btnCancelar.widthHint = 70;
-		btnCancelar.setLayoutData(gd_btnCancelar);
-		btnCancelar.setText("Cancelar");
 		
 		afterCreatePartControl(cpPrincipal);
 	}

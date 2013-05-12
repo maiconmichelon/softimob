@@ -14,7 +14,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="RCP Perspective"
+            name="Perspective"
             class="br.com.michelon.softimob.aplicacao.main.Perspective"
             id="br.com.michelon.softimob.perspective">
       </perspective>
@@ -38,16 +38,19 @@
                label="Cadastro">
             <command
                   commandId="br.com.michelon.softimob.command.cmdImovel"
+                  icon="icons/imovel/casa16.png"
                   label="Imóvel"
                   style="push">
             </command>
             <command
                   commandId="br.com.michelon.softimob.command.cmdCliente"
+                  icon="icons/cliente/cliente16.png"
                   label="Cliente"
                   style="push">
             </command>
             <command
                   commandId="br.com.michelon.softimob.command.cmdPlaca"
+                  icon="icons/placa/placa16.png"
                   label="Placa"
                   style="push">
             </command>
@@ -58,11 +61,13 @@
             </command>
             <command
                   commandId="br.com.michelon.softimob.command.cmdFuncionario"
+                  icon="icons/funcionario/funcionario16.png"
                   label="Funcionário"
                   style="push">
             </command>
             <command
                   commandId="br.com.michelon.softimob.command.cmdTipoImovel"
+                  icon="icons/imovel/casa16.png"
                   label="Tipo imóvel"
                   style="push">
             </command>
@@ -73,26 +78,31 @@
          point="org.eclipse.ui.editors">
       <editor
             class="br.com.michelon.softimob.tela.editor.ChaveEditor"
+            icon="icons/chave/key16.png"
             id="br.com.michelon.softimob.tela.editor.ChaveEditor"
             name="Cadastro Chave">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
+            icon="icons/imovel/casa16.png"
             id="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
             name="Cadastro Tipo de Imóvel">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.FuncionarioEditor"
+            icon="icons/funcionario/funcionario16.png"
             id="br.com.michelon.softimob.tela.editor.FuncionarioEditor"
             name="Cadastro Funcionário">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.PlacaEditor"
+            icon="icons/placa/placa16.png"
             id="br.com.michelon.softimob.tela.editor.PlacaEditor"
             name="Cadastro Placa">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.ClienteEditor"
+            icon="icons/cliente/cliente16.png"
             id="br.com.michelon.softimob.tela.editor.ClienteEditor"
             name="Cadastro Cliente">
       </editor>
@@ -103,8 +113,87 @@
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.ImovelEditor"
+            icon="icons/imovel/casa16.png"
             id="br.com.michelon.softimob.tela.editor.ImovelEditor"
             name="Cadastro Imóvel">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.BairroEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.BairroEditor"
+            name="Cadastro Bairro">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.CidadeEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.CidadeEditor"
+            name="Cadastro Cidade">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.EstadoEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.EstadoEditor"
+            name="Cadastro Estado">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.RuaEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.RuaEditor"
+            name="Cadastro Rua">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.AluguelEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.AluguelEditor"
+            name="Aluguel">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.VendaEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.VendaEditor"
+            name="Venda">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor"
+            name="Conta Pagar/Receber">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.DepartamentoEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.DepartamentoEditor"
+            name="Cadastro Departamento">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.ModeloContratoEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.ModeloContratoEditor"
+            name="Cadastro Modelo Contrato">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.ModeloContratoEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor"
+            name="Movimentações Contábeis">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.ParametrosImobiliariaEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.ParametrosImobiliariaEditor"
+            name="Parâmetros Imobiliária">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.PlanoContaEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.PlanoContaEditor"
+            name="Cadastro Plano Conta">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
+            name="Cadastro Tipo Imovel">
       </editor>
    </extension>
    <extension

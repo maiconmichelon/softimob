@@ -20,7 +20,7 @@ public class PlanoContaEditor extends SoftimobEditor {
 
 	@Override
 	public void afterCreatePartControl(Composite parent) {
-		GridLayout gl_parent = new GridLayout(3, false);
+		GridLayout gl_parent = new GridLayout(2, false);
 		gl_parent.verticalSpacing = 10;
 		parent.setLayout(gl_parent);
 		
@@ -29,20 +29,26 @@ public class PlanoContaEditor extends SoftimobEditor {
 		lblNmero.setText("Número");
 		
 		text = new Text(parent, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text.widthHint = 162;
+		text.setLayoutData(gd_text);
 		
 		Label lblDescrio = new Label(parent, SWT.NONE);
 		lblDescrio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDescrio.setText("Descrição");
 		
 		text_1 = new Text(parent, SWT.BORDER);
-		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		
-		Button btnAtiva = new Button(parent, SWT.RADIO);
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		composite.setLayout(new GridLayout(2, false));
+		
+		Button btnAtiva = new Button(composite, SWT.RADIO);
 		btnAtiva.setText("Ativa");
 		
-		Button btnPassiva = new Button(parent, SWT.RADIO);
+		Button btnPassiva = new Button(composite, SWT.RADIO);
 		btnPassiva.setText("Passiva");
 		
 	}
