@@ -28,6 +28,9 @@ public class GerarContratoPromessa extends TitleAreaDialog{
 		setTitle("Geração de contrato de promessa de compra e venda.");
 	}
 	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public GerarContratoPromessa(Shell parentShell){
 		this(parentShell, null);
 	}
