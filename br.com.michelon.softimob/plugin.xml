@@ -37,11 +37,6 @@
          <menu
                label="Cadastro">
             <command
-                  commandId="br.com.michelon.softimob.command.cmdChave"
-                  label="Chave"
-                  style="push">
-            </command>
-            <command
                   commandId="br.com.michelon.softimob.command.cmdImovel"
                   label="Imóvel"
                   style="push">
@@ -114,11 +109,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdChave"
-            id="br.com.michelon.softimob.command.cmdChave"
-            name="Chave">
-      </command>
       <command
             defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdCliente"
             id="br.com.michelon.softimob.command.cmdCliente"
