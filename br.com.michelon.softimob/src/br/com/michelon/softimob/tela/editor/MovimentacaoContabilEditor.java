@@ -16,6 +16,9 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 
 public class MovimentacaoContabilEditor extends SoftimobEditor{
+	
+	public static final String ID = "br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor";
+	
 	private Text text;
 	private Text text_1;
 	private Text text_2;

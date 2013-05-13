@@ -2,7 +2,7 @@ package br.com.michelon.softimob.modelo;
 
 import java.util.Date;
 
-public class HistoricoImovel {
+public class Feedback {
 
 	private Funcionario funcionario;
 	

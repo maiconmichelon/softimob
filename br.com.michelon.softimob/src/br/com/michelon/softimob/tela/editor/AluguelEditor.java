@@ -18,12 +18,17 @@ import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import org.eclipse.wb.swt.ResourceManager;
 
 public class AluguelEditor extends SoftimobEditor{
+	
+	public static final String ID = "br.com.michelon.softimob.tela.editor.AluguelEditor";
+	
 	private Text text;
 	private Text text_1;
 	private Text text_4;
 	private Text text_3;
 	private Text text_2;
+	
 	private TableViewerBuilder tvbComissao;
+	
 	public AluguelEditor() {
 	}
 

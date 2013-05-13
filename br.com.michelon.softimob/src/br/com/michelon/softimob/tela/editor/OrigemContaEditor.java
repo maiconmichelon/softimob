@@ -8,11 +8,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class TipoContaEditor extends SoftimobEditor {
+public class OrigemContaEditor extends SoftimobEditor {
+	
+	public static final String ID = "br.com.michelon.softimob.tela.editor.OrigemContaEditor";
+	
 	private Text text;
 	private Text text_1;
 	private Text text_2;
-	public TipoContaEditor() {
+	public OrigemContaEditor() {
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridLayout;
 
 public class BairroEditor extends SoftimobEditor{
+	public static final String ID = "br.com.michelon.softimob.tela.editor.BairroEditor";
 	private Text text;
 	public BairroEditor() {
 	}

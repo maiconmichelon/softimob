@@ -40,7 +40,13 @@ public enum Images{
 	VENDA_32("icons/venda/venda32.png"), 
 	REMOVE_16("icons/delete/delete16.png"), 
 	REFRESH_16("icons/refresh/refresh16.png"),
-	REMOVE_32("icons/delete/delete32.png");
+	REMOVE_32("icons/delete/delete32.png"), 
+	ALUGUEL_32("icons/aluguel/aluguel32.png"), 
+	PLANOCONTA_32("icons/planoConta/planoConta32"), 
+	CONTA_32("icons/conta/conta32"), 
+	MOVIMENTACAO_CONTABIL_32("icons/movimentacaoContabil/movimentacaoContabil32"), 
+	CONTRATO_32("icons/contrato/contrato32")
+	;
 	
 	private String caminho;
 
@@ -61,7 +67,7 @@ public enum Images{
 		return ResourceManager.getPluginImageDescriptor(Activator.PLUGIN_ID, getCaminho());
 	}
 	
-	public Image getPluginImage(){
+	public Image getImage(){
 		return ResourceManager.getPluginImage(Activator.PLUGIN_ID, getCaminho());
 	}
 	

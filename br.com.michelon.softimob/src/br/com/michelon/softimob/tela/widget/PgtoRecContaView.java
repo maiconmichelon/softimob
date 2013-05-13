@@ -1,4 +1,4 @@
-package br.com.michelon.softimob.tela.editor;
+package br.com.michelon.softimob.tela.widget;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ import br.com.michelon.softimob.modelo.LancamentoContabil;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.OrigemConta;
 
-public class ContasAPagarReceber extends EditorPart {
+public class PgtoRecContaView extends EditorPart {
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor"; //$NON-NLS-1$
 	private Text text;
@@ -54,7 +54,7 @@ public class ContasAPagarReceber extends EditorPart {
 
 	private MovimentacaoContabil movimentacao;
 	
-	public ContasAPagarReceber() {
+	public PgtoRecContaView() {
 	}
 
 	/**

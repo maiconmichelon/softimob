@@ -27,7 +27,7 @@ import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
 import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.modelo.Funcionario;
-import br.com.michelon.softimob.modelo.HistoricoImovel;
+import br.com.michelon.softimob.modelo.Feedback;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.Proposta;
 import br.com.michelon.softimob.modelo.Vistoria;
@@ -48,7 +48,7 @@ public class ImovelEditor extends SoftimobEditor{
 	
 	private WritableValue value = WritableValue.withValueType(Imovel.class);
 	private WritableValue valueProposta = WritableValue.withValueType(Proposta.class);
-	private WritableValue valueHistorico = WritableValue.withValueType(HistoricoImovel.class);
+	private WritableValue valueHistorico = WritableValue.withValueType(Feedback.class);
 	private WritableValue valueVistoria = WritableValue.withValueType(Vistoria.class);
 	private WritableValue valueChave = WritableValue.withValueType(Chave.class);
 	

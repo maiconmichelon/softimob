@@ -13,6 +13,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Group;
 
 public class ModeloContratoEditor extends SoftimobEditor {
+	
+	public static final String ID = "br.com.michelon.softimob.tela.editor";
+	
 	private Text text;
 	private Text text_1;
 	public ModeloContratoEditor() {

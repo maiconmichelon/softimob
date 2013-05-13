@@ -10,6 +10,7 @@ import org.eclipse.nebula.widgets.formattedtext.FormattedText;
 import org.eclipse.nebula.widgets.formattedtext.MaskFormatter;
 
 public class EstadoEditor extends SoftimobEditor {
+	public static final String ID = "br.com.michelon.softimob.tela.editor.EstadoEditor";
 	private Text text_1;
 	private Text text;
 	public EstadoEditor() {

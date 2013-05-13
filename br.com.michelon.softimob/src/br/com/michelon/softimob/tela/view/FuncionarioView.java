@@ -6,43 +6,40 @@ import java.util.Map;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import br.com.michelon.softimob.aplicacao.editorInput.ClienteEditorInput;
-import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
-import br.com.michelon.softimob.modelo.Cliente;
-import br.com.michelon.softimob.persistencia.ClienteDAO;
-import br.com.michelon.softimob.tela.editor.ClienteEditor;
-
 import com.google.common.collect.Maps;
 
-public class ClienteView extends GenericView<Cliente>{
-	
+import br.com.michelon.softimob.aplicacao.editorInput.FuncionarioEditorInput;
+import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.modelo.Funcionario;
+import br.com.michelon.softimob.tela.editor.FuncionarioEditor;
+
+public class FuncionarioView extends GenericView<Funcionario>{
+
 	private Map<String, String> atributos;
-	private ClienteDAO dao = new ClienteDAO();
 	
-	public ClienteView(){
+	public FuncionarioView() {
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Nome", "nome");
-		atributos.put("CPF", "cpf");
-		atributos.put("RG", "rg");
-		atributos.put("Telefone", "telefone");
+		atributos.put("Departamento", "departamento.nome");
+		atributos.put("Telefone/Ramal", "telefoneRamal");
 		atributos.put("Celular", "celular");
 		atributos.put("E-mail", "email");
-		atributos.put("Endereço", "endereco");
+		
 	}
 	
 	@Override
-	protected void excluir(List<Cliente> objetos) {
+	protected void excluir(List<Funcionario> objetos) {
 	}
 
 	@Override
 	protected String getName() {
-		return "Clientes";
+		return "Funcionários";
 	}
 
 	@Override
 	protected Image getImage() {
-		return Images.CLIENTE_32.getImage();
+		return Images.FUNCIONARIO_32.getImage();
 	}
 
 	@Override
@@ -52,16 +49,17 @@ public class ClienteView extends GenericView<Cliente>{
 
 	@Override
 	protected GenericEditorInput<?> getIEditorInput() {
-		return new ClienteEditorInput();
+		return new FuncionarioEditorInput();
 	}
 
 	@Override
 	protected String getEditorId() {
-		return ClienteEditor.ID;
+		return FuncionarioEditor.ID;
 	}
 
 	@Override
-	protected List<Cliente> getInput() {
-		return dao.findAll();
+	protected List<Funcionario> getInput() {
+		return null;
 	}
+
 }

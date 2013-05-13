@@ -10,6 +10,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
 
 public class RuaEditor extends SoftimobEditor{
+
+	public static final String ID = "br.com.michelon.softimob.tela.editor.RuaEditor";
+	
 	private Text text;
 	public RuaEditor() {
 	}

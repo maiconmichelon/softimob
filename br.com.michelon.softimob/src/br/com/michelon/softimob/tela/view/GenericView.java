@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -18,7 +19,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.Form;
@@ -27,11 +27,11 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.Images;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.filter.GenericFilter;
 import br.com.michelon.softimob.aplicacao.filter.PropertyFilter;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
-import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public abstract class GenericView<T> extends ViewPart{
 	
@@ -41,7 +41,7 @@ public abstract class GenericView<T> extends ViewPart{
 	private Action actAdd;
 	private Action actRefresh;
 
-	private TableViewerBuilder tvb;
+	private ColumnViewer viewer;
 	private Text txtFiltro;
 	
 	public GenericView() {
@@ -90,7 +90,7 @@ public abstract class GenericView<T> extends ViewPart{
 			@Override
 			public void keyReleased(KeyEvent e) {
 				getFilter().setSearchText(txtFiltro.getText());
-				tvb.getTableViewer().refresh();
+				viewer.refresh();
 			}
 		});
 		formToolkit.adapt(txtFiltro, true, true);
@@ -100,18 +100,18 @@ public abstract class GenericView<T> extends ViewPart{
 		cpBody.setLayout(new GridLayout(2, false));
 		formToolkit.paintBordersFor(cpBody);
 		
-		tvb = WidgetHelper.createTableWithFilter(formToolkit, cpBody, getAttributes());
+		viewer = criarTabela(cpBody);
 		
-		Menu menu = new Menu(tvb.getTable());
+		Menu menu = new Menu(viewer.getControl());
 		
 		setMenuItems(menu);
 		
 		if(menu.getItemCount() > 0)
-			tvb.getTable().setMenu(menu);
+			viewer.getControl().setMenu(menu);
 		
-		tvb.setInput(getInput());
+		viewer.setInput(getInput());
 		
-		tvb.getTableViewer().addFilter(getFilter());
+		viewer.addFilter(getFilter());
 		
 		frmNewForm.getToolBarManager().add(actAdd);
 		frmNewForm.getToolBarManager().add(actRefresh);
@@ -119,8 +119,12 @@ public abstract class GenericView<T> extends ViewPart{
 		frmNewForm.update();
 	}
 
+	protected ColumnViewer criarTabela(Composite composite) {
+		return WidgetHelper.createTableWithFilter(composite, getAttributes()).getTableViewer();
+	}
+
 	protected void atualizar() {
-		tvb.getTableViewer().refresh();
+		viewer.refresh();
 	}
 	
 	public void cadastrar(){
@@ -152,7 +156,7 @@ public abstract class GenericView<T> extends ViewPart{
 			@Override
 			@SuppressWarnings("unchecked")
 			public void widgetSelected(SelectionEvent e) {
-				List<T> selecionados = (List<T>) SelectionHelper.getObjects(tvb.getTableViewer());
+				List<T> selecionados = (List<T>) SelectionHelper.getObjects(viewer);
 				excluir(selecionados);
 			}
 		});
@@ -160,11 +164,11 @@ public abstract class GenericView<T> extends ViewPart{
 		return new MenuItem[]{miAlterar, miRemover};
 	};
 	
-	protected abstract void excluir(List<T> objetos);
-
 	protected GenericFilter getFilter(){
 		return new PropertyFilter(getAttributes().values().toArray());
 	}
+	
+	protected abstract void excluir(List<T> objetos);
 	
 	protected abstract String getName();
 	
@@ -175,7 +179,7 @@ public abstract class GenericView<T> extends ViewPart{
 	 */
 	public abstract Map<String, String> getAttributes();
 	
-	protected abstract IEditorInput getIEditorInput();
+	protected abstract GenericEditorInput<?> getIEditorInput();
 
 	protected abstract String getEditorId();
 	

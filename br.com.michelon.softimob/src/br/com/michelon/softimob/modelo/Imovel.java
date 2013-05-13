@@ -46,7 +46,7 @@ public class Imovel {
 	private Cliente proprietario;
 	
 	@OneToMany
-	private List<HistoricoImovel> feedbacks = new ArrayList<HistoricoImovel>();
+	private List<Feedback> feedbacks = new ArrayList<Feedback>();
 	
 	private BigDecimal valor;
 	
@@ -131,11 +131,11 @@ public class Imovel {
 		this.id = id;
 	}
 	
-	public List<HistoricoImovel> getFeedbacks() {
+	public List<Feedback> getFeedbacks() {
 		return feedbacks;
 	}
 
-	public void setFeedbacks(List<HistoricoImovel> feedbacks) {
+	public void setFeedbacks(List<Feedback> feedbacks) {
 		this.feedbacks = feedbacks;
 	}
 
