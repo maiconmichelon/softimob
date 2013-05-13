@@ -16,13 +16,13 @@ public class ImovelXViewerFactory extends XViewerFactory {
 		registerColumns(codigo, metragem, angariador, tipo, proprietario, tipo, status);
 	}
 
-	private static String COLUMN_NAMESPACE = "xviewer.test";
-	public static XViewerColumn codigo = new XViewerColumn(COLUMN_NAMESPACE+ ".codigo", "Código", 350, SWT.LEFT, true, SortDataType.String,false, null);
-	public static XViewerColumn metragem = new XViewerColumn(COLUMN_NAMESPACE + ".metragem", "Metragem", 250, SWT.LEFT, true, SortDataType.String, false, null);
-	public static XViewerColumn angariador = new XViewerColumn(COLUMN_NAMESPACE + ".angariador", "Angariador", 250, SWT.LEFT, true, SortDataType.String, false, null);
-	public static XViewerColumn tipo = new XViewerColumn(COLUMN_NAMESPACE + ".tipo", "Tipo", 250, SWT.LEFT, true, SortDataType.String, false, null);
-	public static XViewerColumn proprietario = new XViewerColumn(COLUMN_NAMESPACE + ".proprietario", "Poprietário", 250, SWT.LEFT, true, SortDataType.String, false, null);
-	public static XViewerColumn status = new XViewerColumn(COLUMN_NAMESPACE + ".status", "Status", 250, SWT.LEFT, true, SortDataType.String, false, null);
+	private static String COLUMN_NAMESPACE = "br.com.michelon.softimob";
+	public static XViewerColumn codigo = new XViewerColumn(COLUMN_NAMESPACE+ ".codigo", "Código", 200, SWT.LEFT, true, SortDataType.String,false, null);
+	public static XViewerColumn metragem = new XViewerColumn(COLUMN_NAMESPACE + ".metragem", "Metragem", 150, SWT.LEFT, true, SortDataType.String, false, null);
+	public static XViewerColumn angariador = new XViewerColumn(COLUMN_NAMESPACE + ".angariador", "Angariador", 150, SWT.LEFT, true, SortDataType.String, false, null);
+	public static XViewerColumn tipo = new XViewerColumn(COLUMN_NAMESPACE + ".tipo", "Tipo", 150, SWT.LEFT, true, SortDataType.String, false, null);
+	public static XViewerColumn proprietario = new XViewerColumn(COLUMN_NAMESPACE + ".proprietario", "Poprietário", 150, SWT.LEFT, true, SortDataType.String, false, null);
+	public static XViewerColumn status = new XViewerColumn(COLUMN_NAMESPACE + ".status", "Status", 150, SWT.LEFT, true, SortDataType.String, false, null);
 
 	@Override
 	public boolean isAdmin() {

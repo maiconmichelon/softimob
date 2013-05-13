@@ -82,11 +82,12 @@ public abstract class GenericView<T> extends ViewPart{
 		Label lblFiltro = new Label(frmNewForm.getBody(), SWT.NONE);
 		lblFiltro.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		formToolkit.adapt(lblFiltro, true, true);
-		lblFiltro.setText("Filtro");
+		lblFiltro.setText("Busca");
 		
 		txtFiltro = new Text(frmNewForm.getBody(), SWT.BORDER);
+		txtFiltro.setMessage("Filtro...");
 		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text.widthHint = 269;
+		gd_text.widthHint = 423;
 		txtFiltro.setLayoutData(gd_text);
 		txtFiltro.addKeyListener(new KeyAdapter() {
 			@Override

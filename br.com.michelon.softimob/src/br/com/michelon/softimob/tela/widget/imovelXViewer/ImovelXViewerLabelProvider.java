@@ -22,9 +22,9 @@ public class ImovelXViewerLabelProvider extends XViewerLabelProvider {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getColumnText(Object element, XViewerColumn xCol, int columnIndex) throws Exception {
-		if(element instanceof String)
+		if(element instanceof String){
 			return element.toString();
-		else if(element instanceof Imovel){
+		}else if(element instanceof Imovel){
 			Imovel imovel = (Imovel) element;
 			
 			if(xCol.equals(ImovelXViewerFactory.angariador))
@@ -40,7 +40,6 @@ public class ImovelXViewerLabelProvider extends XViewerLabelProvider {
 			if(xCol.equals(ImovelXViewerFactory.tipo))
 				return imovel.getTipo() == null ? "" : imovel.getTipo().getDescricao();
 		}else if(element instanceof Chave){
-			
 			if(columnIndex == 0)
 				return ((Chave)element).getNumero();
 		}else if(element instanceof Feedback){

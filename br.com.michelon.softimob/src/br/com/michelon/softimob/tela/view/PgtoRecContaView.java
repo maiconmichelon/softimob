@@ -25,7 +25,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -42,10 +41,9 @@ import br.com.michelon.softimob.modelo.LancamentoContabil;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
+import br.com.michelon.softimob.tela.widget.DateTextField;
 
 import com.google.common.collect.Maps;
-import org.eclipse.wb.swt.ResourceManager;
-import br.com.michelon.softimob.tela.widget.DateTextField;
 
 public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 

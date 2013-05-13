@@ -170,6 +170,12 @@
             name="Imóvel"
             restorable="true">
       </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView"
+            icon="icons/imovel/casa16.png"
+            id="br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView"
+            name="Busca Avançada de Imóveis">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -198,7 +204,7 @@
                      style="push">
                   <parameter
                         name="org.eclipse.ui.views.showView.viewId"
-                        value="br.com.michelon.softimob.tela.view.ImovelView">
+                        value="br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView">
                   </parameter>
                </command>
             </menu>
@@ -445,17 +451,13 @@
                      value="br.com.michelon.softimob.tela.view.VistoriaView">
                </parameter>
             </command>
+         <command label="Install New Software..." commandId="org.eclipselabs.p2.rcpupdate.install" style="push"/>
+         <command label="Update" commandId="org.eclipselabs.p2.rcpupdate.update" style="push"/>
          </menu>
       </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
-      <editor
-            class="br.com.michelon.softimob.tela.editor.ChaveEditor"
-            icon="icons/chave/key16.png"
-            id="br.com.michelon.softimob.tela.editor.ChaveEditor"
-            name="Cadastro Chave">
-      </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
             icon="icons/imovel/casa16.png"
@@ -581,6 +583,14 @@
    </extension>
    <extension
          point="org.eclipse.ui.commands">
+      <command
+            name="Check for Updates"
+            id="org.eclipselabs.p2.rcpupdate.update">
+      </command>
+      <command
+            name="Install New Software..."
+            id="org.eclipselabs.p2.rcpupdate.install">
+      </command>
       <command
             id="br.com.michelon.softimob.command.cmdCliente"
             name="Cliente">
