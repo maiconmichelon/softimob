@@ -35,7 +35,9 @@ public class MovimentacaoContabilEditor extends SoftimobEditor{
 		
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+		GridData gd_composite = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
+		gd_composite.heightHint = 160;
+		composite.setLayoutData(gd_composite);
 		
 		Composite composite_1 = new Composite(composite, SWT.NONE);
 		composite_1.setLayout(new GridLayout(1, false));

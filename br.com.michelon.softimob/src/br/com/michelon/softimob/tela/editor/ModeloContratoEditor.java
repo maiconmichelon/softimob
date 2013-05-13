@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Group;
 
 public class ModeloContratoEditor extends SoftimobEditor {
 	
-	public static final String ID = "br.com.michelon.softimob.tela.editor";
+	public static final String ID = "br.com.michelon.softimob.tela.editor.ModeloContratoEditor";
 	
 	private Text text;
 	private Text text_1;

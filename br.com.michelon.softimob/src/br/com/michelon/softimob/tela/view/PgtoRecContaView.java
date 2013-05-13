@@ -1,14 +1,15 @@
-package br.com.michelon.softimob.tela.widget;
+package br.com.michelon.softimob.tela.view;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -18,6 +19,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -29,53 +31,47 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.part.EditorPart;
+import org.eclipse.wb.swt.Images;
 
+import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInput;
+import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.LancamentoContabil;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.OrigemConta;
+import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
 
-public class PgtoRecContaView extends EditorPart {
+import com.google.common.collect.Maps;
+import org.eclipse.wb.swt.ResourceManager;
+import br.com.michelon.softimob.tela.widget.DateTextField;
 
-	public static final String ID = "br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor"; //$NON-NLS-1$
+public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
+
+	private static final String PAGAR = "A PAGAR";
+	private static final String RECEBER = "A RECEBER";
+
 	private Text text;
 	private Table table;
 	private Text txtConta;
 	private Table tbLancamentos;
-	
-	private static final String PAGAR = "A PAGAR";
-	private static final String RECEBER = "A RECEBER";
 
 	private MovimentacaoContabil movimentacao;
 	
+	private Map<String, String> atributos;
+	private Text text_1;
+	
 	public PgtoRecContaView() {
+		this.atributos = Maps.newHashMap();
 	}
 
-	/**
-	 * Create contents of the editor part.
-	 * @param parent
-	 */
 	@Override
-	public void createPartControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NONE);
-		container.setLayout(new GridLayout(1, false));
+	protected ColumnViewer criarTabela(Composite parent) {
+		GridLayout gridLayout = (GridLayout) parent.getLayout();
+		gridLayout.numColumns = 1;
 		
-		Composite composite_1 = new Composite(container, SWT.NONE);
-		composite_1.setLayout(new GridLayout(1, false));
-		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		new Label(composite_1, SWT.NONE);
-		
-		Composite composite = new Composite(composite_1, SWT.NONE);
-		composite.setLayout(new GridLayout(1, false));
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		
-		CTabFolder tabFolder = new CTabFolder(composite, SWT.BORDER);
+		CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
@@ -192,9 +188,14 @@ public class PgtoRecContaView extends EditorPart {
 		composite_3.setLayout(new GridLayout(3, false));
 		
 		Label lblDataPagamento = new Label(composite_3, SWT.NONE);
+		lblDataPagamento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDataPagamento.setText("Data pagamento");
 		
-		DateTime dateTime = new DateTime(composite_3, SWT.BORDER);
+		DateTextField dateTextField = new DateTextField(composite_3);
+		text_1 = dateTextField.getControl();
+		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text_1.widthHint = 79;
+		text_1.setLayoutData(gd_text_1);
 		new Label(composite_3, SWT.NONE);
 		
 		Label lblConta = new Label(composite_3, SWT.NONE);
@@ -264,8 +265,12 @@ public class PgtoRecContaView extends EditorPart {
 			}
 		});
 		
-		Button btnBaixarConta = new Button(composite, SWT.NONE);
-		btnBaixarConta.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		Button btnBaixarConta = new Button(parent, SWT.NONE);
+		btnBaixarConta.setImage(Images.FINALIZAR_16.getImage());
+		GridData gd_btnBaixarConta = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
+		gd_btnBaixarConta.widthHint = 120;
+		gd_btnBaixarConta.heightHint = 38;
+		btnBaixarConta.setLayoutData(gd_btnBaixarConta);
 		btnBaixarConta.setText("Baixar / Estornar");
 		btnBaixarConta.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -276,6 +281,10 @@ public class PgtoRecContaView extends EditorPart {
 				}
 			}
 		});
+		
+		tabFolder.setSelection(0);
+		
+		return tvContas;
 	}
 
 	@Override
@@ -283,24 +292,37 @@ public class PgtoRecContaView extends EditorPart {
 	}
 
 	@Override
-	public void doSave(IProgressMonitor monitor) {
+	protected void excluir(List<ContaPagarReceber> objetos) {
 	}
 
 	@Override
-	public void doSaveAs() {
+	protected String getName() {
+		return "Contas a Pagar/Receber";
 	}
 
 	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
+	protected Image getImage() {
+		return Images.CONTA_32.getImage();
 	}
 
 	@Override
-	public boolean isDirty() {
-		return false;
+	public Map<String, String> getAttributes() {
+		return atributos;
 	}
 
 	@Override
-	public boolean isSaveAsAllowed() {
-		return false;
+	protected GenericEditorInput<?> getIEditorInput() {
+		return new ContaPagarReceberEditorInput();
 	}
+
+	@Override
+	protected String getEditorId() {
+		return ContaPagarReceberEditor.ID;
+	}
+
+	@Override
+	protected List<ContaPagarReceber> getInput() {
+		return null;
+	}
+
 }

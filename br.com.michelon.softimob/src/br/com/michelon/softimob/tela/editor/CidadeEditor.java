@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class CidadeEditor extends SoftimobEditor {
 	
-	public static final String ID = "br.com.softimob.tela.editor.CidadeEditor";
+	public static final String ID = "br.com.michelon.softimob.tela.editor.CidadeEditor";
 	
 	private Text text;
 	public CidadeEditor() {

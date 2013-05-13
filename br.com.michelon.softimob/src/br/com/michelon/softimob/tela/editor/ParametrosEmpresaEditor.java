@@ -1,22 +1,24 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Text;
-import br.com.michelon.softimob.tela.widget.CNPJTextField;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.custom.CTabItem;
-import br.com.michelon.softimob.tela.widget.DateTextField;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
-public class ParametrosImobiliariaEditor extends SoftimobEditor{
+import br.com.michelon.softimob.tela.widget.CNPJTextField;
+import br.com.michelon.softimob.tela.widget.DateTextField;
+
+public class ParametrosEmpresaEditor extends SoftimobEditor{
+	
+	public static final String ID = "br.com.michelon.softimob.tela.editor.ParametrosEmpresaEditor";
+	
 	private Text text;
 	private Text text_1;
 	private Text text_2;
@@ -33,7 +35,7 @@ public class ParametrosImobiliariaEditor extends SoftimobEditor{
 	private Text text_13;
 	private Text text_14;
 	private Text text_15;
-	public ParametrosImobiliariaEditor() {
+	public ParametrosEmpresaEditor() {
 	}
 
 	@Override

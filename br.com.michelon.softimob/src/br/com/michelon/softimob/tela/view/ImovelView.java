@@ -18,6 +18,7 @@ import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 import br.com.michelon.softimob.tela.widget.imovelXViewer.ImovelXViewer;
+import org.eclipse.swt.widgets.Label;
 
 public class ImovelView extends GenericView<ImovelView>{
 
@@ -69,12 +70,13 @@ public class ImovelView extends GenericView<ImovelView>{
 
 	@Override
 	protected ColumnViewer criarTabela(Composite composite) {
+		composite.setLayout(new GridLayout(1, false));
 		Composite cpTable = new Composite(composite, SWT.NONE);
+		cpTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 		
-		cpTable.setLayout(new GridLayout(1, false));
-		cpTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		composite.setLayout(new GridLayout(1, false));
 		
-		XViewer imovelXViewer = new ImovelXViewer(cpTable, SWT.NONE);
+		XViewer imovelXViewer = new ImovelXViewer(composite, SWT.BORDER);
 		return imovelXViewer;
 	}
 	

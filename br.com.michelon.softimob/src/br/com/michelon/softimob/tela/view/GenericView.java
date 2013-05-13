@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -109,7 +111,12 @@ public abstract class GenericView<T> extends ViewPart{
 		if(menu.getItemCount() > 0)
 			viewer.getControl().setMenu(menu);
 		
-		viewer.setInput(getInput());
+		if(getInput() != null){
+			if(viewer instanceof TableViewer)
+				viewer.setContentProvider(ArrayContentProvider.getInstance());
+			
+			viewer.setInput(getInput());
+		}
 		
 		viewer.addFilter(getFilter());
 		

@@ -74,6 +74,6 @@ public class ComodoEditor extends SoftimobEditor{
 		tvb = new TableViewerBuilder(cpTipoImovel);
 		
 		tvb.createColumn("Descrição").bindToProperty("tipoImovel.descricao").build();
-		tvb.createColumn("Pré-selecionado").bindToProperty("preSelecionado").makeEditable(new CheckboxCellEditor()).build();
+//		tvb.createColumn("Pré-selecionado").bindToProperty("preSelecionado").makeEditable(new CheckboxCellEditor()).build();
 	}
 }

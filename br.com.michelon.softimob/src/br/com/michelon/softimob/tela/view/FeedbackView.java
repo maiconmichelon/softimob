@@ -39,7 +39,7 @@ public class FeedbackView extends GenericView<Feedback>{
 
 	@Override
 	protected Image getImage() {
-		return Images.FEEDBACK_32.getImage();
+		return Images.FEEDBACK_32_2.getImage();
 	}
 
 	@Override

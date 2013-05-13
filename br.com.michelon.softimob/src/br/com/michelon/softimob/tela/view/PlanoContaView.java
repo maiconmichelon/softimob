@@ -6,12 +6,12 @@ import java.util.Map;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.PlanoContaEditorInput;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.tela.editor.PlanoContaEditor;
+
+import com.google.common.collect.Maps;
 
 public class PlanoContaView extends GenericView<PlanoConta>{
 

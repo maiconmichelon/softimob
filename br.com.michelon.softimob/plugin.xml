@@ -50,6 +50,7 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.VendaView"
+            icon="icons/venda/venda16.png"
             id="br.com.michelon.softimob.tela.view.VendaView"
             name="Venda"
             restorable="true">
@@ -80,18 +81,21 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.FeedbackView"
+            icon="icons/feedback/feedback16.png"
             id="br.com.michelon.softimob.tela.view.FeedbackView"
             name="Feedback"
             restorable="true">
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.ChaveView"
+            icon="icons/chave/key16.png"
             id="br.com.michelon.softimob.tela.view.ChaveView"
             name="Chave"
             restorable="true">
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.ChamadoView"
+            icon="icons/reforma/reforma16.png"
             id="br.com.michelon.softimob.tela.view.ChamadoView"
             name="Chamado"
             restorable="true">
@@ -109,19 +113,20 @@
             restorable="true">
       </view>
       <view
-            class="br.com.michelon.softimob.tela.view.ContaPagarReceberView"
-            id="br.com.michelon.softimob.tela.view.ContaPagarReceberView"
+            class="br.com.michelon.softimob.tela.view.PgtoRecContaView"
+            id="br.com.michelon.softimob.tela.view.PgtoRecContaView"
             name="Conta Pagar/Receber"
             restorable="true">
       </view>
       <view
-            class="br.com.michelon.softimob.tela.view.TipoContaView"
-            id="br.com.michelon.softimob.tela.view.TipoContaView"
-            name="Tipo de Conta"
+            class="br.com.michelon.softimob.tela.view.OrigemContaView"
+            id="br.com.michelon.softimob.tela.view.OrigemContaView"
+            name="Origem da Conta"
             restorable="true">
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.PlacaView"
+            icon="icons/placa/placa16.png"
             id="br.com.michelon.softimob.tela.view.PlacaView"
             name="Placa"
             restorable="true">
@@ -140,6 +145,7 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.PropostaView"
+            icon="icons/feedback/feedback16.png"
             id="br.com.michelon.softimob.tela.view.PropostaView"
             name="Proposta"
             restorable="true">
@@ -150,6 +156,20 @@
             name="Vistoria"
             restorable="true">
       </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.TipoImovelView"
+            icon="icons/imovel/casa16.png"
+            id="br.com.michelon.softimob.tela.view.TipoImovelView"
+            name="Tipo Imóvel"
+            restorable="true">
+      </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.ImovelView"
+            icon="icons/imovel/casa16.png"
+            id="br.com.michelon.softimob.tela.view.ImovelView"
+            name="Imóvel"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -158,6 +178,30 @@
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
                label="Imóveis">
+            <menu
+                  icon="icons/imovel/casa16.png"
+                  label="Imóvel">
+               <command
+                     commandId="org.eclipse.ui.views.showView"
+                     icon="icons/imovel/casa16.png"
+                     label="Consulta simples"
+                     style="push">
+                  <parameter
+                        name="org.eclipse.ui.views.showView.viewId"
+                        value="br.com.michelon.softimob.tela.view.ImovelView">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.eclipse.ui.views.showView"
+                     icon="icons/imovel/casa16.png"
+                     label="Consulta avançada"
+                     style="push">
+                  <parameter
+                        name="org.eclipse.ui.views.showView.viewId"
+                        value="br.com.michelon.softimob.tela.view.ImovelView">
+                  </parameter>
+               </command>
+            </menu>
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/imovel/casa16.png"
@@ -170,21 +214,31 @@
             </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
-                  label="Cômodo"
-                  style="push">
-               <parameter
-                     name="org.eclipse.ui.views.showView.viewId"
-                     value="br.com.michelon.softimob.tela.view.ComodoView">
-               </parameter>
-            </command>
-            <command
-                  commandId="org.eclipse.ui.views.showView"
                   icon="icons/placa/placa16.png"
                   label="Placa"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
                      value="br.com.michelon.softimob.tela.view.PlacaView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/chave/key16.png"
+                  label="Chave"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.ChaveView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  label="Cômodo"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.ComodoView">
                </parameter>
             </command>
             <menu
@@ -226,37 +280,6 @@
                   </parameter>
                </command>
             </menu>
-            <command
-                  commandId="org.eclipse.ui.views.showView"
-                  label="Chave"
-                  style="push">
-               <parameter
-                     name="org.eclipse.ui.views.showView.viewId"
-                     value="br.com.michelon.softimob.tela.view.ChaveView">
-               </parameter>
-            </command>
-            <menu
-                  label="Imóvel">
-               <command
-                     commandId="org.eclipse.ui.views.showView"
-                     icon="icons/imovel/casa16.png"
-                     label="Consulta simples"
-                     style="push">
-                  <parameter
-                        name="org.eclipse.ui.views.showView.viewId"
-                        value="br.com.michelon.softimob.tela.view.ImovelView">
-                  </parameter>
-               </command>
-               <command
-                     commandId="org.eclipse.ui.views.showView"
-                     label="Consulta avançada"
-                     style="push">
-                  <parameter
-                        name="org.eclipse.ui.views.showView.viewId"
-                        value="br.com.michelon.softimob.tela.view.ImovelView">
-                  </parameter>
-               </command>
-            </menu>
          </menu>
          <menu
                label="Empresa">
@@ -282,6 +305,7 @@
             </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
+                  icon="icons/departamento/departamento16.png"
                   label="Departamento"
                   style="push">
                <parameter
@@ -299,8 +323,8 @@
                </parameter>
             </command>
             <command
-                  commandId="br.com.michelon.softimob.command15"
-                  label="Parâmetros da Imobiliária"
+                  commandId="br.com.michelon.softimob.command.cmdParametroEmpresa"
+                  label="Parâmetros da Empresa"
                   style="push">
             </command>
          </menu>
@@ -308,11 +332,20 @@
                label="Financeiro">
             <command
                   commandId="org.eclipse.ui.views.showView"
+                  label="Movimentações"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.MovimentacaoContabilView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
                   label="Contas pagar/receber"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
-                     value="br.com.michelon.softimob.tela.view.ContaPagarReceberView">
+                     value="br.com.michelon.softimob.tela.view.PgtoRecContaView">
                </parameter>
             </command>
             <command
@@ -333,20 +366,12 @@
                      value="br.com.michelon.softimob.tela.view.PlanoContaView">
                </parameter>
             </command>
-            <command
-                  commandId="org.eclipse.ui.views.showView"
-                  label="Movimentações"
-                  style="push">
-               <parameter
-                     name="org.eclipse.ui.views.showView.viewId"
-                     value="br.com.michelon.softimob.tela.view.MovimentacoesView">
-               </parameter>
-            </command>
          </menu>
          <menu
                label="Operações">
             <command
                   commandId="org.eclipse.ui.views.showView"
+                  icon="icons/venda/venda16.png"
                   label="Venda"
                   style="push">
                <parameter
@@ -374,24 +399,7 @@
             </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
-                  label="Contrato"
-                  style="push">
-               <parameter
-                     name="org.eclipse.ui.views.showView.viewId"
-                     value="br.com.michelon.softimob.tela.view.ContratoView">
-               </parameter>
-            </command>
-            <command
-                  commandId="org.eclipse.ui.views.showView"
-                  label="Feedback"
-                  style="push">
-               <parameter
-                     name="org.eclipse.ui.views.showView.viewId"
-                     value="br.com.michelon.softimob.tela.view.FeedbackView">
-               </parameter>
-            </command>
-            <command
-                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/reforma/reforma16.png"
                   label="Chamados de reforma"
                   style="push">
                <parameter
@@ -401,6 +409,26 @@
             </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
+                  label="Contrato"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.ContratoView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/feedback/feedback16.png"
+                  label="Feedback"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.FeedbackView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/feedback/feedback16.png"
                   label="Propostas"
                   style="push">
                <parameter
@@ -496,6 +524,7 @@
       <editor
             class="br.com.michelon.softimob.tela.editor.VendaEditor"
             default="false"
+            icon="icons/venda/venda16.png"
             id="br.com.michelon.softimob.tela.editor.VendaEditor"
             name="Venda">
       </editor>
@@ -508,6 +537,7 @@
       <editor
             class="br.com.michelon.softimob.tela.editor.DepartamentoEditor"
             default="false"
+            icon="icons/departamento/departamento16.png"
             id="br.com.michelon.softimob.tela.editor.DepartamentoEditor"
             name="Cadastro Departamento">
       </editor>
@@ -518,16 +548,16 @@
             name="Cadastro Modelo Contrato">
       </editor>
       <editor
-            class="br.com.michelon.softimob.tela.editor.ModeloContratoEditor"
+            class="br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor"
             default="false"
             id="br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor"
             name="Movimentações Contábeis">
       </editor>
       <editor
-            class="br.com.michelon.softimob.tela.editor.ParametrosImobiliariaEditor"
+            class="br.com.michelon.softimob.tela.editor.ParametrosEmpresaEditor"
             default="false"
-            id="br.com.michelon.softimob.tela.editor.ParametrosImobiliariaEditor"
-            name="Parâmetros Imobiliária">
+            id="br.com.michelon.softimob.tela.editor.ParametrosEmpresaEditor"
+            name="Parâmetros Empresa">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.PlanoContaEditor"
@@ -538,8 +568,15 @@
       <editor
             class="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
             default="false"
+            icon="icons/imovel/casa16.png"
             id="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
             name="Cadastro Tipo Imovel">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.OrigemContaEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.OrigemContaEditor"
+            name="Cadastro Origem de Conta">
       </editor>
    </extension>
    <extension
@@ -578,6 +615,11 @@
             description="Abrir dialog de editors"
             id="br.com.michelon.softimob.aplicacao.command.cmdOpenShortcutEditorsDialog"
             name="Abrir dialog de editors">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdParametroEmpresa"
+            id="br.com.michelon.softimob.command.cmdParametroEmpresa"
+            name="Parametros Empresa">
       </command>
    </extension>
    <extension

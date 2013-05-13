@@ -15,6 +15,7 @@ import br.com.michelon.softimob.tela.widget.DateTextField;
 
 public class ContaPagarReceberEditor extends SoftimobEditor {
 	
+	public static final String ID = "br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor";
 	private Text text;
 	private Text text_1;
 	private Text text_3;

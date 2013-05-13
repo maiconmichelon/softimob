@@ -20,6 +20,7 @@ public class EstadoView extends GenericView<Estado>{
 	public EstadoView(){
 		atributos = Maps.newLinkedHashMap();
 		
+		atributos.put("UF", "uf");
 		atributos.put("Nome", "nome");
 	}
 	
