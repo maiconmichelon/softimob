@@ -20,8 +20,8 @@ public class CidadeView extends GenericView<Cidade>{
 	public CidadeView(){
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Nome", "nome");
-		atributos.put("UF", "uf");
+		atributos.put("Nome", "|20|nome");
+		atributos.put("UF", "|80|uf");
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class CidadeView extends GenericView<Cidade>{
 
 	@Override
 	protected Image getImage() {
-		return Images.SEARCH_32.getImage();
+		return Images.ENDERECO.getImage();
 	}
 
 	@Override

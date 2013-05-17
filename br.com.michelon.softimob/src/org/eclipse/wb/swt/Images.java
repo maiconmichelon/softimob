@@ -43,11 +43,12 @@ public enum Images{
 	REFRESH_16("icons/refresh/refresh16.png"),
 	REMOVE_32("icons/delete/delete32.png"), 
 	ALUGUEL_32("icons/aluguel/aluguel32.png"), 
-	PLANOCONTA_32("icons/planoConta/planoConta32"), 
-	CONTA_32("icons/conta/conta32"), 
-	MOVIMENTACAO_CONTABIL_32("icons/movimentacaoContabil/movimentacaoContabil32"), 
-	CONTRATO_32("icons/contrato/contrato32"), 
-	PROPOSTA_32("")
+	PLANOCONTA_32("icons/planoConta/planoConta32.png"), 
+	CONTA_32("icons/contaPagar/contaPagar32.png"), 
+	MOVIMENTACAO_CONTABIL_32("icons/movimentacao/movimentacao32.png"), 
+	CONTRATO_32("icons/contrato/contrato32.png"), 
+	PROPOSTA_32("icons/proposta/proposta32.png"), 
+	ENDERECO("icons/endereco/endereco32.png")
 	;
 	
 	private String caminho;

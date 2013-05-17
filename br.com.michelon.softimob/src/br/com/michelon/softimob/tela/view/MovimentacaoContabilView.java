@@ -18,6 +18,10 @@ public class MovimentacaoContabilView extends GenericView<MovimentacaoContabilVi
 	
 	public MovimentacaoContabilView(){
 		atributos = Maps.newLinkedHashMap();
+		
+		atributos.put("Código", "codigo");
+		atributos.put("Data de Lançamento", "dataLancamento");
+		atributos.put("Valor", "valor");
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.wb.swt.Images;
 
 import com.google.common.collect.Maps;
@@ -20,16 +21,14 @@ public class FeedbackView extends GenericView<Feedback>{
 	public FeedbackView() {
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Data", "data");
-		atributos.put("Cliente", "cliente.nome");
-		atributos.put("Funcionário", "funcionario.nome");
-		atributos.put("Feedback", "feedback");
+		atributos.put("Data", "|10|data");
+		atributos.put("Cliente", "|30|cliente.nome");
+		atributos.put("Funcionário", "|30|funcionario.nome");
+		atributos.put("Feedback", "|30|feedback");
 	}
 	
 	@Override
 	protected void excluir(List<Feedback> objetos) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -59,8 +58,11 @@ public class FeedbackView extends GenericView<Feedback>{
 
 	@Override
 	protected List<Feedback> getInput() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	protected void createMoreActions() {
+	}
+	
 }

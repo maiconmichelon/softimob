@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Group;
 import br.com.michelon.softimob.tela.widget.PhoneTextField;
 import br.com.michelon.softimob.tela.widget.CPFTextField;
 import br.com.michelon.softimob.tela.widget.CEPTextField;
+import br.com.michelon.softimob.tela.widget.DateTextField;
 
 public class ClienteEditor extends SoftimobEditor {
 	
@@ -27,6 +28,7 @@ public class ClienteEditor extends SoftimobEditor {
 	private Text text_7;
 	private Text text_1;
 	private Text text_8;
+	private Text text_11;
 	public ClienteEditor() {
 	}
 
@@ -43,6 +45,16 @@ public class ClienteEditor extends SoftimobEditor {
 		
 		text_3 = new Text(parent, SWT.BORDER);
 		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		
+		Label lblDataDeNascimento = new Label(parent, SWT.NONE);
+		lblDataDeNascimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDataDeNascimento.setText("Data de Nascimento");
+		
+		DateTextField dateTextField = new DateTextField(parent);
+		text_11 = dateTextField.getControl();
+		text_11.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		

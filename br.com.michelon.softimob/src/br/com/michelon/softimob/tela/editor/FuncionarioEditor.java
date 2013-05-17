@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.jface.viewers.ComboViewer;
 import br.com.michelon.softimob.tela.widget.PhoneTextField;
+import br.com.michelon.softimob.tela.widget.DateTextField;
 
 public class FuncionarioEditor extends SoftimobEditor {
 	
@@ -18,6 +19,8 @@ public class FuncionarioEditor extends SoftimobEditor {
 	private Text text_1;
 	private Text text_3;
 	private Text text_2;
+	private Text text_4;
+	private Text text_5;
 	
 	public FuncionarioEditor() {
 	}
@@ -47,6 +50,16 @@ public class FuncionarioEditor extends SoftimobEditor {
 		Combo combo = comboViewer.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
+		Label lblDataDeNascimento = new Label(composite, SWT.NONE);
+		lblDataDeNascimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDataDeNascimento.setText("Data de Nascimento");
+		
+		DateTextField dateTextField = new DateTextField(composite);
+		text_4 = dateTextField.getControl();
+		GridData gd_text_4 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text_4.widthHint = 79;
+		text_4.setLayoutData(gd_text_4);
+		
 		Label lblTelefoneRamal = new Label(composite, SWT.NONE);
 		lblTelefoneRamal.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblTelefoneRamal.setText("Telefone / Ramal");
@@ -72,6 +85,16 @@ public class FuncionarioEditor extends SoftimobEditor {
 		
 		text_3 = new Text(composite, SWT.BORDER);
 		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblDataDeAdmisso = new Label(composite, SWT.NONE);
+		lblDataDeAdmisso.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDataDeAdmisso.setText("Data de Admissão");
+		
+		DateTextField dateTextField_1 = new DateTextField(composite);
+		text_5 = dateTextField_1.getControl();
+		GridData gd_text_5 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text_5.widthHint = 79;
+		text_5.setLayoutData(gd_text_5);
 	}
 
 	@Override

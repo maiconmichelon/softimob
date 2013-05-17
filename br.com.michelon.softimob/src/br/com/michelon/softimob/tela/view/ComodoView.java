@@ -20,7 +20,7 @@ public class ComodoView extends GenericView<Comodo>{
 	public ComodoView(){
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Nome", "nome");
+		atributos.put("Nome", "|10|nome");
 	}
 	
 	@Override

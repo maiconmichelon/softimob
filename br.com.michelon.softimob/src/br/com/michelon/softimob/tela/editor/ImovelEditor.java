@@ -1,46 +1,36 @@
 package br.com.michelon.softimob.tela.editor;
 
-import java.math.BigDecimal;
-
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.PojoProperties;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
 import br.com.michelon.softimob.modelo.Chave;
-import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Feedback;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.Proposta;
 import br.com.michelon.softimob.modelo.Vistoria;
+import br.com.michelon.softimob.tela.widget.CEPTextField;
+import br.com.michelon.softimob.tela.widget.DateTextField;
+import br.com.michelon.softimob.tela.widget.DateTimeTextField;
+import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
-import br.com.michelon.softimob.tela.widget.DateTextField;
-import org.eclipse.nebula.widgets.formattedtext.FormattedText;
-import br.com.michelon.softimob.tela.widget.MoneyTextField;
-import br.com.michelon.softimob.tela.widget.CEPTextField;
-import br.com.michelon.softimob.tela.widget.DateTimeTextField;
-import org.eclipse.wb.swt.ResourceManager;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 
 public class ImovelEditor extends SoftimobEditor{
 	
@@ -106,6 +96,14 @@ public class ImovelEditor extends SoftimobEditor{
 	private Text text_4;
 	private Text text_26;
 	private Text txtDescrio;
+	private Text text_30;
+	private Text text_37;
+	private Text text_38;
+	private Text text_40;
+	private Text text_39;
+
+	private TableViewerBuilder tvbReserva;
+	private Text text_41;
 	
 	public ImovelEditor() {
 	}
@@ -875,11 +873,104 @@ public class ImovelEditor extends SoftimobEditor{
 			tfChamado.setSelection(0);
 		}
 		
+		CTabItem tbtmReservas_1 = new CTabItem(tfImovel, SWT.NONE);
+		tbtmReservas_1.setText("Reservas");
+		
+		Composite composite_17 = new Composite(tfImovel, SWT.NONE);
+		tbtmReservas_1.setControl(composite_17);
+		composite_17.setLayout(new GridLayout(3, false));
+		
+		Composite composite_18 = new Composite(composite_17, SWT.NONE);
+		composite_18.setLayout(new GridLayout(1, false));
+		composite_18.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+		
+		criarTabelaReservas(composite_18);
+		
+		Label lblData_6 = new Label(composite_17, SWT.NONE);
+		lblData_6.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblData_6.setText("Data da Reserva");
+		
+		DateTextField dateTextField_5 = new DateTextField(composite_17);
+		text_30 = dateTextField_5.getControl();
+		GridData gd_text_30 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text_30.widthHint = 79;
+		text_30.setLayoutData(gd_text_30);
+		new Label(composite_17, SWT.NONE);
+		
+		Label lblDataDeVencimento = new Label(composite_17, SWT.NONE);
+		lblDataDeVencimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDataDeVencimento.setText("Data de Vencimento");
+		
+		DateTextField dateTextField_6 = new DateTextField(composite_17);
+		text_37 = dateTextField_6.getControl();
+		GridData gd_text_37 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text_37.widthHint = 79;
+		text_37.setLayoutData(gd_text_37);
+		new Label(composite_17, SWT.NONE);
+		
+		Label lblCliente_2 = new Label(composite_17, SWT.NONE);
+		lblCliente_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblCliente_2.setText("Cliente");
+		
+		text_38 = new Text(composite_17, SWT.BORDER);
+		text_38.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_20 = new Button(composite_17, SWT.NONE);
+		button_20.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		button_20.setText("...");
+		
+		Label lblCorretor = new Label(composite_17, SWT.NONE);
+		lblCorretor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblCorretor.setText("Corretor");
+		
+		text_40 = new Text(composite_17, SWT.BORDER);
+		text_40.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_21 = new Button(composite_17, SWT.NONE);
+		button_21.setText("...");
+		
+		Label lblValor_2 = new Label(composite_17, SWT.NONE);
+		lblValor_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblValor_2.setText("Valor");
+		
+		MoneyTextField moneyTextField_2 = new MoneyTextField(composite_17);
+		text_39 = moneyTextField_2.getControl();
+		GridData gd_text_39 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text_39.widthHint = 79;
+		text_39.setLayoutData(gd_text_39);
+		new Label(composite_17, SWT.NONE);
+		
+		Label lblDescrio_4 = new Label(composite_17, SWT.NONE);
+		lblDescrio_4.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDescrio_4.setText("Descrição");
+		
+		text_41 = new Text(composite_17, SWT.BORDER);
+		GridData gd_text_41 = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		gd_text_41.heightHint = 51;
+		text_41.setLayoutData(gd_text_41);
+		new Label(composite_17, SWT.NONE);
+		new Label(composite_17, SWT.NONE);
+		
+		Button button_22 = new Button(composite_17, SWT.NONE);
+		button_22.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		button_22.setText("Adicionar");
+		button_22.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		
 		value.setValue(new Imovel());
 		
 //		initDataBindings();
 	}
 	
+	private void criarTabelaReservas(Composite composite) {
+		tvbReserva = new TableViewerBuilder(composite);
+		
+		tvbReserva.createColumn("Data da Reserva").bindToProperty("dataReserva").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat()));
+		tvbReserva.createColumn("Data de Vencimento").bindToProperty("dataVencimento").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat()));
+		tvbReserva.createColumn("Cliente").bindToProperty("cliente.nome").build();
+		tvbReserva.createColumn("Funcionário").bindToProperty("funcionario.nome").build();
+		tvbReserva.createColumn("Valor").bindToProperty("valor").build();
+	}
+
 	private void criarTabelaChave(Composite composite){
 		tvbChave = new TableViewerBuilder(composite);
 		

@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInput;
@@ -289,6 +290,10 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 	public void setFocus() {
 	}
 
+	@Override
+	protected void addTextFilter(Form frmNewForm) {
+	}
+	
 	@Override
 	protected void excluir(List<ContaPagarReceber> objetos) {
 	}

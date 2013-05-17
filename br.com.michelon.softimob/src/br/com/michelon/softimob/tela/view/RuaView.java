@@ -20,10 +20,10 @@ public class RuaView extends GenericView<Rua>{
 	public RuaView(){
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Rua", "nome");
-		atributos.put("Bairro", "bairro.nome");
-		atributos.put("Cidade", "bairro.cidade.nome");
-		atributos.put("UF", "bairro.cidade.estado.nome");
+		atributos.put("Rua", "|17|nome");
+		atributos.put("Bairro", "|17|bairro.nome");
+		atributos.put("Cidade", "|17|bairro.cidade.nome");
+		atributos.put("UF", "|50|bairro.cidade.estado.nome");
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class RuaView extends GenericView<Rua>{
 
 	@Override
 	protected Image getImage() {
-		return Images.SEARCH_32.getImage();
+		return Images.ENDERECO.getImage();
 	}
 
 	@Override

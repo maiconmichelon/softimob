@@ -13,6 +13,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -51,14 +52,7 @@ public abstract class GenericView<T> extends ViewPart{
 	}
 	
 	private void createActions() {
-		{
-			actAdd = new Action("Cadastrar") {
-				@Override
-				public void run() {
-					cadastrar();
-				}			};
-			actAdd.setImageDescriptor(Images.ADD_16.getImageDescriptor());
-		}
+		createMoreActions();
 		{
 			actRefresh = new Action("Atualizar") {
 				@Override
@@ -68,35 +62,29 @@ public abstract class GenericView<T> extends ViewPart{
 			actRefresh.setImageDescriptor(Images.REFRESH_16.getImageDescriptor());
 		}
 	}
+	
+	protected void createMoreActions(){
+		actAdd = new Action("Cadastrar") {
+			@Override
+			public void run() {
+				cadastrar();
+			}
+		};
+		actAdd.setImageDescriptor(Images.ADD_16.getImageDescriptor());
+	}
 
 	@Override
 	public void createPartControl(Composite parent) {
-		parent.setLayout(new GridLayout(1, false));
+		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
-		Form frmNewForm = formToolkit.createForm(parent);		frmNewForm.getHead().setFont(SWTResourceManager.getFont("Sans", 16, SWT.BOLD));		frmNewForm.setImage(getImage());
-		frmNewForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		Form frmNewForm = formToolkit.createForm(parent);
+		frmNewForm.getHead().setFont(SWTResourceManager.getFont("Sans", 16, SWT.BOLD));
+		frmNewForm.setImage(getImage());
 		formToolkit.paintBordersFor(frmNewForm);
 		frmNewForm.setText(getName());
 		frmNewForm.getBody().setLayout(new GridLayout(2, false));
 		
-		Label lblFiltro = new Label(frmNewForm.getBody(), SWT.NONE);
-		lblFiltro.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		formToolkit.adapt(lblFiltro, true, true);
-		lblFiltro.setText("Busca");
-		
-		txtFiltro = new Text(frmNewForm.getBody(), SWT.BORDER);
-		txtFiltro.setMessage("Filtro...");
-		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text.widthHint = 423;
-		txtFiltro.setLayoutData(gd_text);
-		txtFiltro.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				getFilter().setSearchText(txtFiltro.getText());
-				viewer.refresh();
-			}
-		});
-		formToolkit.adapt(txtFiltro, true, true);
+		addTextFilter(frmNewForm);
 		
 		cpBody = formToolkit.createComposite(frmNewForm.getBody(), SWT.NONE);
 		cpBody.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
@@ -121,10 +109,33 @@ public abstract class GenericView<T> extends ViewPart{
 		
 		viewer.addFilter(getFilter());
 		
-		frmNewForm.getToolBarManager().add(actAdd);
+		if(actAdd != null)
+			frmNewForm.getToolBarManager().add(actAdd);
 		frmNewForm.getToolBarManager().add(actRefresh);
+		
 		frmNewForm.updateToolBar();
 		frmNewForm.update();
+	}
+
+	protected void addTextFilter(Form frmNewForm) {
+		Label lblFiltro = new Label(frmNewForm.getBody(), SWT.NONE);
+		lblFiltro.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		formToolkit.adapt(lblFiltro, true, true);
+		lblFiltro.setText("Busca");
+		
+		txtFiltro = new Text(frmNewForm.getBody(), SWT.BORDER);
+		txtFiltro.setMessage("Filtro...");
+		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text.widthHint = 524;
+		txtFiltro.setLayoutData(gd_text);
+		txtFiltro.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				getFilter().setSearchText(txtFiltro.getText());
+				viewer.refresh();
+			}
+		});
+		formToolkit.adapt(txtFiltro, true, true);
 	}
 
 	protected ColumnViewer criarTabela(Composite composite) {
@@ -144,7 +155,7 @@ public abstract class GenericView<T> extends ViewPart{
 	}
 	
 	//TODO fazer os menuItem padrao, alterar e desativar...
-	protected MenuItem[] setMenuItems(Menu menu){
+	protected void setMenuItems(Menu menu){
 		MenuItem miAlterar = new MenuItem(menu, SWT.NONE);
 		miAlterar.setText("Alterar");
 		miAlterar.addSelectionListener(new SelectionAdapter() {
@@ -168,8 +179,8 @@ public abstract class GenericView<T> extends ViewPart{
 				excluir(selecionados);
 			}
 		});
-		
-		return new MenuItem[]{miAlterar, miRemover};
+//		
+//		return new MenuItem[]{miAlterar, miRemover};
 	};
 	
 	protected GenericFilter getFilter(){
@@ -195,7 +206,8 @@ public abstract class GenericView<T> extends ViewPart{
 	
 	@Override
 	public void setFocus() {
-		txtFiltro.forceFocus();
+		if(txtFiltro != null)
+			txtFiltro.forceFocus();
 	}
 	
 }

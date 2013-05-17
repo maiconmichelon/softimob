@@ -14,6 +14,7 @@ import org.eclipse.wb.swt.ResourceManager;
 
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
+import br.com.michelon.softimob.tela.widget.DateTextField;
 
 public class MovimentacaoContabilEditor extends SoftimobEditor{
 	
@@ -25,6 +26,7 @@ public class MovimentacaoContabilEditor extends SoftimobEditor{
 	private Text text_3;
 	private Text text_4;
 	private TableViewerBuilder tvb;
+	private Text text_5;
 	public MovimentacaoContabilEditor() {
 	}
 
@@ -61,6 +63,15 @@ public class MovimentacaoContabilEditor extends SoftimobEditor{
 		
 		text = new Text(parent, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		new Label(parent, SWT.NONE);
+		
+		Label lblDataDeLanamento = new Label(parent, SWT.NONE);
+		lblDataDeLanamento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDataDeLanamento.setText("Data de Lançamento");
+		
+		DateTextField dateTextField = new DateTextField(parent);
+		text_5 = dateTextField.getControl();
+		text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		
 		Label lblValor = new Label(parent, SWT.NONE);

@@ -20,9 +20,9 @@ public class BairroView extends GenericView<Bairro>{
 	public BairroView(){
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Bairro", "nome");
-		atributos.put("Cidade", "cidade.nome");
-		atributos.put("UF", "cidade.estado.nome");
+		atributos.put("Bairro", "|20|nome");
+		atributos.put("Cidade", "|20|cidade.nome");
+		atributos.put("UF", "|60|cidade.estado.nome");
 	}
 	
 	@Override
@@ -38,7 +38,7 @@ public class BairroView extends GenericView<Bairro>{
 
 	@Override
 	protected Image getImage() {
-		return Images.SEARCH_32.getImage();
+		return Images.ENDERECO.getImage();
 	}
 
 	@Override

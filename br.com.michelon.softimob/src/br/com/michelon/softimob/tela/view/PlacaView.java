@@ -20,7 +20,8 @@ public class PlacaView extends GenericView<PlacaView>{
 		atributos = Maps.newLinkedHashMap();
 	
 		atributos.put("Número", "numero");
-		atributos.put("Localização", "imovel");
+		atributos.put("Corretor", "|20|funcionario.nome");
+		atributos.put("Localização", "|60|imovel");
 	}
 	
 	@Override

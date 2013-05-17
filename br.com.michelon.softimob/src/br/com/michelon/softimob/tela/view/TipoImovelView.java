@@ -20,7 +20,7 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 	public TipoImovelView(){
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Nome", "nome");
+		atributos.put("Nome", "|60|nome");
 	}
 	
 	@Override
@@ -36,7 +36,7 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 
 	@Override
 	protected Image getImage() {
-		return Images.SEARCH_32.getImage();
+		return Images.IMOVEL_32.getImage();
 	}
 
 	@Override

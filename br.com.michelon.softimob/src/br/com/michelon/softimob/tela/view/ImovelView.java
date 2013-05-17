@@ -20,6 +20,7 @@ import br.com.michelon.softimob.tela.editor.ImovelEditor;
 import br.com.michelon.softimob.tela.widget.imovelXViewer.ImovelXViewer;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.layout.FillLayout;
 
 public class ImovelView extends GenericView<ImovelView>{
 
@@ -72,13 +73,11 @@ public class ImovelView extends GenericView<ImovelView>{
 	@Override
 	protected ColumnViewer criarTabela(Composite composite) {
 		Composite cpTable = new Composite(composite, SWT.NONE);
-		cpTable.setLayout(new GridLayout(1, false));
+		cpTable.setLayout(new FillLayout(SWT.HORIZONTAL));
 		cpTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		XViewer imovelXViewer = new ImovelXViewer(cpTable, SWT.BORDER);
 		Tree tree = imovelXViewer.getTree();
-		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		new Label(composite, SWT.NONE);
 		
 		return imovelXViewer;
 	}

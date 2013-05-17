@@ -1,21 +1,20 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.DateTime;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-
-import de.ralfebert.rcputils.tables.TableViewerBuilder;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
-import br.com.michelon.softimob.tela.widget.DateTimeTextField;
+
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
-import org.eclipse.wb.swt.ResourceManager;
+import de.ralfebert.rcputils.properties.IValue;
+import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class AluguelEditor extends SoftimobEditor{
 	
@@ -28,6 +27,9 @@ public class AluguelEditor extends SoftimobEditor{
 	private Text text_2;
 	
 	private TableViewerBuilder tvbComissao;
+	private Text text_5;
+	private Text text_6;
+	private Text text_7;
 	
 	public AluguelEditor() {
 	}
@@ -50,7 +52,7 @@ public class AluguelEditor extends SoftimobEditor{
 		
 		Label lblValor = new Label(parent, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblValor.setText("Cliente");
+		lblValor.setText("Locatário");
 		
 		text_1 = new Text(parent, SWT.BORDER);
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -58,6 +60,26 @@ public class AluguelEditor extends SoftimobEditor{
 		Button button = new Button(parent, SWT.NONE);
 		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button.setText("...");
+		
+		Label lblFuncionrio = new Label(parent, SWT.NONE);
+		lblFuncionrio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblFuncionrio.setText("Corretor");
+		
+		text_7 = new Text(parent, SWT.BORDER);
+		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		
+		Button button_2 = new Button(parent, SWT.NONE);
+		button_2.setText("...");
+		
+		Label lblFiador = new Label(parent, SWT.NONE);
+		lblFiador.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblFiador.setText("Fiador");
+		
+		text_6 = new Text(parent, SWT.BORDER);
+		text_6.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		
+		Button button_1 = new Button(parent, SWT.NONE);
+		button_1.setText("...");
 		
 		Label lblValor_1 = new Label(parent, SWT.NONE);
 		lblValor_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -91,6 +113,18 @@ public class AluguelEditor extends SoftimobEditor{
 		lblNewLabel.setText("meses");
 		new Label(parent, SWT.NONE);
 		
+		Label lblReajuste = new Label(parent, SWT.NONE);
+		lblReajuste.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblReajuste.setText("Reajuste");
+		
+		text_5 = new Text(parent, SWT.BORDER);
+		text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label label = new Label(parent, SWT.NONE);
+		label.setText("%");
+		label.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
+		new Label(parent, SWT.NONE);
+		
 		Group grpComisso = new Group(parent, SWT.NONE);
 		grpComisso.setText("Comissão");
 		grpComisso.setLayout(new GridLayout(2, false));
@@ -117,7 +151,20 @@ public class AluguelEditor extends SoftimobEditor{
 		TableViewerBuilder tvbComissao = new TableViewerBuilder(composite);
 		
 		tvbComissao.createColumn("Nome").bindToProperty("funcionario.nome").build();
-		tvbComissao.createColumn("Valor").bindToProperty("valor").makeEditable().build();
+		tvbComissao.createColumn("Valor ( % )").bindToValue(new IValue() {
+//TODO AQUI TEM QUE RECALCULAR VALOR			
+			@Override
+			public void setValue(Object arg0, Object arg1) {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public Object getValue(Object arg0) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		}).makeEditable().build();
+		tvbComissao.createColumn("Valor (R$)").bindToProperty("valor").makeEditable().build();
 	}
 	
 	@Override

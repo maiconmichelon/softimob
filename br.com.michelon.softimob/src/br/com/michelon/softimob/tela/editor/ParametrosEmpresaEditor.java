@@ -21,8 +21,6 @@ public class ParametrosEmpresaEditor extends SoftimobEditor{
 	
 	private Text text;
 	private Text text_1;
-	private Text text_2;
-	private Text text_3;
 	private Text text_4;
 	private Text text_5;
 	private Text text_6;
@@ -35,6 +33,7 @@ public class ParametrosEmpresaEditor extends SoftimobEditor{
 	private Text text_13;
 	private Text text_14;
 	private Text text_15;
+	private Text text_2;
 	public ParametrosEmpresaEditor() {
 	}
 
@@ -73,28 +72,6 @@ public class ParametrosEmpresaEditor extends SoftimobEditor{
 		GridLayout gl_composite = new GridLayout(3, false);
 		gl_composite.verticalSpacing = 10;
 		composite.setLayout(gl_composite);
-		
-		Label lblDataDeRecebimento = new Label(composite, SWT.NONE);
-		lblDataDeRecebimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblDataDeRecebimento.setText("Data de Recebimento");
-		
-		DateTextField dateTextField = new DateTextField(composite);
-		text_2 = dateTextField.getControl();
-		GridData gd_text_2 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_2.widthHint = 79;
-		text_2.setLayoutData(gd_text_2);
-		new Label(composite, SWT.NONE);
-		
-		Label lblDataDeRepasse = new Label(composite, SWT.NONE);
-		lblDataDeRepasse.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblDataDeRepasse.setText("Data de Repasse");
-		
-		DateTextField dateTextField_1 = new DateTextField(composite);
-		text_3 = dateTextField_1.getControl();
-		GridData gd_text_3 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_3.widthHint = 79;
-		text_3.setLayoutData(gd_text_3);
-		new Label(composite, SWT.NONE);
 		
 		Label lblModeloDeContrato = new Label(composite, SWT.NONE);
 		lblModeloDeContrato.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -146,6 +123,23 @@ public class ParametrosEmpresaEditor extends SoftimobEditor{
 		
 		Button button_1 = new Button(composite_1, SWT.NONE);
 		button_1.setText("...");
+		
+		CTabItem tbtmReformas = new CTabItem(tabFolder, SWT.NONE);
+		tbtmReformas.setText("Reformas");
+		
+		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
+		tbtmReformas.setControl(composite_3);
+		composite_3.setLayout(new GridLayout(2, false));
+		
+		Label lblPrazoPFinalizao = new Label(composite_3, SWT.NONE);
+		lblPrazoPFinalizao.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblPrazoPFinalizao.setText("Prazo p/ Finalização");
+		
+		DateTextField dateTextField = new DateTextField(composite_3);
+		text_2 = dateTextField.getControl();
+		GridData gd_text_2 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text_2.widthHint = 79;
+		text_2.setLayoutData(gd_text_2);
 		
 		CTabItem tbtmContas = new CTabItem(tabFolder, SWT.NONE);
 		tbtmContas.setText("Contas");
@@ -253,8 +247,8 @@ public class ParametrosEmpresaEditor extends SoftimobEditor{
 		
 		Button button_9 = new Button(grpReforma, SWT.NONE);
 		button_9.setText("...");
-		// TODO Auto-generated method stub
-		
+
+		tabFolder.setSelection(0);
 	}
 
 	@Override

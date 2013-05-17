@@ -20,13 +20,12 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 	public ModeloContratoView(){
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Descrição", "descricao");
+		atributos.put("Descrição", "|10|descricao");
 	}
 	
 	@Override
 	protected void excluir(List<ModeloContrato> objetos) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

@@ -20,11 +20,13 @@ public class FuncionarioView extends GenericView<Funcionario>{
 	public FuncionarioView() {
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Nome", "nome");
-		atributos.put("Departamento", "departamento.nome");
-		atributos.put("Telefone/Ramal", "telefoneRamal");
-		atributos.put("Celular", "celular");
-		atributos.put("E-mail", "email");
+		atributos.put("Nome", "|20|nome");
+		atributos.put("Departamento", "|12|departamento.nome");
+		atributos.put("Data de Nascimento", "|12|dataNascimento");
+		atributos.put("Telefone/Ramal", "|12|telefoneRamal");
+		atributos.put("Celular", "|12|celular");
+		atributos.put("E-mail", "|12|email");
+		atributos.put("Data de Admissão", "|12|dataAdmissao");
 		
 	}
 	

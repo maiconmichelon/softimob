@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Funcionario {
+public class Funcionario implements Comissionado{
 
 	public Funcionario() {
 	}

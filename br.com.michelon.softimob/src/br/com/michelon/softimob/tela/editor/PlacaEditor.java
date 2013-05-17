@@ -14,6 +14,7 @@ public class PlacaEditor extends SoftimobEditor{
 	
 	private Text text;
 	private Text text_1;
+	private Text text_2;
 	public PlacaEditor() {
 	}
 
@@ -46,6 +47,17 @@ public class PlacaEditor extends SoftimobEditor{
 		
 		Button btnSelecionar = new Button(composite, SWT.NONE);
 		btnSelecionar.setText("...");
+		
+		Label lblNewLabel = new Label(composite, SWT.NONE);
+		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblNewLabel.setText("Corretor");
+		
+		text_2 = new Text(composite, SWT.BORDER);
+		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button btnNewButton = new Button(composite, SWT.NONE);
+		btnNewButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnNewButton.setText("...");
 	}
 
 	@Override

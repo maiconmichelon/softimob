@@ -21,7 +21,7 @@ public class EstadoView extends GenericView<Estado>{
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("UF", "uf");
-		atributos.put("Nome", "nome");
+		atributos.put("Nome", "|20|nome");
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class EstadoView extends GenericView<Estado>{
 
 	@Override
 	protected Image getImage() {
-		return Images.SEARCH_32.getImage();
+		return Images.ENDERECO.getImage();
 	}
 
 	@Override

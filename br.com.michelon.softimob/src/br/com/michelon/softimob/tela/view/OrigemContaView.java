@@ -19,7 +19,7 @@ public class OrigemContaView extends GenericView<OrigemContaView>{
 	public OrigemContaView(){
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Nome", "nome");
+		atributos.put("Nome", "|10|nome");
 	}
 	
 	@Override

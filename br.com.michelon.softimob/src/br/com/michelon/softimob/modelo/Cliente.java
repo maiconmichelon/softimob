@@ -12,7 +12,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Cliente {
+public class Cliente implements Comissionado{
 
 	public Cliente() {
 	}

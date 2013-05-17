@@ -19,6 +19,16 @@ public class AluguelView extends GenericView<Aluguel>{
 	
 	public AluguelView() {
 		atributos = Maps.newLinkedHashMap();
+		
+		atributos.put("Imóvel", "|7|imovel.numero");
+		atributos.put("Locatário", "|20|locatario.nome");
+		atributos.put("Corretor", "|20|corretor.nome");
+		atributos.put("Fiador", "|20|fiador.nome");
+		atributos.put("Valor", "|10|valor");
+		atributos.put("Data", "|10|data");
+		atributos.put("Duração", "|10|duracao");
+		atributos.put("Reajuste", "|10|reajuste");
+		
 	}
 	
 	@Override

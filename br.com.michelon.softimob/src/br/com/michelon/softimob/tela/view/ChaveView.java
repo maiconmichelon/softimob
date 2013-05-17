@@ -22,8 +22,8 @@ public class ChaveView extends GenericView<View>{
 	public ChaveView() {
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Número", "numero");
-		atributos.put("Imóvel", "imóvel");
+		atributos.put("Número", "|10|numero");
+		atributos.put("Imóvel", "|90|imóvel");
 	}
 	
 	@Override
@@ -59,8 +59,10 @@ public class ChaveView extends GenericView<View>{
 
 	@Override
 	protected List<View> getInput() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	protected void createMoreActions() {}
+	
 }

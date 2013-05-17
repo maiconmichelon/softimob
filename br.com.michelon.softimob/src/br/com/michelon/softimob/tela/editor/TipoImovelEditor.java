@@ -28,7 +28,7 @@ public class TipoImovelEditor extends SoftimobEditor{
 		lblTipoImvel.setText("Nome");
 		
 		text = new Text(composite, SWT.BORDER);
-		GridData gd_text = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text.widthHint = 261;
 		text.setLayoutData(gd_text);
 	}

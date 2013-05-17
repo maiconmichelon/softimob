@@ -20,7 +20,7 @@ public class DepartamentoView extends GenericView<Departamento>{
 	public DepartamentoView() {
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Nome", "nome");
+		atributos.put("Nome", "|10|nome");
 	}
 	
 	@Override

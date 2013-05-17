@@ -22,13 +22,14 @@ public class ClienteView extends GenericView<Cliente>{
 	public ClienteView(){
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Nome", "nome");
-		atributos.put("CPF", "cpf");
-		atributos.put("RG", "rg");
-		atributos.put("Telefone", "telefone");
-		atributos.put("Celular", "celular");
-		atributos.put("E-mail", "email");
-		atributos.put("Endereço", "endereco");
+		atributos.put("Nome", "|23|nome");
+		atributos.put("CPF", "|8|cpf");
+		atributos.put("RG", "|8|rg");
+		atributos.put("Data de Nascimento", "|10|dataNascimento");
+		atributos.put("Telefone", "|8|telefone");
+		atributos.put("Celular", "|8|celular");
+		atributos.put("E-mail", "|15|email");
+		atributos.put("Endereço", "|20|endereco");
 	}
 	
 	@Override

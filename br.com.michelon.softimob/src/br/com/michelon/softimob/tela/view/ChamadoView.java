@@ -19,6 +19,12 @@ public class ChamadoView extends GenericView<ChamadoReforma>{
 	
 	public ChamadoView(){
 		atributos = Maps.newLinkedHashMap();
+		
+		atributos.put("Número", "|5|numero");
+		atributos.put("Data do chamado", "|8|dataChamado");
+		atributos.put("Cliente", "|25|cliente.nome");
+		atributos.put("Observações", "|40|observacoes");
+		atributos.put("Status", "|10|status");
 	}
 	
 	@Override
@@ -57,4 +63,7 @@ public class ChamadoView extends GenericView<ChamadoReforma>{
 		return null;
 	}
 
+	@Override
+	protected void createMoreActions() {}
+	
 }

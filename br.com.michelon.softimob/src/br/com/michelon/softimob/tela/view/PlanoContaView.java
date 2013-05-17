@@ -20,9 +20,9 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 	public PlanoContaView(){
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Código", "código");
-		atributos.put("Nome", "nome");
-		atributos.put("Tipo", "tipo");
+		atributos.put("Código", "|20|codigo");
+		atributos.put("Nome", "|40|nome");
+		atributos.put("Tipo", "|10|tipo");
 	}
 	
 	@Override
