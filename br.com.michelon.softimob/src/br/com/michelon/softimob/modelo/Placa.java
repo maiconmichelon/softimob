@@ -1,5 +1,7 @@
 package br.com.michelon.softimob.modelo;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,17 +10,22 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Placa {
+public class Placa implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column
+	@Column(unique = true, nullable = false)
 	private String numero;
 	
 	@OneToOne
-	private Imovel imovel;
+	private Funcionario funcionario;
 
+	@OneToOne
+	private Imovel imovel;
+	
 	public Long getId() {
 		return id;
 	}
@@ -41,6 +48,14 @@ public class Placa {
 
 	public void setImovel(Imovel imovel) {
 		this.imovel = imovel;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 	
 }

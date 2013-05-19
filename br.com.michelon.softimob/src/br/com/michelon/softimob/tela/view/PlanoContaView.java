@@ -18,6 +18,8 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 	private Map<String, String> atributos;
 	
 	public PlanoContaView(){
+		super(false);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Código", "|20|codigo");
@@ -32,7 +34,7 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Plano de contas";
 	}
 

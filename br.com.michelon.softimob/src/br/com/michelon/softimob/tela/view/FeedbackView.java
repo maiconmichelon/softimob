@@ -3,22 +3,24 @@ package br.com.michelon.softimob.tela.view;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.wb.swt.Images;
-
-import com.google.common.collect.Maps;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
 import br.com.michelon.softimob.modelo.Feedback;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 
+import com.google.common.collect.Maps;
+
 public class FeedbackView extends GenericView<Feedback>{
 
 	private Map<String, String> atributos;
 	
 	public FeedbackView() {
+		super(false);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Data", "|10|data");
@@ -32,7 +34,7 @@ public class FeedbackView extends GenericView<Feedback>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Feedbacks";
 	}
 
@@ -57,12 +59,18 @@ public class FeedbackView extends GenericView<Feedback>{
 	}
 
 	@Override
+	protected Object getElementToEdit(Feedback object) {
+		return object.getImovel();
+	}
+	
+	@Override
 	protected List<Feedback> getInput() {
 		return null;
 	}
 
 	@Override
-	protected void createMoreActions() {
+	protected List<Action> createMoreActions() {
+		return null;
 	}
 	
 }

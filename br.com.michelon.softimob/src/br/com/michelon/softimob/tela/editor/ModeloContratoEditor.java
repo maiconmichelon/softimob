@@ -1,20 +1,26 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.DateTime;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+
+import br.com.michelon.softimob.modelo.ModeloContrato;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.core.databinding.beans.PojoProperties;
 
 public class ModeloContratoEditor extends SoftimobEditor {
+	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ModeloContratoEditor";
+	
+	private WritableValue value = WritableValue.withValueType(ModeloContrato.class);
 	
 	private Text text;
 	private Text text_1;
@@ -50,7 +56,17 @@ public class ModeloContratoEditor extends SoftimobEditor {
 		
 		Button btnSelecionar = new Button(parent, SWT.NONE);
 		btnSelecionar.setText("...");
+		m_bindingContext = initDataBindings();
 		
 	}
 
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue valueNomeObserveDetailValue = PojoProperties.value(ModeloContrato.class, "nome", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTextObserveWidget, valueNomeObserveDetailValue, null, null);
+		//
+		return bindingContext;
+	}
 }

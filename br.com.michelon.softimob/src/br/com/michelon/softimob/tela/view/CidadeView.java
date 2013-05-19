@@ -18,6 +18,8 @@ public class CidadeView extends GenericView<Cidade>{
 	private Map<String, String> atributos;
 	
 	public CidadeView(){
+		super(true);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Nome", "|20|nome");
@@ -31,7 +33,7 @@ public class CidadeView extends GenericView<Cidade>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Cidades";
 	}
 

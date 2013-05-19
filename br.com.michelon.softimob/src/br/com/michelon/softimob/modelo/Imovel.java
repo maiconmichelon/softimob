@@ -1,7 +1,7 @@
 package br.com.michelon.softimob.modelo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,54 +10,103 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-@Entity
-public class Imovel {
+import com.google.common.collect.Lists;
 
-	public static final int VENDIDO = 2;
-	public static final int ALUGADO = 3;
+@Entity
+public class Imovel implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(unique = true, nullable = false)
+	private String codigo;
+
+	@Column
+	private Boolean vender;
+	
+	@Column
+	private Boolean alugar;
+	
+	@Column
+	private Boolean ativo;
 
 	@Column(precision = 14, scale = 2)
 	private BigDecimal metragem;
 	
-	@Column
-	private String codigo;
-	
-	@ManyToMany
-	private List<Comodo> comodos = new ArrayList<Comodo>();
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Funcionario angariador;
-
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Chave> chaves;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	private TipoImovel tipo;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Cliente proprietario;
-	
-	@OneToMany
-	private List<Feedback> feedbacks = new ArrayList<Feedback>();
-	
+	@Column(precision = 14, scale = 2)
 	private BigDecimal valor;
 	
-	private Boolean ocupado;
+	@ManyToOne()
+	private Funcionario angariador;
+
+	@ManyToOne()
+	private Cliente proprietario;
 	
-	private Boolean vender;
+	@ManyToOne()
+	private TipoImovel tipo;
+
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private Endereco endereco;
 	
-	private Boolean alugar;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Comodo> comodos = Lists.newArrayList();
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Chave> chaves = Lists.newArrayList();
 	
-	private transient Endereco endereco;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Feedback> feedbacks = Lists.newArrayList();
 	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Proposta> propostas = Lists.newArrayList();
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Vistoria> vistoria = Lists.newArrayList();
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ChamadoReforma> chamados = Lists.newArrayList();
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Reserva> reservas = Lists.newArrayList();
+ 	
+	public List<Proposta> getPropostas() {
+		return propostas;
+	}
+
+	public void setPropostas(List<Proposta> propostas) {
+		this.propostas = propostas;
+	}
+
+	public List<Vistoria> getVistoria() {
+		return vistoria;
+	}
+
+	public void setVistoria(List<Vistoria> vistoria) {
+		this.vistoria = vistoria;
+	}
+
+	public List<ChamadoReforma> getChamados() {
+		return chamados;
+	}
+
+	public void setChamados(List<ChamadoReforma> chamados) {
+		this.chamados = chamados;
+	}
+
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
+	}
+
 	public Cliente getProprietario() {
 		return proprietario;
 	}
@@ -139,31 +188,6 @@ public class Imovel {
 		this.feedbacks = feedbacks;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Imovel other = (Imovel) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
 	public BigDecimal getValor() {
 		return valor;
 	}
@@ -188,12 +212,42 @@ public class Imovel {
 		this.alugar = alugar;
 	}
 
-	public Boolean getOcupado() {
-		return ocupado;
+	public Boolean getAtivo() {
+		return ativo;
 	}
 
-	public void setOcupado(Boolean ocupado) {
-		this.ocupado = ocupado;
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+	
+	@Override
+	public String toString() {
+		return this.codigo + " - " + this.endereco.toString() ;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Imovel other = (Imovel) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -7,9 +8,18 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.modelo.TipoImovel;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.core.databinding.beans.PojoProperties;
+
 public class TipoImovelEditor extends SoftimobEditor{
+	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.TipoImovelEditor"; //$NON-NLS-1$
+	
+	private WritableValue value = WritableValue.withValueType(TipoImovel.class);
 	
 	private Text text;
 	public TipoImovelEditor() {
@@ -31,6 +41,7 @@ public class TipoImovelEditor extends SoftimobEditor{
 		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text.widthHint = 261;
 		text.setLayoutData(gd_text);
+		m_bindingContext = initDataBindings();
 	}
 
 	@Override
@@ -39,4 +50,13 @@ public class TipoImovelEditor extends SoftimobEditor{
 		
 	}
 	
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue valueDescricaoObserveDetailValue = PojoProperties.value(TipoImovel.class, "descricao", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTextObserveWidget, valueDescricaoObserveDetailValue, null, null);
+		//
+		return bindingContext;
+	}
 }

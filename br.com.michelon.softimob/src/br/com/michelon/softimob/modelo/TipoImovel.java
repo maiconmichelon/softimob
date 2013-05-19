@@ -1,28 +1,18 @@
 package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 @Entity
 public class TipoImovel implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-
-	public TipoImovel() {
-	}
-	
-	public TipoImovel(String descricao) {
-		this.descricao = descricao;
-	}
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -31,9 +21,16 @@ public class TipoImovel implements Serializable{
 	@Column(nullable = false, unique = true)
 	private String descricao;
 
-	@OneToMany
-	private List<TipoImovelTipoComodo> tipoComodos = new ArrayList<TipoImovelTipoComodo>();
+	@Column
+	private Boolean ativo;
 
+	public TipoImovel() {
+	}
+	
+	public TipoImovel(String descricao) {
+		this.descricao = descricao;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -50,14 +47,6 @@ public class TipoImovel implements Serializable{
 		this.descricao = descricao;
 	}
 
-	public List<TipoImovelTipoComodo> getTipoComodos() {
-		return tipoComodos;
-	}
-
-	public void setTipoComodos(List<TipoImovelTipoComodo> tipoComodos) {
-		this.tipoComodos = tipoComodos;
-	}
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -81,6 +70,14 @@ public class TipoImovel implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 }

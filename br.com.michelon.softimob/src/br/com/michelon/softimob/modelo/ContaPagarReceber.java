@@ -1,18 +1,20 @@
 package br.com.michelon.softimob.modelo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class ContaPagarReceber {
+public class ContaPagarReceber implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	public static final char PAGAR = 'P';
 	public static final char RECEBER = 'R';

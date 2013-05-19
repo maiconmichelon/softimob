@@ -1,25 +1,22 @@
 package br.com.michelon.softimob.modelo;
 
-import javax.persistence.CascadeType;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Chave {
+public class Chave implements Serializable{
 
-	public Chave(String numero) {
-		this.setNumero(numero);
-	}
+	private static final long serialVersionUID = 1L;
+
+	public static final int IMOBILIARIA = 1;
+	public static final int CLIENTE = 2;
 	
-	public Chave() {
-	}
-
 	@Id @GeneratedValue
 	private Long id;
 	
@@ -27,10 +24,15 @@ public class Chave {
 	@Column(nullable = false)
 	private String numero;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Imovel imovel;
 	
-	private transient Cliente cliente;
+	@Column(nullable=false)
+	private int localizacao;
+	
+	public Chave(Imovel imovel) {
+		this.imovel = imovel;
+	}
 	
 	public Imovel getImovel() {
 		return imovel;
@@ -54,6 +56,14 @@ public class Chave {
 
 	public void setNumero(String numero) {
 		this.numero = numero;
+	}
+
+	public int getLocalizacao() {
+		return localizacao;
+	}
+
+	public void setLocalizacao(int localizacao) {
+		this.localizacao = localizacao;
 	}
 	
 	@Override

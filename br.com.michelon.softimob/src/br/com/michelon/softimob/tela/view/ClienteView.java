@@ -20,6 +20,8 @@ public class ClienteView extends GenericView<Cliente>{
 	private ClienteDAO dao = new ClienteDAO();
 	
 	public ClienteView(){
+		super(true);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Nome", "|23|nome");
@@ -37,7 +39,7 @@ public class ClienteView extends GenericView<Cliente>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Clientes";
 	}
 

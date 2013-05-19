@@ -48,7 +48,9 @@ public enum Images{
 	MOVIMENTACAO_CONTABIL_32("icons/movimentacao/movimentacao32.png"), 
 	CONTRATO_32("icons/contrato/contrato32.png"), 
 	PROPOSTA_32("icons/proposta/proposta32.png"), 
-	ENDERECO("icons/endereco/endereco32.png")
+	ENDERECO("icons/endereco/endereco32.png"),
+	CHECKED("icons/check/checked16.png"),
+	UNCHECKED("icons/check/unchecked16.png")
 	;
 	
 	private String caminho;

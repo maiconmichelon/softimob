@@ -62,6 +62,8 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 	private Text text_1;
 	
 	public PgtoRecContaView() {
+		super(false);
+		
 		this.atributos = Maps.newHashMap();
 	}
 
@@ -299,7 +301,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Contas a Pagar/Receber";
 	}
 

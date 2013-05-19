@@ -23,11 +23,11 @@ public class TipoComodo implements Serializable{
 	@Column(nullable = false, unique = true)
 	private String nome;
 
-	@OneToMany
-	private List<TipoImovelTipoComodo> tipoImovel;
+	@OneToMany(orphanRemoval = true)
+	private List<TipoImovelTipoComodo> tipoImovelTipoComodo;
 	
-	//Se quando cadastrar o imovel ele ja estar cadastrado
-	private Boolean preAdicionado;
+	@Column
+	private Boolean ativo = true;
 	
 	public Long getId() {
 		return id;
@@ -45,20 +45,20 @@ public class TipoComodo implements Serializable{
 		this.nome = nome;
 	}
 
-	public List<TipoImovelTipoComodo> getTipoImovel() {
-		return tipoImovel;
+	public List<TipoImovelTipoComodo> getTipoImovelTipoComodo() {
+		return tipoImovelTipoComodo;
 	}
 
-	public void setTipoImovel(List<TipoImovelTipoComodo> tipoImovel) {
-		this.tipoImovel = tipoImovel;
+	public void setTipoImovelTipoComodo(List<TipoImovelTipoComodo> tipoImovelTipoComodo) {
+		this.tipoImovelTipoComodo = tipoImovelTipoComodo;
 	}
 	
-	public Boolean getPreAdicionado() {
-		return preAdicionado;
+	public Boolean getAtivo() {
+		return ativo;
 	}
 
-	public void setPreAdicionado(Boolean preAdicionado) {
-		this.preAdicionado = preAdicionado;
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 	@Override

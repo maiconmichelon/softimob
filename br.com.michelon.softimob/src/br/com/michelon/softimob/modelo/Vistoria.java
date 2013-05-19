@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -7,13 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Vistoria {
+public class Vistoria implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -27,7 +31,8 @@ public class Vistoria {
 	@ManyToOne(optional=false)
 	private Funcionario funcionario;
 	
-	private Byte arquivo;
+	@Lob
+	private Byte[] arquivo;
 	
 	@NotNull(message = "Selecione o último inquilino do imóvel.")
 	@ManyToOne(optional=false)
@@ -40,6 +45,10 @@ public class Vistoria {
 	@Column
 	private String observacoes;
 
+	public Vistoria(Imovel imovel) {
+		this.imovel = imovel;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -64,14 +73,6 @@ public class Vistoria {
 		this.funcionario = funcionario;
 	}
 
-	public Byte getArquivo() {
-		return arquivo;
-	}
-
-	public void setArquivo(Byte arquivo) {
-		this.arquivo = arquivo;
-	}
-
 	public Cliente getInquilino() {
 		return inquilino;
 	}
@@ -94,6 +95,14 @@ public class Vistoria {
 
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
+	}
+
+	public Byte[] getArquivo() {
+		return arquivo;
+	}
+
+	public void setArquivo(Byte[] arquivo) {
+		this.arquivo = arquivo;
 	}
 	
 }

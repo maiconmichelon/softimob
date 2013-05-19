@@ -1,11 +1,14 @@
 package br.com.michelon.softimob.tela.view;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -36,6 +39,10 @@ import br.com.michelon.softimob.aplicacao.filter.PropertyFilter;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
 
+import com.google.common.collect.Lists;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Button;
+
 public abstract class GenericView<T> extends ViewPart{
 	
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
@@ -46,13 +53,23 @@ public abstract class GenericView<T> extends ViewPart{
 
 	private ColumnViewer viewer;
 	private Text txtFiltro;
+
+	private boolean addGroupAtivadoDesativado;
 	
-	public GenericView() {
-		createActions();
+	public GenericView(boolean addGroupAtivadoDesativado) {
+		this.addGroupAtivadoDesativado = addGroupAtivadoDesativado;
 	}
 	
-	private void createActions() {
-		createMoreActions();
+	/**
+	 * @return List<Action> - Lista de todas as actions a ser adicionada no form.
+	 */
+	private List<Action> createActions() {
+		List<Action> actions = Lists.newArrayList();
+
+		List<Action> createMoreActions = createMoreActions();
+		if(createMoreActions != null)
+			actions.addAll(createMoreActions);
+		
 		{
 			actRefresh = new Action("Atualizar") {
 				@Override
@@ -60,10 +77,13 @@ public abstract class GenericView<T> extends ViewPart{
 					atualizar();
 				}			};
 			actRefresh.setImageDescriptor(Images.REFRESH_16.getImageDescriptor());
+			actions.add(actRefresh);
 		}
+		
+		return actions;
 	}
 	
-	protected void createMoreActions(){
+	protected List<Action> createMoreActions(){
 		actAdd = new Action("Cadastrar") {
 			@Override
 			public void run() {
@@ -71,6 +91,8 @@ public abstract class GenericView<T> extends ViewPart{
 			}
 		};
 		actAdd.setImageDescriptor(Images.ADD_16.getImageDescriptor());
+		
+		return Arrays.asList(actAdd);
 	}
 
 	@Override
@@ -81,17 +103,21 @@ public abstract class GenericView<T> extends ViewPart{
 		frmNewForm.getHead().setFont(SWTResourceManager.getFont("Sans", 16, SWT.BOLD));
 		frmNewForm.setImage(getImage());
 		formToolkit.paintBordersFor(frmNewForm);
-		frmNewForm.setText(getName());
+		frmNewForm.setText(getTitleView());
 		frmNewForm.getBody().setLayout(new GridLayout(2, false));
 		
 		addTextFilter(frmNewForm);
 		
 		cpBody = formToolkit.createComposite(frmNewForm.getBody(), SWT.NONE);
 		cpBody.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		cpBody.setLayout(new GridLayout(2, false));
+		GridLayout gridLayout = new GridLayout(2, false);
+		cpBody.setLayout(gridLayout);
 		formToolkit.paintBordersFor(cpBody);
 		
 		viewer = criarTabela(cpBody);
+		
+		if(addGroupAtivadoDesativado)
+			addGroupAtivadoDesativado(frmNewForm);
 		
 		Menu menu = new Menu(viewer.getControl());
 		
@@ -108,15 +134,41 @@ public abstract class GenericView<T> extends ViewPart{
 		}
 		
 		viewer.addFilter(getFilter());
-		
-		if(actAdd != null)
-			frmNewForm.getToolBarManager().add(actAdd);
-		frmNewForm.getToolBarManager().add(actRefresh);
+		viewer.addDoubleClickListener(getDoubleClickListener());
+
+		for(Action action : createActions()){
+			frmNewForm.getToolBarManager().add(action);
+		}
 		
 		frmNewForm.updateToolBar();
 		frmNewForm.update();
 	}
 
+	private void addGroupAtivadoDesativado(Form frmNewForm) {
+		Group group = new Group(frmNewForm.getBody(), SWT.NONE);
+		group.setLayout(new GridLayout(3, false));
+		group.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false, 2, 1));
+		formToolkit.adapt(group);
+		formToolkit.paintBordersFor(group);
+		
+		Button btnAtivados = new Button(group, SWT.RADIO);
+		btnAtivados.setSelection(true);
+		formToolkit.adapt(btnAtivados, true, true);
+		btnAtivados.setText("Ativados");
+		
+		Button btnDesativados = new Button(group, SWT.RADIO);
+		formToolkit.adapt(btnDesativados, true, true);
+		btnDesativados.setText("Desativados");
+		
+		Button btnTodos = new Button(group, SWT.RADIO);
+		formToolkit.adapt(btnTodos, true, true);
+		btnTodos.setText("Todos");
+	}
+
+	/**
+	 * Adiciona o label e o TextField de filtro, já com um listener para atualizar o filtro 
+	 * @param frmNewForm Form que terá o Text e o label
+	 */
 	protected void addTextFilter(Form frmNewForm) {
 		Label lblFiltro = new Label(frmNewForm.getBody(), SWT.NONE);
 		lblFiltro.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -146,6 +198,9 @@ public abstract class GenericView<T> extends ViewPart{
 		viewer.refresh();
 	}
 	
+	/**
+	 * Abre a tela de cadastro através do editorInput e EditorID implementado
+	 */
 	public void cadastrar(){
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getIEditorInput(), getEditorId());
@@ -153,8 +208,12 @@ public abstract class GenericView<T> extends ViewPart{
 			e.printStackTrace();
 		}
 	}
+
 	
-	//TODO fazer os menuItem padrao, alterar e desativar...
+	/**
+	 * Adiciona os MenuItems no menu da tabela, podendo ser dado um Override, adionando mais ou ainda não adicionando os itens.
+	 * @param menu que será adicionado na tabela
+	 */
 	protected void setMenuItems(Menu menu){
 		MenuItem miAlterar = new MenuItem(menu, SWT.NONE);
 		miAlterar.setText("Alterar");
@@ -173,41 +232,89 @@ public abstract class GenericView<T> extends ViewPart{
 		miRemover.setText("Remover");
 		miRemover.addSelectionListener(new SelectionAdapter() {
 			@Override
-			@SuppressWarnings("unchecked")
 			public void widgetSelected(SelectionEvent e) {
-				List<T> selecionados = (List<T>) SelectionHelper.getObjects(viewer);
-				excluir(selecionados);
+				excluir(getSelecteds());
 			}
 		});
-//		
-//		return new MenuItem[]{miAlterar, miRemover};
 	};
 	
+	/**
+	 * Adiciona um filter para a tabela
+	 * @return Filter
+	 */
 	protected GenericFilter getFilter(){
 		return new PropertyFilter(getAttributes().values().toArray());
 	}
 	
+	/**
+	 * @return Todos os objetos selecionados da tabela
+	 */
+	@SuppressWarnings("unchecked")
+	protected List<T> getSelecteds(){
+		return (List<T>) SelectionHelper.getObjects(viewer);
+	}
+	
+	/**
+	 * Método para a exclusão dos objetos
+	 * @param objetos selecionados na tabela
+	 */
 	protected abstract void excluir(List<T> objetos);
 	
-	protected abstract String getName();
+	/**
+	 * @return o título da View
+	 */
+	protected abstract String getTitleView();
 	
+	/**
+	 * @return a imagem que vai ao lado do título, imagem de 32 px.
+	 */
 	protected abstract Image getImage();
 
-	/*
+	/**
 	 * A key é o label enquanto o valor é o atributo.
 	 */
 	public abstract Map<String, String> getAttributes();
 	
+	/**
+	 * @return o EditorInput necessário para abrir a tela de cadastro / alteração.
+	 */
 	protected abstract GenericEditorInput<?> getIEditorInput();
 
+	/**
+	 * @return o EditorID necessário para abrir a tela de cadastro / alteração.
+	 */
 	protected abstract String getEditorId();
 	
+	/**
+	 * @return todos os elementos da tabela.
+	 */
 	protected abstract List<T> getInput();
+	
+	/**
+	 * Por default ele pega o elemento selecionado e passa para o editor input e abre a tela de edição
+	 * @return DoubleClickListener que será adicionado na tabela
+	 */
+	protected IDoubleClickListener getDoubleClickListener(){
+		return new IDoubleClickListener(){
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				List<T> objects = getSelecteds();
+				if(objects.size() != 1)
+					return ;
+				
+				GenericEditorInput<?> iEditorInput = getIEditorInput();
+				iEditorInput.setModelo(getElementToEdit(objects.get(0)));
+			}
+		};
+	};
+	
+	protected Object getElementToEdit(T object){
+		return object;
+	}
 	
 	@Override
 	public void setFocus() {
 		if(txtFiltro != null)
 			txtFiltro.forceFocus();
 	}
-	
 }

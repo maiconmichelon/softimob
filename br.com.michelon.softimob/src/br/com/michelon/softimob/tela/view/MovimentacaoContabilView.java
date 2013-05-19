@@ -17,6 +17,8 @@ public class MovimentacaoContabilView extends GenericView<MovimentacaoContabilVi
 	private Map<String, String> atributos;
 	
 	public MovimentacaoContabilView(){
+		super(false);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Código", "codigo");
@@ -30,7 +32,7 @@ public class MovimentacaoContabilView extends GenericView<MovimentacaoContabilVi
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Movimentações Contábeis";
 	}
 

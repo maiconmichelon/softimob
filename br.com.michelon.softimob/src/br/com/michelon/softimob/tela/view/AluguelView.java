@@ -6,18 +6,20 @@ import java.util.Map;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.tela.editor.AluguelEditor;
+
+import com.google.common.collect.Maps;
 
 public class AluguelView extends GenericView<Aluguel>{
 
 	private Map<String, String> atributos;
 	
 	public AluguelView() {
+		super(false);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Imóvel", "|7|imovel.numero");
@@ -36,7 +38,7 @@ public class AluguelView extends GenericView<Aluguel>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Aluguéis";
 	}
 

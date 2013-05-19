@@ -27,6 +27,8 @@ public class ImovelView extends GenericView<ImovelView>{
 	private Map<String, String> atributos;
 	
 	public ImovelView() {
+		super(true);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Código", "codigo");
@@ -40,7 +42,7 @@ public class ImovelView extends GenericView<ImovelView>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Imóveis";
 	}
 

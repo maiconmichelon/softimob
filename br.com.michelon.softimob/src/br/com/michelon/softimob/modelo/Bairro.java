@@ -1,14 +1,19 @@
 package br.com.michelon.softimob.modelo;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Bairro {
+public class Bairro implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -17,6 +22,12 @@ public class Bairro {
 	@Column(nullable = false)
 	private String nome;
 
+	@ManyToOne
+	private Cidade cidade;
+
+	@Column
+	private Boolean ativo;
+	
 	public Long getId() {
 		return id;
 	}
@@ -56,6 +67,22 @@ public class Bairro {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Cidade getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 }

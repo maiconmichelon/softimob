@@ -18,6 +18,8 @@ public class EstadoView extends GenericView<Estado>{
 	private Map<String, String> atributos;
 	
 	public EstadoView(){
+		super(true);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("UF", "uf");
@@ -31,7 +33,7 @@ public class EstadoView extends GenericView<Estado>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Estados";
 	}
 

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.swing.text.View;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
@@ -13,13 +14,16 @@ import com.google.common.collect.Maps;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 
-public class ChaveView extends GenericView<View>{
+public class ChaveView extends GenericView<Chave>{
 
 	private Map<String, String> atributos;
 	
 	public ChaveView() {
+		super(false);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Número", "|10|numero");
@@ -27,13 +31,13 @@ public class ChaveView extends GenericView<View>{
 	}
 	
 	@Override
-	protected void excluir(List<View> objetos) {
+	protected void excluir(List<Chave> objetos) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Chaves";
 	}
 
@@ -54,15 +58,22 @@ public class ChaveView extends GenericView<View>{
 
 	@Override
 	protected String getEditorId() {
-		return new ImovelEditor().ID;
+		return ImovelEditor.ID;
 	}
 
 	@Override
-	protected List<View> getInput() {
+	protected Object getElementToEdit(Chave object) {
+		return object.getImovel();
+	}
+	
+	@Override
+	protected List<Chave> getInput() {
 		return null;
 	}
 
 	@Override
-	protected void createMoreActions() {}
+	protected List<Action> createMoreActions() {
+		return null;
+	}
 	
 }

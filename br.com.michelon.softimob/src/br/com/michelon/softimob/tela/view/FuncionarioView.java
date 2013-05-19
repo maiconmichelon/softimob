@@ -18,6 +18,8 @@ public class FuncionarioView extends GenericView<Funcionario>{
 	private Map<String, String> atributos;
 	
 	public FuncionarioView() {
+		super(true);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Nome", "|20|nome");
@@ -35,7 +37,7 @@ public class FuncionarioView extends GenericView<Funcionario>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Funcionários";
 	}
 

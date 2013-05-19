@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -8,9 +9,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.modelo.OrigemConta;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.core.databinding.beans.PojoProperties;
+
 public class OrigemContaEditor extends SoftimobEditor {
+	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.OrigemContaEditor";
+	
+	private WritableValue value = WritableValue.withValueType(OrigemConta.class);
 	
 	private Text text;
 	private Text text_1;
@@ -46,6 +56,7 @@ public class OrigemContaEditor extends SoftimobEditor {
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button = new Button(parent, SWT.NONE);
+		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button.setText("...");
 		
 		Label lblContrapartida = new Label(parent, SWT.NONE);
@@ -56,8 +67,26 @@ public class OrigemContaEditor extends SoftimobEditor {
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_1 = new Button(parent, SWT.NONE);
+		button_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_1.setText("...");
+		m_bindingContext = initDataBindings();
 		
 	}
-
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue valueDescricaoObserveDetailValue = PojoProperties.value(OrigemConta.class, "descricao", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTextObserveWidget, valueDescricaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeSizeText_1ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_1);
+		IObservableValue valueContacodigoDescricaoObserveDetailValue = PojoProperties.value(OrigemConta.class, "conta.codigoDescricao", String.class).observeDetail(value);
+		bindingContext.bindValue(observeSizeText_1ObserveWidget, valueContacodigoDescricaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
+		IObservableValue valueContaContraPartidacodigoDescricaoObserveDetailValue = PojoProperties.value(OrigemConta.class, "contaContraPartida.codigoDescricao", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_2ObserveWidget, valueContaContraPartidacodigoDescricaoObserveDetailValue, null, null);
+		//
+		return bindingContext;
+	}
 }

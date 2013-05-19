@@ -17,6 +17,8 @@ public class OrigemContaView extends GenericView<OrigemContaView>{
 	private Map<String, String> atributos;
 	
 	public OrigemContaView(){
+		super(true);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Nome", "|10|nome");
@@ -29,7 +31,7 @@ public class OrigemContaView extends GenericView<OrigemContaView>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Origens das contas";
 	}
 

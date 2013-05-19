@@ -18,6 +18,8 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 	private Map<String, String> atributos;
 	
 	public ModeloContratoView(){
+		super(false);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Descrição", "|10|descricao");
@@ -29,7 +31,7 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Modelos de contrato";
 	}
 

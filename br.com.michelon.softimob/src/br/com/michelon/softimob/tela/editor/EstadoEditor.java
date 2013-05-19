@@ -6,13 +6,24 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.nebula.widgets.formattedtext.FormattedText;
 import org.eclipse.nebula.widgets.formattedtext.MaskFormatter;
 
+import br.com.michelon.softimob.modelo.Estado;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.core.databinding.beans.PojoProperties;
+
 public class EstadoEditor extends SoftimobEditor {
+	private DataBindingContext m_bindingContext;
 	public static final String ID = "br.com.michelon.softimob.tela.editor.EstadoEditor";
 	private Text text_1;
 	private Text text;
+	
+	private WritableValue value = WritableValue.withValueType(Estado.class);
+	
 	public EstadoEditor() {
 	}
 
@@ -39,6 +50,7 @@ public class EstadoEditor extends SoftimobEditor {
 		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_1.widthHint = 288;
 		text_1.setLayoutData(gd_text_1);
+		m_bindingContext = initDataBindings();
 		
 	}
 
@@ -46,5 +58,17 @@ public class EstadoEditor extends SoftimobEditor {
 	protected void salvar() {
 		
 	}
-
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue valueUfObserveDetailValue = PojoProperties.value(Estado.class, "uf", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTextObserveWidget, valueUfObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
+		IObservableValue valueNomeObserveDetailValue = PojoProperties.value(Estado.class, "nome", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_1ObserveWidget, valueNomeObserveDetailValue, null, null);
+		//
+		return bindingContext;
+	}
 }

@@ -18,6 +18,8 @@ public class RuaView extends GenericView<Rua>{
 	private Map<String, String> atributos;
 	
 	public RuaView(){
+		super(true);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Rua", "|17|nome");
@@ -33,7 +35,7 @@ public class RuaView extends GenericView<Rua>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Ruas";
 	}
 

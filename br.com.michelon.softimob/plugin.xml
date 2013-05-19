@@ -14,9 +14,10 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="Perspective"
             class="br.com.michelon.softimob.aplicacao.main.Perspective"
-            id="br.com.michelon.softimob.perspective">
+            fixed="true"
+            id="br.com.michelon.softimob.perspective"
+            name="Perspective">
       </perspective>
    </extension>
    <extension
@@ -189,6 +190,12 @@
             class="br.com.michelon.softimob.tela.view.PendenciaView"
             id="br.com.michelon.softimob.tela.view.PendenciaView"
             name="Pendências"
+            restorable="true">
+      </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.ReservaView"
+            id="br.com.michelon.softimob.tela.view.ReservaView"
+            name="Reserva"
             restorable="true">
       </view>
    </extension>
@@ -479,6 +486,15 @@
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
                      value="br.com.michelon.softimob.tela.view.VistoriaView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  label="Reservas"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.ReservaView">
                </parameter>
             </command>
          </menu>

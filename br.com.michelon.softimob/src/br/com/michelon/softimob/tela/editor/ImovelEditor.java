@@ -1,6 +1,10 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -20,6 +24,7 @@ import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.modelo.Feedback;
 import br.com.michelon.softimob.modelo.Imovel;
@@ -33,14 +38,16 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 
 public class ImovelEditor extends SoftimobEditor{
+	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ImovelEditor"; //$NON-NLS-1$
 	
 	private WritableValue value = WritableValue.withValueType(Imovel.class);
 	private WritableValue valueProposta = WritableValue.withValueType(Proposta.class);
-	private WritableValue valueHistorico = WritableValue.withValueType(Feedback.class);
+	private WritableValue valueFeedback = WritableValue.withValueType(Feedback.class);
 	private WritableValue valueVistoria = WritableValue.withValueType(Vistoria.class);
 	private WritableValue valueChave = WritableValue.withValueType(Chave.class);
+	private WritableValue valueComodo = WritableValue.withValueType(Chave.class);
 	
 	private Text txtProprietario;
 	private Text text_2;
@@ -155,10 +162,10 @@ public class ImovelEditor extends SoftimobEditor{
 		
 		txtProprietario = new Text(composite, SWT.BORDER);
 		txtProprietario.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		ListElementDialogHelper.addListElementDialogToText(txtProprietario, value , "proprietario");
 		
 		Button btnSelecionar_7 = new Button(composite, SWT.NONE);
 		btnSelecionar_7.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionar_7, value, "proprietario");
 		
 		Label lblAngariad = new Label(composite, SWT.NONE);
 		lblAngariad.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -169,6 +176,7 @@ public class ImovelEditor extends SoftimobEditor{
 		
 		Button btnNewButton = new Button(composite, SWT.NONE);
 		btnNewButton.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnNewButton, value, "angariador");
 		
 		Label lblMetragem = new Label(composite, SWT.NONE);
 		lblMetragem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -206,7 +214,7 @@ public class ImovelEditor extends SoftimobEditor{
 		btnVenda.setText("Venda");
 		
 		Button btnAluguel = new Button(composite_15, SWT.CHECK);
-		btnAluguel.setText("Aluguel");
+		btnAluguel.setText("Locação");
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
@@ -253,9 +261,10 @@ public class ImovelEditor extends SoftimobEditor{
 		text_26 = new Text(grpCmodo, SWT.BORDER);
 		text_26.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnSelecionar_9 = new Button(grpCmodo, SWT.NONE);
-		btnSelecionar_9.setText("...");
-		
+		Button btnSelecionarComodo = new Button(grpCmodo, SWT.NONE);
+		btnSelecionarComodo.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.COMODO, btnSelecionarComodo, valueComodo, "tipoComodo");
+
 		Label lblDescrio_3 = new Label(grpCmodo, SWT.NONE);
 		lblDescrio_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDescrio_3.setText("Descrição");
@@ -443,7 +452,7 @@ public class ImovelEditor extends SoftimobEditor{
 		lblData_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblData_1.setText("Data");
 		
-		DateTextField dateTextField = new DateTextField(grpNovoHistrico);
+		DateTimeTextField dateTextField = new DateTimeTextField(grpNovoHistrico);
 		text_32 = dateTextField.getControl();
 		GridData gd_text_32 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_32.widthHint = 73;
@@ -457,8 +466,9 @@ public class ImovelEditor extends SoftimobEditor{
 		text_12 = new Text(grpNovoHistrico, SWT.BORDER);
 		text_12.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnSelecionar_2 = new Button(grpNovoHistrico, SWT.NONE);
-		btnSelecionar_2.setText("...");
+		Button btnSelecionarFuncionarioFeedback = new Button(grpNovoHistrico, SWT.NONE);
+		btnSelecionarFuncionarioFeedback.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioFeedback, valueFeedback, "funcionario");
 		
 		Label lblClienteHistorico = new Label(grpNovoHistrico, SWT.NONE);
 		lblClienteHistorico.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -467,8 +477,9 @@ public class ImovelEditor extends SoftimobEditor{
 		text_14 = new Text(grpNovoHistrico, SWT.BORDER);
 		text_14.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button button_4 = new Button(grpNovoHistrico, SWT.NONE);
-		button_4.setText("...");
+		Button btnSelecionarClienteFeedback = new Button(grpNovoHistrico, SWT.NONE);
+		btnSelecionarClienteFeedback.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionarClienteFeedback, valueFeedback, "cliente");
 		
 		Label lblObservaes = new Label(grpNovoHistrico, SWT.NONE);
 		lblObservaes.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -532,8 +543,9 @@ public class ImovelEditor extends SoftimobEditor{
 		text_9 = new Text(grpProposta, SWT.BORDER);
 		text_9.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnSelecionar_1 = new Button(grpProposta, SWT.NONE);
-		btnSelecionar_1.setText("...");
+		Button btnSelecionarClienteProposta = new Button(grpProposta, SWT.NONE);
+		btnSelecionarClienteProposta.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionarClienteProposta, valueProposta, "cliente");
 		
 		Label lblFuncionrio = new Label(grpProposta, SWT.NONE);
 		lblFuncionrio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -542,8 +554,9 @@ public class ImovelEditor extends SoftimobEditor{
 		text_11 = new Text(grpProposta, SWT.BORDER);
 		text_11.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
-		Button button_2 = new Button(grpProposta, SWT.NONE);
-		button_2.setText("...");
+		Button btnSelecionarFuncionarioProposta = new Button(grpProposta, SWT.NONE);
+		btnSelecionarFuncionarioProposta.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarClienteProposta, valueProposta, "funcionario");
 		
 		Label lblValor_1 = new Label(grpProposta, SWT.NONE);
 		lblValor_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -618,8 +631,9 @@ public class ImovelEditor extends SoftimobEditor{
 		text_16 = new Text(grpVistoria, SWT.BORDER);
 		text_16.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnSelecionar = new Button(grpVistoria, SWT.NONE);
-		btnSelecionar.setText("...");
+		Button btnSelecionarFuncionarioVistoria = new Button(grpVistoria, SWT.NONE);
+		btnSelecionarFuncionarioVistoria.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioVistoria, valueVistoria, "funcionario");
 		
 		Label lblInquilino = new Label(grpVistoria, SWT.NONE);
 		lblInquilino.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -628,8 +642,9 @@ public class ImovelEditor extends SoftimobEditor{
 		text_17 = new Text(grpVistoria, SWT.BORDER);
 		text_17.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button button = new Button(grpVistoria, SWT.NONE);
-		button.setText("...");
+		Button btnSelecionarClienteVistoria = new Button(grpVistoria, SWT.NONE);
+		btnSelecionarClienteVistoria.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionarClienteVistoria, valueVistoria, "cliente");
 		
 		Label lblArquivo = new Label(grpVistoria, SWT.NONE);
 		lblArquivo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -693,62 +708,62 @@ public class ImovelEditor extends SoftimobEditor{
 		CTabItem tbtmAbertura = new CTabItem(tfChamado, SWT.NONE);
 		tbtmAbertura.setText("Abertura");
 		
-		Composite composite_11 = new Composite(tfChamado, SWT.NONE);
-		tbtmAbertura.setControl(composite_11);
-		composite_11.setLayout(new GridLayout(3, false));
+		Composite cpAberturaChamado = new Composite(tfChamado, SWT.NONE);
+		tbtmAbertura.setControl(cpAberturaChamado);
+		cpAberturaChamado.setLayout(new GridLayout(3, false));
 		
-		Label lblNmero_2 = new Label(composite_11, SWT.NONE);
+		Label lblNmero_2 = new Label(cpAberturaChamado, SWT.NONE);
 		lblNmero_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNmero_2.setText("Número");
 		
-		text = new Text(composite_11, SWT.BORDER);
+		text = new Text(cpAberturaChamado, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		new Label(composite_11, SWT.NONE);
+		new Label(cpAberturaChamado, SWT.NONE);
 		
-		Label lblData_3 = new Label(composite_11, SWT.NONE);
+		Label lblData_3 = new Label(cpAberturaChamado, SWT.NONE);
 		lblData_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblData_3.setText("Data");
 		
-		DateTextField dateTextField_3 = new DateTextField(composite_11);
+		DateTextField dateTextField_3 = new DateTextField(cpAberturaChamado);
 		text_35 = dateTextField_3.getControl();
 		GridData gd_text_35 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_35.widthHint = 70;
 		text_35.setLayoutData(gd_text_35);
-		new Label(composite_11, SWT.NONE);
+		new Label(cpAberturaChamado, SWT.NONE);
 		
-		Label lblCliente_1 = new Label(composite_11, SWT.NONE);
+		Label lblCliente_1 = new Label(cpAberturaChamado, SWT.NONE);
 		lblCliente_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCliente_1.setText("Cliente");
 		
-		text_22 = new Text(composite_11, SWT.BORDER);
+		text_22 = new Text(cpAberturaChamado, SWT.BORDER);
 		text_22.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
-		Button btnSelecionar_3 = new Button(composite_11, SWT.NONE);
+		Button btnSelecionar_3 = new Button(cpAberturaChamado, SWT.NONE);
 		btnSelecionar_3.setText("...");
 		
-		Label lblFuncionrio_2 = new Label(composite_11, SWT.NONE);
+		Label lblFuncionrio_2 = new Label(cpAberturaChamado, SWT.NONE);
 		lblFuncionrio_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFuncionrio_2.setText("Funcionário");
 		
-		text_23 = new Text(composite_11, SWT.BORDER);
+		text_23 = new Text(cpAberturaChamado, SWT.BORDER);
 		text_23.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnSelecionar_4 = new Button(composite_11, SWT.NONE);
+		Button btnSelecionar_4 = new Button(cpAberturaChamado, SWT.NONE);
 		btnSelecionar_4.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnSelecionar_4.setText("...");
 		
-		Label lblDescrio = new Label(composite_11, SWT.NONE);
+		Label lblDescrio = new Label(cpAberturaChamado, SWT.NONE);
 		lblDescrio.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblDescrio.setText("Descrição");
 		
-		text_24 = new Text(composite_11, SWT.BORDER);
+		text_24 = new Text(cpAberturaChamado, SWT.BORDER);
 		GridData gd_text_24 = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gd_text_24.heightHint = 70;
 		text_24.setLayoutData(gd_text_24);
-		new Label(composite_11, SWT.NONE);
-		new Label(composite_11, SWT.NONE);
+		new Label(cpAberturaChamado, SWT.NONE);
+		new Label(cpAberturaChamado, SWT.NONE);
 		
-		Button button_7 = new Button(composite_11, SWT.NONE);
+		Button button_7 = new Button(cpAberturaChamado, SWT.NONE);
 		button_7.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		button_7.setText("Adicionar");
 		button_7.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
@@ -957,6 +972,7 @@ public class ImovelEditor extends SoftimobEditor{
 		button_22.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
 		
 		value.setValue(new Imovel());
+		m_bindingContext = initDataBindings();
 		
 //		initDataBindings();
 	}
@@ -1024,7 +1040,7 @@ public class ImovelEditor extends SoftimobEditor{
 	private void criarTabelaProposta(Composite composite){
 		tvbProposta = new TableViewerBuilder(composite);
 			
-		tvbProposta.createColumn("Data de vistoria").bindToProperty("data").build();
+		tvbProposta.createColumn("Data da Proposta").bindToProperty("data").build();
 		tvbProposta.createColumn("Valor").bindToProperty("valor").build();
 		tvbProposta.createColumn("Cliente").bindToProperty("cliente.nome").build();
 		tvbProposta.createColumn("Funcioário").bindToProperty("funcionario.nome").build();
@@ -1035,5 +1051,14 @@ public class ImovelEditor extends SoftimobEditor{
 	protected void salvar() {
 		// TODO Auto-generated method stub
 		
+	}
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
+		IObservableValue valueAngariadornomeObserveDetailValue = PojoProperties.value(Imovel.class, "angariador.nome", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_2ObserveWidget, valueAngariadornomeObserveDetailValue, null, null);
+		//
+		return bindingContext;
 	}
 }

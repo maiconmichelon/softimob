@@ -34,13 +34,12 @@ public class ParametrosEmpresaEditor extends SoftimobEditor{
 	private Text text_14;
 	private Text text_15;
 	private Text text_2;
+	private Text text_3;
 	public ParametrosEmpresaEditor() {
 	}
 
 	@Override
 	public void afterCreatePartControl(Composite parent) {
-		GridLayout gridLayout = (GridLayout) parent.getLayout();
-		
 		Label lblRazoSocial = new Label(parent, SWT.NONE);
 		lblRazoSocial.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblRazoSocial.setText("Razão Social");
@@ -129,7 +128,7 @@ public class ParametrosEmpresaEditor extends SoftimobEditor{
 		
 		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
 		tbtmReformas.setControl(composite_3);
-		composite_3.setLayout(new GridLayout(2, false));
+		composite_3.setLayout(new GridLayout(3, false));
 		
 		Label lblPrazoPFinalizao = new Label(composite_3, SWT.NONE);
 		lblPrazoPFinalizao.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -140,6 +139,17 @@ public class ParametrosEmpresaEditor extends SoftimobEditor{
 		GridData gd_text_2 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_2.widthHint = 79;
 		text_2.setLayoutData(gd_text_2);
+		new Label(composite_3, SWT.NONE);
+		
+		Label lblResponsvel = new Label(composite_3, SWT.NONE);
+		lblResponsvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblResponsvel.setText("Funcionário Responsável");
+		
+		text_3 = new Text(composite_3, SWT.BORDER);
+		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_10 = new Button(composite_3, SWT.NONE);
+		button_10.setText("...");
 		
 		CTabItem tbtmContas = new CTabItem(tabFolder, SWT.NONE);
 		tbtmContas.setText("Contas");

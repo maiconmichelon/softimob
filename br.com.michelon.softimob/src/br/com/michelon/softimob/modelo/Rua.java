@@ -1,5 +1,7 @@
 package br.com.michelon.softimob.modelo;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Rua {
+public class Rua implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -18,6 +22,9 @@ public class Rua {
 	
 	@ManyToOne
 	private Bairro bairro;
+	
+	@Column
+	private Boolean ativo;
 
 	public Long getId() {
 		return id;
@@ -41,6 +48,14 @@ public class Rua {
 
 	public void setBairro(Bairro bairro) {
 		this.bairro = bairro;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	@Override

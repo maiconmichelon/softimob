@@ -1,4 +1,4 @@
-package br.com.michelon.softimob.tela.editor;
+package br.com.michelon.softimob.tela.dialog;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;

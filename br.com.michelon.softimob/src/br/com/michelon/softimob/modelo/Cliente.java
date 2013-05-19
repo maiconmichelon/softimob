@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,15 +13,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Cliente implements Comissionado{
+public class Cliente implements Comissionado, Serializable{
 
-	public Cliente() {
-	}
-	
-	public Cliente(String nome) {
-		this.nome = nome;
-	}
-	
+	private static final long serialVersionUID = 1L;
+
 	@Id @GeneratedValue
 	private Long id;
 	
@@ -28,18 +24,24 @@ public class Cliente implements Comissionado{
 	@NotNull(message="Nome do cliente não pode ser vazio")
 	private String nome;
 	
+	@Temporal(TemporalType.DATE)
+	private Date dataNascimento;
+	
 	@Column(nullable = false)
 	private String cpf;
 	
 	@Column(nullable = false)
 	private String rg;
+	
+	@Column
+	private String filiacao;
 
+	@Column(nullable = false)
+	private String estadoCivil;
+	
 	@Column(nullable = false)
 	private String nacionalidade;
 	
-	@Column(nullable = false)
-	private String estadoCivil;
-
 	@Column(length=10, nullable = false)
 	@NotNull(message = "O telefone não pode ser nulo.")
 	private String telefone;
@@ -50,15 +52,15 @@ public class Cliente implements Comissionado{
 	@Column
 	private String email;
 	
-	@Column
-	private String filiacao;
+	@OneToOne
+	private Endereco endereco;
 	
-	@Temporal(TemporalType.DATE)
-	private Date dataNascimento;
-
-//	@NotNull(message = "Endereço não pode ser vazio.")
-//	@OneToOne(optional = false)
-	private transient Endereco endereco;
+	public Cliente() {
+	}
+	
+	public Cliente(String nome) {
+		this.nome = nome;
+	}
 	
 	public Long getId() {
 		return id;
@@ -100,4 +102,65 @@ public class Cliente implements Comissionado{
 		this.rg = rg;
 	}
 
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+	public String getFiliacao() {
+		return filiacao;
+	}
+
+	public void setFiliacao(String filiacao) {
+		this.filiacao = filiacao;
+	}
+
+	public String getEstadoCivil() {
+		return estadoCivil;
+	}
+
+	public void setEstadoCivil(String estadoCivil) {
+		this.estadoCivil = estadoCivil;
+	}
+
+	public String getNacionalidade() {
+		return nacionalidade;
+	}
+
+	public void setNacionalidade(String nacionalidade) {
+		this.nacionalidade = nacionalidade;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	@Override
+	public String toString() {
+		return this.nome + " - " + this.cpf; 
+	} 
+	
 }

@@ -18,6 +18,8 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 	private Map<String, String> atributos;
 	
 	public TipoImovelView(){
+		super(true);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Nome", "|60|nome");
@@ -30,7 +32,7 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Tipos de Imóvel";
 	}
 

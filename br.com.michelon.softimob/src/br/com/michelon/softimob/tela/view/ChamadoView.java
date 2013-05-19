@@ -3,6 +3,7 @@ package br.com.michelon.softimob.tela.view;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
@@ -18,6 +19,8 @@ public class ChamadoView extends GenericView<ChamadoReforma>{
 	private Map<String, String> atributos;
 	
 	public ChamadoView(){
+		super(false);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Número", "|5|numero");
@@ -34,7 +37,7 @@ public class ChamadoView extends GenericView<ChamadoReforma>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Chamados";
 	}
 
@@ -59,11 +62,18 @@ public class ChamadoView extends GenericView<ChamadoReforma>{
 	}
 
 	@Override
+	protected Object getElementToEdit(ChamadoReforma object) {
+		return object.getImovel();
+	}
+	
+	@Override
 	protected List<ChamadoReforma> getInput() {
 		return null;
 	}
-
+	
 	@Override
-	protected void createMoreActions() {}
+	protected List<Action> createMoreActions() {
+		return null;
+	}
 	
 }

@@ -18,6 +18,8 @@ public class ComodoView extends GenericView<Comodo>{
 	private Map<String, String> atributos;
 	
 	public ComodoView(){
+		super(true);
+		
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Nome", "|10|nome");
@@ -30,7 +32,7 @@ public class ComodoView extends GenericView<Comodo>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Cômodos";
 	}
 

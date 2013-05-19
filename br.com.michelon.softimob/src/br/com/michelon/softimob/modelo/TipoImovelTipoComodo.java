@@ -23,9 +23,6 @@ public class TipoImovelTipoComodo implements Serializable{
 	@ManyToOne
 	private TipoImovel tipoImovel;
 
-	@ManyToOne
-	private TipoComodo tipoComodo;
-
 	public TipoImovel getTipoImovel() {
 		return tipoImovel;
 	}
@@ -34,14 +31,6 @@ public class TipoImovelTipoComodo implements Serializable{
 		this.tipoImovel = tipoImovel;
 	}
 
-	public TipoComodo getTipoComodo() {
-		return tipoComodo;
-	}
-
-	public void setTipoComodo(TipoComodo tipoComodo) {
-		this.tipoComodo = tipoComodo;
-	}
-	
 	public Boolean getPreSelecionado() {
 		return preSelecionado;
 	}

@@ -20,8 +20,9 @@ public class GenericEditorInput<T> implements IEditorInput{
 		return modelo;
 	}
 
-	public void setModelo(T modelo) {
-		this.modelo = modelo;
+	@SuppressWarnings("unchecked")
+	public void setModelo(Object t) {
+		this.modelo = (T) t;
 	}
 	
 	@SuppressWarnings("rawtypes")

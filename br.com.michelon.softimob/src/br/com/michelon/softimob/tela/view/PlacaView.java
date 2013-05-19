@@ -17,6 +17,8 @@ public class PlacaView extends GenericView<PlacaView>{
 	private Map<String, String> atributos;
 	
 	public PlacaView() {
+		super(false);
+		
 		atributos = Maps.newLinkedHashMap();
 	
 		atributos.put("Número", "numero");
@@ -31,7 +33,7 @@ public class PlacaView extends GenericView<PlacaView>{
 	}
 
 	@Override
-	protected String getName() {
+	protected String getTitleView() {
 		return "Placas";
 	}
 

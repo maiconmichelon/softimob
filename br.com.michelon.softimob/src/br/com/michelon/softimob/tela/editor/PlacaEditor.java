@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -8,9 +9,19 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
 
+import br.com.michelon.softimob.modelo.Placa;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import br.com.michelon.softimob.modelo.Imovel;
+
 public class PlacaEditor extends SoftimobEditor{
+	private DataBindingContext m_bindingContext;
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.PlacaEditor"; //$NON-NLS-1$
+	
+	private WritableValue value = WritableValue.withValueType(Placa.class);
 	
 	private Text text;
 	private Text text_1;
@@ -58,9 +69,27 @@ public class PlacaEditor extends SoftimobEditor{
 		Button btnNewButton = new Button(composite, SWT.NONE);
 		btnNewButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnNewButton.setText("...");
+		m_bindingContext = initDataBindings();
 	}
 
 	@Override
 	protected void salvar() {
+	}
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue valueNumeroObserveDetailValue = PojoProperties.value(Placa.class, "numero", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTextObserveWidget, valueNumeroObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_1);
+		IObservableValue valueImovelObserveDetailValue = PojoProperties.value(Placa.class, "imovel", Imovel.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_1ObserveWidget, valueImovelObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
+		IObservableValue valueFuncionarionomeObserveDetailValue = PojoProperties.value(Placa.class, "funcionario.nome", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_2ObserveWidget, valueFuncionarionomeObserveDetailValue, null, null);
+		//
+		return bindingContext;
 	}
 }

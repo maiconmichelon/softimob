@@ -2,9 +2,9 @@ package br.com.michelon.softimob.aplicacao.main;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IPerspectiveDescriptor;
-import org.eclipse.ui.IPerspectiveListener;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -31,24 +31,32 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	
 	@Override
 	public void postWindowOpen() {
-		setEditorAreaInvisble();
-	}
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener(new IPartListener() {
+			
+			@Override
+			public void partOpened(IWorkbenchPart part) {}
+			
+			@Override
+			public void partDeactivated(IWorkbenchPart part) {}
+			
+			@Override
+			public void partClosed(IWorkbenchPart part) {
+				IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+				
+				if(activePage == null)
+					return;
 
-	private void setEditorAreaInvisble() {
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().addPerspectiveListener(new IPerspectiveListener() {
-
-			public void perspectiveActivated(IWorkbenchPage page,IPerspectiveDescriptor perspective) {
+				IEditorReference[] refs = activePage.getEditorReferences();
+				if(refs.length == 0)
+					activePage.setEditorAreaVisible(false);
 			}
-
-			public void perspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective, String changeId) {
-				if (page.isEditorAreaVisible()) {
-					IEditorReference[] editores = page.getEditorReferences();
-					if (editores.length <= 0) {
-						page.setEditorAreaVisible(false);
-					}
-				}
-			}
-
+			
+			@Override
+			public void partBroughtToTop(IWorkbenchPart part) {}
+			
+			@Override
+			public void partActivated(IWorkbenchPart part) {}
+			
 		});
 	}
 	
