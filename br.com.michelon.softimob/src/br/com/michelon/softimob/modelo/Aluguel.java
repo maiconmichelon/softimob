@@ -31,7 +31,7 @@ public class Aluguel implements Serializable{
 	private Cliente fiador;
 	
 	@ManyToOne()
-	private Funcionario vendedor;
+	private Funcionario funcionario;
 	
 	@Column(length=14, scale = 2, nullable = false)
 	private BigDecimal valor;
@@ -67,14 +67,6 @@ public class Aluguel implements Serializable{
 
 	public void setFiador(Cliente fiador) {
 		this.fiador = fiador;
-	}
-
-	public Funcionario getVendedor() {
-		return vendedor;
-	}
-
-	public void setVendedor(Funcionario vendedor) {
-		this.vendedor = vendedor;
 	}
 
 	public BigDecimal getValor() {
@@ -115,6 +107,14 @@ public class Aluguel implements Serializable{
 
 	public void setInquilino(Cliente inquilino) {
 		this.inquilino = inquilino;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 	
 }

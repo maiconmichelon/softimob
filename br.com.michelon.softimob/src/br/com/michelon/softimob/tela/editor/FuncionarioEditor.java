@@ -11,7 +11,7 @@ import org.eclipse.jface.viewers.ComboViewer;
 import br.com.michelon.softimob.tela.widget.PhoneTextField;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 
-public class FuncionarioEditor extends SoftimobEditor {
+public class FuncionarioEditor extends GenericEditor {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.FuncionarioEditor"; //$NON-NLS-1$
 	

@@ -34,7 +34,7 @@ import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import java.util.List;
 
-public class ComodoEditor extends SoftimobEditor{
+public class ComodoEditor extends GenericEditor{
 	private DataBindingContext m_bindingContext;
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ComodoEditor"; //$NON-NLS-1$

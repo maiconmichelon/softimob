@@ -18,7 +18,7 @@ import org.eclipse.core.databinding.beans.PojoProperties;
 import br.com.michelon.softimob.modelo.Cidade;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 
-public class BairroEditor extends SoftimobEditor{
+public class BairroEditor extends GenericEditor{
 	private DataBindingContext m_bindingContext;
 	public static final String ID = "br.com.michelon.softimob.tela.editor.BairroEditor";
 	private Text text;

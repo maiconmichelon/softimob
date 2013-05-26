@@ -16,7 +16,7 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 
-public class MovimentacaoContabilEditor extends SoftimobEditor{
+public class MovimentacaoContabilEditor extends GenericEditor{
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor";
 	

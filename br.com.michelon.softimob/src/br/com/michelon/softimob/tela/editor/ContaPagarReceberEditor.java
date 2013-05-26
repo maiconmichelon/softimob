@@ -1,19 +1,18 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.DateTime;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+
 import br.com.michelon.softimob.tela.widget.DateTextField;
 
-public class ContaPagarReceberEditor extends SoftimobEditor {
+public class ContaPagarReceberEditor extends GenericEditor {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor";
 	private Text text;

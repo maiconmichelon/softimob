@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Text;
 
 import br.com.michelon.softimob.modelo.Departamento;
 
-public class DepartamentoEditor extends SoftimobEditor {
+public class DepartamentoEditor extends GenericEditor {
 	public static final String ID = "br.com.michelon.softimob.tela.editor.DepartamentoEditor";
 
 	private DataBindingContext m_bindingContext;

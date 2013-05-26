@@ -14,7 +14,7 @@ import br.com.michelon.softimob.tela.widget.CPFTextField;
 import br.com.michelon.softimob.tela.widget.CEPTextField;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 
-public class ClienteEditor extends SoftimobEditor {
+public class ClienteEditor extends GenericEditor {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ClienteEditor"; //$NON-NLS-1$
 	private Text text_2;

@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Text;
 import br.com.michelon.softimob.tela.widget.CNPJTextField;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 
-public class ParametrosEmpresaEditor extends SoftimobEditor{
+public class ParametrosEmpresaEditor extends GenericEditor{
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ParametrosEmpresaEditor";
 	

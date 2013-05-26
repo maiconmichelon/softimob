@@ -16,7 +16,7 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import br.com.michelon.softimob.modelo.Imovel;
 
-public class PlacaEditor extends SoftimobEditor{
+public class PlacaEditor extends GenericEditor{
 	private DataBindingContext m_bindingContext;
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.PlacaEditor"; //$NON-NLS-1$

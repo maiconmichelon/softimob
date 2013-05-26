@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class PlanoContaEditor extends SoftimobEditor {
+public class PlanoContaEditor extends GenericEditor {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.PlanoContaEditor";
 	

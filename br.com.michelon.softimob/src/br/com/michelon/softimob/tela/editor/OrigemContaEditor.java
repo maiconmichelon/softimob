@@ -15,7 +15,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 
-public class OrigemContaEditor extends SoftimobEditor {
+public class OrigemContaEditor extends GenericEditor {
 	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.OrigemContaEditor";

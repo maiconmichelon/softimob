@@ -15,7 +15,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 
-public class ModeloContratoEditor extends SoftimobEditor {
+public class ModeloContratoEditor extends GenericEditor {
 	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ModeloContratoEditor";

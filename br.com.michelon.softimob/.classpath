@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.gallery_0.5.3.201305101602.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.radiogroup_0.1.0.201305050742.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.xviewer_0.9.9.201304181950.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.formattedtext_1.0.0.201305050742.jar" sourcepath="C:/Users/Seven/Downloads/repository (3)/home/data/httpd/download.eclipse.org/technology/nebula/incubation/snapshot/plugins/org.eclipse.nebula.widgets.formattedtext.source_1.0.0.201305050742.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/de.ralfebert.rcputils.jar" sourcepath="C:/Users/Seven/Downloads/rcputils-master.zip"/>

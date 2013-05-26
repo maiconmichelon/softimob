@@ -6,6 +6,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,6 +21,9 @@ public class ContaPagarReceber implements Serializable{
 
 	public static final char PAGAR = 'P';
 	public static final char RECEBER = 'R';
+	
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
 	
 	@NotNull(message = "O valor da conta não pode ser vazio.")
 	@Column(precision = 14, scale = 2, nullable = false)
@@ -120,9 +126,15 @@ public class ContaPagarReceber implements Serializable{
 		this.dataConta = dataConta;
 	}
 
-	public void efetuarBaixa(MovimentacaoContabil movimentacao2) {
-		// TODO Auto-generated method stub
-		
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
+	public void efetuarBaixa(MovimentacaoContabil movimentacao2) {
+		// TODO Auto-generated method stub
+	}
 }

@@ -25,5 +25,7 @@ Bundle-ClassPath: .,
  lib/validation-api-1.1.0.CR3.jar,
  lib/de.ralfebert.rcputils.jar,
  lib/org.eclipse.nebula.widgets.formattedtext_1.0.0.201305050742.jar,
- lib/org.eclipse.nebula.widgets.xviewer_0.9.9.201304181950.jar
+ lib/org.eclipse.nebula.widgets.xviewer_0.9.9.201304181950.jar,
+ lib/org.eclipse.nebula.widgets.radiogroup_0.1.0.201305050742.jar,
+ lib/org.eclipse.nebula.widgets.gallery_0.5.3.201305101602.jar
 Import-Package: com.google.common.collect
