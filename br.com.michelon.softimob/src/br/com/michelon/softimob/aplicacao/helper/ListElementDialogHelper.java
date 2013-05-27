@@ -13,7 +13,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 import br.com.michelon.softimob.modelo.Cliente;
+import br.com.michelon.softimob.modelo.Comodo;
 import br.com.michelon.softimob.modelo.Funcionario;
+import br.com.michelon.softimob.modelo.PlanoConta;
+import br.com.michelon.softimob.modelo.TipoComodo;
 
 public class ListElementDialogHelper {
 	
@@ -53,7 +56,12 @@ public class ListElementDialogHelper {
 		
 		if(dialog.open() == IDialogConstants.OK_ID){
 			try {
-				ReflectionHelper.setAtribute(value.getValue(), property, dialog.getFirstResult());
+				Object copy = value.getValue();
+				value.setValue(null);
+				
+				ReflectionHelper.setAtribute(copy, property, dialog.getFirstResult());
+				
+				value.setValue(copy);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -64,8 +72,9 @@ public class ListElementDialogHelper {
 		
 		FUNCIONARIO("Funcionários", "Selecione um funcionário."),
 		CLIENTE("Clientes", "Selecione um cliente."), 
-		COMODO("Cômodos", "Selecione um cômodo"),
-		IMOVEL("Imóveis", "Selecione um imóvel");
+		COMODO("Cômodos", "Selecione um cômodo."),
+		IMOVEL("Imóveis", "Selecione um imóvel."), 
+		PLANOCONTA("Plano de Contas", "Selecione uma conta.");
 		
 		private final String title;
 		private final String message;
@@ -88,6 +97,10 @@ public class ListElementDialogHelper {
 				return new Funcionario[]{new Funcionario("Maicon")};
 			} else if(equals(CLIENTE)){
 				return new Cliente[]{new Cliente("Maicon")};
+			} else if(equals(PLANOCONTA)){
+				return new PlanoConta[]{new PlanoConta("aa", 1L)};
+			} else if(equals(COMODO)){
+				return new TipoComodo[]{new TipoComodo("aa"), new TipoComodo("aa")};
 			} else{
 				return null;
 			}

@@ -24,9 +24,9 @@ public class RuaEditor extends GenericEditor{
 	public static final String ID = "br.com.michelon.softimob.tela.editor.RuaEditor";
 	
 	private WritableValue value = WritableValue.withValueType(Rua.class);
-	
 	private Text text;
 	private ComboViewer comboViewer_2;
+	
 	public RuaEditor() {
 	}
 

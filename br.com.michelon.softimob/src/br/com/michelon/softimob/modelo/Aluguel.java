@@ -1,43 +1,23 @@
 package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.OneToMany;
+
+import com.google.common.collect.Lists;
 
 @Entity
 public class Aluguel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
-	@ManyToOne(optional = false)
-	private Imovel imovel;
-	
-	@ManyToOne(optional = false)
-	private Cliente inquilino;
-	
-	@ManyToOne()
+	@ManyToOne
 	private Cliente fiador;
-	
-	@ManyToOne()
-	private Funcionario funcionario;
-	
-	@Column(length=14, scale = 2, nullable = false)
-	private BigDecimal valor;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataAssinaturaContrato;
 	
 	@Column
 	private Integer duracao;
@@ -45,44 +25,18 @@ public class Aluguel implements Serializable{
 	@Column
 	private Integer reajuste;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Imovel getImovel() {
-		return imovel;
-	}
-
-	public void setImovel(Imovel imovel) {
-		this.imovel = imovel;
-	}
-
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Vistoria> vistoria = Lists.newArrayList();
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ChamadoReforma> chamados = Lists.newArrayList();
+	
 	public Cliente getFiador() {
 		return fiador;
 	}
 
 	public void setFiador(Cliente fiador) {
 		this.fiador = fiador;
-	}
-
-	public BigDecimal getValor() {
-		return valor;
-	}
-
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
-	}
-
-	public Date getDataAssinaturaContrato() {
-		return dataAssinaturaContrato;
-	}
-
-	public void setDataAssinaturaContrato(Date dataAssinaturaContrato) {
-		this.dataAssinaturaContrato = dataAssinaturaContrato;
 	}
 
 	public Integer getDuracao() {
@@ -101,20 +55,4 @@ public class Aluguel implements Serializable{
 		this.reajuste = reajuste;
 	}
 
-	public Cliente getInquilino() {
-		return inquilino;
-	}
-
-	public void setInquilino(Cliente inquilino) {
-		this.inquilino = inquilino;
-	}
-
-	public Funcionario getFuncionario() {
-		return funcionario;
-	}
-
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
-	}
-	
 }

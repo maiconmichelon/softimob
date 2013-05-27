@@ -1,6 +1,5 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -16,8 +15,6 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.wb.swt.ResourceManager;
 
 public abstract class GenericEditor extends EditorPart {
-
-	private DataBindingContext context;
 
 	public GenericEditor() {
 	}
@@ -53,8 +50,6 @@ public abstract class GenericEditor extends EditorPart {
 		});
 		
 		afterCreatePartControl(cpPrincipal);
-		
-//		context = initDataBindings();
 	}
 
 	public abstract void afterCreatePartControl(Composite parent);
@@ -88,12 +83,4 @@ public abstract class GenericEditor extends EditorPart {
 	public boolean isSaveAsAllowed() {
 		return false;
 	}
-//	
-//	protected abstract DataBindingContext initDataBindings();
-//	
-//	protected void atualizaBinding(){
-//		if(context != null)
-//			context.updateTargets();
-//	}
-//	
 }

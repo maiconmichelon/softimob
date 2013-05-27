@@ -16,19 +16,22 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import br.com.michelon.softimob.modelo.Estado;
+import br.com.michelon.softimob.persistencia.CidadeDAO;
+
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 
 public class CidadeEditor extends GenericEditor {
-	private DataBindingContext m_bindingContext;
-	
+
 	public static final String ID = "br.com.michelon.softimob.tela.editor.CidadeEditor";
 	
+	private DataBindingContext m_bindingContext;
 	private Text text;
-
 	private WritableValue value = WritableValue.withValueType(Cidade.class);
 	private ComboViewer comboViewer;
+	private CidadeDAO daoCidade;
 	
 	public CidadeEditor() {
+		daoCidade = new CidadeDAO();
 	}
 
 	@Override
@@ -53,15 +56,13 @@ public class CidadeEditor extends GenericEditor {
 		gd_text.widthHint = 222;
 		text.setLayoutData(gd_text);
 		m_bindingContext = initDataBindings();
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	protected void salvar() {
-		// TODO Auto-generated method stub
-		
+		daoCidade.salvar(value.getValue());
 	}
+	
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

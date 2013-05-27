@@ -1,26 +1,40 @@
 package br.com.michelon.softimob.tela.editor;
 
+import java.util.Date;
+
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.jface.viewers.ComboViewer;
-import br.com.michelon.softimob.tela.widget.PhoneTextField;
+
+import br.com.michelon.softimob.modelo.Departamento;
+import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.tela.widget.DateTextField;
+import br.com.michelon.softimob.tela.widget.PhoneTextField;
 
 public class FuncionarioEditor extends GenericEditor {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.FuncionarioEditor"; //$NON-NLS-1$
 	
+	private WritableValue value = WritableValue.withValueType(Funcionario.class);
+	private DataBindingContext m_bindingContext;
 	private Text text;
-	private Text text_1;
 	private Text text_3;
 	private Text text_2;
 	private Text text_4;
 	private Text text_5;
+	private ComboViewer comboViewer;
+	private Text text_1;
 	
 	public FuncionarioEditor() {
 	}
@@ -46,7 +60,7 @@ public class FuncionarioEditor extends GenericEditor {
 		lblDepartamento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDepartamento.setText("Departamento");
 		
-		ComboViewer comboViewer = new ComboViewer(composite, SWT.READ_ONLY);
+		comboViewer = new ComboViewer(composite, SWT.READ_ONLY);
 		Combo combo = comboViewer.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -60,14 +74,13 @@ public class FuncionarioEditor extends GenericEditor {
 		gd_text_4.widthHint = 79;
 		text_4.setLayoutData(gd_text_4);
 		
-		Label lblTelefoneRamal = new Label(composite, SWT.NONE);
-		lblTelefoneRamal.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblTelefoneRamal.setText("Telefone / Ramal");
+		Label lblTelefone = new Label(composite, SWT.NONE);
+		lblTelefone.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblTelefone.setText("Telefone");
 		
-		text_1 = new Text(composite, SWT.BORDER);
-		GridData gd_text_1 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
-		gd_text_1.widthHint = 300;
-		text_1.setLayoutData(gd_text_1);
+		PhoneTextField phoneTextField_1 = new PhoneTextField(composite);
+		text_1 = phoneTextField_1.getControl();
+		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblCelular = new Label(composite, SWT.NONE);
 		lblCelular.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -95,12 +108,45 @@ public class FuncionarioEditor extends GenericEditor {
 		GridData gd_text_5 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_5.widthHint = 79;
 		text_5.setLayoutData(gd_text_5);
+		m_bindingContext = initDataBindings();
 	}
 
 	@Override
 	protected void salvar() {
 		// TODO Auto-generated method stub
-		
 	}
 	
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue valueNomeObserveDetailValue = PojoProperties.value(Funcionario.class, "nome", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTextObserveWidget, valueNomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionComboViewer = ViewerProperties.singleSelection().observe(comboViewer);
+		IObservableValue valueDepartamentoObserveDetailValue = PojoProperties.value(Funcionario.class, "departamento", Departamento.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionComboViewer, valueDepartamentoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
+		IObservableValue valueDataNascimentoObserveDetailValue = PojoProperties.value(Funcionario.class, "dataNascimento", Date.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_4ObserveWidget, valueDataNascimentoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_2);
+		IObservableValue valueCelularObserveDetailValue = PojoProperties.value(Funcionario.class, "celular", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_2ObserveWidget, valueCelularObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_3);
+		IObservableValue valueEmailObserveDetailValue = PojoProperties.value(Funcionario.class, "email", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_3ObserveWidget, valueEmailObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
+		IObservableValue valueDataAdmissaoObserveDetailValue = PojoProperties.value(Funcionario.class, "dataAdmissao", Date.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_5ObserveWidget, valueDataAdmissaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
+		IObservableValue valueTelefoneObserveDetailValue = PojoProperties.value(Funcionario.class, "telefone", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_1ObserveWidget, valueTelefoneObserveDetailValue, null, null);
+		//
+		return bindingContext;
+	}
 }

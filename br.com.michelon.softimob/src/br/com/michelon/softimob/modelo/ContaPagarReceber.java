@@ -14,8 +14,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.eclipse.ui.IEditorInput;
+
 @Entity
-public class ContaPagarReceber implements Serializable{
+public class ContaPagarReceber implements Serializable, Conta{
 
 	private static final long serialVersionUID = 1L;
 
@@ -54,6 +56,17 @@ public class ContaPagarReceber implements Serializable{
 	@ManyToOne
 	private MovimentacaoContabil movimentacao;
 
+	@Column
+	private String observacoes;
+	
+	public void setObservacoes(String observacoes) {
+		this.observacoes = observacoes;
+	}
+	
+	public String getObservacoes() {
+		return observacoes;
+	}
+	
 	public BigDecimal getValor() {
 		return valor;
 	}
@@ -135,6 +148,50 @@ public class ContaPagarReceber implements Serializable{
 	}
 	
 	public void efetuarBaixa(MovimentacaoContabil movimentacao2) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public Date getDataGeracao() {
+		return dataConta;
+	}
+
+	@Override
+	public Date getDataFechamento() {
+		return dataPagamento;
+	}
+
+	@Override
+	public String getDescricao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getIdEditor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IEditorInput getEditorInput() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MovimentacaoContabil gerarMovimentacao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void pagarConta() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void estornar() {
 		// TODO Auto-generated method stub
 	}
 }

@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
 
+import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.modelo.Placa;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -17,12 +19,11 @@ import org.eclipse.core.databinding.beans.PojoProperties;
 import br.com.michelon.softimob.modelo.Imovel;
 
 public class PlacaEditor extends GenericEditor{
-	private DataBindingContext m_bindingContext;
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.PlacaEditor"; //$NON-NLS-1$
 	
+	private DataBindingContext m_bindingContext;
 	private WritableValue value = WritableValue.withValueType(Placa.class);
-	
 	private Text text;
 	private Text text_1;
 	private Text text_2;
@@ -58,6 +59,7 @@ public class PlacaEditor extends GenericEditor{
 		
 		Button btnSelecionar = new Button(composite, SWT.NONE);
 		btnSelecionar.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.IMOVEL, btnSelecionar, value, "imovel");
 		
 		Label lblNewLabel = new Label(composite, SWT.NONE);
 		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -69,6 +71,8 @@ public class PlacaEditor extends GenericEditor{
 		Button btnNewButton = new Button(composite, SWT.NONE);
 		btnNewButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnNewButton.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar, value, "funcionario");
+		
 		m_bindingContext = initDataBindings();
 	}
 

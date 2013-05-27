@@ -5,25 +5,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 @Entity
-public class Cliente implements Comissionado, Serializable{
+public class Cliente extends Comissionado implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue
-	private Long id;
-	
-	@Column(nullable = false)
-	@NotNull(message="Nome do cliente não pode ser vazio")
-	private String nome;
-	
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
 	
@@ -42,16 +32,6 @@ public class Cliente implements Comissionado, Serializable{
 	@Column(nullable = false)
 	private String nacionalidade;
 	
-	@Column(length=10, nullable = false)
-	@NotNull(message = "O telefone não pode ser nulo.")
-	private String telefone;
-	
-	@Column(length=10)
-	private String celular;
-
-	@Column
-	private String email;
-	
 	@OneToOne
 	private Endereco endereco;
 	
@@ -59,31 +39,7 @@ public class Cliente implements Comissionado, Serializable{
 	}
 	
 	public Cliente(String nome) {
-		this.nome = nome;
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public String getNome() {
-		return nome;
-	}
-	
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+		setNome(nome);
 	}
 
 	public String getCpf() {
@@ -134,22 +90,6 @@ public class Cliente implements Comissionado, Serializable{
 		this.nacionalidade = nacionalidade;
 	}
 
-	public String getCelular() {
-		return celular;
-	}
-
-	public void setCelular(String celular) {
-		this.celular = celular;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -160,7 +100,7 @@ public class Cliente implements Comissionado, Serializable{
 
 	@Override
 	public String toString() {
-		return this.nome + " - " + this.cpf; 
+		return getNome() + " - " + this.cpf; 
 	} 
 	
 }

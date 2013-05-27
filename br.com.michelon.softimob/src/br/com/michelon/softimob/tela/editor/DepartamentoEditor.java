@@ -13,20 +13,24 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import br.com.michelon.softimob.modelo.Departamento;
+import br.com.michelon.softimob.persistencia.DepartamentoDAO;
 
 public class DepartamentoEditor extends GenericEditor {
+	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.DepartamentoEditor";
 
 	private DataBindingContext m_bindingContext;
-	
 	private Text text;
 	private WritableValue value = WritableValue.withValueType(Departamento.class);
+	private DepartamentoDAO departamentoDAO;
 	
 	public DepartamentoEditor() {
+		departamentoDAO = new DepartamentoDAO();
 	}
 
 	@Override
 	protected void salvar() {
+		departamentoDAO.salvar(value.getValue());
 	}
 
 	@Override
@@ -57,4 +61,5 @@ public class DepartamentoEditor extends GenericEditor {
 		//
 		return bindingContext;
 	}
+	
 }

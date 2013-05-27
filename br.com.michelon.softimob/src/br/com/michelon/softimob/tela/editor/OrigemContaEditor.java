@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.modelo.OrigemConta;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -16,11 +18,11 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 
 public class OrigemContaEditor extends GenericEditor {
-	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.OrigemContaEditor";
 	
 	private WritableValue value = WritableValue.withValueType(OrigemConta.class);
+	private DataBindingContext m_bindingContext;
 	
 	private Text text;
 	private Text text_1;
@@ -58,6 +60,7 @@ public class OrigemContaEditor extends GenericEditor {
 		Button button = new Button(parent, SWT.NONE);
 		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button, value, "conta");
 		
 		Label lblContrapartida = new Label(parent, SWT.NONE);
 		lblContrapartida.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -69,6 +72,8 @@ public class OrigemContaEditor extends GenericEditor {
 		Button button_1 = new Button(parent, SWT.NONE);
 		button_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_1.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button, value, "contaContraPartida");
+		
 		m_bindingContext = initDataBindings();
 		
 	}

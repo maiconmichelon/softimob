@@ -14,6 +14,9 @@ import org.eclipse.swt.widgets.Text;
 
 import br.com.michelon.softimob.tela.widget.CNPJTextField;
 import br.com.michelon.softimob.tela.widget.DateTextField;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class ParametrosEmpresaEditor extends GenericEditor{
 	
@@ -33,8 +36,9 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 	private Text text_13;
 	private Text text_14;
 	private Text text_15;
-	private Text text_2;
 	private Text text_3;
+	private Text text_2;
+	
 	public ParametrosEmpresaEditor() {
 	}
 
@@ -82,6 +86,17 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 		Button button = new Button(composite, SWT.NONE);
 		button.setText("...");
 		
+		Label lblChecklist = new Label(composite, SWT.NONE);
+		lblChecklist.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblChecklist.setText("Checklist");
+		
+		ComboViewer comboViewer = new ComboViewer(composite, SWT.READ_ONLY);
+		Combo combo = comboViewer.getCombo();
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_11 = new Button(composite, SWT.NONE);
+		button_11.setText("...");
+		
 		CTabItem tbtmAlguel = new CTabItem(tabFolder, SWT.NONE);
 		tbtmAlguel.setText("Aluguel");
 		
@@ -123,22 +138,33 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 		Button button_1 = new Button(composite_1, SWT.NONE);
 		button_1.setText("...");
 		
+		Label lblChecklist_1 = new Label(composite_1, SWT.NONE);
+		lblChecklist_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblChecklist_1.setText("CheckList");
+		
+		ComboViewer comboViewer_1 = new ComboViewer(composite_1, SWT.READ_ONLY);
+		Combo combo_1 = comboViewer_1.getCombo();
+		combo_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(composite_1, SWT.NONE);
+		
 		CTabItem tbtmReformas = new CTabItem(tabFolder, SWT.NONE);
 		tbtmReformas.setText("Reformas");
 		
 		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
 		tbtmReformas.setControl(composite_3);
-		composite_3.setLayout(new GridLayout(3, false));
+		composite_3.setLayout(new GridLayout(4, false));
 		
 		Label lblPrazoPFinalizao = new Label(composite_3, SWT.NONE);
 		lblPrazoPFinalizao.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblPrazoPFinalizao.setText("Prazo p/ Finalização");
 		
-		DateTextField dateTextField = new DateTextField(composite_3);
-		text_2 = dateTextField.getControl();
-		GridData gd_text_2 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_2.widthHint = 79;
-		text_2.setLayoutData(gd_text_2);
+		text_2 = new Text(composite_3, SWT.BORDER);
+		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblDias = new Label(composite_3, SWT.NONE);
+		lblDias.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
+		lblDias.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		lblDias.setText("Dias");
 		new Label(composite_3, SWT.NONE);
 		
 		Label lblResponsvel = new Label(composite_3, SWT.NONE);
@@ -146,7 +172,7 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 		lblResponsvel.setText("Funcionário Responsável");
 		
 		text_3 = new Text(composite_3, SWT.BORDER);
-		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		
 		Button button_10 = new Button(composite_3, SWT.NONE);
 		button_10.setText("...");
@@ -259,6 +285,9 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 		button_9.setText("...");
 
 		tabFolder.setSelection(0);
+		
+		CTabItem tbtmChecklist = new CTabItem(tabFolder, SWT.NONE);
+		tbtmChecklist.setText("CheckList");
 	}
 
 	@Override

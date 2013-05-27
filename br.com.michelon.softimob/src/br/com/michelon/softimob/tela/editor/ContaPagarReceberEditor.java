@@ -1,6 +1,9 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -10,15 +13,34 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.modelo.ContaPagarReceber;
+import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateTextField;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import java.util.Date;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import br.com.michelon.softimob.modelo.OrigemConta;
+import java.math.BigDecimal;
+import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
+import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
+import org.eclipse.nebula.widgets.radiogroup.RadioItem;
 
 public class ContaPagarReceberEditor extends GenericEditor {
+	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor";
+	
+	private WritableValue value = WritableValue.withValueType(ContaPagarReceber.class);
+	
 	private Text text;
 	private Text text_1;
 	private Text text_3;
 	private Text text_2;
+	private ComboViewer comboViewer;
+	
 	public ContaPagarReceberEditor() {
 	}
 
@@ -58,11 +80,18 @@ public class ContaPagarReceberEditor extends GenericEditor {
 		lblOrigem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblOrigem.setText("Origem");
 		
-		ComboViewer comboViewer_1 = new ComboViewer(parent, SWT.READ_ONLY);
-		Combo combo_1 = comboViewer_1.getCombo();
+		comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
+		Combo combo_1 = comboViewer.getCombo();
 		GridData gd_combo_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_combo_1.widthHint = 150;
 		combo_1.setLayoutData(gd_combo_1);
+		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewer.setLabelProvider(new LabelProvider(){
+			@Override
+			public String getText(Object element) {
+				return ((OrigemConta)element).getDescricao();
+			}
+		});
 		
 		Label lblValor = new Label(parent, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -74,15 +103,15 @@ public class ContaPagarReceberEditor extends GenericEditor {
 		text.setLayoutData(gd_text);
 		new Label(parent, SWT.NONE);
 		
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-		composite.setLayout(new GridLayout(2, false));
+		RadioGroupViewer radioGroupViewer = new RadioGroupViewer(parent, SWT.BORDER);
+		RadioGroup radioGroup = radioGroupViewer.getRadioGroup();
+		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		
-		Button btnPagar = new Button(composite, SWT.RADIO);
-		btnPagar.setText("Pagar");
+		RadioItem riPagar = new RadioItem(radioGroup, SWT.NONE);
+		riPagar.setText("Pagar");
 		
-		Button btnReceber = new Button(composite, SWT.RADIO);
-		btnReceber.setText("Receber");
+		RadioItem riReceber = new RadioItem(radioGroup, SWT.NONE);
+		riReceber.setText("Receber");
 		
 		Label lblObservaes = new Label(parent, SWT.NONE);
 		lblObservaes.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -93,7 +122,32 @@ public class ContaPagarReceberEditor extends GenericEditor {
 		gd_text_1.widthHint = 425;
 		gd_text_1.heightHint = 44;
 		text_1.setLayoutData(gd_text_1);
+		m_bindingContext = initDataBindings();
 		
 	}
-
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_2);
+		IObservableValue valueDataContaObserveDetailValue = PojoProperties.value(ContaPagarReceber.class, "dataConta", Date.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_2ObserveWidget, valueDataContaObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_3);
+		IObservableValue valueDataVencimentoObserveDetailValue = PojoProperties.value(ContaPagarReceber.class, "dataVencimento", Date.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_3ObserveWidget, valueDataVencimentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeSingleSelectionComboViewer = ViewerProperties.singleSelection().observe(comboViewer);
+		IObservableValue valueOrigemObserveDetailValue = PojoProperties.value(ContaPagarReceber.class, "origem", OrigemConta.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionComboViewer, valueOrigemObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue valueValorObserveDetailValue = PojoProperties.value(ContaPagarReceber.class, "valor", BigDecimal.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTextObserveWidget, valueValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		//
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
+		IObservableValue valueDescricaoObserveDetailValue = PojoProperties.value(ContaPagarReceber.class, "observacoes", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_1ObserveWidget, valueDescricaoObserveDetailValue, null, null);
+		//
+		return bindingContext;
+	}
 }

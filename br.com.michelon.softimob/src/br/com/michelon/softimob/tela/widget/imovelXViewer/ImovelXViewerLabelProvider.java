@@ -32,7 +32,7 @@ public class ImovelXViewerLabelProvider extends XViewerLabelProvider {
 			if(xCol.equals(ImovelXViewerFactory.metragem))
 				return imovel.getMetragem().toString();
 			if(xCol.equals(ImovelXViewerFactory.codigo))
-				return imovel.getCodigo();
+				return imovel.getId().toString();
 			if(xCol.equals(ImovelXViewerFactory.proprietario))
 				return imovel.getProprietario() == null ? "" : imovel.getProprietario().getNome();
 //			if(xCol.equals(ImovelXViewerFactory.status))

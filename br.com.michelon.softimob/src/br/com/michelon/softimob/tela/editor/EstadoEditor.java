@@ -58,6 +58,7 @@ public class EstadoEditor extends GenericEditor {
 	protected void salvar() {
 		
 	}
+	
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

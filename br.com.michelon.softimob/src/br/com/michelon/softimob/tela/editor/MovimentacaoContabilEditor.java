@@ -1,33 +1,63 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.swt.widgets.Composite;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
+import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.modelo.LancamentoContabil;
+import br.com.michelon.softimob.modelo.MovimentacaoContabil;
+import br.com.michelon.softimob.modelo.PlanoConta;
+import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
+import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.wb.swt.ResourceManager;
+
+import com.google.common.collect.Lists;
 
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
-import br.com.michelon.softimob.tela.widget.DateTextField;
 
 public class MovimentacaoContabilEditor extends GenericEditor{
+	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor";
+	
+	private WritableValue value = WritableValue.withValueType(MovimentacaoContabil.class);
+	private WritableValue valueModeloLcto = WritableValue.withValueType(ModeloLancamentos.class);
 	
 	private Text text;
 	private Text text_1;
 	private Text text_2;
 	private Text text_3;
 	private Text text_4;
-	private TableViewerBuilder tvb;
 	private Text text_5;
+	private TableViewerBuilder tvb;
+	private TableViewer tvLancamentos;
+	
 	public MovimentacaoContabilEditor() {
+		value.setValue(new MovimentacaoContabil());
+		valueModeloLcto.setValue(new ModeloLancamentos());
 	}
 
 	@Override
@@ -62,6 +92,8 @@ public class MovimentacaoContabilEditor extends GenericEditor{
 		lblLote.setText("Lote");
 		
 		text = new Text(parent, SWT.BORDER);
+		text.setEditable(false);
+		text.setEnabled(false);
 		text.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		
@@ -83,9 +115,9 @@ public class MovimentacaoContabilEditor extends GenericEditor{
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		
-		Label lblCrdito = new Label(parent, SWT.NONE);
-		lblCrdito.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblCrdito.setText("Crédito");
+		Label lblDebito = new Label(parent, SWT.NONE);
+		lblDebito.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDebito.setText("Dédito");
 		
 		text_2 = new Text(parent, SWT.BORDER);
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -93,16 +125,18 @@ public class MovimentacaoContabilEditor extends GenericEditor{
 		Button button = new Button(parent, SWT.NONE);
 		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button, valueModeloLcto, "contaDebito");
 		
-		Label lblDbito = new Label(parent, SWT.NONE);
-		lblDbito.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblDbito.setText("Débito");
+		Label lblCredito = new Label(parent, SWT.NONE);
+		lblCredito.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblCredito.setText("Crédito");
 		
 		text_3 = new Text(parent, SWT.BORDER);
 		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_1 = new Button(parent, SWT.NONE);
 		button_1.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_1, valueModeloLcto, "contaCredito");
 		
 		Label lblHistrico = new Label(parent, SWT.NONE);
 		lblHistrico.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -119,23 +153,134 @@ public class MovimentacaoContabilEditor extends GenericEditor{
 		btnAdicionar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
 		btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		btnAdicionar.setText("Adicionar");
-		// TODO Auto-generated method stub
-		
+		btnAdicionar.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				MovimentacaoContabil mov = (MovimentacaoContabil) value.getValue();
+				ModeloLancamentos mod = (ModeloLancamentos) valueModeloLcto.getValue();
+				mov.getLancamentos().addAll(mod.getLancamentos());
+				
+				tvLancamentos.refresh();
+				
+				valueModeloLcto.setValue(new ModeloLancamentos());
+			}
+		});
+
+		m_bindingContext = initDataBindings();
 	}
 
 	private void criarTabelaLancamentos(Composite composite){
 		tvb = new TableViewerBuilder(composite);
 		
-		tvb.createColumn("Tipo").bindToProperty("tipo").build();
-		tvb.createColumn("Data").bindToProperty("data").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
+		tvb.createColumn("Tipo").bindToProperty("tipo.descricao").build();
+		tvb.createColumn("Data").bindToProperty("dataLancamento").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
 		tvb.createColumn("Conta").bindToProperty("conta.codigoDescricao").build();
 		tvb.createColumn("Valor").bindToProperty("valor").format(FormatterHelper.getCurrencyFormatter()).build();
+		tvb.createColumn("Histórico").bindToProperty("historico").makeEditable().build();
+		tvb.createColumn("Complemento").bindToProperty("complemento").makeEditable().build();
+		
+		tvb.setInput(((MovimentacaoContabil)value.getValue()).getLancamentos());
+		
+		tvLancamentos = tvb.getTableViewer();
 	}
 	
 	@Override
 	protected void salvar() {
 		// TODO Auto-generated method stub
-		
 	}
 
+	public class ModeloLancamentos{
+		
+		private PlanoConta contaDebito;
+		private PlanoConta contaCredito;
+		private BigDecimal valor;
+		private String historico;
+		private Date dataLancamento;
+		
+		public PlanoConta getContaDebito() {
+			return contaDebito;
+		}
+
+		public void setContaDebito(PlanoConta contaDebito) {
+			this.contaDebito = contaDebito;
+		}
+
+		public PlanoConta getContaCredito() {
+			return contaCredito;
+		}
+
+		public void setContaCredito(PlanoConta contaCredito) {
+			this.contaCredito = contaCredito;
+		}
+
+		public BigDecimal getValor() {
+			return valor;
+		}
+
+		public void setValor(BigDecimal valor) {
+			this.valor = valor;
+		}
+
+		public String getHistorico() {
+			return historico;
+		}
+
+		public void setHistorico(String historico) {
+			this.historico = historico;
+		}
+
+		public Date getDataLancamento() {
+			return dataLancamento;
+		}
+
+		public void setDataLancamento(Date dataLancamento) {
+			this.dataLancamento = dataLancamento;
+		}
+		
+		private List<LancamentoContabil> getLancamentos() {
+			List<LancamentoContabil> lctos = Lists.newArrayList();
+			
+			LancamentoContabil lctoDeb = LancamentoContabil.createDebito(dataLancamento, contaDebito, valor, historico, StringUtils.EMPTY);
+			LancamentoContabil lctoCred = LancamentoContabil.createCredito(dataLancamento, contaCredito, valor, historico, StringUtils.EMPTY);
+		
+			lctos.add(lctoCred);
+			lctos.add(lctoDeb);
+			
+			return lctos;
+		}
+		
+	}
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue valueIdObserveDetailValue = PojoProperties.value(MovimentacaoContabil.class, "id", Long.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTextObserveWidget, valueIdObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
+		IObservableValue valueModeloLctoDataLancamentoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "dataLancamento", Date.class).observeDetail(valueModeloLcto);
+		bindingContext.bindValue(observeTextText_5ObserveWidget, valueModeloLctoDataLancamentoObserveDetailValue, null, null);
+		// //TODO data da movimentao deve ser somente setada no momento que for salva, verificando se a data de todos os lancamentos sao iguais
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
+		IObservableValue valueModeloLctoValorObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "valor", BigDecimal.class).observeDetail(valueModeloLcto);
+		bindingContext.bindValue(observeTextText_1ObserveWidget, valueModeloLctoValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		//
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
+		IObservableValue valueModeloLctoContaDebitoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "contaDebito.codigoDescricao", PlanoConta.class).observeDetail(valueModeloLcto);
+		bindingContext.bindValue(observeTextText_2ObserveWidget, valueModeloLctoContaDebitoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_3);
+		IObservableValue valueModeloLctoContaCreditoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "contaCredito.codigoDescricao", PlanoConta.class).observeDetail(valueModeloLcto);
+		bindingContext.bindValue(observeTextText_3ObserveWidget, valueModeloLctoContaCreditoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
+		IObservableValue valueModeloLctoHistoricoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "historico", String.class).observeDetail(valueModeloLcto);
+		bindingContext.bindValue(observeTextText_4ObserveWidget, valueModeloLctoHistoricoObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionTableViewer = ViewerProperties.input().observe(tvLancamentos);
+		IObservableValue valueComissoesObserveDetailValue = PojoProperties.value(MovimentacaoContabil.class, "lancamentos", List.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionTableViewer, valueComissoesObserveDetailValue, null, null);
+		//
+		return bindingContext;
+	}
 }

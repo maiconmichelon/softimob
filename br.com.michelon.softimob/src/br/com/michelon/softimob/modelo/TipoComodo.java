@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.google.common.collect.Lists;
+
 @Entity
 public class TipoComodo implements Serializable{
 
@@ -24,11 +26,18 @@ public class TipoComodo implements Serializable{
 	private String nome;
 
 	@OneToMany(orphanRemoval = true)
-	private List<TipoImovelTipoComodo> tipoImovelTipoComodo;
+	private List<TipoImovelTipoComodo> tipoImovelTipoComodo = Lists.newArrayList();
 	
 	@Column
 	private Boolean ativo = true;
 	
+	public TipoComodo(String nome) {
+		this.nome = nome;
+	}
+
+	public TipoComodo() {
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -62,6 +71,11 @@ public class TipoComodo implements Serializable{
 	}
 	
 	@Override
+	public String toString() {
+		return nome;
+	}
+	
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -85,5 +99,5 @@ public class TipoComodo implements Serializable{
 			return false;
 		return true;
 	}
-
+	
 }

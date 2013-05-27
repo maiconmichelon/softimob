@@ -24,23 +24,11 @@ public class Imovel implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true, nullable = false)
-	private String codigo;
-
-	@Column
-	private Boolean vender;
-	
-	@Column
-	private Boolean alugar;
-	
 	@Column
 	private Boolean ativo;
 
-	@Column(precision = 14, scale = 2)
-	private BigDecimal metragem;
-	
-	@Column(precision = 14, scale = 2)
-	private BigDecimal valor;
+	@Column
+	private Integer metragem;
 	
 	@ManyToOne()
 	private Funcionario angariador;
@@ -51,6 +39,9 @@ public class Imovel implements Serializable{
 	@ManyToOne()
 	private TipoImovel tipo;
 
+	@Column
+	private String observacoes;
+	
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Endereco endereco;
 	
@@ -67,12 +58,6 @@ public class Imovel implements Serializable{
 	private List<Proposta> propostas = Lists.newArrayList();
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Vistoria> vistoria = Lists.newArrayList();
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ChamadoReforma> chamados = Lists.newArrayList();
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Reserva> reservas = Lists.newArrayList();
  	
 	public List<Proposta> getPropostas() {
@@ -81,22 +66,6 @@ public class Imovel implements Serializable{
 
 	public void setPropostas(List<Proposta> propostas) {
 		this.propostas = propostas;
-	}
-
-	public List<Vistoria> getVistoria() {
-		return vistoria;
-	}
-
-	public void setVistoria(List<Vistoria> vistoria) {
-		this.vistoria = vistoria;
-	}
-
-	public List<ChamadoReforma> getChamados() {
-		return chamados;
-	}
-
-	public void setChamados(List<ChamadoReforma> chamados) {
-		this.chamados = chamados;
 	}
 
 	public List<Reserva> getReservas() {
@@ -124,11 +93,11 @@ public class Imovel implements Serializable{
 	}
 
 
-	public BigDecimal getMetragem() {
+	public Integer getMetragem() {
 		return metragem;
 	}
 
-	public void setMetragem(BigDecimal metragem) {
+	public void setMetragem(Integer metragem) {
 		this.metragem = metragem;
 	}
 
@@ -164,14 +133,6 @@ public class Imovel implements Serializable{
 		this.endereco = endereco;
 	}
 
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -188,30 +149,6 @@ public class Imovel implements Serializable{
 		this.feedbacks = feedbacks;
 	}
 
-	public BigDecimal getValor() {
-		return valor;
-	}
-
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
-	}
-
-	public Boolean getVender() {
-		return vender;
-	}
-
-	public void setVender(Boolean vender) {
-		this.vender = vender;
-	}
-
-	public Boolean getAlugar() {
-		return alugar;
-	}
-
-	public void setAlugar(Boolean alugar) {
-		this.alugar = alugar;
-	}
-
 	public Boolean getAtivo() {
 		return ativo;
 	}
@@ -219,10 +156,18 @@ public class Imovel implements Serializable{
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
-	
+
+	public String getObservacoes() {
+		return observacoes;
+	}
+
+	public void setObservacoes(String observacoes) {
+		this.observacoes = observacoes;
+	}
+
 	@Override
 	public String toString() {
-		return this.codigo + " - " + this.endereco.toString() ;
+		return this.id + " - " + this.endereco.toString() ;
 	}
 	
 	@Override

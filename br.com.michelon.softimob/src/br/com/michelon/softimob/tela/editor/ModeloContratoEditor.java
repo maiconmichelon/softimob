@@ -16,14 +16,14 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 
 public class ModeloContratoEditor extends GenericEditor {
-	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ModeloContratoEditor";
 	
+	private DataBindingContext m_bindingContext;
 	private WritableValue value = WritableValue.withValueType(ModeloContrato.class);
-	
 	private Text text;
 	private Text text_1;
+
 	public ModeloContratoEditor() {
 	}
 

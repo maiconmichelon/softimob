@@ -16,16 +16,22 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import br.com.michelon.softimob.modelo.Cidade;
+import br.com.michelon.softimob.persistencia.BairroDAO;
+
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 
 public class BairroEditor extends GenericEditor{
-	private DataBindingContext m_bindingContext;
+	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.BairroEditor";
-	private Text text;
+	
+	private DataBindingContext m_bindingContext;
 	private WritableValue value = WritableValue.withValueType(Bairro.class);
 	private ComboViewer comboViewer;
+	private Text text;
+	private BairroDAO bairroDAO;
 	
 	public BairroEditor() {
+		bairroDAO = new BairroDAO();
 	}
 
 	@Override
@@ -49,15 +55,13 @@ public class BairroEditor extends GenericEditor{
 		text = new Text(parent, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		m_bindingContext = initDataBindings();
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	protected void salvar() {
-		// TODO Auto-generated method stub
-		
+		bairroDAO.salvar(value.getValue());
 	}
+	
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

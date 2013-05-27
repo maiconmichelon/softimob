@@ -15,10 +15,10 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 
 public class TipoImovelEditor extends GenericEditor{
-	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.TipoImovelEditor"; //$NON-NLS-1$
 	
+	private DataBindingContext m_bindingContext;
 	private WritableValue value = WritableValue.withValueType(TipoImovel.class);
 	
 	private Text text;
@@ -47,7 +47,6 @@ public class TipoImovelEditor extends GenericEditor{
 	@Override
 	protected void salvar() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	protected DataBindingContext initDataBindings() {

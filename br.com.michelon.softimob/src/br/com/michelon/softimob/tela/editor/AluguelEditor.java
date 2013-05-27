@@ -1,11 +1,13 @@
 package br.com.michelon.softimob.tela.editor;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -13,8 +15,6 @@ import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
-import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
-import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
@@ -22,60 +22,38 @@ import de.ralfebert.rcputils.properties.IValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.custom.CTabItem;
-
 public class AluguelEditor extends GenericEditor{
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.AluguelEditor";
 	
+	private TableViewerBuilder tvbComissao;
+
 	private Text text;
 	private Text text_1;
 	private Text text_4;
 	private Text text_3;
 	private Text text_2;
-	
-	private TableViewerBuilder tvbComissao;
 	private Text text_5;
 	private Text text_6;
 	private Text text_7;
-
 	private Text text_31;
-
 	private Text text_25;
-
 	private Text text_36;
-
-	private Text text_28;
-
-	private Text text_27;
-
 	private Text text_10;
-
 	private Text text_24;
-
 	private Text text_23;
-
 	private Text text_22;
-
 	private Text text_35;
-
-	private Control text_19;
-
+	private Text text_19;
 	private Text text_18;
-
 	private Text text_17;
-
-	private Control text_16;
-
-	private Control text_34;
-
+	private Text text_16;
+	private Text text_34;
 	private TableViewerBuilder tvbChamadoGeral;
-
 	private TableViewerBuilder tvbAndamentoChamado;
-
 	private TableViewerBuilder tvbVistoria;
+	private Text text_27;
+	private Text text_28;
 	
 	public AluguelEditor() {
 	}

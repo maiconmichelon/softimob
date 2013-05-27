@@ -229,7 +229,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		tvTipoLancamento.setLabelProvider(new ColumnLabelProvider(){
 			@Override
 			public String getText(Object element) {
-				return ((LancamentoContabil)element).getTipoExtenso();
+				return ((LancamentoContabil)element).getTipo().toString();
 			}
 		});
 		

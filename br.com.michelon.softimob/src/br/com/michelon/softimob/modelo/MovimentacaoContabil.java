@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.google.common.collect.Lists;
+
 @Entity
 public class MovimentacaoContabil implements Serializable{
 
@@ -26,11 +28,8 @@ public class MovimentacaoContabil implements Serializable{
 	@Column(length = 14, scale = 2)
 	private BigDecimal valor;
 	
-	@Column(nullable = false)
-	private Long lote;
-	
 	@OneToMany(cascade=CascadeType.ALL)
-	private List<LancamentoContabil> lancamentos;
+	private List<LancamentoContabil> lancamentos = Lists.newArrayList();
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
@@ -49,14 +48,6 @@ public class MovimentacaoContabil implements Serializable{
 
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
-	}
-
-	public Long getLote() {
-		return lote;
-	}
-
-	public void setLote(Long lote) {
-		this.lote = lote;
 	}
 
 	public List<LancamentoContabil> getLancamentos() {
