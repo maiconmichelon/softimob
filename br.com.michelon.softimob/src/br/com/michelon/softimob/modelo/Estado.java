@@ -1,12 +1,15 @@
 package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.google.common.collect.Lists;
 
 @Entity
 public class Estado implements Serializable{
@@ -21,6 +24,9 @@ public class Estado implements Serializable{
 	
 	@Column(nullable = false, length = 2)
 	private String uf;
+	
+	@Column
+	private List<Cidade> cidades = Lists.newArrayList();
 	
 	@Column
 	private Boolean ativo;
@@ -55,6 +61,14 @@ public class Estado implements Serializable{
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+	
+	public List<Cidade> getCidades() {
+		return cidades;
+	}
+	
+	public void setCidades(List<Cidade> cidades) {
+		this.cidades = cidades;
 	}
 	
 }

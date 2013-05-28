@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -56,6 +57,11 @@ public class Cidade implements Serializable{
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public List<Rua> getBairros() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

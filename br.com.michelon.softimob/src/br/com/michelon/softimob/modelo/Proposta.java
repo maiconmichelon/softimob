@@ -2,7 +2,7 @@ package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -90,14 +90,6 @@ public class Proposta implements Serializable {
 		this.imovel = imovel;
 	}
 
-	public Date getData() {
-		return data;
-	}
-
-	public void setData(Date data) {
-		this.data = data;
-	}
-
 	public Funcionario getFuncionario() {
 		return funcionario;
 	}
@@ -136,6 +128,14 @@ public class Proposta implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
 	}
 	
 }

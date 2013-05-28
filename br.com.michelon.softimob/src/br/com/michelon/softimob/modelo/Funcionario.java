@@ -55,4 +55,9 @@ public class Funcionario extends Comissionado implements Serializable{
 		this.dataAdmissao = dataAdmissao;
 	}
 
+	@Override
+	public String toString() {
+		return getNome();
+	}
+	
 }
