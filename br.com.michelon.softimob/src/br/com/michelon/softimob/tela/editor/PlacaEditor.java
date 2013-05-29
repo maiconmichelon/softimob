@@ -71,7 +71,9 @@ public class PlacaEditor extends GenericEditor{
 		Button btnNewButton = new Button(composite, SWT.NONE);
 		btnNewButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnNewButton.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar, value, "funcionario");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnNewButton, value, "funcionario");
+		
+		value.setValue(new Placa());
 		
 		m_bindingContext = initDataBindings();
 	}

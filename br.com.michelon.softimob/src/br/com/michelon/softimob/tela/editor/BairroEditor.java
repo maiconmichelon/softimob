@@ -54,6 +54,9 @@ public class BairroEditor extends GenericEditor{
 		
 		text = new Text(parent, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		value.setValue(new Bairro());
+		
 		m_bindingContext = initDataBindings();
 	}
 

@@ -56,6 +56,9 @@ public class ModeloContratoEditor extends GenericEditor {
 		
 		Button btnSelecionar = new Button(parent, SWT.NONE);
 		btnSelecionar.setText("...");
+		
+		value.setValue(new ModeloContrato());
+		
 		m_bindingContext = initDataBindings();
 		
 	}

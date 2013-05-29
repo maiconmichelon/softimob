@@ -50,8 +50,10 @@ public class EstadoEditor extends GenericEditor {
 		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_1.widthHint = 288;
 		text_1.setLayoutData(gd_text_1);
-		m_bindingContext = initDataBindings();
 		
+		value.setValue(new Estado());
+		
+		m_bindingContext = initDataBindings();
 	}
 
 	@Override

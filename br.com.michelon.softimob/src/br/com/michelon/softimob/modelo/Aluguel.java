@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 import com.google.common.collect.Lists;
 
 @Entity
-public class Aluguel implements Serializable{
+public class Aluguel extends VendaAluguel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 

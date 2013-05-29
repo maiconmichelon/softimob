@@ -48,6 +48,8 @@ public class DepartamentoEditor extends GenericEditor {
 		gd_text.widthHint = 206;
 		text.setLayoutData(gd_text);
 		
+		value.setValue(new Departamento());
+		
 		m_bindingContext = initDataBindings();
 		
 	}

@@ -41,6 +41,9 @@ public class TipoImovelEditor extends GenericEditor{
 		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text.widthHint = 261;
 		text.setLayoutData(gd_text);
+		
+		value.setValue(new TipoImovel());
+		
 		m_bindingContext = initDataBindings();
 	}
 

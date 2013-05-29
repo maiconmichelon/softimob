@@ -55,6 +55,9 @@ public class CidadeEditor extends GenericEditor {
 		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text.widthHint = 222;
 		text.setLayoutData(gd_text);
+		
+		value.setValue(new Cidade());
+		
 		m_bindingContext = initDataBindings();
 	}
 

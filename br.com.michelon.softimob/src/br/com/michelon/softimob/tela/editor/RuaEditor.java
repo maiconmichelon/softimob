@@ -69,9 +69,10 @@ public class RuaEditor extends GenericEditor{
 		
 		text = new Text(parent, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		m_bindingContext = initDataBindings();
-		// TODO Auto-generated method stub
 		
+		value.setValue(new Rua());
+		
+		m_bindingContext = initDataBindings();
 	}
 
 	@Override

@@ -5,10 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.TableViewer;
@@ -259,11 +261,12 @@ public class MovimentacaoContabilEditor extends GenericEditor{
 		//
 		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
 		IObservableValue valueModeloLctoDataLancamentoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "dataLancamento", Date.class).observeDetail(valueModeloLcto);
-		bindingContext.bindValue(observeTextText_5ObserveWidget, valueModeloLctoDataLancamentoObserveDetailValue, null, null);
+		bindingContext.bindValue(observeTextText_5ObserveWidget, valueModeloLctoDataLancamentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		// //TODO data da movimentao deve ser somente setada no momento que for salva, verificando se a data de todos os lancamentos sao iguais
 		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
 		IObservableValue valueModeloLctoValorObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "valor", BigDecimal.class).observeDetail(valueModeloLcto);
-		bindingContext.bindValue(observeTextText_1ObserveWidget, valueModeloLctoValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		Binding bindValue = bindingContext.bindValue(observeTextText_1ObserveWidget, valueModeloLctoValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		ControlDecorationSupport.create(bindValue, SWT.LEFT | SWT.TOP);
 		//
 		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
 		IObservableValue valueModeloLctoContaDebitoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "contaDebito.codigoDescricao", PlanoConta.class).observeDetail(valueModeloLcto);

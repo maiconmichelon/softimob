@@ -58,6 +58,10 @@ public class Proposta implements Serializable {
 		this.imovel = imovel;
 	}
 	
+	public Proposta(Proposta contraProposta) {
+		this.contraProposta = contraProposta;
+	}
+	
 	public BigDecimal getValor() {
 		return valor;
 	}

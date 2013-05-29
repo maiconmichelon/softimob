@@ -5,10 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -33,6 +35,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.Images;
 import org.eclipse.wb.swt.ResourceManager;
@@ -41,6 +45,7 @@ import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
+import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.modelo.Bairro;
 import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.modelo.Cidade;
@@ -261,9 +266,9 @@ public class ImovelEditor extends GenericEditor{
 		grpCmodo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 		grpCmodo.setText("Cômodo");
 		
-		Label lblCmodo = new Label(grpCmodo, SWT.NONE);
-		lblCmodo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblCmodo.setText("Cômodo");
+		Label lblNome = new Label(grpCmodo, SWT.NONE);
+		lblNome.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblNome.setText("Nome");
 		
 		text_26 = new Text(grpCmodo, SWT.BORDER);
 		text_26.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -465,7 +470,7 @@ public class ImovelEditor extends GenericEditor{
 		btnAddChave.setText("Adicionar");
 		
 		CTabItem tbtmHistricos = new CTabItem(tfImovel, SWT.NONE);
-		tbtmHistricos.setText("Históricos");
+		tbtmHistricos.setText("Feedbacks");
 		
 		Composite composite_3 = new Composite(tfImovel, SWT.NONE);
 		tbtmHistricos.setControl(composite_3);
@@ -491,7 +496,7 @@ public class ImovelEditor extends GenericEditor{
 		GridLayout gl_grpNovoHistrico = new GridLayout(3, false);
 		grpNovoHistrico.setLayout(gl_grpNovoHistrico);
 		grpNovoHistrico.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
-		grpNovoHistrico.setText("Histórico");
+		grpNovoHistrico.setText("Feedback");
 		
 		Label lblData_1 = new Label(grpNovoHistrico, SWT.NONE);
 		lblData_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -500,7 +505,7 @@ public class ImovelEditor extends GenericEditor{
 		DateTimeTextField dateTextField = new DateTimeTextField(grpNovoHistrico);
 		text_32 = dateTextField.getControl();
 		GridData gd_text_32 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_32.widthHint = 73;
+		gd_text_32.widthHint = 93;
 		text_32.setLayoutData(gd_text_32);
 		new Label(grpNovoHistrico, SWT.NONE);
 		
@@ -813,11 +818,12 @@ public class ImovelEditor extends GenericEditor{
 	private void criarTabelaReservas(Composite composite) {
 		tvbReserva = new TableViewerBuilder(composite);
 		
-		tvbReserva.createColumn("Data da Reserva").bindToProperty("dataReserva").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat()));
-		tvbReserva.createColumn("Data de Vencimento").bindToProperty("dataVencimento").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat()));
-		tvbReserva.createColumn("Cliente").bindToProperty("cliente.nome").build();
-		tvbReserva.createColumn("Funcionário").bindToProperty("funcionario.nome").build();
-		tvbReserva.createColumn("Valor").bindToProperty("valor").build();
+		tvbReserva.createColumn("Data da Reserva").setPercentWidth(10).bindToProperty("dataReserva").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
+		tvbReserva.createColumn("Data de Vencimento").setPercentWidth(10).bindToProperty("dataVencimento").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
+		tvbReserva.createColumn("Cliente").setPercentWidth(15).bindToProperty("cliente.nome").build();
+		tvbReserva.createColumn("Funcionário").setPercentWidth(15).bindToProperty("funcionario.nome").build();
+		tvbReserva.createColumn("Valor").bindToProperty("valor").setPercentWidth(10).format(FormatterHelper.getCurrencyFormatter()).build();
+		tvbReserva.createColumn("Observações").setPercentWidth(40).bindToProperty("observacoes").build();
 		
 		tvbReserva.setInput(((Imovel)value.getValue()).getReservas());
 		
@@ -827,7 +833,8 @@ public class ImovelEditor extends GenericEditor{
 	private void criarTabelaChave(Composite composite){
 		tvbChave = new TableViewerBuilder(composite);
 		
-		tvbChave.createColumn("Número").bindToProperty("numero").build();
+		tvbChave.createColumn("Número").setPercentWidth(30).bindToProperty("numero").build();
+		tvbChave.createColumn("Localização").setPercentWidth(70).bindToProperty("tipoExtenso").build();
 		
 		tvbChave.setInput(((Imovel)value.getValue()).getChaves());
 		
@@ -837,8 +844,8 @@ public class ImovelEditor extends GenericEditor{
 	private void criarTabelaComodo(Composite composite){
 		tvbComodo = new TableViewerBuilder(composite);
 		
-		tvbComodo.createColumn("Cômodo").bindToProperty("tipoComodo.nome").build();
-		tvbComodo.createColumn("Descrição").bindToProperty("descricao").makeEditable().build();
+		tvbComodo.createColumn("Cômodo").setPercentWidth(30).bindToProperty("tipoComodo.nome").build();
+		tvbComodo.createColumn("Descrição").setPercentWidth(70).bindToProperty("descricao").makeEditable().build();
 		
 		tvbComodo.setInput(((Imovel)value.getValue()).getComodos());
 		
@@ -848,9 +855,9 @@ public class ImovelEditor extends GenericEditor{
 	private void criarTabelaFeedback(Composite composite){
 		tvbFeedbacks = new TableViewerBuilder(composite);
 		
-		tvbFeedbacks.createColumn("Data da Visita").bindToProperty("data").format(Formatter.forDate(new SimpleDateFormat("dd/MM/yyyy hh:mm"))).build();
-		tvbFeedbacks.createColumn("Funcionário").bindToProperty("funcionario.nome").build();
-		tvbFeedbacks.createColumn("Cliente").bindToProperty("cliente.nome").build();
+		tvbFeedbacks.createColumn("Data da Visita").setPercentWidth(10).bindToProperty("data").format(Formatter.forDate(new SimpleDateFormat("dd/MM/yyyy hh:mm"))).build();
+		tvbFeedbacks.createColumn("Funcionário").setPercentWidth(15).bindToProperty("funcionario.nome").build();
+		tvbFeedbacks.createColumn("Cliente").setPercentWidth(15).bindToProperty("cliente.nome").build();
 		tvbFeedbacks.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
 		
 		tvbFeedbacks.setInput(((Imovel)value.getValue()).getFeedbacks());
@@ -861,15 +868,29 @@ public class ImovelEditor extends GenericEditor{
 	private void criarTabelaProposta(Composite composite){
 		tvbProposta = new TableViewerBuilder(composite);
 			
-		tvbProposta.createColumn("Data da Proposta").bindToProperty("data").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
-		tvbProposta.createColumn("Valor").bindToProperty("valor").build();
-		tvbProposta.createColumn("Cliente").bindToProperty("cliente.nome").build();
-		tvbProposta.createColumn("Funcioário").bindToProperty("funcionario.nome").build();
+		tvbProposta.createColumn("Data da Proposta").setPercentWidth(10).bindToProperty("data").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
+		tvbProposta.createColumn("Cliente").setPercentWidth(15).bindToProperty("cliente.nome").build();
+		tvbProposta.createColumn("Funcionário").setPercentWidth(15).bindToProperty("funcionario.nome").build();
+		tvbProposta.createColumn("Valor").bindToProperty("valor").format(FormatterHelper.getCurrencyFormatter()).build();
 		tvbProposta.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
 		
 		tvbProposta.setInput(((Imovel)value.getValue()).getPropostas());
 		
 		tvProposta = tvbProposta.getTableViewer();
+		
+		Menu menuTvProposta = new Menu(tvProposta.getTable());
+		
+		MenuItem miContraProposta = new MenuItem(menuTvProposta, SWT.BORDER);
+		miContraProposta.setText("Contra-proposta");
+		miContraProposta.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ContraPropostaDialog dialog = new ContraPropostaDialog(ShellHelper.getActiveShell(), (Proposta) SelectionHelper.getObject(tvProposta));
+				dialog.open();
+			}
+		});
+		
+		tvProposta.getTable().setMenu(menuTvProposta);
 	}
 
 	private void criarTabelaLocacoes(Composite composite) {
@@ -1038,7 +1059,8 @@ public class ImovelEditor extends GenericEditor{
 		//
 		IObservableValue observeTextText_29ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_29);
 		IObservableValue valuePropostaValorObserveDetailValue = PojoProperties.value(Proposta.class, "valor", BigDecimal.class).observeDetail(valueProposta);
-		bindingContext.bindValue(observeTextText_29ObserveWidget, valuePropostaValorObserveDetailValue, null, null);
+		Binding bindValue = bindingContext.bindValue(observeTextText_29ObserveWidget, valuePropostaValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		ControlDecorationSupport.create(bindValue, SWT.LEFT | SWT.TOP);
 		//
 		IObservableValue observeTextText_20ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_20);
 		IObservableValue valuePropostaObservacoesObserveDetailValue = PojoProperties.value(Proposta.class, "observacoes", String.class).observeDetail(valueProposta);
@@ -1049,8 +1071,8 @@ public class ImovelEditor extends GenericEditor{
 		bindingContext.bindValue(observeTextText_33ObserveWidget, valuePropostaDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
 		IObservableValue observeTextText_30ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_30);
-		IObservableValue valueReservaDataAberturaObserveDetailValue = PojoProperties.value(Reserva.class, "dataAbertura", Date.class).observeDetail(valueReserva);
-		bindingContext.bindValue(observeTextText_30ObserveWidget, valueReservaDataAberturaObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		IObservableValue valueReservadataReservaObserveDetailValue = PojoProperties.value(Reserva.class, "dataReserva", Date.class).observeDetail(valueReserva);
+		bindingContext.bindValue(observeTextText_30ObserveWidget, valueReservadataReservaObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
 		IObservableValue observeTextText_37ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_37);
 		IObservableValue valueReservaDataVencimentoObserveDetailValue = PojoProperties.value(Reserva.class, "dataVencimento", Date.class).observeDetail(valueReserva);
@@ -1066,7 +1088,8 @@ public class ImovelEditor extends GenericEditor{
 		//
 		IObservableValue observeTextText_39ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_39);
 		IObservableValue valueReservaValorObserveDetailValue = PojoProperties.value(Reserva.class, "valor", BigDecimal.class).observeDetail(valueReserva);
-		bindingContext.bindValue(observeTextText_39ObserveWidget, valueReservaValorObserveDetailValue, null, null);
+		Binding bindValue2 = bindingContext.bindValue(observeTextText_39ObserveWidget, valueReservaValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		ControlDecorationSupport.create(bindValue2, SWT.LEFT | SWT.TOP);
 		//
 		IObservableValue observeTextText_41ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_41);
 		IObservableValue valueReservaObservacoesObserveDetailValue = PojoProperties.value(Reserva.class, "observacoes", String.class).observeDetail(valueReserva);

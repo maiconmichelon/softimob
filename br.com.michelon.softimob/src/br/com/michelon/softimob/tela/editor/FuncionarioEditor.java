@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Text;
 
 import br.com.michelon.softimob.modelo.Departamento;
 import br.com.michelon.softimob.modelo.Funcionario;
+import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.PhoneTextField;
 
@@ -108,6 +109,9 @@ public class FuncionarioEditor extends GenericEditor {
 		GridData gd_text_5 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_5.widthHint = 79;
 		text_5.setLayoutData(gd_text_5);
+		
+		value.setValue(new Funcionario());
+		
 		m_bindingContext = initDataBindings();
 	}
 
@@ -129,7 +133,7 @@ public class FuncionarioEditor extends GenericEditor {
 		//
 		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
 		IObservableValue valueDataNascimentoObserveDetailValue = PojoProperties.value(Funcionario.class, "dataNascimento", Date.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_4ObserveWidget, valueDataNascimentoObserveDetailValue, null, null);
+		bindingContext.bindValue(observeTextText_4ObserveWidget, valueDataNascimentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
 		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_2);
 		IObservableValue valueCelularObserveDetailValue = PojoProperties.value(Funcionario.class, "celular", String.class).observeDetail(value);
@@ -141,7 +145,7 @@ public class FuncionarioEditor extends GenericEditor {
 		//
 		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
 		IObservableValue valueDataAdmissaoObserveDetailValue = PojoProperties.value(Funcionario.class, "dataAdmissao", Date.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_5ObserveWidget, valueDataAdmissaoObserveDetailValue, null, null);
+		bindingContext.bindValue(observeTextText_5ObserveWidget, valueDataAdmissaoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
 		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
 		IObservableValue valueTelefoneObserveDetailValue = PojoProperties.value(Funcionario.class, "telefone", String.class).observeDetail(value);

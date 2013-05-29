@@ -66,6 +66,10 @@ public class Chave implements Serializable{
 		this.localizacao = localizacao;
 	}
 	
+	private String getLocalizacaoExtenso() {
+		return localizacao == CLIENTE ? "Cliente" : "Imobiliária";
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

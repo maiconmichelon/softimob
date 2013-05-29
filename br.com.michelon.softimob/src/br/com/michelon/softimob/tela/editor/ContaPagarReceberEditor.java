@@ -16,8 +16,11 @@ import org.eclipse.swt.widgets.Text;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateTextField;
+
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import java.util.Date;
@@ -142,7 +145,8 @@ public class ContaPagarReceberEditor extends GenericEditor {
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
 		IObservableValue valueValorObserveDetailValue = PojoProperties.value(ContaPagarReceber.class, "valor", BigDecimal.class).observeDetail(value);
-		bindingContext.bindValue(observeTextTextObserveWidget, valueValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		Binding bindValue = bindingContext.bindValue(observeTextTextObserveWidget, valueValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		ControlDecorationSupport.create(bindValue, SWT.LEFT | SWT.TOP);
 		//
 		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
 		IObservableValue valueDescricaoObserveDetailValue = PojoProperties.value(ContaPagarReceber.class, "observacoes", String.class).observeDetail(value);
