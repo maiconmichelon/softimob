@@ -21,8 +21,8 @@ public class ContaPagarReceber implements Serializable, Conta{
 
 	private static final long serialVersionUID = 1L;
 
-	public static final char PAGAR = 'P';
-	public static final char RECEBER = 'R';
+	public static final int PAGAR = 1;
+	public static final int RECEBER = 2;
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -51,7 +51,7 @@ public class ContaPagarReceber implements Serializable, Conta{
 	
 	@NotNull(message = "Selecione o tipo da conta.")
 	@Column(length = 1, nullable = false)
-	private Character tipo;
+	private Integer tipo;
 	
 	@ManyToOne
 	private MovimentacaoContabil movimentacao;
@@ -115,11 +115,11 @@ public class ContaPagarReceber implements Serializable, Conta{
 		this.origem = origem;
 	}
 
-	public Character getTipo() {
+	public Integer getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(Character tipo) {
+	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
 	}
 

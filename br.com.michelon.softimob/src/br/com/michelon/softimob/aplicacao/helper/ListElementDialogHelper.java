@@ -74,7 +74,8 @@ public class ListElementDialogHelper {
 		CLIENTE("Clientes", "Selecione um cliente."), 
 		COMODO("Cômodos", "Selecione um cômodo."),
 		IMOVEL("Imóveis", "Selecione um imóvel."), 
-		PLANOCONTA("Plano de Contas", "Selecione uma conta.");
+		PLANOCONTA("Plano de Contas", "Selecione uma conta."), 
+		COMISSIONADO("Comissionados", "Selecione um cliente ou funcionário.");
 		
 		private final String title;
 		private final String message;

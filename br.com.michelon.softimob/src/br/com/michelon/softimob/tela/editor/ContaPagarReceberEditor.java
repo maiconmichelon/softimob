@@ -43,6 +43,8 @@ public class ContaPagarReceberEditor extends GenericEditor {
 	private Text text_3;
 	private Text text_2;
 	private ComboViewer comboViewer;
+
+	private RadioGroupViewer radioGroupViewer;
 	
 	public ContaPagarReceberEditor() {
 	}
@@ -106,15 +108,17 @@ public class ContaPagarReceberEditor extends GenericEditor {
 		text.setLayoutData(gd_text);
 		new Label(parent, SWT.NONE);
 		
-		RadioGroupViewer radioGroupViewer = new RadioGroupViewer(parent, SWT.BORDER);
+		radioGroupViewer = new RadioGroupViewer(parent, SWT.NONE);
 		RadioGroup radioGroup = radioGroupViewer.getRadioGroup();
 		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		
-		RadioItem riPagar = new RadioItem(radioGroup, SWT.NONE);
-		riPagar.setText("Pagar");
-		
-		RadioItem riReceber = new RadioItem(radioGroup, SWT.NONE);
-		riReceber.setText("Receber");
+		radioGroupViewer.setContentProvider(ArrayContentProvider.getInstance());
+		radioGroupViewer.setLabelProvider(new LabelProvider(){
+			@Override
+			public String getText(Object element) {
+				return element.equals(ContaPagarReceber.PAGAR) ? "Pagar" : "Receber"; 
+			}
+		});
+		radioGroupViewer.setInput(new Integer[]{ContaPagarReceber.PAGAR, ContaPagarReceber.RECEBER});
 		
 		Label lblObservaes = new Label(parent, SWT.NONE);
 		lblObservaes.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -151,6 +155,10 @@ public class ContaPagarReceberEditor extends GenericEditor {
 		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
 		IObservableValue valueDescricaoObserveDetailValue = PojoProperties.value(ContaPagarReceber.class, "observacoes", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_1ObserveWidget, valueDescricaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionRadioGroupViewer = ViewerProperties.singleSelection().observe(radioGroupViewer);
+		IObservableValue valueChaveLocalizacaoObserveDetailValue = PojoProperties.value(ContaPagarReceber.class, "tipo", Integer.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionRadioGroupViewer, valueChaveLocalizacaoObserveDetailValue, null, null);
 		//
 		return bindingContext;
 	}

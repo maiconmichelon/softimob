@@ -115,7 +115,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		tvcTipo.setLabelProvider(new ColumnLabelProvider(){
 			@Override
 			public String getText(Object element) {
-				Character tipo = ((ContaPagarReceber)element).getTipo();
+				int tipo = ((ContaPagarReceber)element).getTipo();
 				return tipo == ContaPagarReceber.PAGAR ? PAGAR : RECEBER;
 			}
 		});

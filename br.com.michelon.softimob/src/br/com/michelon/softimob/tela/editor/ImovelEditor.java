@@ -21,7 +21,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
 import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
-import org.eclipse.nebula.widgets.radiogroup.RadioItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -38,7 +37,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.internal.handlers.WizardHandler.New;
 import org.eclipse.wb.swt.Images;
 import org.eclipse.wb.swt.ResourceManager;
 
@@ -49,6 +47,7 @@ import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.modelo.Bairro;
 import br.com.michelon.softimob.modelo.Chave;
+import br.com.michelon.softimob.modelo.Chave.LocalizacaoChave;
 import br.com.michelon.softimob.modelo.Cidade;
 import br.com.michelon.softimob.modelo.Comodo;
 import br.com.michelon.softimob.modelo.Estado;
@@ -59,7 +58,6 @@ import br.com.michelon.softimob.modelo.Reserva;
 import br.com.michelon.softimob.modelo.Rua;
 import br.com.michelon.softimob.modelo.TipoComodo;
 import br.com.michelon.softimob.modelo.TipoImovel;
-import br.com.michelon.softimob.modelo.Chave.LocalizacaoChave;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.CEPTextField;
 import br.com.michelon.softimob.tela.widget.DateTextField;
@@ -129,8 +127,12 @@ public class ImovelEditor extends GenericEditor{
 	private Text text_16;
 
 	private ComboViewer cvCidades;
-
 	private ComboViewer cvBairros;
+	private RadioGroupViewer radioGroupViewer;
+
+	private TableViewerBuilder tvbContatoPrestacaoServico;
+
+	private TableViewerBuilder tvbLocacoes;
 	
 	public ImovelEditor() {
 		
@@ -409,17 +411,13 @@ public class ImovelEditor extends GenericEditor{
 		new Label(grpChave, SWT.NONE);
 		new Label(grpChave, SWT.NONE);
 		
-		RadioGroupViewer radioGroupViewer = new RadioGroupViewer(grpChave, SWT.BORDER);
+		radioGroupViewer = new RadioGroupViewer(grpChave, SWT.NONE);
+		radioGroupViewer.setContentProvider(ArrayContentProvider.getInstance());
+		
 		RadioGroup radioGroup = radioGroupViewer.getRadioGroup();
 		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		radioGroupViewer.setInput(new Object[]{LocalizacaoChave.CLIENTE, LocalizacaoChave.IMOBILIARIA});
-		
-		RadioItem riCliente = new RadioItem(radioGroup, SWT.NONE);
-		riCliente.setText("Cliente");
-		
-		RadioItem riImobiliaria = new RadioItem(radioGroup, SWT.NONE);
-		riImobiliaria.setText("Imobiliária");
 		
 		new Label(grpChave, SWT.NONE);
 		new Label(grpChave, SWT.NONE);
@@ -707,6 +705,7 @@ public class ImovelEditor extends GenericEditor{
 		Composite composite_8 = new Composite(composite_7, SWT.NONE);
 		composite_8.setLayout(new GridLayout(1, false));
 		composite_8.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		criarTabelaContratoPrestacaoServico(composite_8);
 		
 		Group grpContratoPrestaoDe = new Group(composite_7, SWT.NONE);
 		grpContratoPrestaoDe.setLayout(new GridLayout(3, false));
@@ -783,6 +782,16 @@ public class ImovelEditor extends GenericEditor{
 		
 	}
 	
+	private void criarTabelaContratoPrestacaoServico(Composite composite) {
+		tvbContatoPrestacaoServico = new TableViewerBuilder(composite);
+		
+		tvbContatoPrestacaoServico.createColumn("Data").setPercentWidth(10).bindToProperty("data").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
+		tvbContatoPrestacaoServico.createColumn("Data de Vencimento").setPercentWidth(10).bindToProperty("dataVencimento").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
+		tvbContatoPrestacaoServico.createColumn("Valor").setPercentWidth(10).bindToProperty("valor").format(FormatterHelper.getCurrencyFormatter()).build();
+		tvbContatoPrestacaoServico.createColumn("Funcionário").setPercentWidth(20).bindToProperty("funcionario.nome").format(FormatterHelper.getCurrencyFormatter()).build();
+		tvbContatoPrestacaoServico.createColumn("Tipo").setPercentWidth(10).bindToProperty("tipo").build();
+	}
+
 	private void criarTabelaReservas(Composite composite) {
 		tvbReserva = new TableViewerBuilder(composite);
 		
@@ -802,7 +811,7 @@ public class ImovelEditor extends GenericEditor{
 		tvbChave = new TableViewerBuilder(composite);
 		
 		tvbChave.createColumn("Número").setPercentWidth(30).bindToProperty("numero").build();
-		tvbChave.createColumn("Localização").setPercentWidth(70).bindToProperty("tipoExtenso").build();
+		tvbChave.createColumn("Localização").setPercentWidth(70).bindToProperty("localizacao").build();
 		
 		tvbChave.setInput(((Imovel)value.getValue()).getChaves());
 		
@@ -863,6 +872,14 @@ public class ImovelEditor extends GenericEditor{
 
 	private void criarTabelaLocacoes(Composite composite) {
 		tvbLocacao = new TableViewerBuilder(composite);
+		
+		tvbLocacao.createColumn("Locatario").setPercentWidth(10).bindToProperty("locatario.nome").build();
+		tvbLocacao.createColumn("Fiador").setPercentWidth(10).bindToProperty("fiador.nome").build();
+		tvbLocacao.createColumn("Corretor").setPercentWidth(10).bindToProperty("corretor.nome").build();
+		tvbLocacao.createColumn("Valor").setPercentWidth(10).format(FormatterHelper.getCurrencyFormatter()).bindToProperty("valor").build();
+		tvbLocacao.createColumn("Data").setPercentWidth(10).format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).bindToProperty("data").build();
+		tvbLocacao.createColumn("Ducação (meses)").setPercentWidth(10).bindToProperty("duracao").build();
+		tvbLocacao.createColumn("Reajuste").setPercentWidth(10).bindToProperty("reajuste").build();
 		
 		tvLocacao = tvbLocacao.getTableViewer();
 	}
@@ -1062,6 +1079,10 @@ public class ImovelEditor extends GenericEditor{
 		IObservableValue observeTextText_41ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_41);
 		IObservableValue valueReservaObservacoesObserveDetailValue = PojoProperties.value(Reserva.class, "observacoes", String.class).observeDetail(valueReserva);
 		bindingContext.bindValue(observeTextText_41ObserveWidget, valueReservaObservacoesObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionRadioGroupViewer = ViewerProperties.singleSelection().observe(radioGroupViewer);
+		IObservableValue valueChaveLocalizacaoObserveDetailValue = PojoProperties.value(Chave.class, "localizacao", LocalizacaoChave.class).observeDetail(valueChave);
+		bindingContext.bindValue(observeSingleSelectionRadioGroupViewer, valueChaveLocalizacaoObserveDetailValue, null, null);
 		//
 		bindTables(bindingContext);
 		//

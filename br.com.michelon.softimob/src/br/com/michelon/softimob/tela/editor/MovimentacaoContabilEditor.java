@@ -68,26 +68,16 @@ public class MovimentacaoContabilEditor extends GenericEditor{
 		gridLayout.numColumns = 3;
 		
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(2, false));
+		composite.setLayout(new GridLayout(1, false));
 		GridData gd_composite = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
 		gd_composite.heightHint = 160;
 		composite.setLayoutData(gd_composite);
 		
 		Composite composite_1 = new Composite(composite, SWT.NONE);
 		composite_1.setLayout(new GridLayout(1, false));
-		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 2));
+		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		criarTabelaLancamentos(composite_1);
-		
-		Button btnNovo = new Button(composite, SWT.NONE);
-		btnNovo.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/novo/novo16.png"));
-		btnNovo.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
-		btnNovo.setText("Novo");
-		
-		Button btnRemover = new Button(composite, SWT.NONE);
-		btnRemover.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/delete/delete16.png"));
-		btnRemover.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
-		btnRemover.setText("Remover");
 		
 		Label lblLote = new Label(parent, SWT.NONE);
 		lblLote.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
