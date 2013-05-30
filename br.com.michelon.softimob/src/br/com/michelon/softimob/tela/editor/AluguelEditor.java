@@ -2,6 +2,7 @@ package br.com.michelon.softimob.tela.editor;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -10,6 +11,8 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -29,7 +32,6 @@ import br.com.michelon.softimob.modelo.AcontecimentoChamado;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.ChamadoReforma;
 import br.com.michelon.softimob.modelo.Cliente;
-import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Vistoria;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateTextField;
@@ -77,6 +79,14 @@ public class AluguelEditor extends GenericEditor{
 	private TableViewerBuilder tvbVistoria;
 	private Text text_27;
 	private Text text_28;
+
+	private TableViewer tvVistoria;
+
+	private TableViewer tvAndamentoChamado;
+
+	private TableViewer tvChamadoGeral;
+
+	private TableViewer tvComissao;
 	
 	public AluguelEditor() {
 	}
@@ -520,6 +530,8 @@ public class AluguelEditor extends GenericEditor{
 			}
 		}).makeEditable().build();
 		tvbComissao.createColumn("Valor (R$)").bindToProperty("valor").makeEditable().build();
+		
+		tvComissao = tvbComissao.getTableViewer();
 	}
 	
 	private void criarTabelaChamadosGerais(Composite composite){
@@ -530,6 +542,8 @@ public class AluguelEditor extends GenericEditor{
 		tvbChamadoGeral.createColumn("Cliente").bindToProperty("inquilino.nome").build();
 		tvbChamadoGeral.createColumn("Problema").bindToProperty("problema").build();
 		tvbChamadoGeral.createColumn("Status").bindToProperty("status").build();
+		
+		tvChamadoGeral = tvbChamadoGeral.getTableViewer();
 	}
 	
 	private void criarTabelaAndamentoChamado(Composite composite){
@@ -538,6 +552,8 @@ public class AluguelEditor extends GenericEditor{
 		tvbAndamentoChamado.createColumn("Data").bindToProperty("data").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
 		tvbAndamentoChamado.createColumn("Funcionário").bindToProperty("funcionario.nome").build();
 		tvbAndamentoChamado.createColumn("Descrição").bindToProperty("descricao").build();
+		
+		tvAndamentoChamado = tvbAndamentoChamado.getTableViewer();
 	}
 	
 	private void criarTabelaVistoria(Composite composite){
@@ -548,12 +564,36 @@ public class AluguelEditor extends GenericEditor{
 		tvbVistoria.createColumn("Inquilino").bindToProperty("inquilino.nome").build();
 		tvbVistoria.createColumn("Fotos").bindToProperty("fotos").build();
 		tvbVistoria.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
+		
+		tvVistoria = tvbVistoria.getTableViewer();
 	}
 	
 	@Override
 	protected void salvar() {
 		
 	}
+	
+	protected DataBindingContext initBindTables(DataBindingContext context) {
+		//
+		IObservableValue observeSingleSelectionTableViewerAndamento = ViewerProperties.input().observe(tvAndamentoChamado);
+		IObservableValue valueObserveDetailValueAndamento = PojoProperties.value(ChamadoReforma.class, "acontecimentoChamado", List.class).observeDetail(valueChamado);
+		context.bindValue(observeSingleSelectionTableViewerAndamento, valueObserveDetailValueAndamento, null, null);
+		//
+		IObservableValue observeSingleSelectionTableViewerChamado = ViewerProperties.input().observe(tvChamadoGeral);
+		IObservableValue valueObserveDetailValueChamado = PojoProperties.value(Aluguel.class, "chamados", List.class).observeDetail(value);
+		context.bindValue(observeSingleSelectionTableViewerChamado, valueObserveDetailValueChamado, null, null);
+		//
+		IObservableValue observeSingleSelectionTableViewerVistoria = ViewerProperties.input().observe(tvVistoria);
+		IObservableValue valueObserveDetailValueVistoria = PojoProperties.value(Aluguel.class, "vistorias", List.class).observeDetail(value);
+		context.bindValue(observeSingleSelectionTableViewerVistoria, valueObserveDetailValueVistoria, null, null);
+		//
+		IObservableValue observeSingleSelectionTableViewerComissao = ViewerProperties.input().observe(tvComissao);
+		IObservableValue valueObserveDetailValueComissao = PojoProperties.value(Aluguel.class, "comissoes", List.class).observeDetail(value);
+		context.bindValue(observeSingleSelectionTableViewerComissao, valueObserveDetailValueComissao, null, null);
+		//
+		return context;
+	}
+	
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -614,12 +654,12 @@ public class AluguelEditor extends GenericEditor{
 		IObservableValue valueVistoriaDataAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "dataAbertura", Date.class).observeDetail(valueVistoria);
 		bindingContext.bindValue(observeTextText_35ObserveWidget, valueVistoriaDataAberturaObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeTextText_22ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_22);
+		IObservableValue observeTextText_22ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_22);
 		IObservableValue valueChamadoClientenomeObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "cliente.nome", String.class).observeDetail(valueChamado);
 		bindingContext.bindValue(observeTextText_22ObserveWidget, valueChamadoClientenomeObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_23ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_23);
-		IObservableValue valueChamadoFuncionarioAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "funcionarioAbertura", Funcionario.class).observeDetail(valueChamado);
+		IObservableValue observeTextText_23ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_23);
+		IObservableValue valueChamadoFuncionarioAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "funcionarioAbertura.nome", String.class).observeDetail(valueChamado);
 		bindingContext.bindValue(observeTextText_23ObserveWidget, valueChamadoFuncionarioAberturaObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_24ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_24);
@@ -630,7 +670,7 @@ public class AluguelEditor extends GenericEditor{
 		IObservableValue valueAcontecimentoChamadoDataObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "data", Date.class).observeDetail(valueAcontecimentoChamado);
 		bindingContext.bindValue(observeTextText_10ObserveWidget, valueAcontecimentoChamadoDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeTextText_27ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_27);
+		IObservableValue observeTextText_27ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_27);
 		IObservableValue valueAcontecimentoChamadoFuncionarionomeObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "funcionario.nome", String.class).observeDetail(valueAcontecimentoChamado);
 		bindingContext.bindValue(observeTextText_27ObserveWidget, valueAcontecimentoChamadoFuncionarionomeObserveDetailValue, null, null);
 		//

@@ -14,8 +14,21 @@ public class Chave implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	public static final int IMOBILIARIA = 1;
-	public static final int CLIENTE = 2;
+	public enum LocalizacaoChave{
+		IMOBILIARIA("Imobiliária"),
+		CLIENTE("Cliente");
+		
+		private String descricao;
+
+		LocalizacaoChave(String descricao){
+			this.descricao = descricao;
+		}
+		
+		@Override
+		public String toString() {
+			return descricao;
+		}
+	}
 	
 	@Id @GeneratedValue
 	private Long id;
@@ -28,7 +41,7 @@ public class Chave implements Serializable{
 	private Imovel imovel;
 	
 	@Column(nullable=false)
-	private int localizacao;
+	private LocalizacaoChave localizacao;
 	
 	public Chave(Imovel imovel) {
 		this.imovel = imovel;
@@ -58,16 +71,12 @@ public class Chave implements Serializable{
 		this.numero = numero;
 	}
 
-	public int getLocalizacao() {
-		return localizacao;
-	}
-
-	public void setLocalizacao(int localizacao) {
+	public void setLocalizacao(LocalizacaoChave localizacao) {
 		this.localizacao = localizacao;
 	}
 	
-	private String getLocalizacaoExtenso() {
-		return localizacao == CLIENTE ? "Cliente" : "Imobiliária";
+	public LocalizacaoChave getLocalizacao() {
+		return localizacao;
 	}
 	
 	@Override
@@ -94,5 +103,5 @@ public class Chave implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 }
