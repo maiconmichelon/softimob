@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 import org.eclipse.ui.IEditorInput;
 
 @Entity
-public class ContaPagarReceber implements Serializable, Conta{
+public class ContaPagarReceber implements Serializable, Pendencia{
 
 	private static final long serialVersionUID = 1L;
 
@@ -179,19 +179,4 @@ public class ContaPagarReceber implements Serializable, Conta{
 		return null;
 	}
 
-	@Override
-	public MovimentacaoContabil gerarMovimentacao() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void pagarConta() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void estornar() {
-		// TODO Auto-generated method stub
-	}
 }

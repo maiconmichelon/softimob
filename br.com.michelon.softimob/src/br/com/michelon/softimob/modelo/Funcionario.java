@@ -19,9 +19,6 @@ public class Funcionario extends Comissionado implements Serializable{
 	private Departamento departamento;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataNascimento;
-	
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAdmissao;
 	
 	public Funcionario() {
@@ -37,14 +34,6 @@ public class Funcionario extends Comissionado implements Serializable{
 
 	public void setDepartamento(Departamento departamento) {
 		this.departamento = departamento;
-	}
-
-	public Date getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
 	}
 
 	public Date getDataAdmissao() {

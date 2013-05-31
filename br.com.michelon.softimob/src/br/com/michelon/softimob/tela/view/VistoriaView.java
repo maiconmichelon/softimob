@@ -7,43 +7,38 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
-import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
-import br.com.michelon.softimob.modelo.ChamadoReforma;
-import br.com.michelon.softimob.tela.editor.ImovelEditor;
-
 import com.google.common.collect.Maps;
 
-public class ChamadoView extends GenericView<ChamadoReforma>{
+import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.modelo.Vistoria;
+import br.com.michelon.softimob.tela.editor.ImovelEditor;
+
+public class VistoriaView extends GenericView<Vistoria>{
 
 	private Map<String, String> atributos;
 	
-	public ChamadoView(){
+	public VistoriaView() {
 		super(false);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Maps.newHashMap();
 		
-		atributos.put("Número", "|5|numero");
-		atributos.put("Data do chamado", "|8|dataChamado");
-		atributos.put("Cliente", "|25|cliente.nome");
-		atributos.put("Observações", "|40|observacoes");
-		atributos.put("Status", "|10|status");
+		atributos.put("Imovel", "|10|imovel.numero");
 	}
 	
 	@Override
-	protected void excluir(List<ChamadoReforma> objetos) {
+	protected void excluir(List<Vistoria> objetos) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	protected String getTitleView() {
-		return "Chamados";
+		return "Vistorias";
 	}
 
 	@Override
 	protected Image getImage() {
-		return Images.REFORMA_32.getImage();
+		return Images.SEARCH_32.getImage();
 	}
 
 	@Override
@@ -62,15 +57,16 @@ public class ChamadoView extends GenericView<ChamadoReforma>{
 	}
 
 	@Override
-	protected Object getElementToEdit(ChamadoReforma object) {
-		return object.getAluguel();
+	protected Object getElementToEdit(Vistoria object) {
+		return object.getImovel();
 	}
 	
 	@Override
-	protected List<ChamadoReforma> getInput() {
+	protected List<Vistoria> getInput() {
+		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	protected List<Action> createMoreActions() {
 		return null;

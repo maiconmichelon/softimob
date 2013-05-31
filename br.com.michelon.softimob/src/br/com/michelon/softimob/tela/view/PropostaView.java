@@ -7,43 +7,43 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
-import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
-import br.com.michelon.softimob.modelo.ChamadoReforma;
-import br.com.michelon.softimob.tela.editor.ImovelEditor;
-
 import com.google.common.collect.Maps;
 
-public class ChamadoView extends GenericView<ChamadoReforma>{
+import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.modelo.Proposta;
+import br.com.michelon.softimob.tela.editor.ImovelEditor;
+
+public class PropostaView extends GenericView<Proposta>{
 
 	private Map<String, String> atributos;
 	
-	public ChamadoView(){
+	public PropostaView() {
 		super(false);
 		
 		atributos = Maps.newLinkedHashMap();
 		
-		atributos.put("Número", "|5|numero");
-		atributos.put("Data do chamado", "|8|dataChamado");
-		atributos.put("Cliente", "|25|cliente.nome");
-		atributos.put("Observações", "|40|observacoes");
-		atributos.put("Status", "|10|status");
+		atributos.put("Imóvel", "|8|imovel.numero");
+		atributos.put("Data", "|8|data");
+		atributos.put("Cliente", "|20|cliente");
+		atributos.put("Funcionário", "|20|funcionario.nome");
+		atributos.put("Descrição", "|40|descrição");
 	}
 	
 	@Override
-	protected void excluir(List<ChamadoReforma> objetos) {
+	protected void excluir(List<Proposta> objetos) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	protected String getTitleView() {
-		return "Chamados";
+		return "Propostas";
 	}
 
 	@Override
 	protected Image getImage() {
-		return Images.REFORMA_32.getImage();
+		return Images.PROPOSTA_32.getImage();
 	}
 
 	@Override
@@ -51,6 +51,11 @@ public class ChamadoView extends GenericView<ChamadoReforma>{
 		return atributos;
 	}
 
+	@Override
+	protected Object getElementToEdit(Proposta object) {
+		return object.getImovel();
+	}
+	
 	@Override
 	protected GenericEditorInput<?> getIEditorInput() {
 		return new ImovelEditorInput();
@@ -62,15 +67,11 @@ public class ChamadoView extends GenericView<ChamadoReforma>{
 	}
 
 	@Override
-	protected Object getElementToEdit(ChamadoReforma object) {
-		return object.getAluguel();
-	}
-	
-	@Override
-	protected List<ChamadoReforma> getInput() {
+	protected List<Proposta> getInput() {
+		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	protected List<Action> createMoreActions() {
 		return null;

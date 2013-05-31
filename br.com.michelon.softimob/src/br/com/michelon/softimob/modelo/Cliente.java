@@ -1,22 +1,16 @@
 package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 public class Cliente extends Comissionado implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	@Temporal(TemporalType.DATE)
-	private Date dataNascimento;
-	
 	@Column(nullable = false)
 	private String cpf;
 	
@@ -56,14 +50,6 @@ public class Cliente extends Comissionado implements Serializable{
 
 	public void setRg(String rg) {
 		this.rg = rg;
-	}
-
-	public Date getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
 	}
 
 	public String getFiliacao() {

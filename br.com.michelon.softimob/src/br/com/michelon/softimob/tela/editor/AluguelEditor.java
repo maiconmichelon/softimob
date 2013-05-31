@@ -15,6 +15,8 @@ import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
+import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -46,8 +48,6 @@ import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.properties.IValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
-import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
-import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
 
 public class AluguelEditor extends GenericEditor{
 	private DataBindingContext m_bindingContext;
@@ -76,7 +76,6 @@ public class AluguelEditor extends GenericEditor{
 	private Text text_10;
 	private Text text_24;
 	private Text text_23;
-	private Text text_22;
 	private Text text_35;
 	private Text text_19;
 	private Text text_18;
@@ -101,6 +100,7 @@ public class AluguelEditor extends GenericEditor{
 	private Text text_11;
 
 	private RadioGroupViewer radioGroupViewer;
+	private Text text_12;
 	
 	public AluguelEditor() {
 	}
@@ -381,17 +381,6 @@ public class AluguelEditor extends GenericEditor{
 		text_35.setLayoutData(gd_text_35);
 		new Label(cpAberturaChamado, SWT.NONE);
 		
-		Label lblCliente_1 = new Label(cpAberturaChamado, SWT.NONE);
-		lblCliente_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblCliente_1.setText("Cliente");
-		
-		text_22 = new Text(cpAberturaChamado, SWT.BORDER);
-		text_22.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		
-		Button btnSelecionar_3 = new Button(cpAberturaChamado, SWT.NONE);
-		btnSelecionar_3.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionar_3, valueChamado, "cliente");
-		
 		Label lblFuncionrio_2 = new Label(cpAberturaChamado, SWT.NONE);
 		lblFuncionrio_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFuncionrio_2.setText("Funcionário");
@@ -500,6 +489,14 @@ public class AluguelEditor extends GenericEditor{
 		btnSelecionar_6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnSelecionar_6.setText("...");
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar_6, valueChamado, "funcionarioFechamento");
+		
+		Label lblValor_3 = new Label(composite_13, SWT.NONE);
+		lblValor_3.setText("Valor");
+		
+		MoneyTextField moneyTextField_1 = new MoneyTextField(composite_13);
+		text_12 = moneyTextField_1.getControl();
+		text_12.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		
 		radioGroupViewer = new RadioGroupViewer(composite_13, SWT.NONE);
@@ -625,10 +622,6 @@ public class AluguelEditor extends GenericEditor{
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.NONE).observe(text);
-		IObservableValue valueImovelidObserveDetailValue = PojoProperties.value(Aluguel.class, "imovel.id", Long.class).observeDetail(value);
-		bindingContext.bindValue(observeTextTextObserveWidget, valueImovelidObserveDetailValue, null, null);
-		//
 		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_1);
 		IObservableValue valueClientenomeObserveDetailValue = PojoProperties.value(Aluguel.class, "cliente.nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_1ObserveWidget, valueClientenomeObserveDetailValue, null, null);
@@ -675,16 +668,12 @@ public class AluguelEditor extends GenericEditor{
 		bindingContext.bindValue(observeTextText_19ObserveWidget, valueVistoriaObservacoesObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextTextObserveWidget_1 = WidgetProperties.text(SWT.Modify).observe(text);
-		IObservableValue valueChamadoNumeroObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "numero", Long.class).observeDetail(valueChamado);
+		IObservableValue valueChamadoNumeroObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "id", Long.class).observeDetail(valueChamado);
 		bindingContext.bindValue(observeTextTextObserveWidget_1, valueChamadoNumeroObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_35ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_35);
 		IObservableValue valueVistoriaDataAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "dataAbertura", Date.class).observeDetail(valueVistoria);
 		bindingContext.bindValue(observeTextText_35ObserveWidget, valueVistoriaDataAberturaObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-		//
-		IObservableValue observeTextText_22ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_22);
-		IObservableValue valueChamadoClientenomeObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "cliente.nome", String.class).observeDetail(valueChamado);
-		bindingContext.bindValue(observeTextText_22ObserveWidget, valueChamadoClientenomeObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_23ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_23);
 		IObservableValue valueChamadoFuncionarioAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "funcionarioAbertura.nome", String.class).observeDetail(valueChamado);

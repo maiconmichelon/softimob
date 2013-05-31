@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -10,12 +11,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.eclipse.ui.IEditorInput;
+
 import com.google.common.collect.Lists;
 
-public class ChamadoReforma implements Serializable{
+public class ChamadoReforma implements Serializable, Pendencia{
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,20 +30,14 @@ public class ChamadoReforma implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false)
-	private Long numero;
-	
-	@ManyToOne(optional=false)
-	private Imovel imovel;
+	@ManyToOne
+	private Aluguel aluguel;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAbertura;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataFechamento;
-	
-	@ManyToOne
-	private Cliente cliente;
 	
 	@ManyToOne
 	private Funcionario funcionarioAbertura;
@@ -59,28 +57,15 @@ public class ChamadoReforma implements Serializable{
 	@Column(nullable = false)
 	private String descricaoConclusao;
 
+	@OneToOne
+	private ContaPagarReceber conta;
+	
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getNumero() {
-		return numero;
-	}
-
-	public void setNumero(Long numero) {
-		this.numero = numero;
-	}
-
-	public Imovel getImovel() {
-		return imovel;
-	}
-
-	public void setImovel(Imovel imovel) {
-		this.imovel = imovel;
 	}
 
 	public Date getDataAbertura() {
@@ -97,14 +82,6 @@ public class ChamadoReforma implements Serializable{
 
 	public void setDataFechamento(Date dataFechamento) {
 		this.dataFechamento = dataFechamento;
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
 	}
 
 	public Funcionario getFuncionarioAbertura() {
@@ -154,6 +131,55 @@ public class ChamadoReforma implements Serializable{
 
 	public void setDescricaoConclusao(String descricaoConclusao) {
 		this.descricaoConclusao = descricaoConclusao;
+	}
+
+	@Override
+	public Date getDataGeracao() {
+		return dataAbertura;
+	}
+
+	@Override
+	public Date getDataVencimento() {
+		return null;
+	}
+
+	@Override
+	public String getDescricao() {
+		return "Chamado de Reforma"; 
+	}
+
+	@Override
+	public String getIdEditor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IEditorInput getEditorInput() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BigDecimal getValor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ContaPagarReceber getConta() {
+		return conta;
+	}
+
+	public void setConta(ContaPagarReceber conta) {
+		this.conta = conta;
+	}
+
+	public Aluguel getAluguel() {
+		return aluguel;
+	}
+
+	public void setAluguel(Aluguel aluguel) {
+		this.aluguel = aluguel;
 	}
 	
 }

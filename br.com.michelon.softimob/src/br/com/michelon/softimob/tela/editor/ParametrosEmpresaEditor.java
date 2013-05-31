@@ -1,22 +1,21 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.tela.widget.CNPJTextField;
-import br.com.michelon.softimob.tela.widget.DateTextField;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 public class ParametrosEmpresaEditor extends GenericEditor{
 	
@@ -25,19 +24,15 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 	private Text text;
 	private Text text_1;
 	private Text text_4;
-	private Text text_5;
-	private Text text_6;
 	private Text text_7;
-	private Text text_8;
-	private Text text_9;
 	private Text text_10;
 	private Text text_11;
 	private Text text_12;
 	private Text text_13;
-	private Text text_14;
-	private Text text_15;
 	private Text text_3;
 	private Text text_2;
+	private Text text_5;
+	private Text text_6;
 	
 	public ParametrosEmpresaEditor() {
 	}
@@ -110,22 +105,16 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 		lblDataDeRecebimento_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDataDeRecebimento_1.setText("Data de Recebimento");
 		
-		DateTextField dateTextField_2 = new DateTextField(composite_1);
-		text_5 = dateTextField_2.getControl();
-		GridData gd_text_5 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_5.widthHint = 79;
-		text_5.setLayoutData(gd_text_5);
+		text_5 = new Text(composite_1, SWT.BORDER);
+		text_5.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_1, SWT.NONE);
 		
 		Label lblDataDeRepasse_1 = new Label(composite_1, SWT.NONE);
 		lblDataDeRepasse_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDataDeRepasse_1.setText("Data de Repasse");
 		
-		DateTextField dateTextField_3 = new DateTextField(composite_1);
-		text_6 = dateTextField_3.getControl();
-		GridData gd_text_6 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_6.widthHint = 79;
-		text_6.setLayoutData(gd_text_6);
+		text_6 = new Text(composite_1, SWT.BORDER);
+		text_6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_1, SWT.NONE);
 		
 		Label lblModeloDeContrato_1 = new Label(composite_1, SWT.NONE);
@@ -140,42 +129,27 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 		
 		Label lblChecklist_1 = new Label(composite_1, SWT.NONE);
 		lblChecklist_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblChecklist_1.setText("CheckList");
+		lblChecklist_1.setText("Checklist");
 		
 		ComboViewer comboViewer_1 = new ComboViewer(composite_1, SWT.READ_ONLY);
 		Combo combo_1 = comboViewer_1.getCombo();
 		combo_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_1, SWT.NONE);
 		
-		CTabItem tbtmReformas = new CTabItem(tabFolder, SWT.NONE);
-		tbtmReformas.setText("Reformas");
+		CTabItem tbtmVistoria = new CTabItem(tabFolder, SWT.NONE);
+		tbtmVistoria.setText("Vistoria");
 		
-		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
-		tbtmReformas.setControl(composite_3);
-		composite_3.setLayout(new GridLayout(4, false));
+		Composite composite_5 = new Composite(tabFolder, SWT.NONE);
+		tbtmVistoria.setControl(composite_5);
+		composite_5.setLayout(new GridLayout(2, false));
 		
-		Label lblPrazoPFinalizao = new Label(composite_3, SWT.NONE);
-		lblPrazoPFinalizao.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblPrazoPFinalizao.setText("Prazo p/ Finalização");
+		Label lblChecklist_2 = new Label(composite_5, SWT.NONE);
+		lblChecklist_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblChecklist_2.setText("Checklist");
 		
-		text_2 = new Text(composite_3, SWT.BORDER);
-		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Label lblDias = new Label(composite_3, SWT.NONE);
-		lblDias.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
-		lblDias.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		lblDias.setText("Dias");
-		new Label(composite_3, SWT.NONE);
-		
-		Label lblResponsvel = new Label(composite_3, SWT.NONE);
-		lblResponsvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblResponsvel.setText("Funcionário Responsável");
-		
-		text_3 = new Text(composite_3, SWT.BORDER);
-		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		
-		Button button_10 = new Button(composite_3, SWT.NONE);
-		button_10.setText("...");
+		ComboViewer comboViewer_4 = new ComboViewer(composite_5, SWT.READ_ONLY);
+		Combo combo_4 = comboViewer_4.getCombo();
+		combo_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		CTabItem tbtmContas = new CTabItem(tabFolder, SWT.NONE);
 		tbtmContas.setText("Contas");
@@ -183,31 +157,6 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmContas.setControl(composite_2);
 		composite_2.setLayout(new GridLayout(1, false));
-		
-		Group grpComisso = new Group(composite_2, SWT.NONE);
-		grpComisso.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		grpComisso.setText("Comissão");
-		grpComisso.setLayout(new GridLayout(3, false));
-		
-		Label lblCont = new Label(grpComisso, SWT.NONE);
-		lblCont.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblCont.setText("Conta");
-		
-		text_8 = new Text(grpComisso, SWT.BORDER);
-		text_8.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_2 = new Button(grpComisso, SWT.NONE);
-		button_2.setText("...");
-		
-		Label lblContrapartida = new Label(grpComisso, SWT.NONE);
-		lblContrapartida.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblContrapartida.setText("Contra-partida");
-		
-		text_9 = new Text(grpComisso, SWT.BORDER);
-		text_9.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_3 = new Button(grpComisso, SWT.NONE);
-		button_3.setText("...");
 		
 		Group grpVenda = new Group(composite_2, SWT.NONE);
 		grpVenda.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
@@ -259,35 +208,60 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 		Button button_7 = new Button(grpAluguel, SWT.NONE);
 		button_7.setText("...");
 		
-		Group grpReforma = new Group(composite_2, SWT.NONE);
-		grpReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		grpReforma.setText("Reforma");
-		grpReforma.setLayout(new GridLayout(3, false));
+		CTabItem tbtmReformas = new CTabItem(tabFolder, SWT.NONE);
+		tbtmReformas.setText("Reformas");
 		
-		Label label_2 = new Label(grpReforma, SWT.NONE);
-		label_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		label_2.setText("Conta");
+		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
+		tbtmReformas.setControl(composite_3);
+		composite_3.setLayout(new GridLayout(4, false));
 		
-		text_14 = new Text(grpReforma, SWT.BORDER);
-		text_14.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		Label lblPrazoPFinalizao = new Label(composite_3, SWT.NONE);
+		lblPrazoPFinalizao.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblPrazoPFinalizao.setText("Prazo p/ Finalização");
 		
-		Button button_8 = new Button(grpReforma, SWT.NONE);
-		button_8.setText("...");
+		text_2 = new Text(composite_3, SWT.BORDER);
+		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Label label_5 = new Label(grpReforma, SWT.NONE);
-		label_5.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		label_5.setText("Contra-partida");
+		Label lblDias = new Label(composite_3, SWT.NONE);
+		lblDias.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
+		lblDias.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		lblDias.setText("Dias");
+		new Label(composite_3, SWT.NONE);
 		
-		text_15 = new Text(grpReforma, SWT.BORDER);
-		text_15.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		Label lblResponsvel = new Label(composite_3, SWT.NONE);
+		lblResponsvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblResponsvel.setText("Funcionário Responsável");
 		
-		Button button_9 = new Button(grpReforma, SWT.NONE);
-		button_9.setText("...");
+		text_3 = new Text(composite_3, SWT.BORDER);
+		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		
+		Button button_10 = new Button(composite_3, SWT.NONE);
+		button_10.setText("...");
+		
+		Label lblTipoDaConta = new Label(composite_3, SWT.NONE);
+		lblTipoDaConta.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblTipoDaConta.setText("Tipo da Conta a Pagar");
+		
+		ComboViewer comboViewer_2 = new ComboViewer(composite_3, SWT.READ_ONLY);
+		Combo combo_2 = comboViewer_2.getCombo();
+		combo_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(composite_3, SWT.NONE);
+		new Label(composite_3, SWT.NONE);
+		
+		CTabItem tabItem = new CTabItem(tabFolder, SWT.NONE);
+		tabItem.setText("Comissão");
+		
+		Composite composite_4 = new Composite(tabFolder, SWT.NONE);
+		tabItem.setControl(composite_4);
+		composite_4.setLayout(new GridLayout(2, false));
+		
+		Label lblTipoDeConta = new Label(composite_4, SWT.NONE);
+		lblTipoDeConta.setText("Tipo de Conta");
+		
+		ComboViewer comboViewer_3 = new ComboViewer(composite_4, SWT.READ_ONLY);
+		Combo combo_3 = comboViewer_3.getCombo();
 
 		tabFolder.setSelection(0);
-		
-		CTabItem tbtmChecklist = new CTabItem(tabFolder, SWT.NONE);
-		tbtmChecklist.setText("CheckList");
 	}
 
 	@Override

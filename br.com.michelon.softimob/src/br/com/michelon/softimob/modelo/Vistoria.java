@@ -45,6 +45,9 @@ public class Vistoria implements Serializable{
 	@Column
 	private String observacoes;
 
+	@ManyToOne
+	private Aluguel aluguel;
+	
 	public Vistoria(Imovel imovel) {
 		this.imovel = imovel;
 	}
@@ -103,6 +106,14 @@ public class Vistoria implements Serializable{
 
 	public void setArquivo(Byte[] arquivo) {
 		this.arquivo = arquivo;
+	}
+
+	public Aluguel getAluguel() {
+		return aluguel;
+	}
+
+	public void setAluguel(Aluguel aluguel) {
+		this.aluguel = aluguel;
 	}
 	
 }
