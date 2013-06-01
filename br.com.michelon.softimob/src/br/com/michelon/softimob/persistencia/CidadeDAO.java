@@ -1,10 +1,9 @@
 package br.com.michelon.softimob.persistencia;
 
-public class CidadeDAO {
+import org.springframework.data.repository.CrudRepository;
 
-	public void salvar(Object value) {
-		// TODO Auto-generated method stub
-		
-	}
+import br.com.michelon.softimob.modelo.Cidade;
+
+public interface CidadeDAO extends CrudRepository<Cidade, Long>{
 
 }

@@ -8,6 +8,7 @@ import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.editorInput.DepartamentoEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.service.DepartamentoService;
 import br.com.michelon.softimob.modelo.Departamento;
 import br.com.michelon.softimob.tela.editor.DepartamentoEditor;
 
@@ -16,6 +17,7 @@ import com.google.common.collect.Maps;
 public class DepartamentoView extends GenericView<Departamento>{
 
 	private Map<String, String> atributos;
+	private DepartamentoService service;
 	
 	public DepartamentoView() {
 		super(true);
@@ -23,6 +25,8 @@ public class DepartamentoView extends GenericView<Departamento>{
 		atributos = Maps.newLinkedHashMap();
 		
 		atributos.put("Nome", "|10|nome");
+		
+		service = new DepartamentoService();
 	}
 	
 	@Override
@@ -56,7 +60,15 @@ public class DepartamentoView extends GenericView<Departamento>{
 
 	@Override
 	protected List<Departamento> getInput() {
-		return null;
+		return service.findAll();
+	}
+
+	public DepartamentoService getService() {
+		return service;
+	}
+
+	public void setService(DepartamentoService service) {
+		this.service = service;
 	}
 
 }

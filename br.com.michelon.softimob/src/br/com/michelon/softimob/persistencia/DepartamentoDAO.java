@@ -1,10 +1,9 @@
 package br.com.michelon.softimob.persistencia;
 
-public class DepartamentoDAO {
+import org.springframework.data.repository.CrudRepository;
 
-	public void salvar(Object value) {
-		// TODO Auto-generated method stub
-		
-	}
+import da.Departamento;
+
+public interface DepartamentoDAO extends CrudRepository<Departamento, Long>{
 
 }

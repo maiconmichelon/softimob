@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import com.google.common.collect.Lists;
 
@@ -25,7 +26,7 @@ public class Estado implements Serializable{
 	@Column(nullable = false, length = 2)
 	private String uf;
 	
-	@Column
+	@Transient
 	private List<Cidade> cidades = Lists.newArrayList();
 	
 	@Column

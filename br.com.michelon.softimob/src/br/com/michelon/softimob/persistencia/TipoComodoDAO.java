@@ -1,12 +1,9 @@
 package br.com.michelon.softimob.persistencia;
 
-import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.springframework.data.repository.CrudRepository;
 
-public class TipoComodoDAO {
+import br.com.michelon.softimob.modelo.TipoComodo;
 
-	public void salvar(WritableValue value) {
-		// TODO Auto-generated method stub
-		
-	}
+public interface TipoComodoDAO extends CrudRepository<TipoComodo, Long>{
 
 }

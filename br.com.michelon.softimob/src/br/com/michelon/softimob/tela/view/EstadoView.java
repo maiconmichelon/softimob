@@ -10,6 +10,7 @@ import com.google.common.collect.Maps;
 
 import br.com.michelon.softimob.aplicacao.editorInput.EstadoEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.service.EstadoService;
 import br.com.michelon.softimob.modelo.Estado;
 import br.com.michelon.softimob.tela.editor.EstadoEditor;
 
@@ -59,8 +60,7 @@ public class EstadoView extends GenericView<Estado>{
 
 	@Override
 	protected List<Estado> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return new EstadoService().findAll();
 	}
 
 }

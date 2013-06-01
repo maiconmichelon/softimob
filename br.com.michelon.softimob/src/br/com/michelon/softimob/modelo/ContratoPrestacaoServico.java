@@ -44,6 +44,34 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@ManyToOne
 	private Imovel imovel;
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public TipoContrato getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoContrato tipo) {
+		this.tipo = tipo;
+	}
+
+	public Imovel getImovel() {
+		return imovel;
+	}
+
+	public void setImovel(Imovel imovel) {
+		this.imovel = imovel;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+
 	@Override
 	public Date getDataGeracao() {
 		// TODO Auto-generated method stub
@@ -82,8 +110,7 @@ public class ContratoPrestacaoServico implements Pendencia{
 
 	@Override
 	public BigDecimal getValor() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.valor;
 	}
 
 }

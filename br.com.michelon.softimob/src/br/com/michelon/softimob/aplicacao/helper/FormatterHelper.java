@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.aplicacao.helper;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -9,6 +10,7 @@ import de.ralfebert.rcputils.properties.IValueFormatter;
 public class FormatterHelper {
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	private static SimpleDateFormat sdfPeriodo = new SimpleDateFormat("MM/yyyy");
 	
 	public String formatarData(Date data){
 		return sdf.format(data);
@@ -31,6 +33,10 @@ public class FormatterHelper {
 				return new BigDecimal(arg0.replace(',', '.'));
 			}
 		};
+	}
+
+	public static DateFormat getSimpleDateFormatPeriodo() {
+		return sdfPeriodo;
 	}
 	
 }

@@ -13,7 +13,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 import br.com.michelon.softimob.modelo.Cliente;
-import br.com.michelon.softimob.modelo.Comodo;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.modelo.TipoComodo;

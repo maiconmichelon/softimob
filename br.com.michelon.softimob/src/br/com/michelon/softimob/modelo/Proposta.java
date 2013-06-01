@@ -24,6 +24,9 @@ public class Proposta implements Serializable {
 	public static final int RECUSADA = 1;
 	public static final int CONTRAPROPOSTA = 2;
 
+	public static final int CONTRA_PROPOSTA_PROPRIETARIO = 3;
+	public static final int CONTRA_PROPOSTA_CLIENTE = 4;
+	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
@@ -51,9 +54,12 @@ public class Proposta implements Serializable {
 	@OneToOne(cascade = CascadeType.MERGE)
 	private Proposta contraProposta;
 	
+	@Column
+	private Integer tipoContraProposta;
+	
 	@ManyToOne()
 	private Imovel imovel;
-
+	
 	public Proposta(Imovel imovel) {
 		this.imovel = imovel;
 	}
@@ -140,6 +146,14 @@ public class Proposta implements Serializable {
 
 	public void setData(Date data) {
 		this.data = data;
+	}
+
+	public Integer getTipoContraProposta() {
+		return tipoContraProposta;
+	}
+
+	public void setTipoContraProposta(Integer tipoContraProposta) {
+		this.tipoContraProposta = tipoContraProposta;
 	}
 	
 }

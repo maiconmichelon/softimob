@@ -205,6 +205,12 @@
             restorable="true"
             >
       </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.IndiceView"
+            id="br.com.michelon.softimob.tela.view.IndiceView"
+            name="Indices"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -370,6 +376,15 @@
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
                      value="br.com.michelon.softimob.tela.view.PendenciaView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  label="Indice"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.IndiceView">
                </parameter>
             </command>
          </menu>
@@ -639,6 +654,12 @@
             icon="icons/contaPagar/contaPagar16.png"
             id="br.com.michelon.softimob.tela.editor.OrigemContaEditor"
             name="Cadastro Origem de Conta">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.IndiceEditor"
+            default="false"
+            id="br.com.michelon.softimob.tela.editor.IndiceEditor"
+            name="Cadastro de Indice">
       </editor>
    </extension>
    <extension

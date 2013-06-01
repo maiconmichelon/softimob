@@ -59,6 +59,7 @@ import br.com.michelon.softimob.modelo.Rua;
 import br.com.michelon.softimob.modelo.TipoComodo;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
+import br.com.michelon.softimob.tela.dialog.ContraPropostaDialog;
 import br.com.michelon.softimob.tela.widget.CEPTextField;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;

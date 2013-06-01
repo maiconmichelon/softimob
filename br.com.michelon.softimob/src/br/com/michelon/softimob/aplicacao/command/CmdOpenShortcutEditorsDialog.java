@@ -20,9 +20,10 @@ import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 
 public class CmdOpenShortcutEditorsDialog extends AbstractHandler {
 
-	private static final String VIEWS_EXTENSION_POINT = "org.eclipse.ui.views";
+//	private static final String VIEWS_EXTENSION_POINT = "org.eclipse.ui.views";
 	private static final String EDITORS_EXTENSION_POINT = "org.eclipse.ui.editors";
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
@@ -30,7 +31,7 @@ public class CmdOpenShortcutEditorsDialog extends AbstractHandler {
 		IExtensionRegistry extRegistry = Platform.getExtensionRegistry();
 		
 		List<IConfigurationElement> editorConfigurations = Arrays.asList(extRegistry.getConfigurationElementsFor(EDITORS_EXTENSION_POINT));
-		List<IConfigurationElement> viewConfigurations = Arrays.asList(extRegistry.getConfigurationElementsFor(VIEWS_EXTENSION_POINT));
+//		List<IConfigurationElement> viewConfigurations = Arrays.asList(extRegistry.getConfigurationElementsFor(VIEWS_EXTENSION_POINT));
 		
 		ElementListSelectionDialog dialog = new ElementListSelectionDialog(ShellHelper.getActiveShell(), new LabelProvider(){
 			@Override

@@ -1,10 +1,9 @@
 package br.com.michelon.softimob.persistencia;
 
-public class BairroDAO {
+import org.springframework.data.repository.CrudRepository;
 
-	public void salvar(Object value) {
-		// TODO Auto-generated method stub
-		
-	}
+import br.com.michelon.softimob.modelo.Bairro;
+
+public interface BairroDAO extends CrudRepository<Bairro, Long>{
 
 }

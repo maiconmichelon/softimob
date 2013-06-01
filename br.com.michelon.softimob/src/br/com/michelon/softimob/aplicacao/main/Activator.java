@@ -1,8 +1,13 @@
 package br.com.michelon.softimob.aplicacao.main;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import da.Rua;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -27,6 +32,19 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		
+		EntityManager em = Persistence.createEntityManagerFactory("SoftimobPU").createEntityManager();
+		
+		em.getTransaction().begin();
+		
+		Rua d= new Rua();
+		d.setNome("hehe");
+		
+		em.persist(d);
+		
+		em.getTransaction().commit();
+		em.close();
+		
 		plugin = this;
 	}
 

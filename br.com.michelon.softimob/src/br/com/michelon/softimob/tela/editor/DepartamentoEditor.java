@@ -12,8 +12,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.service.DepartamentoService;
 import br.com.michelon.softimob.modelo.Departamento;
-import br.com.michelon.softimob.persistencia.DepartamentoDAO;
 
 public class DepartamentoEditor extends GenericEditor {
 	
@@ -22,15 +22,19 @@ public class DepartamentoEditor extends GenericEditor {
 	private DataBindingContext m_bindingContext;
 	private Text text;
 	private WritableValue value = WritableValue.withValueType(Departamento.class);
-	private DepartamentoDAO departamentoDAO;
+	private DepartamentoService departamentoService;
 	
 	public DepartamentoEditor() {
-		departamentoDAO = new DepartamentoDAO();
+		departamentoService = new DepartamentoService();
 	}
 
 	@Override
 	protected void salvar() {
-		departamentoDAO.salvar(value.getValue());
+		try {
+			departamentoService.setModel((Departamento) value.getValue());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -51,7 +55,6 @@ public class DepartamentoEditor extends GenericEditor {
 		value.setValue(new Departamento());
 		
 		m_bindingContext = initDataBindings();
-		
 	}
 
 	protected DataBindingContext initDataBindings() {
