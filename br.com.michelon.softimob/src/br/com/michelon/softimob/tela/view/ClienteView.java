@@ -17,7 +17,6 @@ import com.google.common.collect.Maps;
 public class ClienteView extends GenericView<Cliente>{
 	
 	private Map<String, String> atributos;
-	private ClienteDAO dao = new ClienteDAO();
 	
 	public ClienteView(){
 		super(true);
@@ -65,6 +64,6 @@ public class ClienteView extends GenericView<Cliente>{
 
 	@Override
 	protected List<Cliente> getInput() {
-		return dao.findAll();
+		return null;
 	}
 }

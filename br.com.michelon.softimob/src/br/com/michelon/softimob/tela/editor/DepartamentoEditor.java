@@ -30,11 +30,6 @@ public class DepartamentoEditor extends GenericEditor {
 
 	@Override
 	protected void salvar() {
-		try {
-			departamentoService.setModel((Departamento) value.getValue());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override

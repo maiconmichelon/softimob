@@ -28,10 +28,8 @@ public class CidadeEditor extends GenericEditor {
 	private Text text;
 	private WritableValue value = WritableValue.withValueType(Cidade.class);
 	private ComboViewer comboViewer;
-	private CidadeDAO daoCidade;
 	
 	public CidadeEditor() {
-		daoCidade = new CidadeDAO();
 	}
 
 	@Override
@@ -63,7 +61,6 @@ public class CidadeEditor extends GenericEditor {
 
 	@Override
 	protected void salvar() {
-		daoCidade.salvar(value.getValue());
 	}
 	
 	protected DataBindingContext initDataBindings() {

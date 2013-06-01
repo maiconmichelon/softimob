@@ -53,12 +53,10 @@ public class ComodoEditor extends GenericEditor{
 	private TipoComodoDAO tipoComodoDAO;
 	
 	public ComodoEditor() {
-		tipoComodoDAO = new TipoComodoDAO();
 	}
 	
 	@Override
 	protected void salvar() {
-		tipoComodoDAO.salvar(value);
 	}
 
 	@Override

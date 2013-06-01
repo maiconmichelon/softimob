@@ -31,7 +31,6 @@ public class BairroEditor extends GenericEditor{
 	private BairroDAO bairroDAO;
 	
 	public BairroEditor() {
-		bairroDAO = new BairroDAO();
 	}
 
 	@Override
@@ -62,7 +61,6 @@ public class BairroEditor extends GenericEditor{
 
 	@Override
 	protected void salvar() {
-		bairroDAO.salvar(value.getValue());
 	}
 	
 	protected DataBindingContext initDataBindings() {
