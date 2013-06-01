@@ -60,7 +60,7 @@ public class DepartamentoView extends GenericView<Departamento>{
 
 	@Override
 	protected List<Departamento> getInput() {
-		return null;
+		return service.findAll();
 	}
 
 	public DepartamentoService getService() {

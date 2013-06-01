@@ -25,7 +25,7 @@ public class WidgetHelper {
 			
 			if(getFirstPositionSpecialChar(atributo) == 0 && getFirstPositionSpecialChar(atributo) < getLastPositionSpecialChar(atributo)){
 				cb.setPercentWidth(Integer.parseInt(atributo.substring(1, getLastPositionSpecialChar(atributo))));
-				atributo = atributo.substring(getLastPositionSpecialChar(atributo), atributo.length() - 1);
+				atributo = atributo.substring(getLastPositionSpecialChar(atributo) + 1, atributo.length() );
 			}
 			
 			cb.bindToProperty(atributo).build();

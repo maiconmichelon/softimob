@@ -5,6 +5,7 @@ import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -12,6 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.service.DepartamentoService;
 import br.com.michelon.softimob.modelo.Departamento;
 
@@ -30,6 +32,14 @@ public class DepartamentoEditor extends GenericEditor {
 
 	@Override
 	protected void salvar() {
+		try {
+			departamentoService.salvar((Departamento) value.getValue());
+			MessageDialog.openInformation(ShellHelper.getActiveShell(), "Registro Salvo", "Registo salvo com sucesso.");
+			
+			value.setValue(new Departamento());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

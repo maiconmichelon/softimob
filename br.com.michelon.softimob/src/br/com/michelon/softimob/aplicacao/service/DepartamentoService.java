@@ -1,6 +1,6 @@
 package br.com.michelon.softimob.aplicacao.service;
 
-import da.Departamento;
+import br.com.michelon.softimob.modelo.Departamento;
 import br.com.michelon.softimob.persistencia.DepartamentoDAO;
 import br.com.michelon.softimob.persistencia.SpringUtils;
 

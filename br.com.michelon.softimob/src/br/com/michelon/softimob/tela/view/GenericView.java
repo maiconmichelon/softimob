@@ -195,6 +195,7 @@ public abstract class GenericView<T> extends ViewPart{
 	}
 
 	protected void atualizar() {
+		viewer.setInput(getInput());
 		viewer.refresh();
 	}
 	
