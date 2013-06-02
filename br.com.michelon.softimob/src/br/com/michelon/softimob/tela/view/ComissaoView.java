@@ -53,7 +53,7 @@ public class ComissaoView extends GenericView<Comissao>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Comissao t) {
 		// TODO Auto-generated method stub
 		return null;
 	}

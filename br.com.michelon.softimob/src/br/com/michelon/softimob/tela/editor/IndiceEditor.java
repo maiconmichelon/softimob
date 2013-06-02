@@ -1,27 +1,36 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.jface.layout.TreeColumnLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
-
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.IndiceService;
+import br.com.michelon.softimob.modelo.Indice;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 
-public class IndiceEditor extends GenericEditor{
+public class IndiceEditor extends GenericEditor<Indice>{
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.IndiceEditor";
 	
+	private IndiceService service = new IndiceService();
+	
 	private Text text;
 	private TableViewerBuilder tvbIndices;
+	
 	public IndiceEditor() {
+		super(Indice.class);
 	}
 
+	@Override
+	public GenericService<Indice> getService() {
+		return service;
+	}
+	
 	@Override
 	public void afterCreatePartControl(Composite parent) {
 		
@@ -42,12 +51,6 @@ public class IndiceEditor extends GenericEditor{
 		
 		tvbIndices.createColumn("Mês").bindToProperty("data").format(Formatter.forDate(FormatterHelper.getSimpleDateFormatPeriodo())).build();
 		tvbIndices.createColumn("Porcentagem").bindToProperty("porcentagem").build();
-	}
-
-	@Override
-	protected void salvar() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

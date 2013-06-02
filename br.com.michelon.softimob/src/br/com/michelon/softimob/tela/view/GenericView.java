@@ -201,6 +201,9 @@ public abstract class GenericView<T> extends ViewPart{
 	}
 
 	protected void atualizar() {
+		if(viewer.getContentProvider() == null)
+			viewer.setContentProvider(ArrayContentProvider.getInstance());
+		
 		viewer.setInput(getInput());
 		viewer.refresh();
 	}
@@ -209,11 +212,11 @@ public abstract class GenericView<T> extends ViewPart{
 	 * Abre a tela de cadastro através do editorInput e EditorID implementado
 	 */
 	public void cadastrar(){
-//		try {
-//			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getIEditorInput(getSelecionado()), getEditorId());
-//		} catch (PartInitException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getIEditorInput(null), getEditorId(null));
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
 	}
 
 	
@@ -227,11 +230,7 @@ public abstract class GenericView<T> extends ViewPart{
 		miAlterar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-//				try {
-//					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getIEditorInput(getSelecionado()), getEditorId());
-//				} catch (PartInitException e1) {
-//					e1.printStackTrace();
-//				}
+				alterar(getSelecionado());
 			}
 		});
 		
@@ -309,9 +308,10 @@ public abstract class GenericView<T> extends ViewPart{
 	protected abstract GenericEditorInput<?> getIEditorInput(T t);
 
 	/**
+	 * @param t TODO
 	 * @return o EditorID necessário para abrir a tela de cadastro / alteração.
 	 */
-	protected abstract String getEditorId();
+	protected abstract String getEditorId(T t);
 	
 	/**
 	 * @return todos os elementos da tabela.
@@ -327,22 +327,35 @@ public abstract class GenericView<T> extends ViewPart{
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				T t = getSelecionado();
-				if(t != null)
+				if(t == null)
 					return ;
 				
-//				GenericEditorInput<?> iEditorInput = getIEditorInput(t);
-//				iEditorInput.setModelo(getElementToEdit(t));
+				alterar(t);
 			}
 		};
 	};
-	
-	protected Object getElementToEdit(T object){
-		return object;
-	}
 	
 	@Override
 	public void setFocus() {
 		if(txtFiltro != null)
 			txtFiltro.forceFocus();
+	}
+
+	private void alterar(T element) {
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getEditorInputWithModel(element), getEditorId(element));
+		} catch (PartInitException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	protected GenericEditorInput<?> getEditorInputWithModel(T element){
+		GenericEditorInput<?> iEditorInput = getIEditorInput(element);
+		iEditorInput.setModelo(getModelOfEditorInput(element));
+		return iEditorInput;
+	}
+	
+	protected Object getModelOfEditorInput(T element) {
+		return element;
 	}
 }

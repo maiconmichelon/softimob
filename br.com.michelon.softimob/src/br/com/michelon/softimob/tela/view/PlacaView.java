@@ -56,7 +56,7 @@ public class PlacaView extends GenericView<Placa>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Placa t) {
 		return PlacaEditor.ID;
 	}
 

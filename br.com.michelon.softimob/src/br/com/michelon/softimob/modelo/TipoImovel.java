@@ -21,7 +21,7 @@ public class TipoImovel implements Serializable{
 	@Column(nullable = false, unique = true)
 	private String descricao;
 
-	@Column
+	@Column(nullable = false)
 	private Boolean ativo = true;
 
 	public TipoImovel() {

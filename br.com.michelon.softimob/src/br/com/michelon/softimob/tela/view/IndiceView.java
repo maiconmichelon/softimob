@@ -51,7 +51,7 @@ public class IndiceView extends GenericView<Indice>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Indice t) {
 		return IndiceEditor.ID;
 	}
 

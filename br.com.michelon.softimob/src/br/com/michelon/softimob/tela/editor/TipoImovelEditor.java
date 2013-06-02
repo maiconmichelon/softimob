@@ -1,28 +1,32 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
 import br.com.michelon.softimob.modelo.TipoImovel;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.core.databinding.beans.PojoProperties;
 
-public class TipoImovelEditor extends GenericEditor{
+public class TipoImovelEditor extends GenericEditor<TipoImovel>{
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.TipoImovelEditor"; //$NON-NLS-1$
 	
 	private DataBindingContext m_bindingContext;
-	private WritableValue value = WritableValue.withValueType(TipoImovel.class);
+	private TipoImovelService service = new TipoImovelService();
 	
 	private Text text;
+	
 	public TipoImovelEditor() {
+		super(TipoImovel.class);
 	}
 
 	@Override
@@ -42,14 +46,12 @@ public class TipoImovelEditor extends GenericEditor{
 		gd_text.widthHint = 261;
 		text.setLayoutData(gd_text);
 		
-		value.setValue(new TipoImovel());
-		
 		m_bindingContext = initDataBindings();
 	}
 
 	@Override
-	protected void salvar() {
-		// TODO Auto-generated method stub
+	public GenericService<TipoImovel> getService() {
+		return service;
 	}
 	
 	protected DataBindingContext initDataBindings() {

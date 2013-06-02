@@ -6,8 +6,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
+import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
-import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
 import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 import br.com.michelon.softimob.modelo.ChamadoReforma;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
@@ -54,22 +54,22 @@ public class ChamadoReformaView extends GenericView<ChamadoReforma>{
 
 	@Override
 	protected GenericEditorInput<?> getIEditorInput(ChamadoReforma t) {
-		return new ImovelEditorInput();
+		return new AluguelEditorInput();
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected Object getModelOfEditorInput(ChamadoReforma element) {
+		return element.getAluguel();
+	}
+	
+	@Override
+	protected String getEditorId(ChamadoReforma t) {
 		return ImovelEditor.ID;
 	}
 
 	@Override
-	protected Object getElementToEdit(ChamadoReforma object) {
-		return object.getAluguel();
-	}
-	
-	@Override
 	protected List<ChamadoReforma> getInput() {
-		return null;
+		return service.findAll();
 	}
 	
 	@Override

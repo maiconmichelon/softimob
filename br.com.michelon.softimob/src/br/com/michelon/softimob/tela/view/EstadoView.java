@@ -57,7 +57,7 @@ public class EstadoView extends GenericView<Estado>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Estado t) {
 		return EstadoEditor.ID;
 	}
 

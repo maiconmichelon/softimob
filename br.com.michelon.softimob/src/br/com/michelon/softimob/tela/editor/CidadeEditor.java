@@ -1,37 +1,47 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import java.util.List;
+
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.service.CidadeService;
+import br.com.michelon.softimob.aplicacao.service.EstadoService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Cidade;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.viewers.ViewerProperties;
-import org.eclipse.core.databinding.beans.PojoProperties;
 import br.com.michelon.softimob.modelo.Estado;
-import br.com.michelon.softimob.persistencia.CidadeDAO;
 
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-
-public class CidadeEditor extends GenericEditor {
+public class CidadeEditor extends GenericEditor<Cidade> {
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.CidadeEditor";
 	
 	private DataBindingContext m_bindingContext;
+	private CidadeService service = new CidadeService();
+
 	private Text text;
-	private WritableValue value = WritableValue.withValueType(Cidade.class);
 	private ComboViewer comboViewer;
 	
 	public CidadeEditor() {
+		super(Cidade.class);
 	}
 
+	@Override
+	public GenericService<Cidade> getService() {
+		return service;
+	}
+	
 	@Override
 	public void afterCreatePartControl(Composite parent) {
 		GridLayout gridLayout = (GridLayout) parent.getLayout();
@@ -44,6 +54,8 @@ public class CidadeEditor extends GenericEditor {
 		comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
 		Combo combo = comboViewer.getCombo();
 		combo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewer.setInput(new EstadoService().findAll());
 		
 		Label lblCidade = new Label(parent, SWT.NONE);
 		lblCidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -58,9 +70,13 @@ public class CidadeEditor extends GenericEditor {
 		
 		m_bindingContext = initDataBindings();
 	}
-
+	
 	@Override
-	protected void salvar() {
+	public void salvar(GenericService<Cidade> service, IObservableValue value) {
+		super.salvar(service, value);
+		
+		List<Cidade> cid = ((Cidade)value.getValue()).getEstado().getCidades();
+		System.out.println(cid.size());
 	}
 	
 	protected DataBindingContext initDataBindings() {

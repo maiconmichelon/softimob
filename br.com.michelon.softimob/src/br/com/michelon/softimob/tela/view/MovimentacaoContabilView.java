@@ -55,7 +55,7 @@ public class MovimentacaoContabilView extends GenericView<MovimentacaoContabil>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(MovimentacaoContabil t) {
 		return MovimentacaoContabilEditor.ID;
 	}
 

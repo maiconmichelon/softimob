@@ -55,7 +55,7 @@ public class CidadeView extends GenericView<Cidade>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Cidade t) {
 		return CidadeEditor.ID;
 	}
 

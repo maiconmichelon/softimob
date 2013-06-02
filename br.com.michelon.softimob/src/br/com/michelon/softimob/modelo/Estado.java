@@ -8,9 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
-import com.google.common.collect.Lists;
+import org.hibernate.validator.constraints.Length;
+
+import br.com.michelon.softimob.aplicacao.service.CidadeService;
 
 @Entity
 public class Estado implements Serializable{
@@ -20,16 +22,16 @@ public class Estado implements Serializable{
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotNull(message = "Nome do estado não pode ser vazio.")
 	@Column(nullable = false, unique = true)
 	private String nome;
 	
-	@Column(nullable = false, length = 2)
+	@NotNull(message = "UF do estado não pode ser vazio.")
+	@Length(max = 2, min = 2, message = "A UF do estado deve possuir 2 caracteres.")
+	@Column(nullable = false, length = 2, unique = true)
 	private String uf;
 	
-	@Transient
-	private List<Cidade> cidades = Lists.newArrayList();
-	
-	@Column
+	@Column(nullable = false)
 	private Boolean ativo = true;
 
 	public Long getId() {
@@ -65,11 +67,12 @@ public class Estado implements Serializable{
 	}
 	
 	public List<Cidade> getCidades() {
-		return cidades;
+		return new CidadeService().findCidadesByEstado(this);
 	}
 	
-	public void setCidades(List<Cidade> cidades) {
-		this.cidades = cidades;
+	@Override
+	public String toString() {
+		return uf;
 	}
 	
 }

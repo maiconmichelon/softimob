@@ -9,4 +9,8 @@ public class EstadoService extends GenericService<Estado>{
 		super(EstadoDAO.class);
 	}
 
+	protected EstadoDAO getRepository(){
+		return (EstadoDAO) super.getRepository();
+	}
+	
 }

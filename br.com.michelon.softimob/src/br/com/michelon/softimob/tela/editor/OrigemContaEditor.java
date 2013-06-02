@@ -1,6 +1,9 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -11,27 +14,28 @@ import org.eclipse.swt.widgets.Text;
 
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.service.OrigemContaService;
 import br.com.michelon.softimob.modelo.OrigemConta;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.core.databinding.beans.PojoProperties;
 
-public class OrigemContaEditor extends GenericEditor {
+public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.OrigemContaEditor";
 	
-	private WritableValue value = WritableValue.withValueType(OrigemConta.class);
 	private DataBindingContext m_bindingContext;
+	
+	private OrigemContaService service = new OrigemContaService();
 	
 	private Text text;
 	private Text text_1;
 	private Text text_2;
+	
 	public OrigemContaEditor() {
+		super(OrigemConta.class);
 	}
-
+	
 	@Override
-	protected void salvar() {
+	public OrigemContaService getService() {
+		return service;
 	}
 
 	@Override

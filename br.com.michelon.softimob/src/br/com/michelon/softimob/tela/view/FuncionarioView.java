@@ -59,7 +59,7 @@ public class FuncionarioView extends GenericView<Funcionario>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Funcionario t) {
 		return FuncionarioEditor.ID;
 	}
 

@@ -211,6 +211,12 @@
             name="Indices"
             restorable="true">
       </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.ComissaoView"
+            id="br.com.michelon.softimob.tela.view.ComissaoView"
+            name="Comissão"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">

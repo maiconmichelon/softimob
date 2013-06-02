@@ -59,7 +59,7 @@ public class ClienteView extends GenericView<Cliente>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Cliente t) {
 		return ClienteEditor.ID;
 	}
 

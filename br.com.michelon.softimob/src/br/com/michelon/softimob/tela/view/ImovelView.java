@@ -63,7 +63,7 @@ public class ImovelView extends GenericView<Imovel>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Imovel t) {
 		return ImovelEditor.ID;
 	}
 

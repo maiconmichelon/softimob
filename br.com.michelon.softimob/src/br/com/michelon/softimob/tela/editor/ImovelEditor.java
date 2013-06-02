@@ -45,6 +45,8 @@ import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.modelo.Bairro;
 import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.modelo.Chave.LocalizacaoChave;
@@ -67,16 +69,17 @@ import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 
-public class ImovelEditor extends GenericEditor{
+public class ImovelEditor extends GenericEditor<Imovel>{
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ImovelEditor"; //$NON-NLS-1$
 	
-	private WritableValue value = WritableValue.withValueType(Imovel.class);
 	private WritableValue valueProposta = WritableValue.withValueType(Proposta.class);
 	private WritableValue valueFeedback = WritableValue.withValueType(Feedback.class);
 	private WritableValue valueChave = WritableValue.withValueType(Chave.class);
 	private WritableValue valueComodo = WritableValue.withValueType(TipoComodo.class);
 	private WritableValue valueReserva = WritableValue.withValueType(Reserva.class);
+	
+	private ImovelService service = new ImovelService();
 	
 	private Text txtProprietario;
 	private Text text_2;
@@ -136,15 +139,20 @@ public class ImovelEditor extends GenericEditor{
 	private TableViewerBuilder tvbLocacoes;
 	
 	public ImovelEditor() {
+		super(Imovel.class);
 		
-		Imovel imovel = new Imovel();
-		value.setValue(imovel);
+		Imovel imovel = (Imovel) value.getValue();
 		
 		valueComodo.setValue(new Comodo());
 		valueChave.setValue(new Chave(imovel));
 		valueFeedback.setValue(new Feedback(imovel));
 		valueProposta.setValue(new Proposta(imovel));
 		valueReserva.setValue(new Reserva(imovel));
+	}
+	
+	@Override
+	public GenericService<Imovel> getService() {
+		return service;
 	}
 
 	@Override
@@ -933,11 +941,6 @@ public class ImovelEditor extends GenericEditor{
 		valueReserva.setValue(new Reserva(imovel));
 		
 		tvReservas.refresh();
-	}
-	
-	@Override
-	protected void salvar() {
-		System.out.println("hehe");
 	}
 	
 	protected DataBindingContext bindTables(DataBindingContext bindingContext){

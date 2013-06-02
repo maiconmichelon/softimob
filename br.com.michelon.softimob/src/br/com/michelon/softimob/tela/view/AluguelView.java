@@ -59,7 +59,7 @@ public class AluguelView extends GenericView<Aluguel>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Aluguel t) {
 		return AluguelEditor.ID;
 	}
 

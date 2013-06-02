@@ -1,29 +1,34 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.swt.widgets.Group;
-import br.com.michelon.softimob.tela.widget.PhoneTextField;
-import br.com.michelon.softimob.tela.widget.CPFTextField;
-import br.com.michelon.softimob.tela.widget.CEPTextField;
-import br.com.michelon.softimob.tela.widget.DateTextField;
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.custom.CTabItem;
-import br.com.michelon.softimob.tela.widget.CNPJTextField;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.swt.widgets.Button;
 
-public class ClienteEditor extends GenericEditor {
+import br.com.michelon.softimob.aplicacao.service.ClienteService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.modelo.Cliente;
+import br.com.michelon.softimob.tela.widget.CEPTextField;
+import br.com.michelon.softimob.tela.widget.CNPJTextField;
+import br.com.michelon.softimob.tela.widget.CPFTextField;
+import br.com.michelon.softimob.tela.widget.DateTextField;
+import br.com.michelon.softimob.tela.widget.PhoneTextField;
+
+public class ClienteEditor extends GenericEditor<Cliente> {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ClienteEditor"; //$NON-NLS-1$
+	
+	private ClienteService service = new ClienteService();
+	
 	private Text text_2;
 	private Text text_6;
 	private Text text_9;
@@ -44,9 +49,16 @@ public class ClienteEditor extends GenericEditor {
 	private Text text_17;
 	private Text text_18;
 	private Text text_19;
+	
 	public ClienteEditor() {
+		super(Cliente.class);
 	}
 
+	@Override
+	public GenericService<Cliente> getService() {
+		return service;
+	}
+	
 	@Override
 	public void afterCreatePartControl(Composite parent1) {
 		GridLayout gl2_parent = new GridLayout(1, false);
@@ -300,17 +312,6 @@ public class ClienteEditor extends GenericEditor {
 		text_10 = new Text(grpEndereo, SWT.BORDER);
 		text_10.setText("");
 		text_10.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(grpEndereo, SWT.NONE);
-		new Label(grpEndereo, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-	}
-
-	@Override
-	protected void salvar() {
 	}
 
 }

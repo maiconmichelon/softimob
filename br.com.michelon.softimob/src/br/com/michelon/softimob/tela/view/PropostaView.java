@@ -54,17 +54,17 @@ public class PropostaView extends GenericView<Proposta>{
 	}
 
 	@Override
-	protected Object getElementToEdit(Proposta object) {
-		return object.getImovel();
-	}
-	
-	@Override
 	protected GenericEditorInput<?> getIEditorInput(Proposta t) {
 		return new ImovelEditorInput();
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected Object getModelOfEditorInput(Proposta element) {
+		return element.getImovel();
+	}
+	
+	@Override
+	protected String getEditorId(Proposta t) {
 		return ImovelEditor.ID;
 	}
 

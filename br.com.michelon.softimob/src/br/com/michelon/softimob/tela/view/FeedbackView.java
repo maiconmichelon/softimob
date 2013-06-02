@@ -56,18 +56,18 @@ public class FeedbackView extends GenericView<Feedback>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected Object getModelOfEditorInput(Feedback element) {
+		return element.getImovel();
+	}
+	
+	@Override
+	protected String getEditorId(Feedback t) {
 		return ImovelEditor.ID;
 	}
 
 	@Override
-	protected Object getElementToEdit(Feedback object) {
-		return object.getImovel();
-	}
-	
-	@Override
 	protected List<Feedback> getInput() {
-		return null;
+		return service.findAll();
 	}
 
 	@Override

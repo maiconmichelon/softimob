@@ -55,7 +55,7 @@ public class DepartamentoView extends GenericView<Departamento>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Departamento t) {
 		return DepartamentoEditor.ID;
 	}
 

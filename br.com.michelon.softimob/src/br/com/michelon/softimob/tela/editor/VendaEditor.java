@@ -25,6 +25,8 @@ import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.VendaService;
 import br.com.michelon.softimob.modelo.Comissao;
 import br.com.michelon.softimob.modelo.Venda;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
@@ -33,13 +35,14 @@ import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.properties.IValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
-public class VendaEditor extends GenericEditor{
+public class VendaEditor extends GenericEditor<Venda>{
+	
 	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.VendaEditor";
 	
-	private WritableValue value = WritableValue.withValueType(Venda.class);
 	private WritableValue valueComissao = WritableValue.withValueType(Comissao.class);
+	private VendaService service = new VendaService();
 	
 	private Text text;
 	private Text text_1;
@@ -52,6 +55,7 @@ public class VendaEditor extends GenericEditor{
 	private Text text_6;
 	
 	public VendaEditor() {
+		super(Venda.class);
 	}
 
 	@Override
@@ -185,11 +189,12 @@ public class VendaEditor extends GenericEditor{
 		
 		tvComissao = tvbComissao.getTableViewer();
 	}
-	
+
 	@Override
-	protected void salvar() {
-		//TODO
-	}
+	public GenericService<Venda> getService() {
+		return service;
+	}	
+	
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

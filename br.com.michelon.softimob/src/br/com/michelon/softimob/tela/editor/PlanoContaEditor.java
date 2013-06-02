@@ -12,6 +12,8 @@ import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
 import org.eclipse.nebula.widgets.radiogroup.RadioItem;
 
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.PlanoContaService;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -19,23 +21,26 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 
-public class PlanoContaEditor extends GenericEditor {
+public class PlanoContaEditor extends GenericEditor<PlanoConta> {
 	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.PlanoContaEditor";
 	
-	private WritableValue value = WritableValue.withValueType(PlanoConta.class);
+	private PlanoContaService service = new PlanoContaService();
+	
 	private Text text;
 	private Text text_1;
 	private RadioGroupViewer radioGroupViewer;
 	
 	public PlanoContaEditor() {
+		super(PlanoConta.class);
 	}
 
 	@Override
-	protected void salvar() {
+	public GenericService<PlanoConta> getService() {
+		return service;
 	}
-
+	
 	@Override
 	public void afterCreatePartControl(Composite parent) {
 		GridLayout gl_parent = new GridLayout(2, false);

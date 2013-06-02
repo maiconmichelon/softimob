@@ -322,7 +322,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(ContaPagarReceber t) {
 		return ContaPagarReceberEditor.ID;
 	}
 

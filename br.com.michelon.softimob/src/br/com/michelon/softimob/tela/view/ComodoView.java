@@ -54,7 +54,7 @@ public class ComodoView extends GenericView<TipoComodo>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(TipoComodo t) {
 		return ComodoEditor.ID;
 	}
 

@@ -1,6 +1,9 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -13,10 +16,23 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.wb.swt.ResourceManager;
+import org.springframework.dao.DataIntegrityViolationException;
 
-public abstract class GenericEditor extends EditorPart {
+import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 
-	public GenericEditor() {
+public abstract class GenericEditor<T> extends EditorPart {
+
+	public static final String TITLE_SALVAR = "Registro salvo";
+	public static final String MESSAGE_SALVAR = "Registro salvo com sucesso.";
+	
+	public final Class<T> mainClass;
+	protected WritableValue value;
+	
+	public GenericEditor(Class<T> clazz) {
+		mainClass = clazz;
+		value = WritableValue.withValueType(mainClass);
 	}
 
 	@Override
@@ -44,7 +60,7 @@ public abstract class GenericEditor extends EditorPart {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				salvar();
+				salvar(getService(), value);
 			}
 
 		});
@@ -54,8 +70,21 @@ public abstract class GenericEditor extends EditorPart {
 
 	public abstract void afterCreatePartControl(Composite parent);
 	
-	protected abstract void salvar();
-
+	public abstract GenericService<T> getService();
+	
+	@SuppressWarnings("unchecked")
+	public void salvar(GenericService<T> service, IObservableValue value) {
+		try {
+			service.salvar((T) value.getValue());
+			MessageDialog.openInformation(ShellHelper.getActiveShell(), TITLE_SALVAR, MESSAGE_SALVAR);
+			value.setValue(((Class<T>)value.getValueType()).newInstance());
+		} catch (DataIntegrityViolationException e){
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void setFocus() {
 	}
@@ -68,12 +97,26 @@ public abstract class GenericEditor extends EditorPart {
 	public void doSaveAs() {
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
+		
+		value.setValue(getValorInicial((GenericEditorInput<T>) input));
 	}
 
+	protected T getValorInicial(GenericEditorInput<T> editorInput){
+		if(editorInput.getModelo() != null)
+			return editorInput.getModelo();
+		
+		try{
+			return mainClass.newInstance();
+		}catch(Exception e){
+			return null;
+		}
+	}
+	
 	@Override
 	public boolean isDirty() {
 		return false;
@@ -83,4 +126,5 @@ public abstract class GenericEditor extends EditorPart {
 	public boolean isSaveAsAllowed() {
 		return false;
 	}
+
 }

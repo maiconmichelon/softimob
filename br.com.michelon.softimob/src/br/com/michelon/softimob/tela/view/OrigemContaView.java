@@ -55,7 +55,7 @@ public class OrigemContaView extends GenericView<OrigemConta>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(OrigemConta t) {
 		return OrigemContaEditor.ID;
 	}
 

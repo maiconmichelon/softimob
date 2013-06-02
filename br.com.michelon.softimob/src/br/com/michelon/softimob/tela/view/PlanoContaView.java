@@ -56,7 +56,7 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(PlanoConta t) {
 		return PlanoContaEditor.ID;
 	}
 

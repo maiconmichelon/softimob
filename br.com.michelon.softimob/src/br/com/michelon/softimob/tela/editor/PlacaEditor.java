@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.Label;
 
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.PlacaService;
 import br.com.michelon.softimob.modelo.Placa;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -18,16 +20,25 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import br.com.michelon.softimob.modelo.Imovel;
 
-public class PlacaEditor extends GenericEditor{
+public class PlacaEditor extends GenericEditor<Placa>{
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.PlacaEditor"; //$NON-NLS-1$
 	
 	private DataBindingContext m_bindingContext;
-	private WritableValue value = WritableValue.withValueType(Placa.class);
+	
+	private PlacaService service= new PlacaService();
+	
 	private Text text;
 	private Text text_1;
 	private Text text_2;
+	
 	public PlacaEditor() {
+		super(Placa.class);
+	}
+	
+	@Override
+	public GenericService<Placa> getService() {
+		return service;
 	}
 
 	@Override
@@ -78,9 +89,6 @@ public class PlacaEditor extends GenericEditor{
 		m_bindingContext = initDataBindings();
 	}
 
-	@Override
-	protected void salvar() {
-	}
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

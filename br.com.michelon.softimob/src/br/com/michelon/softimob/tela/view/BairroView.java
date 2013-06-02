@@ -56,7 +56,7 @@ public class BairroView extends GenericView<Bairro>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Bairro t) {
 		return BairroEditor.ID;
 	}
 

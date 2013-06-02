@@ -35,6 +35,8 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.service.AluguelService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.AcontecimentoChamado;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.ChamadoReforma;
@@ -49,18 +51,17 @@ import de.ralfebert.rcputils.properties.IValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 
-public class AluguelEditor extends GenericEditor{
+public class AluguelEditor extends GenericEditor<Aluguel>{
 	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.AluguelEditor";
 	
-	private WritableValue value = WritableValue.withValueType(Aluguel.class);
 	private WritableValue valueVistoria = WritableValue.withValueType(Vistoria.class);
 	private WritableValue valueChamado = WritableValue.withValueType(ChamadoReforma.class);
 	private WritableValue valueAcontecimentoChamado = WritableValue.withValueType(AcontecimentoChamado.class);
 	private WritableValue valueComissao = WritableValue.withValueType(Comissao.class);
 	
-	private TableViewerBuilder tvbComissao;
+	private AluguelService service = new AluguelService();
 	
 	private Text text;
 	private Text text_1;
@@ -82,27 +83,27 @@ public class AluguelEditor extends GenericEditor{
 	private Text text_17;
 	private Text text_16;
 	private Text text_34;
-	private TableViewerBuilder tvbChamadoGeral;
-	private TableViewerBuilder tvbAndamentoChamado;
-	private TableViewerBuilder tvbVistoria;
 	private Text text_27;
 	private Text text_28;
-
-	private TableViewer tvVistoria;
-
-	private TableViewer tvAndamentoChamado;
-
-	private TableViewer tvChamadoGeral;
-
-	private TableViewer tvComissao;
 	private Text text_8;
 	private Text text_9;
 	private Text text_11;
+
+	private TableViewerBuilder tvbComissao;
+	private TableViewerBuilder tvbChamadoGeral;
+	private TableViewerBuilder tvbAndamentoChamado;
+	private TableViewerBuilder tvbVistoria;
+	private TableViewer tvVistoria;
+	private TableViewer tvAndamentoChamado;
+	private TableViewer tvChamadoGeral;
+	private TableViewer tvComissao;
+
 
 	private RadioGroupViewer radioGroupViewer;
 	private Text text_12;
 	
 	public AluguelEditor() {
+		super(Aluguel.class);
 	}
 
 	@Override
@@ -594,10 +595,10 @@ public class AluguelEditor extends GenericEditor{
 	}
 	
 	@Override
-	protected void salvar() {
-		
+	public GenericService<Aluguel> getService() {
+		return service;
 	}
-	
+
 	protected DataBindingContext initBindTables(DataBindingContext context) {
 		//
 		IObservableValue observeSingleSelectionTableViewerAndamento = ViewerProperties.input().observe(tvAndamentoChamado);
@@ -713,4 +714,5 @@ public class AluguelEditor extends GenericEditor{
 		//
 		return bindingContext;
 	}
+
 }

@@ -37,28 +37,33 @@ import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.TipoComodoService;
 import br.com.michelon.softimob.modelo.TipoComodo;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.modelo.TipoImovelTipoComodo;
 import br.com.michelon.softimob.persistencia.TipoComodoDAO;
 
-public class ComodoEditor extends GenericEditor{
+public class ComodoEditor extends GenericEditor<TipoComodo>{
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ComodoEditor"; //$NON-NLS-1$
 	
 	private DataBindingContext m_bindingContext;
+	private TipoComodoService service = new TipoComodoService();
+	
 	private Text text;
-	private WritableValue value = WritableValue.withValueType(TipoComodo.class);
 	private TableViewer tvComodo;
 	private TipoComodoDAO tipoComodoDAO;
 	
 	public ComodoEditor() {
+		super(TipoComodo.class);
 	}
 	
 	@Override
-	protected void salvar() {
+	public GenericService<TipoComodo> getService() {
+		return service;
 	}
-
+	
 	@Override
 	public void afterCreatePartControl(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));

@@ -1,42 +1,41 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.core.databinding.observable.value.WritableValue;
+import java.math.BigDecimal;
+import java.util.Date;
+
+import org.eclipse.core.databinding.Binding;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
+import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
+import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 
-import org.eclipse.core.databinding.Binding;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.core.databinding.beans.PojoProperties;
-import java.util.Date;
-import org.eclipse.jface.databinding.viewers.ViewerProperties;
-import br.com.michelon.softimob.modelo.OrigemConta;
-import java.math.BigDecimal;
-import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
-import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
-import org.eclipse.nebula.widgets.radiogroup.RadioItem;
-
-public class ContaPagarReceberEditor extends GenericEditor {
+public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor";
 	
-	private WritableValue value = WritableValue.withValueType(ContaPagarReceber.class);
+	private ContaPagarReceberService service = new ContaPagarReceberService();
 	
 	private Text text;
 	private Text text_1;
@@ -47,12 +46,14 @@ public class ContaPagarReceberEditor extends GenericEditor {
 	private RadioGroupViewer radioGroupViewer;
 	
 	public ContaPagarReceberEditor() {
+		super(ContaPagarReceber.class);
 	}
 
 	@Override
-	protected void salvar() {
+	public GenericService<ContaPagarReceber> getService() {
+		return service;
 	}
-
+	
 	@Override
 	public void afterCreatePartControl(Composite parent) {
 		GridLayout gl_parent = new GridLayout(2, false);

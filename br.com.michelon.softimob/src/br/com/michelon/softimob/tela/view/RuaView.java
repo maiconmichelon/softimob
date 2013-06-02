@@ -57,7 +57,7 @@ public class RuaView extends GenericView<Rua>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Rua t) {
 		return RuaEditor.ID;
 	}
 

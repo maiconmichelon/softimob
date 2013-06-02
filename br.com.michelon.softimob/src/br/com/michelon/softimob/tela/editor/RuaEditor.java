@@ -10,6 +10,8 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.RuaService;
 import br.com.michelon.softimob.modelo.Rua;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -18,16 +20,19 @@ import org.eclipse.core.databinding.beans.PojoProperties;
 import br.com.michelon.softimob.modelo.Bairro;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 
-public class RuaEditor extends GenericEditor{
+public class RuaEditor extends GenericEditor<Rua>{
+	
 	private DataBindingContext m_bindingContext;
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.RuaEditor";
 	
-	private WritableValue value = WritableValue.withValueType(Rua.class);
+	private RuaService service = new RuaService();
+	
 	private Text text;
 	private ComboViewer comboViewer_2;
 	
 	public RuaEditor() {
+		super(Rua.class);
 	}
 
 	@Override
@@ -76,10 +81,10 @@ public class RuaEditor extends GenericEditor{
 	}
 
 	@Override
-	protected void salvar() {
-		// TODO Auto-generated method stub
-		
+	public GenericService<Rua> getService() {
+		return service;
 	}
+
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

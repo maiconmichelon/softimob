@@ -24,7 +24,7 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Nome", "nome", 60));
+		atributos.add(new ColumnProperties("Nome", "descricao", 60));
 	}
 	
 	@Override
@@ -54,7 +54,7 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(TipoImovel t) {
 		return TipoImovelEditor.ID;
 	}
 	

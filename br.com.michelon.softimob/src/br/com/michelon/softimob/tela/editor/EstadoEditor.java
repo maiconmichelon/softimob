@@ -10,23 +10,32 @@ import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.nebula.widgets.formattedtext.FormattedText;
 import org.eclipse.nebula.widgets.formattedtext.MaskFormatter;
 
+import br.com.michelon.softimob.aplicacao.service.EstadoService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Estado;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 
-public class EstadoEditor extends GenericEditor {
+public class EstadoEditor extends GenericEditor<Estado> {
+	
 	private DataBindingContext m_bindingContext;
 	public static final String ID = "br.com.michelon.softimob.tela.editor.EstadoEditor";
 	private Text text_1;
 	private Text text;
 	
-	private WritableValue value = WritableValue.withValueType(Estado.class);
+	private EstadoService service = new EstadoService();
 	
 	public EstadoEditor() {
+		super(Estado.class);
 	}
 
+	@Override
+	public GenericService<Estado> getService() {
+		return service;
+	}
+	
 	@Override
 	public void afterCreatePartControl(Composite parent) {
 		GridLayout gridLayout = (GridLayout) parent.getLayout();
@@ -51,14 +60,7 @@ public class EstadoEditor extends GenericEditor {
 		gd_text_1.widthHint = 288;
 		text_1.setLayoutData(gd_text_1);
 		
-		value.setValue(new Estado());
-		
 		m_bindingContext = initDataBindings();
-	}
-
-	@Override
-	protected void salvar() {
-		
 	}
 	
 	protected DataBindingContext initDataBindings() {

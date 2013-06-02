@@ -3,9 +3,7 @@ package br.com.michelon.softimob.tela.editor;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -13,35 +11,27 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.service.DepartamentoService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Departamento;
 
-public class DepartamentoEditor extends GenericEditor {
+public class DepartamentoEditor extends GenericEditor<Departamento> {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.DepartamentoEditor";
 
 	private DataBindingContext m_bindingContext;
 	private Text text;
-	private WritableValue value = WritableValue.withValueType(Departamento.class);
-	private DepartamentoService departamentoService;
+	private DepartamentoService service = new DepartamentoService();
 	
 	public DepartamentoEditor() {
-		departamentoService = new DepartamentoService();
+		super(Departamento.class);
 	}
 
 	@Override
-	protected void salvar() {
-		try {
-			departamentoService.salvar((Departamento) value.getValue());
-			MessageDialog.openInformation(ShellHelper.getActiveShell(), "Registro Salvo", "Registo salvo com sucesso.");
-			
-			value.setValue(new Departamento());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public GenericService<Departamento> getService() {
+		return service;
 	}
-
+	
 	@Override
 	public void afterCreatePartControl(Composite parent) {
 		GridLayout gl_parent = new GridLayout(2, false);

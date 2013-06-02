@@ -15,11 +15,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.ParametrosEmpresaService;
+import br.com.michelon.softimob.modelo.ParametrosEmpresa;
 import br.com.michelon.softimob.tela.widget.CNPJTextField;
 
-public class ParametrosEmpresaEditor extends GenericEditor{
+public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ParametrosEmpresaEditor";
+	
+	private ParametrosEmpresaService service = new ParametrosEmpresaService();
 	
 	private Text text;
 	private Text text_1;
@@ -35,6 +41,7 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 	private Text text_6;
 	
 	public ParametrosEmpresaEditor() {
+		super(ParametrosEmpresa.class);
 	}
 
 	@Override
@@ -265,8 +272,14 @@ public class ParametrosEmpresaEditor extends GenericEditor{
 	}
 
 	@Override
-	protected void salvar() {
-		// TODO Auto-generated method stub
-		
+	public GenericService<ParametrosEmpresa> getService() {
+		return service;
 	}
+	
+	@Override
+	protected ParametrosEmpresa getValorInicial(GenericEditorInput<ParametrosEmpresa> editorInput) {
+		//TODO AQUI TEM QUE FAZER PARA BUSCAR O PARAMETRO EXISTENTE DA EMPRESA >D
+		return new ParametrosEmpresa();
+	}
+	
 }

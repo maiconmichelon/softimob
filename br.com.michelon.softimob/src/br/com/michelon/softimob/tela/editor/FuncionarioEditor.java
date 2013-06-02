@@ -5,7 +5,6 @@ import java.util.Date;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -17,18 +16,22 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.service.FuncionarioService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Departamento;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.PhoneTextField;
 
-public class FuncionarioEditor extends GenericEditor {
+public class FuncionarioEditor extends GenericEditor<Funcionario> {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.FuncionarioEditor"; //$NON-NLS-1$
 	
-	private WritableValue value = WritableValue.withValueType(Funcionario.class);
 	private DataBindingContext m_bindingContext;
+	
+	private FuncionarioService service = new FuncionarioService();
+	
 	private Text text;
 	private Text text_3;
 	private Text text_2;
@@ -38,8 +41,14 @@ public class FuncionarioEditor extends GenericEditor {
 	private Text text_1;
 	
 	public FuncionarioEditor() {
+		super(Funcionario.class);
 	}
 
+	@Override
+	public GenericService<Funcionario> getService() {
+		return service;
+	};
+	
 	@Override
 	public void afterCreatePartControl(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
@@ -113,11 +122,6 @@ public class FuncionarioEditor extends GenericEditor {
 		value.setValue(new Funcionario());
 		
 		m_bindingContext = initDataBindings();
-	}
-
-	@Override
-	protected void salvar() {
-		// TODO Auto-generated method stub
 	}
 	
 	protected DataBindingContext initDataBindings() {

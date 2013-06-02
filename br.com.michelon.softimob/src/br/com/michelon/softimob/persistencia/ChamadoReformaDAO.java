@@ -2,6 +2,8 @@ package br.com.michelon.softimob.persistencia;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface ChamadoReformaDAO extends CrudRepository<ChamadoReformaDAO, Long>{
+import br.com.michelon.softimob.modelo.ChamadoReforma;
+
+public interface ChamadoReformaDAO extends CrudRepository<ChamadoReforma, Long>{
 
 }

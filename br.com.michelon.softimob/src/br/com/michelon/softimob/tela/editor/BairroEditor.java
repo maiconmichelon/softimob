@@ -1,36 +1,42 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.layout.GridLayout;
 
+import br.com.michelon.softimob.aplicacao.service.BairroService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Bairro;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.viewers.ViewerProperties;
-import org.eclipse.core.databinding.beans.PojoProperties;
 import br.com.michelon.softimob.modelo.Cidade;
-import br.com.michelon.softimob.persistencia.BairroDAO;
 
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-
-public class BairroEditor extends GenericEditor{
+public class BairroEditor extends GenericEditor<Bairro>{
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.BairroEditor";
 	
 	private DataBindingContext m_bindingContext;
-	private WritableValue value = WritableValue.withValueType(Bairro.class);
+
+	private BairroService service = new BairroService();
+	
 	private ComboViewer comboViewer;
 	private Text text;
-	private BairroDAO bairroDAO;
 	
 	public BairroEditor() {
+		super(Bairro.class);
+	}
+	
+	@Override
+	public GenericService<Bairro> getService() {
+		return service;
 	}
 
 	@Override
@@ -57,10 +63,6 @@ public class BairroEditor extends GenericEditor{
 		value.setValue(new Bairro());
 		
 		m_bindingContext = initDataBindings();
-	}
-
-	@Override
-	protected void salvar() {
 	}
 	
 	protected DataBindingContext initDataBindings() {

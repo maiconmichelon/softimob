@@ -1,33 +1,32 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
-import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
-import org.eclipse.nebula.widgets.radiogroup.RadioItem;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.Images;
 
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.ModeloCheckListService;
 import br.com.michelon.softimob.modelo.ItemCheckList;
 import br.com.michelon.softimob.modelo.ModeloCheckList;
-
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.core.databinding.beans.PojoProperties;
 
-public class ModeloCheckListEditor extends GenericEditor{
+public class ModeloCheckListEditor extends GenericEditor<ModeloCheckList>{
 	private DataBindingContext m_bindingContext;
 	
-	private WritableValue value = WritableValue.withValueType(ModeloCheckList.class);
 	private WritableValue valueItem = WritableValue.withValueType(ItemCheckList.class);
+	
+	private ModeloCheckListService service = new ModeloCheckListService();
 	
 	private Text text;
 	private Text text_1;
@@ -35,12 +34,11 @@ public class ModeloCheckListEditor extends GenericEditor{
 	
 	
 	public ModeloCheckListEditor() {
+		super(ModeloCheckList.class);
 	}
 
 	@Override
 	public void afterCreatePartControl(Composite parent) {
-		GridLayout gridLayout = (GridLayout) parent.getLayout();
-		
 		Label lblModelo = new Label(parent, SWT.NONE);
 		lblModelo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblModelo.setText("Modelo");
@@ -85,11 +83,6 @@ public class ModeloCheckListEditor extends GenericEditor{
 		tvb.createColumn("Tipo").bindToProperty("tipo").build();
 	}
 	
-	@Override
-	protected void salvar() {
-		// TODO Auto-generated method stub
-		
-	}
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -102,5 +95,10 @@ public class ModeloCheckListEditor extends GenericEditor{
 		bindingContext.bindValue(observeTextText_1ObserveWidget, valueDescricaoObserveDetailValue, null, null);
 		//
 		return bindingContext;
+	}
+
+	@Override
+	public GenericService<ModeloCheckList> getService() {
+		return service;
 	}
 }

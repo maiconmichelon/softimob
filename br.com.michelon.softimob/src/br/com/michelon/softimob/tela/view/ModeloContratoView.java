@@ -53,7 +53,7 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(ModeloContrato t) {
 		return ModeloContratoEditor.ID;
 	}
 

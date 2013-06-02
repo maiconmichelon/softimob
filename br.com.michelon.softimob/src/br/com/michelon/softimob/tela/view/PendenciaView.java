@@ -61,7 +61,7 @@ public class PendenciaView extends GenericView<Pendencia>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Pendencia t) {
 		return null;
 	}
 

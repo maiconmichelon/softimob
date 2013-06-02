@@ -56,15 +56,15 @@ public class ChaveView extends GenericView<Chave>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected Object getModelOfEditorInput(Chave element) {
+		return element.getImovel();
+	}
+	
+	@Override
+	protected String getEditorId(Chave t) {
 		return ImovelEditor.ID;
 	}
 
-	@Override
-	protected Object getElementToEdit(Chave object) {
-		return object.getImovel();
-	}
-	
 	@Override
 	protected List<Chave> getInput() {
 		return service.findAll();

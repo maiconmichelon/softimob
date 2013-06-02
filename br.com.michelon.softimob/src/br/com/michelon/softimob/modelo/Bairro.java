@@ -23,10 +23,11 @@ public class Bairro implements Serializable{
 	@Column(nullable = false)
 	private String nome;
 
-	@ManyToOne
+	@NotNull(message = "O cidade não pode ser vazia.")
+	@ManyToOne(optional = false)
 	private Cidade cidade;
 
-	@Column
+	@Column(nullable = false)
 	private Boolean ativo = true;
 	
 	public Long getId() {

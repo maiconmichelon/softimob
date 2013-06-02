@@ -6,11 +6,11 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
+import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
-import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
 import br.com.michelon.softimob.aplicacao.service.VistoriaService;
 import br.com.michelon.softimob.modelo.Vistoria;
-import br.com.michelon.softimob.tela.editor.ImovelEditor;
+import br.com.michelon.softimob.tela.editor.AluguelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
 import com.google.common.collect.Lists;
@@ -50,19 +50,19 @@ public class VistoriaView extends GenericView<Vistoria>{
 
 	@Override
 	protected GenericEditorInput<?> getIEditorInput(Vistoria t) {
-		return new ImovelEditorInput();
+		return new AluguelEditorInput();
 	}
 
 	@Override
-	protected String getEditorId() {
-		return ImovelEditor.ID;
-	}
-
-	@Override
-	protected Object getElementToEdit(Vistoria object) {
-		return object.getImovel();
+	protected Object getModelOfEditorInput(Vistoria element) {
+		return element.getAluguel();
 	}
 	
+	@Override
+	protected String getEditorId(Vistoria t) {
+		return AluguelEditor.ID;
+	}
+
 	@Override
 	protected List<Vistoria> getInput() {
 		return service.findAll();

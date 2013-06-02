@@ -58,7 +58,12 @@ public class ReservaView extends GenericView<Reserva>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected Object getModelOfEditorInput(Reserva element) {
+		return element.getImovel();
+	}
+	
+	@Override
+	protected String getEditorId(Reserva t) {
 		return ImovelEditor.ID;
 	}
 
@@ -67,11 +72,6 @@ public class ReservaView extends GenericView<Reserva>{
 		return service.findAll();
 	}
 
-	@Override
-	protected Object getElementToEdit(Reserva object) {
-		return ((Reserva)object).getImovel();
-	}
-	
 	@Override
 	protected List<Action> createMoreActions() {
 		return null;

@@ -28,6 +28,8 @@ import org.eclipse.wb.swt.ResourceManager;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.MovimentacaoContabilService;
 import br.com.michelon.softimob.modelo.LancamentoContabil;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.PlanoConta;
@@ -40,13 +42,13 @@ import com.google.common.collect.Lists;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 
-public class MovimentacaoContabilEditor extends GenericEditor{
+public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContabil>{
 	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor";
 	
-	private WritableValue value = WritableValue.withValueType(MovimentacaoContabil.class);
 	private WritableValue valueModeloLcto = WritableValue.withValueType(ModeloLancamentos.class);
+	private MovimentacaoContabilService service = new MovimentacaoContabilService();
 	
 	private Text text;
 	private Text text_1;
@@ -58,10 +60,16 @@ public class MovimentacaoContabilEditor extends GenericEditor{
 	private TableViewer tvLancamentos;
 	
 	public MovimentacaoContabilEditor() {
-		value.setValue(new MovimentacaoContabil());
+		super(MovimentacaoContabil.class);
+		
 		valueModeloLcto.setValue(new ModeloLancamentos());
 	}
 
+	@Override
+	public GenericService<MovimentacaoContabil> getService() {
+		return service;
+	}
+	
 	@Override
 	public void afterCreatePartControl(Composite parent) {
 		GridLayout gridLayout = (GridLayout) parent.getLayout();
@@ -174,11 +182,6 @@ public class MovimentacaoContabilEditor extends GenericEditor{
 		tvb.setInput(((MovimentacaoContabil)value.getValue()).getLancamentos());
 		
 		tvLancamentos = tvb.getTableViewer();
-	}
-	
-	@Override
-	protected void salvar() {
-		// TODO Auto-generated method stub
 	}
 
 	public class ModeloLancamentos{

@@ -56,7 +56,7 @@ public class VendaView extends GenericView<Venda>{
 	}
 
 	@Override
-	protected String getEditorId() {
+	protected String getEditorId(Venda t) {
 		return VendaEditor.ID;
 	}
 
