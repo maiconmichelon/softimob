@@ -1,7 +1,5 @@
 package br.com.michelon.softimob.tela.editor;
 
-import java.util.List;
-
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -74,9 +72,6 @@ public class CidadeEditor extends GenericEditor<Cidade> {
 	@Override
 	public void salvar(GenericService<Cidade> service, IObservableValue value) {
 		super.salvar(service, value);
-		
-		List<Cidade> cid = ((Cidade)value.getValue()).getEstado().getCidades();
-		System.out.println(cid.size());
 	}
 	
 	protected DataBindingContext initDataBindings() {

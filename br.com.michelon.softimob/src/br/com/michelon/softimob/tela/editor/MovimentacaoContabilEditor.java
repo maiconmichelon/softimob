@@ -26,8 +26,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
-import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
-import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.MovimentacaoContabilService;
 import br.com.michelon.softimob.modelo.LancamentoContabil;

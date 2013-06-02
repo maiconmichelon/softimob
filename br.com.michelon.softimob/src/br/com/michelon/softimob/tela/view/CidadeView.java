@@ -25,7 +25,7 @@ public class CidadeView extends GenericView<Cidade>{
 		atributos = Lists.newArrayList();
 		
 		atributos.add(new ColumnProperties("Nome", "nome", 20));
-		atributos.add(new ColumnProperties("UF", "uf", 80));
+		atributos.add(new ColumnProperties("UF", "estado.nome", 80));
 	}
 	
 	@Override

@@ -34,7 +34,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 		mainClass = clazz;
 		value = WritableValue.withValueType(mainClass);
 	}
-
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		
@@ -97,13 +97,15 @@ public abstract class GenericEditor<T> extends EditorPart {
 	public void doSaveAs() {
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
 		
-		value.setValue(getValorInicial((GenericEditorInput<T>) input));
+		if(input instanceof GenericEditorInput){
+			value.setValue(getValorInicial((GenericEditorInput<T>) input));
+		}
 	}
 
 	protected T getValorInicial(GenericEditorInput<T> editorInput){

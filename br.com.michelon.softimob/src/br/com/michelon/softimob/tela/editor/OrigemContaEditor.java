@@ -12,8 +12,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
-import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.OrigemContaService;
 import br.com.michelon.softimob.modelo.OrigemConta;
 

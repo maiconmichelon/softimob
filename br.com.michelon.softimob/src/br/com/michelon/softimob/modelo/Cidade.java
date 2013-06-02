@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import br.com.michelon.softimob.aplicacao.service.BairroService;
+
 @Entity
 public class Cidade implements Serializable{
 	
@@ -62,9 +64,13 @@ public class Cidade implements Serializable{
 		this.ativo = ativo;
 	}
 
-	public List<Rua> getBairros() {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public String toString() {
+		return nome;
+	}
+	
+	public List<Bairro> getBairros() {
+		return new BairroService().findByCidade(this);
 	}
 	
 }

@@ -33,8 +33,8 @@ import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
-import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
-import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.AcontecimentoChamado;

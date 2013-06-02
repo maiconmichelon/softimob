@@ -41,8 +41,8 @@ import org.eclipse.wb.swt.Images;
 import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
-import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper;
-import br.com.michelon.softimob.aplicacao.helper.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;

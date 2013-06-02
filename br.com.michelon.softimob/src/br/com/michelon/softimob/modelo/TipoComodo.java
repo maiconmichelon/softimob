@@ -3,6 +3,7 @@ package br.com.michelon.softimob.modelo;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +26,7 @@ public class TipoComodo implements Serializable{
 	@Column(nullable = false, unique = true)
 	private String nome;
 
-	@OneToMany(orphanRemoval = true)
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<TipoImovelTipoComodo> tipoImovelTipoComodo = Lists.newArrayList();
 	
 	@Column

@@ -1,21 +1,17 @@
 package br.com.michelon.softimob.tela.editor;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -31,18 +27,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.wb.swt.Images;
 import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
-import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.OkListElementDialogListener;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.TipoComodoService;
 import br.com.michelon.softimob.modelo.TipoComodo;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.modelo.TipoImovelTipoComodo;
-import br.com.michelon.softimob.persistencia.TipoComodoDAO;
 
 public class ComodoEditor extends GenericEditor<TipoComodo>{
 
@@ -53,7 +48,6 @@ public class ComodoEditor extends GenericEditor<TipoComodo>{
 	
 	private Text text;
 	private TableViewer tvComodo;
-	private TipoComodoDAO tipoComodoDAO;
 	
 	public ComodoEditor() {
 		super(TipoComodo.class);
@@ -104,24 +98,18 @@ public class ComodoEditor extends GenericEditor<TipoComodo>{
 		btnAdicionar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ElementListSelectionDialog dialog = new ElementListSelectionDialog(ShellHelper.getActiveShell(), new LabelProvider(){
+				TipoDialog.TIPO_IMOVEL.openDialogAndExecuteListeners(new OkListElementDialogListener() {
+					
 					@Override
-					public String getText(Object element) {
-						return ((TipoImovel)element).getDescricao();
+					public void ok(Object obj) {
+						TipoImovelTipoComodo tipoImovelTipoComodo = new TipoImovelTipoComodo();
+						tipoImovelTipoComodo.setTipoImovel((TipoImovel) obj);
+						tipoImovelTipoComodo.setPreSelecionado(true);
+						
+						((TipoComodo)value.getValue()).getTipoImovelTipoComodo().add(tipoImovelTipoComodo);
+						tvComodo.refresh();
 					}
 				});
-				dialog.setTitle("Tipos de imóvel");
-				dialog.setMessage("Selecione um tipo de imóvel");
-				dialog.setElements(new TipoImovel[]{new TipoImovel("tipo1"), new TipoImovel("tipo2")});
-				
-				if(dialog.open() == IDialogConstants.OK_ID){
-					TipoImovelTipoComodo tipoImovelTipoComodo = new TipoImovelTipoComodo();
-					tipoImovelTipoComodo.setTipoImovel((TipoImovel) dialog.getFirstResult());
-					tipoImovelTipoComodo.setPreSelecionado(true);
-					
-					((TipoComodo)value.getValue()).getTipoImovelTipoComodo().add(tipoImovelTipoComodo);
-					tvComodo.refresh();
-				}
 			}
 		});
 		
@@ -139,9 +127,12 @@ public class ComodoEditor extends GenericEditor<TipoComodo>{
 			}
 		});
 		
-		value.setValue(new TipoComodo());
-		
 		m_bindingContext = initDataBindings();
+	}
+	
+	@Override
+	public void salvar(GenericService<TipoComodo> service, IObservableValue value) {
+		super.salvar(service, value);
 	}
 
 	private void criarTipoImovel(Composite cpTipoImovel) {
@@ -203,13 +194,6 @@ public class ComodoEditor extends GenericEditor<TipoComodo>{
 		});
 		
 		tvComodo.setContentProvider(ArrayContentProvider.getInstance());
-		
-		TipoImovelTipoComodo tipoComodo = new TipoImovelTipoComodo();
-		tipoComodo.setPreSelecionado(true);
-		tipoComodo.setTipoImovel(new TipoImovel("HEUHEUHUEH"));
-
-		tvComodo.setInput(Arrays.asList(tipoComodo));
-		
 	}
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();

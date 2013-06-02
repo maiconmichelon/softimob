@@ -2,6 +2,7 @@ package br.com.michelon.softimob.aplicacao.helper;
 
 import java.util.List;
 
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 
@@ -28,6 +29,10 @@ public class SelectionHelper {
 			return null;
 		
 		return selection.getFirstElement();
+	}
+
+	public static Object getObject(ISelection selection) {
+		return ((IStructuredSelection) selection).getFirstElement();
 	}
 	
 }

@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import br.com.michelon.softimob.aplicacao.service.RuaService;
+
 @Entity
 public class Bairro implements Serializable{
 
@@ -88,8 +90,12 @@ public class Bairro implements Serializable{
 	}
 
 	public List<Rua> getRuas() {
-		// TODO Auto-generated method stub
-		return null;
+		return new RuaService().findRuasByBairro(this);
+	}
+	
+	@Override
+	public String toString() {
+		return nome;
 	}
 	
 }

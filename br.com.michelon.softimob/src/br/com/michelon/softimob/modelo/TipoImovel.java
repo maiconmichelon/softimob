@@ -79,5 +79,10 @@ public class TipoImovel implements Serializable{
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
+	
+	@Override
+	public String toString() {
+		return getDescricao();
+	}
 
 }
