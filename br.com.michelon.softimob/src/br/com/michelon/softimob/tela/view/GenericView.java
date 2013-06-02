@@ -64,7 +64,7 @@ public abstract class GenericView<T> extends ViewPart{
 		this.addGroupAtivadoDesativado = addGroupAtivadoDesativado;
 	}
 	
-	/**
+	/** 
 	 * @return List<Action> - Lista de todas as actions a ser adicionada no form.
 	 */
 	private List<Action> createActions() {
