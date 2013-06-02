@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +20,7 @@ import org.eclipse.ui.IEditorInput;
 
 import com.google.common.collect.Lists;
 
+@Entity
 public class ChamadoReforma implements Serializable, Pendencia{
 
 	private static final long serialVersionUID = 1L;

@@ -21,6 +21,9 @@ public class Departamento implements Serializable {
 	@Column(nullable = false, unique = true)
 	private String nome;
 
+	@Column
+	private Boolean ativo = true;
+	
 	public Long getId() {
 		return id;
 	}
@@ -35,6 +38,14 @@ public class Departamento implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 }

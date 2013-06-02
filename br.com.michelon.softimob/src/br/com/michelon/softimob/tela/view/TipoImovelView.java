@@ -1,28 +1,30 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.TipoImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.tela.editor.TipoImovelEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
+
+import com.google.common.collect.Lists;
 
 public class TipoImovelView extends GenericView<TipoImovel>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private TipoImovelService service = new TipoImovelService();
 	
 	public TipoImovelView(){
 		super(true);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Nome", "|60|nome");
+		atributos.add(new ColumnProperties("Nome", "nome", 60));
 	}
 	
 	@Override
@@ -42,12 +44,12 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(TipoImovel t) {
 		return new TipoImovelEditorInput();
 	}
 
@@ -58,8 +60,7 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 	
 	@Override
 	protected List<TipoImovel> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 
 }

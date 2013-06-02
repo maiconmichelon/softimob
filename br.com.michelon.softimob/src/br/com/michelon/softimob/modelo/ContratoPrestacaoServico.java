@@ -44,6 +44,9 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@ManyToOne
 	private Imovel imovel;
 	
+	@Column
+	private Boolean ativo = true;
+	
 	public Long getId() {
 		return id;
 	}
@@ -111,6 +114,14 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@Override
 	public BigDecimal getValor() {
 		return this.valor;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 }

@@ -99,7 +99,7 @@
             restorable="true">
       </view>
       <view
-            class="br.com.michelon.softimob.tela.view.ChamadoView"
+            class="br.com.michelon.softimob.tela.view.ChamadoReformaView"
             icon="icons/reforma/reforma16.png"
             id="br.com.michelon.softimob.tela.view.ChamadoView"
             name="Chamado"

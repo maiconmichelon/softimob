@@ -1,28 +1,30 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ModeloContratoEditorInput;
+import br.com.michelon.softimob.aplicacao.service.ModeloContratoService;
 import br.com.michelon.softimob.modelo.ModeloContrato;
 import br.com.michelon.softimob.tela.editor.ModeloContratoEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
+
+import com.google.common.collect.Lists;
 
 public class ModeloContratoView extends GenericView<ModeloContrato>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private ModeloContratoService service = new ModeloContratoService();
 	
 	public ModeloContratoView(){
 		super(false);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Descrição", "|10|descricao");
+		atributos.add(new ColumnProperties("Descrição", "descricao", 10));
 	}
 	
 	@Override
@@ -41,12 +43,12 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(ModeloContrato t) {
 		return new ModeloContratoEditorInput();
 	}
 
@@ -57,8 +59,7 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 
 	@Override
 	protected List<ModeloContrato> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 
 }

@@ -1,32 +1,33 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.service.PendenciaService;
 import br.com.michelon.softimob.modelo.Pendencia;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
+
+import com.google.common.collect.Lists;
 
 public class PendenciaView extends GenericView<Pendencia>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private PendenciaService service = new PendenciaService();
 	
 	public PendenciaView() {
 		super(false);
 		
-		atributos = Maps.newHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Descrição", "|30|descricao");
-		atributos.put("Data de Origem", "|15|dataOrigem");
-		atributos.put("Data de Vencimento", "|15|dataVencimento");
-		atributos.put("Valor", "|10|valor");
+		atributos.add(new ColumnProperties("Descrição", "descricao",30));
+		atributos.add(new ColumnProperties("Data de Origem", "dataOrigem", 15));
+		atributos.add(new ColumnProperties("Data de Vencimento", "dataVencimento",15));
+		atributos.add(new ColumnProperties("Valor", "valor",10));
 		
 	}
 	
@@ -50,12 +51,12 @@ public class PendenciaView extends GenericView<Pendencia>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Pendencia t) {
 		return null;
 	}
 

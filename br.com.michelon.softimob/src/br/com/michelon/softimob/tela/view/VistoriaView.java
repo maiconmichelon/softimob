@@ -1,29 +1,31 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.VistoriaService;
 import br.com.michelon.softimob.modelo.Vistoria;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
+
+import com.google.common.collect.Lists;
 
 public class VistoriaView extends GenericView<Vistoria>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private VistoriaService service = new VistoriaService();
 	
 	public VistoriaView() {
 		super(false);
 		
-		atributos = Maps.newHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Imovel", "|10|imovel.numero");
+		atributos.add(new ColumnProperties("Imovel", "imovel.numero", 10));
 	}
 	
 	@Override
@@ -42,12 +44,12 @@ public class VistoriaView extends GenericView<Vistoria>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Vistoria t) {
 		return new ImovelEditorInput();
 	}
 
@@ -63,8 +65,7 @@ public class VistoriaView extends GenericView<Vistoria>{
 	
 	@Override
 	protected List<Vistoria> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 
 	@Override

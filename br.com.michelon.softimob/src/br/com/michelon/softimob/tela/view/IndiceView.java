@@ -1,26 +1,28 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.IndiceEditorInput;
+import br.com.michelon.softimob.aplicacao.service.IndiceService;
 import br.com.michelon.softimob.modelo.Indice;
 import br.com.michelon.softimob.tela.editor.IndiceEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
+
+import com.google.common.collect.Lists;
 
 public class IndiceView extends GenericView<Indice>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private IndiceService service = new IndiceService();
 	
 	public IndiceView() {
 		super(true);
 		
-		atributos = Maps.newLinkedHashMap();
-		atributos.put("nome", "Nome");
+		atributos = Lists.newArrayList();
+		atributos.add(new ColumnProperties("nome", "Nome"));
 	}
 
 	@Override
@@ -35,17 +37,16 @@ public class IndiceView extends GenericView<Indice>{
 
 	@Override
 	protected Image getImage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Indice t) {
 		return new IndiceEditorInput();
 	}
 
@@ -56,8 +57,7 @@ public class IndiceView extends GenericView<Indice>{
 
 	@Override
 	protected List<Indice> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 
 }

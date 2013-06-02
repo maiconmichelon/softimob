@@ -1,7 +1,7 @@
 package org.eclipse.wb.swt;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Image; 
 
 import br.com.michelon.softimob.aplicacao.main.Activator;
 

@@ -1,33 +1,36 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.PlacaEditorInput;
+import br.com.michelon.softimob.aplicacao.service.PlacaService;
+import br.com.michelon.softimob.modelo.Placa;
 import br.com.michelon.softimob.tela.editor.PlacaEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
-public class PlacaView extends GenericView<PlacaView>{
+import com.google.common.collect.Lists;
 
-	private Map<String, String> atributos;
+public class PlacaView extends GenericView<Placa>{
+
+	private List<ColumnProperties> atributos;
+	private PlacaService service = new PlacaService();
 	
 	public PlacaView() {
 		super(false);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 	
-		atributos.put("Número", "numero");
-		atributos.put("Corretor", "|20|funcionario.nome");
-		atributos.put("Localização", "|60|imovel");
+		atributos.add(new ColumnProperties("Número", "numero"));
+		atributos.add(new ColumnProperties("Corretor", "funcionario.nome", 20));
+		atributos.add(new ColumnProperties("Localização", "imovel", 60));
 	}
 	
 	@Override
-	protected void excluir(List<PlacaView> objetos) {
+	protected void excluir(List<Placa> objetos) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -43,12 +46,12 @@ public class PlacaView extends GenericView<PlacaView>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Placa t) {
 		return new PlacaEditorInput();
 	}
 
@@ -58,9 +61,8 @@ public class PlacaView extends GenericView<PlacaView>{
 	}
 
 	@Override
-	protected List<PlacaView> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+	protected List<Placa> getInput() {
+		return service.findAll();
 	}
 
 }

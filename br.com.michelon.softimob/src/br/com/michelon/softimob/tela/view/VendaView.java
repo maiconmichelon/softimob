@@ -1,36 +1,38 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.VendaEditorInput;
-import br.com.michelon.softimob.modelo.Aluguel;
+import br.com.michelon.softimob.aplicacao.service.VendaService;
+import br.com.michelon.softimob.modelo.Venda;
 import br.com.michelon.softimob.tela.editor.VendaEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
-public class VendaView extends GenericView<Aluguel>{
+public class VendaView extends GenericView<Venda>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private VendaService service = new VendaService();
 	
 	public VendaView() {
 		super(false);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Imóvel", "|10|imovel.numero");
-		atributos.put("Data", "|15|data");
-		atributos.put("Cliente", "|30|cliente.nome");
-		atributos.put("Vendedor", "|30|funcionario.nome");
-		atributos.put("Valor", "|15|valor");
+		atributos.add(new ColumnProperties("Imóvel", "imovel.numero", 10));
+		atributos.add(new ColumnProperties("Data", "data", 15));
+		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 30));
+		atributos.add(new ColumnProperties("Vendedor", "funcionario.nome", 30));
+		atributos.add(new ColumnProperties("Valor", "valor", 15));
 	}
 	
 	@Override
-	protected void excluir(List<Aluguel> objetos) {
+	protected void excluir(List<Venda> objetos) {
 	}
 
 	@Override
@@ -44,12 +46,12 @@ public class VendaView extends GenericView<Aluguel>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Venda t) {
 		return new VendaEditorInput();
 	}
 
@@ -59,8 +61,8 @@ public class VendaView extends GenericView<Aluguel>{
 	}
 
 	@Override
-	protected List<Aluguel> getInput() {
-		return null;
+	protected List<Venda> getInput() {
+		return service.findAll();
 	}
 
 }

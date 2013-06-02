@@ -1,29 +1,31 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.CidadeEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.service.CidadeService;
 import br.com.michelon.softimob.modelo.Cidade;
 import br.com.michelon.softimob.tela.editor.CidadeEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
+
+import com.google.common.collect.Lists;
 
 public class CidadeView extends GenericView<Cidade>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private CidadeService service = new CidadeService();
 	
 	public CidadeView(){
 		super(true);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Nome", "|20|nome");
-		atributos.put("UF", "|80|uf");
+		atributos.add(new ColumnProperties("Nome", "nome", 20));
+		atributos.add(new ColumnProperties("UF", "uf", 80));
 	}
 	
 	@Override
@@ -43,12 +45,12 @@ public class CidadeView extends GenericView<Cidade>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Cidade t) {
 		return new CidadeEditorInput();
 	}
 
@@ -59,8 +61,7 @@ public class CidadeView extends GenericView<Cidade>{
 
 	@Override
 	protected List<Cidade> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 
 }

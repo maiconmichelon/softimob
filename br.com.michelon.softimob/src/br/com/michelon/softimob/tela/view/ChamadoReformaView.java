@@ -1,7 +1,6 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
@@ -9,31 +8,33 @@ import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 import br.com.michelon.softimob.modelo.ChamadoReforma;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
-public class ChamadoView extends GenericView<ChamadoReforma>{
+public class ChamadoReformaView extends GenericView<ChamadoReforma>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private ChamadoReformaService service = new ChamadoReformaService();
 	
-	public ChamadoView(){
+	public ChamadoReformaView(){
 		super(false);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Número", "|5|numero");
-		atributos.put("Data do chamado", "|8|dataChamado");
-		atributos.put("Cliente", "|25|cliente.nome");
-		atributos.put("Observações", "|40|observacoes");
-		atributos.put("Status", "|10|status");
+		atributos.add(new ColumnProperties("Número", "numero", 5));
+		atributos.add(new ColumnProperties("Data do chamado", "dataChamado", 8));
+		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 25));
+		atributos.add(new ColumnProperties("Observações", "observacoes", 40));
+		atributos.add(new ColumnProperties("Status", "status", 20));
 	}
 	
 	@Override
 	protected void excluir(List<ChamadoReforma> objetos) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -47,12 +48,12 @@ public class ChamadoView extends GenericView<ChamadoReforma>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(ChamadoReforma t) {
 		return new ImovelEditorInput();
 	}
 

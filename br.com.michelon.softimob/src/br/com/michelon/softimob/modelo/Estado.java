@@ -30,7 +30,7 @@ public class Estado implements Serializable{
 	private List<Cidade> cidades = Lists.newArrayList();
 	
 	@Column
-	private Boolean ativo;
+	private Boolean ativo = true;
 
 	public Long getId() {
 		return id;

@@ -9,12 +9,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.eclipse.ui.IEditorInput;
 
 import com.google.common.collect.Lists;
 
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 
 	private static final long serialVersionUID = 1L;

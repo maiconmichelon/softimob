@@ -1,31 +1,33 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.RuaEditorInput;
+import br.com.michelon.softimob.aplicacao.service.RuaService;
 import br.com.michelon.softimob.modelo.Rua;
 import br.com.michelon.softimob.tela.editor.RuaEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
+
+import com.google.common.collect.Lists;
 
 public class RuaView extends GenericView<Rua>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private RuaService service = new RuaService();
 	
 	public RuaView(){
 		super(true);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Rua", "|17|nome");
-		atributos.put("Bairro", "|17|bairro.nome");
-		atributos.put("Cidade", "|17|bairro.cidade.nome");
-		atributos.put("UF", "|50|bairro.cidade.estado.nome");
+		atributos.add(new ColumnProperties("Rua", "nome", 17));
+		atributos.add(new ColumnProperties("Bairro", "bairro.nome"));
+		atributos.add(new ColumnProperties("Cidade", "bairro.cidade.nome"));
+		atributos.add(new ColumnProperties("UF", "bairro.cidade.estado.nome", 50));
 	}
 	
 	@Override
@@ -45,12 +47,12 @@ public class RuaView extends GenericView<Rua>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Rua t) {
 		return new RuaEditorInput();
 	}
 
@@ -61,8 +63,7 @@ public class RuaView extends GenericView<Rua>{
 
 	@Override
 	protected List<Rua> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 
 }

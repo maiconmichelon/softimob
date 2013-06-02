@@ -1,13 +1,17 @@
 package br.com.michelon.softimob.modelo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -15,7 +19,11 @@ import javax.persistence.TemporalType;
 
 import com.google.common.collect.Lists;
 
-public class VendaAluguel {
+@Entity
+@Inheritance(strategy=InheritanceType.JOINED)
+public class VendaAluguel implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -39,6 +47,9 @@ public class VendaAluguel {
 
 	@OneToMany
 	private List<Comissao> comissoes = Lists.newArrayList();
+	
+	@Column
+	private Boolean ativo = true;
 	
 	public Long getId() {
 		return id;
@@ -94,6 +105,14 @@ public class VendaAluguel {
 
 	public void setComissoes(List<Comissao> comissoes) {
 		this.comissoes = comissoes;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 }

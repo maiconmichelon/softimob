@@ -1,30 +1,32 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.PlanoContaEditorInput;
+import br.com.michelon.softimob.aplicacao.service.PlanoContaService;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.tela.editor.PlanoContaEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
 public class PlanoContaView extends GenericView<PlanoConta>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private PlanoContaService service = new PlanoContaService();
 	
 	public PlanoContaView(){
 		super(false);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Código", "|20|codigo");
-		atributos.put("Nome", "|40|nome");
-		atributos.put("Tipo", "|10|tipo");
+		atributos.add(new ColumnProperties("Código", "codigo"));
+		atributos.add(new ColumnProperties("Nome", "nome"));
+		atributos.add(new ColumnProperties("Tipo", "tipo"));
 	}
 	
 	@Override
@@ -44,12 +46,12 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(PlanoConta t) {
 		return new PlanoContaEditorInput();
 	}
 
@@ -60,8 +62,7 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 
 	@Override
 	protected List<PlanoConta> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 
 }

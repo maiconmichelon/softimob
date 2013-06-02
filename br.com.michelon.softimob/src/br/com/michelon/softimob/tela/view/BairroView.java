@@ -1,30 +1,32 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.BairroEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.service.BairroService;
 import br.com.michelon.softimob.modelo.Bairro;
 import br.com.michelon.softimob.tela.editor.BairroEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
+
+import com.google.common.collect.Lists;
 
 public class BairroView extends GenericView<Bairro>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private BairroService service = new BairroService();
 	
 	public BairroView(){
 		super(true);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Bairro", "|20|nome");
-		atributos.put("Cidade", "|20|cidade.nome");
-		atributos.put("UF", "|60|cidade.estado.nome");
+		atributos.add(new ColumnProperties("Bairro", "nome", 20));
+		atributos.add(new ColumnProperties("Cidade", "cidade.nome", 20));
+		atributos.add(new ColumnProperties("UF", "cidade.estado.nome", 60));
 	}
 	
 	@Override
@@ -44,12 +46,12 @@ public class BairroView extends GenericView<Bairro>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Bairro t) {
 		return new BairroEditorInput();
 	}
 
@@ -60,8 +62,7 @@ public class BairroView extends GenericView<Bairro>{
 
 	@Override
 	protected List<Bairro> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 
 }

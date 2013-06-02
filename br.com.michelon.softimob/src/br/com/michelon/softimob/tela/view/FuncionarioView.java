@@ -1,34 +1,36 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.FuncionarioEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.service.FuncionarioService;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.tela.editor.FuncionarioEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
+
+import com.google.common.collect.Lists;
 
 public class FuncionarioView extends GenericView<Funcionario>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private FuncionarioService service = new FuncionarioService();
 	
 	public FuncionarioView() {
 		super(true);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Nome", "|20|nome");
-		atributos.put("Departamento", "|12|departamento.nome");
-		atributos.put("Data de Nascimento", "|12|dataNascimento");
-		atributos.put("Telefone/Ramal", "|12|telefoneRamal");
-		atributos.put("Celular", "|12|celular");
-		atributos.put("E-mail", "|12|email");
-		atributos.put("Data de Admissão", "|12|dataAdmissao");
+		atributos.add(new ColumnProperties("Nome", "nome", 20));
+		atributos.add(new ColumnProperties("Departamento", "departamento.nome", 12));
+		atributos.add(new ColumnProperties("Data de Nascimento", "dataNascimento", 12));
+		atributos.add(new ColumnProperties("Telefone/Ramal", "telefoneRamal", 12));
+		atributos.add(new ColumnProperties("Celular", "celular", 12));
+		atributos.add(new ColumnProperties("E-mail", "email", 12));
+		atributos.add(new ColumnProperties("Data de Admissão", "dataAdmissao", 12));
 		
 	}
 	
@@ -47,12 +49,12 @@ public class FuncionarioView extends GenericView<Funcionario>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Funcionario t) {
 		return new FuncionarioEditorInput();
 	}
 
@@ -63,7 +65,7 @@ public class FuncionarioView extends GenericView<Funcionario>{
 
 	@Override
 	protected List<Funcionario> getInput() {
-		return null;
+		return service.findAll();
 	}
 
 }

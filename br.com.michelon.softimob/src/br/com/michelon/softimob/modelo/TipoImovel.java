@@ -22,7 +22,7 @@ public class TipoImovel implements Serializable{
 	private String descricao;
 
 	@Column
-	private Boolean ativo;
+	private Boolean ativo = true;
 
 	public TipoImovel() {
 	}

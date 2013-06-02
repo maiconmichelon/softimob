@@ -5,8 +5,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public class Cliente extends Comissionado implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -83,10 +85,10 @@ public class Cliente extends Comissionado implements Serializable{
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-
+	
 	@Override
 	public String toString() {
 		return getNome() + " - " + this.cpf; 
-	} 
+	}
 	
 }

@@ -1,33 +1,35 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.PropostaService;
 import br.com.michelon.softimob.modelo.Proposta;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
+
+import com.google.common.collect.Lists;
 
 public class PropostaView extends GenericView<Proposta>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private PropostaService service = new PropostaService();
 	
 	public PropostaView() {
 		super(false);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Imóvel", "|8|imovel.numero");
-		atributos.put("Data", "|8|data");
-		atributos.put("Cliente", "|20|cliente");
-		atributos.put("Funcionário", "|20|funcionario.nome");
-		atributos.put("Descrição", "|40|descrição");
+		atributos.add(new ColumnProperties("Imóvel", "imovel.numero", 8));
+		atributos.add(new ColumnProperties("Data", "data", 8));
+		atributos.add(new ColumnProperties("Cliente", "cliente", 20));
+		atributos.add(new ColumnProperties("Funcionário", "funcionario.nome", 20));
+		atributos.add(new ColumnProperties("Descrição", "descrição", 40));
 	}
 	
 	@Override
@@ -47,7 +49,7 @@ public class PropostaView extends GenericView<Proposta>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
@@ -57,7 +59,7 @@ public class PropostaView extends GenericView<Proposta>{
 	}
 	
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Proposta t) {
 		return new ImovelEditorInput();
 	}
 
@@ -68,8 +70,7 @@ public class PropostaView extends GenericView<Proposta>{
 
 	@Override
 	protected List<Proposta> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 
 	@Override

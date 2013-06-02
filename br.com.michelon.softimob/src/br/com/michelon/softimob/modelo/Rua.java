@@ -24,7 +24,7 @@ public class Rua implements Serializable{
 	private Bairro bairro;
 	
 	@Column
-	private Boolean ativo;
+	private Boolean ativo = true;
 
 	public Long getId() {
 		return id;

@@ -26,6 +26,9 @@ public class OrigemConta implements Serializable{
 	@ManyToOne
 	private PlanoConta contaContraPartida;
 	
+	@Column
+	private Boolean ativo = true;
+	
 	public String getDescricao() {
 		return descricao;
 	}
@@ -56,6 +59,14 @@ public class OrigemConta implements Serializable{
 
 	public void setConta(PlanoConta conta) {
 		this.conta = conta;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 }

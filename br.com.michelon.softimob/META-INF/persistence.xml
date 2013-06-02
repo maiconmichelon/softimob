@@ -2,7 +2,44 @@
 <persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
   <persistence-unit name="SoftimobPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider> 
+
+    <class>br.com.michelon.softimob.modelo.AcontecimentoChamado</class>
+    <class>br.com.michelon.softimob.modelo.Aluguel</class>
+    <class>br.com.michelon.softimob.modelo.Bairro</class>
+    <class>br.com.michelon.softimob.modelo.ChamadoReforma</class>
+    <class>br.com.michelon.softimob.modelo.Chave</class>
+    <class>br.com.michelon.softimob.modelo.Cidade</class>
+    <class>br.com.michelon.softimob.modelo.Cliente</class>
+    <class>br.com.michelon.softimob.modelo.Comissao</class>
+    <class>br.com.michelon.softimob.modelo.Comodo</class>
+    <class>br.com.michelon.softimob.modelo.ContaPagarReceber</class>
+    <class>br.com.michelon.softimob.modelo.ContratoPrestacaoServico</class>
     <class>br.com.michelon.softimob.modelo.Departamento</class>
+    <class>br.com.michelon.softimob.modelo.Endereco</class>
+    <class>br.com.michelon.softimob.modelo.Estado</class>
+    <class>br.com.michelon.softimob.modelo.Feedback</class>
+    <class>br.com.michelon.softimob.modelo.Funcionario</class>
+    <class>br.com.michelon.softimob.modelo.Imovel</class>
+    <class>br.com.michelon.softimob.modelo.Indice</class>
+    <class>br.com.michelon.softimob.modelo.IndiceMes</class>
+    <class>br.com.michelon.softimob.modelo.ItemCheckList</class>
+    <class>br.com.michelon.softimob.modelo.LancamentoContabil</class>
+    <class>br.com.michelon.softimob.modelo.ModeloCheckList</class>
+    <class>br.com.michelon.softimob.modelo.ModeloContrato</class>
+    <class>br.com.michelon.softimob.modelo.MovimentacaoContabil</class>
+    <class>br.com.michelon.softimob.modelo.OrigemConta</class>
+    <class>br.com.michelon.softimob.modelo.ParametrosEmpresa</class>
+    <class>br.com.michelon.softimob.modelo.Placa</class>
+    <class>br.com.michelon.softimob.modelo.PlanoConta</class>
+    <class>br.com.michelon.softimob.modelo.Proposta</class>
+    <class>br.com.michelon.softimob.modelo.Reserva</class>
+    <class>br.com.michelon.softimob.modelo.Rua</class>
+    <class>br.com.michelon.softimob.modelo.TipoComodo</class>
+    <class>br.com.michelon.softimob.modelo.TipoImovelTipoComodo</class>
+    <class>br.com.michelon.softimob.modelo.TipoImovel</class>
+    <class>br.com.michelon.softimob.modelo.Venda</class>
+    <class>br.com.michelon.softimob.modelo.Vistoria</class>
+
     <properties>
       	<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 		<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/softimob" />

@@ -27,6 +27,9 @@ public class PlanoConta implements Serializable{
 	@Column
 	private Integer tipo;
 	
+	@Column
+	private Boolean ativo = true;
+	
 	public PlanoConta(String descricao, long codigo) {
 		this.codigo = codigo;
 		this.descricao = descricao;
@@ -66,6 +69,14 @@ public class PlanoConta implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 }

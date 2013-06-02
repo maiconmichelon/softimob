@@ -1,32 +1,34 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.ComodoEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
-import br.com.michelon.softimob.modelo.Comodo;
+import br.com.michelon.softimob.aplicacao.service.TipoComodoService;
+import br.com.michelon.softimob.modelo.TipoComodo;
 import br.com.michelon.softimob.tela.editor.ComodoEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
-public class ComodoView extends GenericView<Comodo>{
+import com.google.common.collect.Lists;
 
-	private Map<String, String> atributos;
+public class ComodoView extends GenericView<TipoComodo>{
+
+	private List<ColumnProperties> atributos;
+	private TipoComodoService service = new TipoComodoService();
 	
 	public ComodoView(){
 		super(true);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Nome", "|10|nome");
+		atributos.add(new ColumnProperties("Nome", "nome", 10));
 	}
 	
 	@Override
-	protected void excluir(List<Comodo> objetos) {
+	protected void excluir(List<TipoComodo> objetos) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -42,12 +44,12 @@ public class ComodoView extends GenericView<Comodo>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(TipoComodo t) {
 		return new ComodoEditorInput();
 	}
 
@@ -57,9 +59,8 @@ public class ComodoView extends GenericView<Comodo>{
 	}
 
 	@Override
-	protected List<Comodo> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+	protected List<TipoComodo> getInput() {
+		return service.findAll();
 	}
 
 }

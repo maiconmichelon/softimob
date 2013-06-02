@@ -4,16 +4,19 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
+import br.com.michelon.softimob.persistencia.SpringUtils;
+
 public class GenericService<T> {
 
-	private final CrudRepository<T, ?> crudRepository;
+	private CrudRepository<T, ?> crudRepository;
 	private T model;
 	
-	public GenericService(CrudRepository<T, ?> crudRepository){
-		this.crudRepository = crudRepository;
+	@SuppressWarnings({ "rawtypes", "unchecked" }) 
+	public GenericService(Class clazz){
+		crudRepository = SpringUtils.getContext().getBean(clazz);
 	}
 	
-	public CrudRepository<T, ?> getRepository() {
+	protected CrudRepository<T, ?> getRepository() {
 		return crudRepository;
 	}
 	

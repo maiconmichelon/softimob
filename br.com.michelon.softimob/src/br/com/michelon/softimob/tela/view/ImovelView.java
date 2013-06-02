@@ -1,42 +1,43 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.nebula.widgets.xviewer.XViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.wb.swt.Images;
-
-import com.google.common.collect.Maps;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.ImovelService;
+import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import br.com.michelon.softimob.tela.widget.imovelXViewer.ImovelXViewer;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.layout.FillLayout;
 
-public class ImovelView extends GenericView<ImovelView>{
+import com.google.common.collect.Lists;
 
-	private Map<String, String> atributos;
+public class ImovelView extends GenericView<Imovel>{
+
+	private List<ColumnProperties> atributos;
+	private ImovelService service = new ImovelService();
 	
 	public ImovelView() {
 		super(true);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Código", "codigo");
-		atributos.put("Endereço", "endereco");
+		atributos.add(new ColumnProperties("Código", "codigo"));
+		atributos.add(new ColumnProperties("Endereço", "endereco"));
 	}
 	
 	@Override
-	protected void excluir(List<ImovelView> objetos) {
+	protected void excluir(List<Imovel> objetos) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -52,12 +53,12 @@ public class ImovelView extends GenericView<ImovelView>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Imovel t) {
 		return new ImovelEditorInput();
 	}
 
@@ -67,9 +68,8 @@ public class ImovelView extends GenericView<ImovelView>{
 	}
 
 	@Override
-	protected List<ImovelView> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+	protected List<Imovel> getInput() {
+		return service.findAll();
 	}
 
 	@Override

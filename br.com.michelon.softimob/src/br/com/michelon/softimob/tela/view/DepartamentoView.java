@@ -1,9 +1,9 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Image; 
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.editorInput.DepartamentoEditorInput;
@@ -11,20 +11,21 @@ import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.service.DepartamentoService;
 import br.com.michelon.softimob.modelo.Departamento;
 import br.com.michelon.softimob.tela.editor.DepartamentoEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
 public class DepartamentoView extends GenericView<Departamento>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
 	private DepartamentoService service;
 	
 	public DepartamentoView() {
 		super(true);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Nome", "|10|nome");
+		atributos.add(new ColumnProperties("Nome", "nome", 10));
 		
 		service = new DepartamentoService();
 	}
@@ -44,12 +45,12 @@ public class DepartamentoView extends GenericView<Departamento>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Departamento t) {
 		return new DepartamentoEditorInput();
 	}
 

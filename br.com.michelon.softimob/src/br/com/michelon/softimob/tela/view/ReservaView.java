@@ -1,33 +1,35 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.ReservaService;
 import br.com.michelon.softimob.modelo.Reserva;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
 public class ReservaView extends GenericView<Reserva>{
 
-	private Map<String, String> atributos;
-
+	private List<ColumnProperties> atributos;
+	private ReservaService service = new ReservaService();
+	
 	public ReservaView() {
 		super(false);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Data da Reserva", "data");
-		atributos.put("Data de Vencimento", "dataVencimento");
-		atributos.put("Cliente", "cliente.nome");
-		atributos.put("Valor", "valor");
-		atributos.put("Funcionário", "funcionario");
-		atributos.put("Descrição", "descricao");
+		atributos.add(new ColumnProperties("Data da Reserva", "data"));
+		atributos.add(new ColumnProperties("Data de Vencimento", "dataVencimento"));
+		atributos.add(new ColumnProperties("Cliente", "cliente.nome"));
+		atributos.add(new ColumnProperties("Valor", "valor"));
+		atributos.add(new ColumnProperties("Funcionário", "funcionario"));
+		atributos.add(new ColumnProperties("Descrição", "descricao"));
 	}
 
 	@Override
@@ -42,17 +44,16 @@ public class ReservaView extends GenericView<Reserva>{
 
 	@Override
 	protected Image getImage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Reserva t) {
 		return new ImovelEditorInput();
 	}
 
@@ -63,8 +64,7 @@ public class ReservaView extends GenericView<Reserva>{
 
 	@Override
 	protected List<Reserva> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 
 	@Override

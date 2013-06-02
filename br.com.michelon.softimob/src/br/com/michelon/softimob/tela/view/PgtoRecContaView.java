@@ -19,7 +19,8 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Image; 
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -44,7 +45,7 @@ import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
 public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 
@@ -58,13 +59,13 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 
 	private MovimentacaoContabil movimentacao;
 	
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
 	private Text text_1;
 	
 	public PgtoRecContaView() {
 		super(false);
 		
-		this.atributos = Maps.newHashMap();
+		this.atributos = Lists.newArrayList();
 	}
 
 	@Override
@@ -311,12 +312,12 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(ContaPagarReceber t) {
 		return new ContaPagarReceberEditorInput();
 	}
 

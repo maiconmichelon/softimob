@@ -25,7 +25,7 @@ public class Cidade implements Serializable{
 	private Estado estado;
 
 	@Column
-	private Boolean ativo;
+	private Boolean ativo = true;
 	
 	public Long getId() {
 		return id;

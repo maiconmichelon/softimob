@@ -1,7 +1,6 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
@@ -9,24 +8,27 @@ import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.FeedbackService;
 import br.com.michelon.softimob.modelo.Feedback;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
 public class FeedbackView extends GenericView<Feedback>{
 
-	private Map<String, String> atributos;
+	private List<ColumnProperties> atributos;
+	private FeedbackService service = new FeedbackService();
 	
 	public FeedbackView() {
 		super(false);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Data", "|10|data");
-		atributos.put("Cliente", "|30|cliente.nome");
-		atributos.put("Funcionário", "|30|funcionario.nome");
-		atributos.put("Feedback", "|30|feedback");
+		atributos.add(new ColumnProperties("Data", "data", 10));
+		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 30));
+		atributos.add(new ColumnProperties("Funcionário", "funcionario.nome", 30));
+		atributos.add(new ColumnProperties("Feedback", "feedback", 30));
 	}
 	
 	@Override
@@ -44,12 +46,12 @@ public class FeedbackView extends GenericView<Feedback>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(Feedback t) {
 		return new ImovelEditorInput();
 	}
 

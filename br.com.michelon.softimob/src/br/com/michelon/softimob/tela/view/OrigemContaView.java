@@ -1,31 +1,35 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.Images;
 
-import com.google.common.collect.Maps;
-
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.OrigemContaEditorInput;
+import br.com.michelon.softimob.aplicacao.service.OrigemContaService;
+import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.tela.editor.OrigemContaEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
-public class OrigemContaView extends GenericView<OrigemContaView>{
+import com.google.common.collect.Lists;
 
-	private Map<String, String> atributos;
+public class OrigemContaView extends GenericView<OrigemConta>{
+
+	private List<ColumnProperties> atributos;
+	private OrigemContaService service = new OrigemContaService();
+	
 	
 	public OrigemContaView(){
 		super(true);
 		
-		atributos = Maps.newLinkedHashMap();
+		atributos = Lists.newArrayList();
 		
-		atributos.put("Nome", "|10|nome");
+		atributos.add(new ColumnProperties("Nome", "nome", 10));
 	}
 	
 	@Override
-	protected void excluir(List<OrigemContaView> objetos) {
+	protected void excluir(List<OrigemConta> objetos) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -41,12 +45,12 @@ public class OrigemContaView extends GenericView<OrigemContaView>{
 	}
 
 	@Override
-	public Map<String, String> getAttributes() {
+	public List<ColumnProperties> getColumns() {
 		return atributos;
 	}
 
 	@Override
-	protected GenericEditorInput<?> getIEditorInput() {
+	protected GenericEditorInput<?> getIEditorInput(OrigemConta t) {
 		return new OrigemContaEditorInput();
 	}
 
@@ -56,9 +60,8 @@ public class OrigemContaView extends GenericView<OrigemContaView>{
 	}
 
 	@Override
-	protected List<OrigemContaView> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+	protected List<OrigemConta> getInput() {
+		return service.findAll();
 	}
 
 }

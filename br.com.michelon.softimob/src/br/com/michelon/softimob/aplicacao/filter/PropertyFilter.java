@@ -1,5 +1,7 @@
 package br.com.michelon.softimob.aplicacao.filter;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.Viewer;
 
 import br.com.michelon.softimob.aplicacao.helper.ReflectionHelper;
@@ -7,7 +9,6 @@ import br.com.michelon.softimob.aplicacao.helper.ReflectionHelper;
 public class PropertyFilter extends GenericFilter{
 
 	private String[] atributos;
-	private String searchText;
 	
 	public PropertyFilter(String... atributos) {
 		this.atributos = atributos;
@@ -20,6 +21,10 @@ public class PropertyFilter extends GenericFilter{
 			atributos[i] = array[i].toString();
 	}
 
+	public PropertyFilter(List<String> lista){
+		this(lista.toArray());
+	}
+	
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		if(searchText == null || searchText.isEmpty())

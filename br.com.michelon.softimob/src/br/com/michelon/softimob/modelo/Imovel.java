@@ -24,7 +24,7 @@ public class Imovel implements Serializable{
 	private Long id;
 
 	@Column
-	private Boolean ativo;
+	private Boolean ativo = true;
 
 	@Column
 	private Integer metragem;

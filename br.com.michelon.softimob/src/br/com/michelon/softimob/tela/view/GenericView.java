@@ -1,8 +1,8 @@
 package br.com.michelon.softimob.tela.view;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -19,8 +19,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -38,10 +40,11 @@ import br.com.michelon.softimob.aplicacao.filter.GenericFilter;
 import br.com.michelon.softimob.aplicacao.filter.PropertyFilter;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Button;
 
 public abstract class GenericView<T> extends ViewPart{
 	
@@ -53,7 +56,8 @@ public abstract class GenericView<T> extends ViewPart{
 
 	private ColumnViewer viewer;
 	private Text txtFiltro;
-
+	private GenericFilter filter;
+	
 	private boolean addGroupAtivadoDesativado;
 	
 	public GenericView(boolean addGroupAtivadoDesativado) {
@@ -126,11 +130,12 @@ public abstract class GenericView<T> extends ViewPart{
 		if(menu.getItemCount() > 0)
 			viewer.getControl().setMenu(menu);
 		
-		if(getInput() != null){
+		List<T> input = getInput();
+		if(input != null && !input.isEmpty()){
 			if(viewer instanceof TableViewer)
 				viewer.setContentProvider(ArrayContentProvider.getInstance());
 			
-			viewer.setInput(getInput());
+			viewer.setInput(input);
 		}
 		
 		viewer.addFilter(getFilter());
@@ -187,11 +192,12 @@ public abstract class GenericView<T> extends ViewPart{
 				viewer.refresh();
 			}
 		});
+		
 		formToolkit.adapt(txtFiltro, true, true);
 	}
 
 	protected ColumnViewer criarTabela(Composite composite) {
-		return WidgetHelper.createTableWithFilter(composite, getAttributes()).getTableViewer();
+		return WidgetHelper.createTable(composite, getColumns()).getTableViewer();
 	}
 
 	protected void atualizar() {
@@ -203,11 +209,11 @@ public abstract class GenericView<T> extends ViewPart{
 	 * Abre a tela de cadastro através do editorInput e EditorID implementado
 	 */
 	public void cadastrar(){
-		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getIEditorInput(), getEditorId());
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getIEditorInput(getSelecionado()), getEditorId());
+//		} catch (PartInitException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	
@@ -221,11 +227,11 @@ public abstract class GenericView<T> extends ViewPart{
 		miAlterar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getIEditorInput(), getEditorId());
-				} catch (PartInitException e1) {
-					e1.printStackTrace();
-				}
+//				try {
+//					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getIEditorInput(getSelecionado()), getEditorId());
+//				} catch (PartInitException e1) {
+//					e1.printStackTrace();
+//				}
 			}
 		});
 		
@@ -234,7 +240,7 @@ public abstract class GenericView<T> extends ViewPart{
 		miRemover.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				excluir(getSelecteds());
+				excluir(getSelecionados());
 			}
 		});
 	};
@@ -244,15 +250,36 @@ public abstract class GenericView<T> extends ViewPart{
 	 * @return Filter
 	 */
 	protected GenericFilter getFilter(){
-		return new PropertyFilter(getAttributes().values().toArray());
+		if(filter == null){
+			filter = new PropertyFilter(getAttributes());
+		}
+		
+		return filter;
+	}
+	
+	protected ArrayList<String> getAttributes(){
+		return Lists.newArrayList(Iterables.transform(getColumns(), new Function<ColumnProperties, String>(){
+			@Override
+			public String apply(ColumnProperties arg0) {
+				return arg0.getAtributo();
+			}
+		}));
 	}
 	
 	/**
 	 * @return Todos os objetos selecionados da tabela
 	 */
 	@SuppressWarnings("unchecked")
-	protected List<T> getSelecteds(){
+	protected List<T> getSelecionados(){
 		return (List<T>) SelectionHelper.getObjects(viewer);
+	}
+	
+	/**
+	 * @return Unico objeto selecionado da tabela
+	 */
+	@SuppressWarnings("unchecked")
+	protected T getSelecionado(){
+		return (T) SelectionHelper.getObject(viewer);
 	}
 	
 	/**
@@ -274,12 +301,12 @@ public abstract class GenericView<T> extends ViewPart{
 	/**
 	 * A key é o label enquanto o valor é o atributo.
 	 */
-	public abstract Map<String, String> getAttributes();
+	public abstract List<ColumnProperties> getColumns();
 	
 	/**
 	 * @return o EditorInput necessário para abrir a tela de cadastro / alteração.
 	 */
-	protected abstract GenericEditorInput<?> getIEditorInput();
+	protected abstract GenericEditorInput<?> getIEditorInput(T t);
 
 	/**
 	 * @return o EditorID necessário para abrir a tela de cadastro / alteração.
@@ -299,12 +326,12 @@ public abstract class GenericView<T> extends ViewPart{
 		return new IDoubleClickListener(){
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
-				List<T> objects = getSelecteds();
-				if(objects.size() != 1)
+				T t = getSelecionado();
+				if(t != null)
 					return ;
 				
-				GenericEditorInput<?> iEditorInput = getIEditorInput();
-				iEditorInput.setModelo(getElementToEdit(objects.get(0)));
+//				GenericEditorInput<?> iEditorInput = getIEditorInput(t);
+//				iEditorInput.setModelo(getElementToEdit(t));
 			}
 		};
 	};

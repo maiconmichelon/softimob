@@ -1,15 +1,23 @@
 package br.com.michelon.softimob.modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-public class Comissionado {
+@Entity
+@Inheritance(strategy=InheritanceType.JOINED)
+public abstract class Comissionado implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue
 	private Long id;
@@ -30,6 +38,9 @@ public class Comissionado {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataNascimento;
+	
+	@Column
+	private Boolean ativo = true;
 	
 	public Long getId() {
 		return id;
@@ -79,4 +90,12 @@ public class Comissionado {
 		this.dataNascimento = dataNascimento;
 	}
 
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+	
+	public Boolean getAtivo() {
+		return ativo;
+	}
+	
 }

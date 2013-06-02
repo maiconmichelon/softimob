@@ -23,6 +23,9 @@ public class Indice implements Serializable{
 	@OneToMany
 	private List<IndiceMes> indices;
 
+	@Column
+	private Boolean ativo = true;
+	
 	public Long getId() {
 		return id;
 	}
@@ -45,6 +48,14 @@ public class Indice implements Serializable{
 
 	public void setIndices(List<IndiceMes> indices) {
 		this.indices = indices;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 }

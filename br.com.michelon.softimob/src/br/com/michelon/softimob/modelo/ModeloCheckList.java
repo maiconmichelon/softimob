@@ -23,6 +23,9 @@ public class ModeloCheckList {
 	@OneToMany
 	private List<ItemCheckList> itens = Lists.newArrayList();
 
+	@Column
+	private Boolean ativo = true;
+	
 	public Long getId() {
 		return id;
 	}
@@ -45,6 +48,14 @@ public class ModeloCheckList {
 
 	public void setItens(List<ItemCheckList> itens) {
 		this.itens = itens;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 }
