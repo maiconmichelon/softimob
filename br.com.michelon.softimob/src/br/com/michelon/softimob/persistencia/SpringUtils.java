@@ -5,7 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringUtils {
 
-	public static final String CONFIG_LOCATION = "application-context.xml";
+	public static final String CONFIG_LOCATION = "META-INF/application-context.xml";
 	
 	private static ApplicationContext ctx;
 	

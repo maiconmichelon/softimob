@@ -67,7 +67,8 @@ public class ListElementDialogHelper<T> {
 					
 					value.setValue(copy);
 					
-					listener.ok(obj);
+					if(listener != null)
+						listener.ok(obj);
 				}catch(Exception e){
 					e.printStackTrace();
 				}

@@ -26,6 +26,8 @@ public class OrigemContaView extends GenericView<OrigemConta>{
 		atributos = Lists.newArrayList();
 		
 		atributos.add(new ColumnProperties("Nome", "nome", 10));
+		atributos.add(new ColumnProperties("Conta", "conta.nome", 10));
+		atributos.add(new ColumnProperties("Contra-partida", "contaContraPartida.nome", 10));
 	}
 	
 	@Override

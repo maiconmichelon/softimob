@@ -1,12 +1,14 @@
 package br.com.michelon.softimob.tela.editor;
 
 import java.util.Date;
+import java.util.Locale;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -16,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.service.DepartamentoService;
 import br.com.michelon.softimob.aplicacao.service.FuncionarioService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Departamento;
@@ -37,7 +40,7 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 	private Text text_2;
 	private Text text_4;
 	private Text text_5;
-	private ComboViewer comboViewer;
+	private ComboViewer cvDepartamento;
 	private Text text_1;
 	
 	public FuncionarioEditor() {
@@ -70,9 +73,11 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 		lblDepartamento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDepartamento.setText("Departamento");
 		
-		comboViewer = new ComboViewer(composite, SWT.READ_ONLY);
-		Combo combo = comboViewer.getCombo();
+		cvDepartamento = new ComboViewer(composite, SWT.READ_ONLY);
+		Combo combo = cvDepartamento.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		cvDepartamento.setContentProvider(ArrayContentProvider.getInstance());
+		cvDepartamento.setInput(new DepartamentoService().findAll());
 		
 		Label lblDataDeNascimento = new Label(composite, SWT.NONE);
 		lblDataDeNascimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -119,8 +124,6 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 		gd_text_5.widthHint = 79;
 		text_5.setLayoutData(gd_text_5);
 		
-		value.setValue(new Funcionario());
-		
 		m_bindingContext = initDataBindings();
 	}
 	
@@ -131,7 +134,7 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 		IObservableValue valueNomeObserveDetailValue = PojoProperties.value(Funcionario.class, "nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueNomeObserveDetailValue, null, null);
 		//
-		IObservableValue observeSingleSelectionComboViewer = ViewerProperties.singleSelection().observe(comboViewer);
+		IObservableValue observeSingleSelectionComboViewer = ViewerProperties.singleSelection().observe(cvDepartamento);
 		IObservableValue valueDepartamentoObserveDetailValue = PojoProperties.value(Funcionario.class, "departamento", Departamento.class).observeDetail(value);
 		bindingContext.bindValue(observeSingleSelectionComboViewer, valueDepartamentoObserveDetailValue, null, null);
 		//

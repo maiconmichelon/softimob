@@ -7,12 +7,15 @@ import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.editorInput.FuncionarioEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.service.FuncionarioService;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.tela.editor.FuncionarioEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
 import com.google.common.collect.Lists;
+
+import de.ralfebert.rcputils.tables.format.Formatter;
 
 public class FuncionarioView extends GenericView<Funcionario>{
 
@@ -26,11 +29,11 @@ public class FuncionarioView extends GenericView<Funcionario>{
 		
 		atributos.add(new ColumnProperties("Nome", "nome", 20));
 		atributos.add(new ColumnProperties("Departamento", "departamento.nome", 12));
-		atributos.add(new ColumnProperties("Data de Nascimento", "dataNascimento", 12));
-		atributos.add(new ColumnProperties("Telefone/Ramal", "telefoneRamal", 12));
+		atributos.add(new ColumnProperties("Data de Nascimento", "dataNascimento", 12, Formatter.forDate(FormatterHelper.getSimpleDateFormat())));
+		atributos.add(new ColumnProperties("Telefone/Ramal", "telefone", 12));
 		atributos.add(new ColumnProperties("Celular", "celular", 12));
 		atributos.add(new ColumnProperties("E-mail", "email", 12));
-		atributos.add(new ColumnProperties("Data de Admissão", "dataAdmissao", 12));
+		atributos.add(new ColumnProperties("Data de Admissão", "dataAdmissao", 12, Formatter.forDate(FormatterHelper.getSimpleDateFormat())));
 		
 	}
 	

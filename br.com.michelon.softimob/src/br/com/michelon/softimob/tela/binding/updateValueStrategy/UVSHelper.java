@@ -3,10 +3,11 @@ package br.com.michelon.softimob.tela.binding.updateValueStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 import org.eclipse.core.databinding.conversion.StringToNumberConverter;
-import org.eclipse.core.internal.databinding.conversion.DateToStringConverter;
 import org.eclipse.core.internal.databinding.conversion.StringToDateConverter;
 import org.eclipse.core.internal.databinding.validation.StringToDateValidator;
 import org.eclipse.core.internal.databinding.validation.StringToIntegerValidator;
+
+import br.com.michelon.softimob.tela.binding.convert.DateToStringConverter;
 
 @SuppressWarnings("restriction")
 public class UVSHelper {

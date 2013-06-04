@@ -76,7 +76,7 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 		Button button_1 = new Button(parent, SWT.NONE);
 		button_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_1.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button, value, "contaContraPartida");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_1, value, "contaContraPartida");
 		
 		m_bindingContext = initDataBindings();
 		
@@ -85,15 +85,15 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
-		IObservableValue valueDescricaoObserveDetailValue = PojoProperties.value(OrigemConta.class, "descricao", String.class).observeDetail(value);
+		IObservableValue valueDescricaoObserveDetailValue = PojoProperties.value(OrigemConta.class, "nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueDescricaoObserveDetailValue, null, null);
 		//
 		IObservableValue observeSizeText_1ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_1);
-		IObservableValue valueContacodigoDescricaoObserveDetailValue = PojoProperties.value(OrigemConta.class, "conta.codigoDescricao", String.class).observeDetail(value);
+		IObservableValue valueContacodigoDescricaoObserveDetailValue = PojoProperties.value(OrigemConta.class, "conta.nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeSizeText_1ObserveWidget, valueContacodigoDescricaoObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
-		IObservableValue valueContaContraPartidacodigoDescricaoObserveDetailValue = PojoProperties.value(OrigemConta.class, "contaContraPartida.codigoDescricao", String.class).observeDetail(value);
+		IObservableValue valueContaContraPartidacodigoDescricaoObserveDetailValue = PojoProperties.value(OrigemConta.class, "contaContraPartida.nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_2ObserveWidget, valueContaContraPartidacodigoDescricaoObserveDetailValue, null, null);
 		//
 		return bindingContext;

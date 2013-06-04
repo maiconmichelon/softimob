@@ -20,6 +20,8 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 
 public class PlanoContaEditor extends GenericEditor<PlanoConta> {
 	private DataBindingContext m_bindingContext;
@@ -68,11 +70,19 @@ public class PlanoContaEditor extends GenericEditor<PlanoConta> {
 		RadioGroup radioGroup = radioGroupViewer.getRadioGroup();
 		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		
-		RadioItem riAtiva = new RadioItem(radioGroup, SWT.NONE);
-		riAtiva.setText("Ativa");
+		radioGroupViewer.setContentProvider(ArrayContentProvider.getInstance());
+		radioGroupViewer.setLabelProvider(new LabelProvider(){
+			@Override
+			public String getText(Object element) {
+				if(element.equals(PlanoConta.ATIVA))
+					return "Ativa";
+				if(element.equals(PlanoConta.PASSIVA))
+					return "Passiva";
+				return "";
+			}
+		});
+		radioGroupViewer.setInput(new Integer[]{PlanoConta.ATIVA, PlanoConta.PASSIVA});
 		
-		RadioItem riPassiva = new RadioItem(radioGroup, SWT.NONE);
-		riPassiva.setText("Passiva");
 		m_bindingContext = initDataBindings();
 		
 	}
@@ -80,11 +90,11 @@ public class PlanoContaEditor extends GenericEditor<PlanoConta> {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
-		IObservableValue valueCodigoObserveDetailValue = PojoProperties.value(PlanoConta.class, "codigo", Long.class).observeDetail(value);
+		IObservableValue valueCodigoObserveDetailValue = PojoProperties.value(PlanoConta.class, "codigo", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueCodigoObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
-		IObservableValue valueDescricaoObserveDetailValue = PojoProperties.value(PlanoConta.class, "descricao", String.class).observeDetail(value);
+		IObservableValue valueDescricaoObserveDetailValue = PojoProperties.value(PlanoConta.class, "nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_1ObserveWidget, valueDescricaoObserveDetailValue, null, null);
 		//
 		IObservableValue observeSingleSelectionRadioGroupViewer = ViewerProperties.singleSelection().observe(radioGroupViewer);

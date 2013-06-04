@@ -95,7 +95,7 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 		comboViewer.setLabelProvider(new LabelProvider(){
 			@Override
 			public String getText(Object element) {
-				return ((OrigemConta)element).getDescricao();
+				return ((OrigemConta)element).getNome();
 			}
 		});
 		

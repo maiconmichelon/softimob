@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class OrigemConta implements Serializable{
@@ -17,8 +18,9 @@ public class OrigemConta implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotNull(message = "Nome não pode ser vazio")
 	@Column(unique = true, nullable = false)
-	private String descricao;
+	private String nome;
 
 	@ManyToOne
 	private PlanoConta conta;
@@ -29,12 +31,12 @@ public class OrigemConta implements Serializable{
 	@Column
 	private Boolean ativo = true;
 	
-	public String getDescricao() {
-		return descricao;
+	public String getNome() {
+		return nome;
 	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public Long getId() {

@@ -25,6 +25,8 @@ public class WidgetHelper {
 			
 			if(columnProperties.getTamanho() != null)
 				cb.setPercentWidth(columnProperties.getTamanho());
+			if(columnProperties.getFormatter() != null)
+				cb.format(columnProperties.getFormatter());
 			
 			cb.build();
 		}

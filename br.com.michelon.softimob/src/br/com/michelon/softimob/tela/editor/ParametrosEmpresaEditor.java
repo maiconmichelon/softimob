@@ -270,7 +270,7 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 
 		tabFolder.setSelection(0);
 	}
-
+	
 	@Override
 	public GenericService<ParametrosEmpresa> getService() {
 		return service;
@@ -278,8 +278,9 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 	
 	@Override
 	protected ParametrosEmpresa getValorInicial(GenericEditorInput<ParametrosEmpresa> editorInput) {
-		//TODO AQUI TEM QUE FAZER PARA BUSCAR O PARAMETRO EXISTENTE DA EMPRESA >D
-		return new ParametrosEmpresa();
+		ParametrosEmpresa p = service.findParametrosEmpresa();
+		
+		return p != null ? p : new ParametrosEmpresa();
 	}
 	
 }

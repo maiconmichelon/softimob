@@ -13,6 +13,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
+
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Comissionado implements Serializable{
@@ -26,13 +28,14 @@ public abstract class Comissionado implements Serializable{
 	@NotNull(message="Nome do cliente não pode ser vazio")
 	private String nome;
 	
-	@Column(length=10, nullable = false)
+	@Column(length=13, nullable = false)
 	@NotNull(message = "O telefone não pode ser nulo.")
 	private String telefone;
 	
-	@Column(length=10)
+	@Column(length=13)
 	private String celular;
 	
+	@Email
 	@Column
 	private String email;
 

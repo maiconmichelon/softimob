@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class PlanoConta implements Serializable{
@@ -18,49 +19,30 @@ public class PlanoConta implements Serializable{
 	@Id @GeneratedValue
 	private Long id;
 	
-	@Column
-	private Long codigo;
+	@Column(unique = true, nullable = false)
+	@NotNull(message = "O código da conta não pode ser vazio.")
+	private String codigo;
 	
-	@Column
-	private String descricao;
+	@NotNull(message = "A descrição do plano de conta não pode ser vazio.")
+	@Column(nullable = false)
+	private String nome;
 	
-	@Column
+	@Column(nullable = false)
 	private Integer tipo;
 	
 	@Column
 	private Boolean ativo = true;
 	
-	public PlanoConta(String descricao, long codigo) {
-		this.codigo = codigo;
-		this.descricao = descricao;
+	public PlanoConta(){
+		
 	}
 
-	public Long getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(Long codigo) {
-		this.codigo = codigo;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-	
 	public Integer getTipo() {
 		return tipo;
 	}
 
 	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
-	}
-
-	public String getCodigoDescricao() {
-		return String.format("%s - %s", getCodigo() , getDescricao());
 	}
 
 	public Long getId() {
@@ -77,6 +59,31 @@ public class PlanoConta implements Serializable{
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+	
+	public String getCodigo() {
+		return codigo;
+	}
+	
+	public String getNome() {
+		return nome;
+	}
+	
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+	
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s - %s", getCodigo() , getNome());
+	}
+
+	public String getCodigoDescricao(){
+		return toString();
 	}
 	
 }

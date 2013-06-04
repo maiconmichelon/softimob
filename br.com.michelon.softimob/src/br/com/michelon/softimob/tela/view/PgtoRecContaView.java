@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -19,8 +18,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image; 
-import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -43,6 +41,7 @@ import br.com.michelon.softimob.modelo.LancamentoContabil;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
+import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 
 import com.google.common.collect.Lists;
@@ -144,7 +143,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 			public String getText(Object element) {
 				OrigemConta origem = ((ContaPagarReceber) element).getOrigem();
 				if(origem != null)
-					return origem.getDescricao();
+					return origem.getNome();
 				return StringUtils.EMPTY;
 			}
 		});	
@@ -241,7 +240,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		tvcContaLancamento.setLabelProvider(new ColumnLabelProvider(){
 			@Override
 			public String getText(Object element) {
-				return ((LancamentoContabil)element).getConta().getCodigoDescricao();
+				return ((LancamentoContabil)element).getConta().toString();
 			}
 		});
 		
