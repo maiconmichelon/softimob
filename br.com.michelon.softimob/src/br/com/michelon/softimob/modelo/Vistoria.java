@@ -34,23 +34,11 @@ public class Vistoria implements Serializable{
 	@Lob
 	private Byte[] arquivo;
 	
-	@NotNull(message = "Selecione o último inquilino do imóvel.")
-	@ManyToOne(optional=false)
-	private Cliente inquilino;
-	
-	@NotNull(message = "Selecione o imóvel referente a vistoria.")
-	@ManyToOne(optional=false)
-	private Imovel imovel;
-	
 	@Column
 	private String observacoes;
 
 	@ManyToOne
 	private Aluguel aluguel;
-	
-	public Vistoria(Imovel imovel) {
-		this.imovel = imovel;
-	}
 	
 	public Long getId() {
 		return id;
@@ -74,22 +62,6 @@ public class Vistoria implements Serializable{
 
 	public void setFuncionario(Funcionario funcionario) {
 		this.funcionario = funcionario;
-	}
-
-	public Cliente getInquilino() {
-		return inquilino;
-	}
-
-	public void setInquilino(Cliente inquilino) {
-		this.inquilino = inquilino;
-	}
-
-	public Imovel getImovel() {
-		return imovel;
-	}
-
-	public void setImovel(Imovel imovel) {
-		this.imovel = imovel;
 	}
 
 	public String getObservacoes() {

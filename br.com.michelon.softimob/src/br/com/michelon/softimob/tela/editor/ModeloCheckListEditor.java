@@ -18,10 +18,10 @@ import org.eclipse.wb.swt.Images;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ModeloCheckListService;
 import br.com.michelon.softimob.modelo.ItemCheckList;
-import br.com.michelon.softimob.modelo.ModeloCheckList;
+import br.com.michelon.softimob.modelo.CheckList;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
-public class ModeloCheckListEditor extends GenericEditor<ModeloCheckList>{
+public class ModeloCheckListEditor extends GenericEditor<CheckList>{
 	private DataBindingContext m_bindingContext;
 	
 	private WritableValue valueItem = WritableValue.withValueType(ItemCheckList.class);
@@ -34,7 +34,7 @@ public class ModeloCheckListEditor extends GenericEditor<ModeloCheckList>{
 	
 	
 	public ModeloCheckListEditor() {
-		super(ModeloCheckList.class);
+		super(CheckList.class);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class ModeloCheckListEditor extends GenericEditor<ModeloCheckList>{
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
-		IObservableValue valueNomeObserveDetailValue = PojoProperties.value(ModeloCheckList.class, "nome", String.class).observeDetail(value);
+		IObservableValue valueNomeObserveDetailValue = PojoProperties.value(CheckList.class, "nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueNomeObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
@@ -98,7 +98,7 @@ public class ModeloCheckListEditor extends GenericEditor<ModeloCheckList>{
 	}
 
 	@Override
-	public GenericService<ModeloCheckList> getService() {
+	public GenericService<CheckList> getService() {
 		return service;
 	}
 }

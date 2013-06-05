@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -44,6 +45,9 @@ public abstract class Comissionado implements Serializable{
 	
 	@Column
 	private Boolean ativo = true;
+	
+	@ManyToOne
+	private Endereco endereco;
 	
 	public Long getId() {
 		return id;
@@ -99,6 +103,14 @@ public abstract class Comissionado implements Serializable{
 	
 	public Boolean getAtivo() {
 		return ativo;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 	
 }

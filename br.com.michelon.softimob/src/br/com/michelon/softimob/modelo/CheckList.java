@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 import com.google.common.collect.Lists;
 
 @Entity
-public class ModeloCheckList {
+public class CheckList {
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;

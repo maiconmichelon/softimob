@@ -9,6 +9,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
 
@@ -44,8 +47,18 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@ManyToOne
 	private Imovel imovel;
 	
-	@Column
-	private Boolean ativo = true;
+	@NotNull
+	@Column(nullable=false)
+	private Boolean divulgar;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataInicio;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataVencimento;
+	
+	@ManyToOne
+	private Funcionario funcionario;
 	
 	public Long getId() {
 		return id;
@@ -81,10 +94,10 @@ public class ContratoPrestacaoServico implements Pendencia{
 		return null;
 	}
 
+	
 	@Override
 	public Date getDataVencimento() {
-		// TODO Auto-generated method stub
-		return null;
+		return dataVencimento;
 	}
 
 	@Override
@@ -116,12 +129,32 @@ public class ContratoPrestacaoServico implements Pendencia{
 		return this.valor;
 	}
 
-	public Boolean getAtivo() {
-		return ativo;
+	public Boolean getDivulgar() {
+		return divulgar;
 	}
 
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
+	public void setDivulgar(Boolean divulgar) {
+		this.divulgar = divulgar;
+	}
+
+	public Date getDataInicio() {
+		return dataInicio;
+	}
+
+	public void setDataInicio(Date dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+
+	public void setDataVencimento(Date dataVencimento) {
+		this.dataVencimento = dataVencimento;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 
 }

@@ -29,7 +29,7 @@ public class VendaAluguel implements Serializable{
 	private Long id;
 	
 	@ManyToOne
-	private Imovel imovel;
+	private ContratoPrestacaoServico contrato;
 	
 	//Cliente que vai alugar ou comprar a casa
 	@ManyToOne
@@ -48,8 +48,8 @@ public class VendaAluguel implements Serializable{
 	@OneToMany
 	private List<Comissao> comissoes = Lists.newArrayList();
 	
-	@Column
-	private Boolean ativo = true;
+	@ManyToOne
+	private CheckList checkList;
 	
 	public Long getId() {
 		return id;
@@ -59,14 +59,14 @@ public class VendaAluguel implements Serializable{
 		this.id = id;
 	}
 
-	public Imovel getImovel() {
-		return imovel;
+	public void setContrato(ContratoPrestacaoServico contrato) {
+		this.contrato = contrato;
 	}
-
-	public void setImovel(Imovel imovel) {
-		this.imovel = imovel;
+	
+	public ContratoPrestacaoServico getContrato() {
+		return contrato;
 	}
-
+	
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -107,12 +107,12 @@ public class VendaAluguel implements Serializable{
 		this.comissoes = comissoes;
 	}
 
-	public Boolean getAtivo() {
-		return ativo;
+	public CheckList getCheckList() {
+		return checkList;
 	}
 
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
+	public void setCheckList(CheckList checkList) {
+		this.checkList = checkList;
 	}
 	
 }

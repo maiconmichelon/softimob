@@ -39,13 +39,13 @@ public class ParametrosEmpresa implements Serializable{
 	private ModeloContrato contratoPrestacaoServico;
 	
 	@OneToOne
-	private ModeloCheckList checkListAluguel;
+	private CheckList checkListAluguel;
 
 	@OneToOne
-	private ModeloCheckList checkListVenda;
+	private CheckList checkListVenda;
 	
 	@OneToOne
-	private ModeloCheckList checkListVistoria;
+	private CheckList checkListVistoria;
 	
 	@Column
 	private Integer diaRecebAluguel;
@@ -93,11 +93,11 @@ public class ParametrosEmpresa implements Serializable{
 		this.contratoAluguel = contratoAluguel;
 	}
 
-	public ModeloCheckList getCheckListAluguel() {
+	public CheckList getCheckListAluguel() {
 		return checkListAluguel;
 	}
 
-	public void setCheckListAluguel(ModeloCheckList checkListAluguel) {
+	public void setCheckListAluguel(CheckList checkListAluguel) {
 		this.checkListAluguel = checkListAluguel;
 	}
 
@@ -109,11 +109,11 @@ public class ParametrosEmpresa implements Serializable{
 		this.contratoVenda = contratoVenda;
 	}
 
-	public ModeloCheckList getCheckListVenda() {
+	public CheckList getCheckListVenda() {
 		return checkListVenda;
 	}
 
-	public void setCheckListVenda(ModeloCheckList checkListVenda) {
+	public void setCheckListVenda(CheckList checkListVenda) {
 		this.checkListVenda = checkListVenda;
 	}
 
@@ -221,11 +221,11 @@ public class ParametrosEmpresa implements Serializable{
 		this.contratoPrestacaoServico = contratoPrestacaoServico;
 	}
 
-	public ModeloCheckList getCheckListVistoria() {
+	public CheckList getCheckListVistoria() {
 		return checkListVistoria;
 	}
 
-	public void setCheckListVistoria(ModeloCheckList checkListVistoria) {
+	public void setCheckListVistoria(CheckList checkListVistoria) {
 		this.checkListVistoria = checkListVistoria;
 	}
 

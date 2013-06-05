@@ -51,7 +51,7 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	private String problema;
 	
 	@OneToMany(orphanRemoval = true)
-	private List<AcontecimentoChamado> acontecimentoChamado = Lists.newArrayList();
+	private List<AcontecimentoChamado> acontecimentos = Lists.newArrayList();
 	
 	@Column
 	private Integer status;
@@ -110,13 +110,12 @@ public class ChamadoReforma implements Serializable, Pendencia{
 		this.problema = problema;
 	}
 
-	public List<AcontecimentoChamado> getAcontecimentoChamado() {
-		return acontecimentoChamado;
+	public List<AcontecimentoChamado> getAcontecimentos() {
+		return acontecimentos;
 	}
 
-	public void setAcontecimentoChamado(
-			List<AcontecimentoChamado> acontecimentoChamado) {
-		this.acontecimentoChamado = acontecimentoChamado;
+	public void setAcontecimentos(List<AcontecimentoChamado> acontecimentos) {
+		this.acontecimentos = acontecimentos;
 	}
 
 	public Integer getStatus() {
