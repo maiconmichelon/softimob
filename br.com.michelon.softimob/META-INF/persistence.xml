@@ -24,7 +24,8 @@
     <class>br.com.michelon.softimob.modelo.IndiceMes</class>
     <class>br.com.michelon.softimob.modelo.ItemCheckList</class>
     <class>br.com.michelon.softimob.modelo.LancamentoContabil</class>
-    <class>br.com.michelon.softimob.modelo.ModeloCheckList</class>
+    <class>br.com.michelon.softimob.modelo.ContratoPrestacaoServico</class>
+    <class>br.com.michelon.softimob.modelo.CheckList</class>
     <class>br.com.michelon.softimob.modelo.ModeloContrato</class>
     <class>br.com.michelon.softimob.modelo.MovimentacaoContabil</class>
     <class>br.com.michelon.softimob.modelo.OrigemConta</class>

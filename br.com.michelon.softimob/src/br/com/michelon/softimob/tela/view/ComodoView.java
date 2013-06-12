@@ -40,7 +40,7 @@ public class ComodoView extends GenericView<TipoComodo>{
 
 	@Override
 	protected Image getImage() {
-		return Images.SEARCH_32.getImage();
+		return Images.COMODO32.getImage();
 	}
 
 	@Override

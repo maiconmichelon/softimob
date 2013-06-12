@@ -113,9 +113,8 @@ public abstract class GenericView<T> extends ViewPart{
 		addTextFilter(frmNewForm);
 		
 		cpBody = formToolkit.createComposite(frmNewForm.getBody(), SWT.NONE);
+		cpBody.setLayout(new FillLayout(SWT.HORIZONTAL));
 		cpBody.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		GridLayout gridLayout = new GridLayout(2, false);
-		cpBody.setLayout(gridLayout);
 		formToolkit.paintBordersFor(cpBody);
 		
 		viewer = criarTabela(cpBody);

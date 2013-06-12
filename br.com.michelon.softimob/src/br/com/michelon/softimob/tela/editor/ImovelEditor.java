@@ -191,6 +191,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		txtProprietario = new Text(composite, SWT.BORDER);
 		txtProprietario.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		ListElementDialogHelper.addListElementDialogToText(TipoDialog.CLIENTE, txtProprietario, value, "proprietario");
 		
 		Button btnSelecionar_7 = new Button(composite, SWT.NONE);
 		btnSelecionar_7.setText("...");

@@ -69,8 +69,8 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 
 	@Override
 	protected ColumnViewer criarTabela(Composite parent) {
-		GridLayout gridLayout = (GridLayout) parent.getLayout();
-		gridLayout.numColumns = 1;
+//		GridLayout gridLayout = (GridLayout) parent.getLayout();
+//		gridLayout.numColumns = 1;
 		
 		CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));

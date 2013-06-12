@@ -76,7 +76,7 @@ public class ImovelView extends GenericView<Imovel>{
 	protected ColumnViewer criarTabela(Composite composite) {
 		Composite cpTable = new Composite(composite, SWT.NONE);
 		cpTable.setLayout(new FillLayout(SWT.HORIZONTAL));
-		cpTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+//		cpTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		XViewer imovelXViewer = new ImovelXViewer(cpTable, SWT.BORDER);
 		Tree tree = imovelXViewer.getTree();

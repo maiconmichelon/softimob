@@ -34,7 +34,7 @@ public class ListElementDialogHelper<T> {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.keyCode == SWT.ALT){
+				if(e.keyCode == SWT.F1){
 					openDialogAndSetValue(tipoDialog, value, property, listener);
 				}
 			}

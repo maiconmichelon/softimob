@@ -17,8 +17,8 @@ public enum Images{
 	FEEDBACK_16("icons/feedback/feedback16.png"),
 	FEEDBACK_32("icons/feedback/feedback32.png"),
 	FEEDBACK_32_2("icons/feedback/feedback32_2.png"),
-	IMOVEL_16("icons/imovel/casa16.png"),
-	IMOVEL_32("icons/imovel/casa32.png"),
+	IMOVEL_16("icons/casa/casa16.png"),
+	IMOVEL_32("icons/casa/casa32.png"),
 	TIPO_IMOVEL_16("icons/imovel/imovel16.png"),
 	TIPO_IMOVEL_32("icons/imovel/imovel32.png"),
 	CHAVE_16("icons/chave/key32.png"),
@@ -50,7 +50,13 @@ public enum Images{
 	PROPOSTA_32("icons/proposta/proposta32.png"), 
 	ENDERECO("icons/endereco/endereco32.png"),
 	CHECKED("icons/check/checked16.png"),
-	UNCHECKED("icons/check/unchecked16.png")
+	UNCHECKED("icons/check/unchecked16.png"),
+	COMODO16("icons/comodo/door16.png"),
+	COMODO32("icons/comodo/door32.png"),
+	PENDENCIA_16("icons/pendencia/pendencia32.png"),
+	PENDENCIA_32("icons/pendencia/pendencia32.png"),
+	INDICE_16("icons/indice/indice16.png"),
+	INDICE_32("icons/indice/indice32.png")
 	;
 	
 	private String caminho;

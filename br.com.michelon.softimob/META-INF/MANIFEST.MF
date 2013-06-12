@@ -53,6 +53,8 @@ Bundle-ClassPath: .,
  lib/spring/spring-tx-3.2.2.RELEASE.jar,
  lib/springData/spring-data-commons-1.5.0.RELEASE.jar,
  lib/springData/spring-data-jpa-1.3.0.RELEASE.jar,
- lib/hibernate/hibernate-entitymanager-4.2.1.Final.jar
+ lib/slf4j-simple-1.7.5.jar,
+ META-INF/hibernate-entitymanager-4.2.1.Final.jar,
+ META-INF
 Import-Package: com.google.common.base,
  com.google.common.collect

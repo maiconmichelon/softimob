@@ -47,7 +47,7 @@ public class PendenciaView extends GenericView<Pendencia>{
 
 	@Override
 	protected Image getImage() {
-		return Images.SEARCH_32.getImage();
+		return Images.PENDENCIA_32.getImage();
 	}
 
 	@Override

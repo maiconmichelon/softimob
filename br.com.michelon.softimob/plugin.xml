@@ -107,6 +107,7 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.ComodoView"
+            icon="icons/comodo/door16.png"
             id="br.com.michelon.softimob.tela.view.ComodoView"
             name="Cômodo"
             restorable="true">
@@ -168,26 +169,27 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.TipoImovelView"
-            icon="icons/imovel/casa16.png"
+            icon="icons/casa/casa16.png"
             id="br.com.michelon.softimob.tela.view.TipoImovelView"
             name="Tipo Imóvel"
             restorable="true">
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.ImovelView"
-            icon="icons/imovel/casa16.png"
+            icon="icons/casa/casa16.png"
             id="br.com.michelon.softimob.tela.view.ImovelView"
             name="Imóvel"
             restorable="true">
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView"
-            icon="icons/imovel/casa16.png"
+            icon="icons/casa/casa32.png"
             id="br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView"
             name="Busca Avançada de Imóveis">
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.PendenciaView"
+            icon="icons/pendencia/pendencia16.png"
             id="br.com.michelon.softimob.tela.view.PendenciaView"
             name="Pendências"
             restorable="true">
@@ -200,13 +202,14 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.PhotosView"
+            icon="icons/foto/foto16.png"
             id="br.com.michelon.softimob.tela.view.PhotosView"
             name="Fotos"
-            restorable="true"
-            >
+            restorable="true">
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.IndiceView"
+            icon="icons/indice/indice16.png"
             id="br.com.michelon.softimob.tela.view.IndiceView"
             name="Indices"
             restorable="true">
@@ -226,7 +229,7 @@
          <menu
                label="Imóveis">
             <menu
-                  icon="icons/imovel/casa16.png"
+                  icon="icons/casa/casa16.png"
                   label="Imóvel">
                <command
                      commandId="org.eclipse.ui.views.showView"
@@ -265,16 +268,6 @@
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
                      value="br.com.michelon.softimob.tela.view.ChaveView">
-               </parameter>
-            </command>
-            <command
-                  commandId="org.eclipse.ui.views.showView"
-                  icon="icons/imovel/casa16.png"
-                  label="Tipo imóvel"
-                  style="push">
-               <parameter
-                     name="org.eclipse.ui.views.showView.viewId"
-                     value="br.com.michelon.softimob.tela.view.TipoImovelView">
                </parameter>
             </command>
             <menu
@@ -319,6 +312,17 @@
             </menu>
             <command
                   commandId="org.eclipse.ui.views.showView"
+                  icon="icons/casa/casa16.png"
+                  label="Tipo imóvel"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.TipoImovelView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/comodo/door16.png"
                   label="Cômodo"
                   style="push">
                <parameter
@@ -377,6 +381,7 @@
             </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
+                  icon="icons/pendencia/pendencia16.png"
                   label="Pendências"
                   style="push">
                <parameter
@@ -386,6 +391,7 @@
             </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
+                  icon="icons/indice/indice16.png"
                   label="Indice"
                   style="push">
                <parameter
@@ -532,7 +538,7 @@
          point="org.eclipse.ui.editors">
       <editor
             class="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
-            icon="icons/imovel/casa16.png"
+            icon="icons/casa/casa16.png"
             id="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
             name="Cadastro Tipo de Imóvel">
       </editor>
@@ -556,12 +562,13 @@
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.ComodoEditor"
+            icon="icons/comodo/door16.png"
             id="br.com.michelon.softimob.tela.editor.ComodoEditor"
             name="Cadastro Cômodo">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.ImovelEditor"
-            icon="icons/imovel/casa16.png"
+            icon="icons/casa/casa16.png"
             id="br.com.michelon.softimob.tela.editor.ImovelEditor"
             name="Cadastro Imóvel">
       </editor>
@@ -650,7 +657,7 @@
       <editor
             class="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
             default="false"
-            icon="icons/imovel/casa16.png"
+            icon="icons/casa/casa32.png"
             id="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
             name="Cadastro Tipo Imovel">
       </editor>
@@ -664,6 +671,7 @@
       <editor
             class="br.com.michelon.softimob.tela.editor.IndiceEditor"
             default="false"
+            icon="icons/indice/indice16.png"
             id="br.com.michelon.softimob.tela.editor.IndiceEditor"
             name="Cadastro de Indice">
       </editor>
