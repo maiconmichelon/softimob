@@ -43,7 +43,7 @@ public class OrigemContaView extends GenericView<OrigemConta>{
 
 	@Override
 	protected Image getImage() {
-		return Images.CONTA_32.getImage();
+		return Images.ORIGEM_CONTA_32.getImage();
 	}
 
 	@Override

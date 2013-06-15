@@ -50,6 +50,8 @@ import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.properties.IValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class AluguelEditor extends GenericEditor<Aluguel>{
 	private DataBindingContext m_bindingContext;
@@ -100,7 +102,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 
 
 	private RadioGroupViewer radioGroupViewer;
-	private Text text_12;
 	
 	public AluguelEditor() {
 		super(Aluguel.class);
@@ -296,17 +297,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		btnSelecionarFuncionarioVistoria.setText("...");
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioVistoria, valueChamado, "funcionarioAbertura");
 		
-		Label lblInquilino = new Label(grpVistoria, SWT.NONE);
-		lblInquilino.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblInquilino.setText("Inquilino");
-		
-		text_17 = new Text(grpVistoria, SWT.BORDER);
-		text_17.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button btnSelecionarClienteVistoria = new Button(grpVistoria, SWT.NONE);
-		btnSelecionarClienteVistoria.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionarClienteVistoria, valueChamado, "inquilino");
-		
 		Label lblArquivo = new Label(grpVistoria, SWT.NONE);
 		lblArquivo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblArquivo.setText("Arquivo");
@@ -467,7 +457,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Composite composite_13 = new Composite(tfChamado, SWT.NONE);
 		tbtmFinalizar.setControl(composite_13);
-		composite_13.setLayout(new GridLayout(3, false));
+		composite_13.setLayout(new GridLayout(5, false));
 		
 		Label lblData_5 = new Label(composite_13, SWT.NONE);
 		lblData_5.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -479,24 +469,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		gd_text_36.widthHint = 76;
 		text_36.setLayoutData(gd_text_36);
 		new Label(composite_13, SWT.NONE);
-		
-		Label lblFuncionrio_4 = new Label(composite_13, SWT.NONE);
-		lblFuncionrio_4.setText("Funcionário");
-		
-		text_25 = new Text(composite_13, SWT.BORDER);
-		text_25.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button btnSelecionar_6 = new Button(composite_13, SWT.NONE);
-		btnSelecionar_6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		btnSelecionar_6.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar_6, valueChamado, "funcionarioFechamento");
-		
-		Label lblValor_3 = new Label(composite_13, SWT.NONE);
-		lblValor_3.setText("Valor");
-		
-		MoneyTextField moneyTextField_1 = new MoneyTextField(composite_13);
-		text_12 = moneyTextField_1.getControl();
-		text_12.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		
@@ -513,17 +486,54 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		RadioGroup radioGroup = radioGroupViewer.getRadioGroup();
 		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		new Label(composite_13, SWT.NONE);
+		new Label(composite_13, SWT.NONE);
+		new Label(composite_13, SWT.NONE);
+		
+		Label lblFuncionrio_4 = new Label(composite_13, SWT.NONE);
+		lblFuncionrio_4.setText("Funcionário");
+		
+		text_25 = new Text(composite_13, SWT.BORDER);
+		text_25.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button btnSelecionar_6 = new Button(composite_13, SWT.NONE);
+		btnSelecionar_6.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar_6, valueChamado, "funcionarioFechamento");
+		new Label(composite_13, SWT.NONE);
+		new Label(composite_13, SWT.NONE);
+		
+		Label lblValor_3 = new Label(composite_13, SWT.NONE);
+		lblValor_3.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
+		lblValor_3.setText("Contas");
+		
+		org.eclipse.swt.widgets.List list = new org.eclipse.swt.widgets.List(composite_13, SWT.BORDER);
+		GridData gd_list = new GridData(SWT.FILL, SWT.FILL, false, true, 2, 1);
+		gd_list.heightHint = 49;
+		list.setLayoutData(gd_list);
+		
+		Button btnAdicionar_1 = new Button(composite_13, SWT.NONE);
+		btnAdicionar_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		btnAdicionar_1.setImage(Images.ADD_16.getImage());
+		new Label(composite_13, SWT.NONE);
 		
 		Label lblDescrio_2 = new Label(composite_13, SWT.NONE);
 		lblDescrio_2.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblDescrio_2.setText("Descrição");
 		
 		text_31 = new Text(composite_13, SWT.BORDER);
-		text_31.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		GridData gd_text_31 = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1);
+		gd_text_31.heightHint = 42;
+		text_31.setLayoutData(gd_text_31);
+		new Label(composite_13, SWT.NONE);
+		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		
 		Button btnFechar = new Button(composite_13, SWT.NONE);
+		btnFechar.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
 		btnFechar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		btnFechar.setText("Fechar");
 		btnFechar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/finalizar/finish16.png"));
@@ -659,10 +669,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		IObservableValue observeTextText_16ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_16);
 		IObservableValue valueVistoriaFuncionarionomeObserveDetailValue = PojoProperties.value(Vistoria.class, "funcionario.nome", String.class).observeDetail(valueVistoria);
 		bindingContext.bindValue(observeTextText_16ObserveWidget, valueVistoriaFuncionarionomeObserveDetailValue, null, null);
-		//
-		IObservableValue observeTextText_17ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_17);
-		IObservableValue valueVistoriaInquilinonomeObserveDetailValue = PojoProperties.value(Vistoria.class, "inquilino.nome", String.class).observeDetail(valueVistoria);
-		bindingContext.bindValue(observeTextText_17ObserveWidget, valueVistoriaInquilinonomeObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_19ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_19);
 		IObservableValue valueVistoriaObservacoesObserveDetailValue = PojoProperties.value(Vistoria.class, "observacoes", String.class).observeDetail(valueVistoria);

@@ -42,7 +42,7 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 
 	@Override
 	protected Image getImage() {
-		return Images.PLANOCONTA_32.getImage();
+		return Images.PLANO_CONTA_32.getImage();
 	}
 
 	@Override

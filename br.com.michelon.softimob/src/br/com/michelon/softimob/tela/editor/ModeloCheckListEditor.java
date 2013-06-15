@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.service.GenericService;
-import br.com.michelon.softimob.aplicacao.service.ModeloCheckListService;
+import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.modelo.ItemCheckList;
 import br.com.michelon.softimob.modelo.CheckList;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
@@ -26,7 +26,7 @@ public class ModeloCheckListEditor extends GenericEditor<CheckList>{
 	
 	private WritableValue valueItem = WritableValue.withValueType(ItemCheckList.class);
 	
-	private ModeloCheckListService service = new ModeloCheckListService();
+	private CheckListService service = new CheckListService();
 	
 	private Text text;
 	private Text text_1;

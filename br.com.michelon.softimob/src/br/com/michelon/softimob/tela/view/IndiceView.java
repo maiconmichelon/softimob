@@ -7,8 +7,10 @@ import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.IndiceEditorInput;
+import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.service.IndiceService;
 import br.com.michelon.softimob.modelo.Indice;
+import br.com.michelon.softimob.tela.dialog.IndiceEditorDialog;
 import br.com.michelon.softimob.tela.editor.IndiceEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
@@ -61,4 +63,15 @@ public class IndiceView extends GenericView<Indice>{
 		return service.findAll();
 	}
 
+	@Override
+	public void cadastrar() {
+		alterar(new Indice());
+	}
+	
+	@Override
+	protected void alterar(Indice element) {
+		IndiceEditorDialog dialog = new IndiceEditorDialog(ShellHelper.getActiveShell(), element);
+		dialog.open();
+	}
+	
 }

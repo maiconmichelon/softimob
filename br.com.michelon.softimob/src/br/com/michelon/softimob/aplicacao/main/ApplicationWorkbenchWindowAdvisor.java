@@ -30,8 +30,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowFastViewBars(true);
 		configurer.setTitle("SoftImob");
 		
-		
-		
 		SpringUtils.initializeContext();
 	}
 	

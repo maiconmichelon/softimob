@@ -5,7 +5,8 @@
    <extension
          id="application"
          point="org.eclipse.core.runtime.applications">
-      <application>
+      <application
+            icon="icons/imobiliaria/imobiliaria32.png">
          <run
                class="br.com.michelon.softimob.aplicacao.main.Application">
          </run>
@@ -128,7 +129,7 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.OrigemContaView"
-            icon="icons/contaPagar/contaPagar16.png"
+            icon="icons/origemConta/origemConta16.png"
             id="br.com.michelon.softimob.tela.view.OrigemContaView"
             name="Origem da Conta"
             restorable="true">
@@ -149,13 +150,14 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.PlanoContaView"
+            icon="icons/planoConta/planoConta16.png"
             id="br.com.michelon.softimob.tela.view.PlanoContaView"
             name="Plano de Contas"
             restorable="true">
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.PropostaView"
-            icon="icons/feedback/feedback16.png"
+            icon="icons/proposta/proposta16.png"
             id="br.com.michelon.softimob.tela.view.PropostaView"
             name="Proposta"
             restorable="true">
@@ -183,7 +185,7 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView"
-            icon="icons/casa/casa32.png"
+            icon="icons/casa/casa16.png"
             id="br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView"
             name="Busca Avançada de Imóveis">
       </view>
@@ -196,6 +198,7 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.ReservaView"
+            icon="icons/reserva/reserva16.png"
             id="br.com.michelon.softimob.tela.view.ReservaView"
             name="Reserva"
             restorable="true">
@@ -216,8 +219,16 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.ComissaoView"
+            icon="icons/comissao/comissao16.png"
             id="br.com.michelon.softimob.tela.view.ComissaoView"
             name="Comissão"
+            restorable="true">
+      </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.CheckListView"
+            icon="icons/checkList/checkList16.png"
+            id="br.com.michelon.softimob.tela.view.CheckListView"
+            name="Check List"
             restorable="true">
       </view>
    </extension>
@@ -399,6 +410,16 @@
                      value="br.com.michelon.softimob.tela.view.IndiceView">
                </parameter>
             </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/checkList/checkList16.png"
+                  label="Check List"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.CheckListView">
+               </parameter>
+            </command>
          </menu>
          <menu
                label="Financeiro">
@@ -415,7 +436,7 @@
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/contaPagar/contaPagar16.png"
-                  label="Contas pagar/receber"
+                  label="Contas Pagar/Receber"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
@@ -424,6 +445,7 @@
             </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
+                  icon="icons/origemConta/origemConta16.png"
                   label="Origem da Conta"
                   style="push">
                <parameter
@@ -433,6 +455,7 @@
             </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
+                  icon="icons/planoConta/planoConta16.png"
                   label="Plano Conta"
                   style="push">
                <parameter
@@ -504,7 +527,7 @@
             </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
-                  icon="icons/feedback/feedback16.png"
+                  icon="icons/proposta/proposta16.png"
                   label="Propostas"
                   style="push">
                <parameter
@@ -524,6 +547,7 @@
             </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
+                  icon="icons/reserva/reserva16.png"
                   label="Reservas"
                   style="push">
                <parameter
@@ -536,12 +560,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.editors">
-      <editor
-            class="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
-            icon="icons/casa/casa16.png"
-            id="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
-            name="Cadastro Tipo de Imóvel">
-      </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.FuncionarioEditor"
             icon="icons/funcionario/funcionario16.png"
@@ -651,20 +669,21 @@
       <editor
             class="br.com.michelon.softimob.tela.editor.PlanoContaEditor"
             default="false"
+            icon="icons/planoConta/planoConta16.png"
             id="br.com.michelon.softimob.tela.editor.PlanoContaEditor"
             name="Cadastro Plano Conta">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
             default="false"
-            icon="icons/casa/casa32.png"
+            icon="icons/casa/casa16.png"
             id="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
-            name="Cadastro Tipo Imovel">
+            name="Cadastro Tipo de Imovel">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.OrigemContaEditor"
             default="false"
-            icon="icons/contaPagar/contaPagar16.png"
+            icon="icons/origemConta/origemConta16.png"
             id="br.com.michelon.softimob.tela.editor.OrigemContaEditor"
             name="Cadastro Origem de Conta">
       </editor>
@@ -734,7 +753,7 @@
             application="br.com.michelon.softimob.application"
             name="producttest">
          <property
-               name="appName"
+               name="Softimob"
                value="producttest">
          </property>
       </product>

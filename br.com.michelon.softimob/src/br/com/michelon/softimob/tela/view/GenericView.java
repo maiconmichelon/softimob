@@ -340,7 +340,7 @@ public abstract class GenericView<T> extends ViewPart{
 			txtFiltro.forceFocus();
 	}
 
-	private void alterar(T element) {
+	protected void alterar(T element) {
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getEditorInputWithModel(element), getEditorId(element));
 		} catch (PartInitException e1) {

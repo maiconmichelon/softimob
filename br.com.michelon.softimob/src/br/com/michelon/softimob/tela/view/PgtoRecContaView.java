@@ -19,6 +19,7 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -45,6 +46,7 @@ import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 
 import com.google.common.collect.Lists;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 
@@ -60,6 +62,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 	
 	private List<ColumnProperties> atributos;
 	private Text text_1;
+	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 	
 	public PgtoRecContaView() {
 		super(false);
@@ -69,10 +72,11 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 
 	@Override
 	protected ColumnViewer criarTabela(Composite parent) {
-//		GridLayout gridLayout = (GridLayout) parent.getLayout();
-//		gridLayout.numColumns = 1;
+		Composite cpPrincipal = formToolkit.createComposite(parent, SWT.NONE);
+		formToolkit.paintBordersFor(cpPrincipal);
+		cpPrincipal.setLayout(new GridLayout(1, false));
 		
-		CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER);
+		CTabFolder tabFolder = new CTabFolder(cpPrincipal, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
@@ -266,7 +270,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 			}
 		});
 		
-		Button btnBaixarConta = new Button(parent, SWT.NONE);
+		Button btnBaixarConta = new Button(cpPrincipal, SWT.NONE);
 		btnBaixarConta.setImage(Images.FINALIZAR_16.getImage());
 		GridData gd_btnBaixarConta = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
 		gd_btnBaixarConta.widthHint = 120;

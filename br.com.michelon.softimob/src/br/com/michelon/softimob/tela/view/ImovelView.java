@@ -7,9 +7,7 @@ import org.eclipse.nebula.widgets.xviewer.XViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Tree;
 import org.eclipse.wb.swt.Images;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
@@ -76,10 +74,8 @@ public class ImovelView extends GenericView<Imovel>{
 	protected ColumnViewer criarTabela(Composite composite) {
 		Composite cpTable = new Composite(composite, SWT.NONE);
 		cpTable.setLayout(new FillLayout(SWT.HORIZONTAL));
-//		cpTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		XViewer imovelXViewer = new ImovelXViewer(cpTable, SWT.BORDER);
-		Tree tree = imovelXViewer.getTree();
 		
 		return imovelXViewer;
 	}

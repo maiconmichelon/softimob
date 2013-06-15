@@ -40,7 +40,7 @@ public class VistoriaView extends GenericView<Vistoria>{
 
 	@Override
 	protected Image getImage() {
-		return Images.SEARCH_32.getImage();
+		return Images.VISTORIA_32.getImage();
 	}
 
 	@Override

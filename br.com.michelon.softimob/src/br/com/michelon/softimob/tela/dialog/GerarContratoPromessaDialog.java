@@ -14,7 +14,7 @@ import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import org.eclipse.swt.widgets.Button;
 
-public class GerarContratoPromessa extends TitleAreaDialog{
+public class GerarContratoPromessaDialog extends TitleAreaDialog{
 
 	private Label lblTitle;
 	private Text text;
@@ -22,7 +22,7 @@ public class GerarContratoPromessa extends TitleAreaDialog{
 	private Text text_2;
 	private Text text_3;
 
-	public GerarContratoPromessa(Shell parentShell, Imovel imovel) {
+	public GerarContratoPromessaDialog(Shell parentShell, Imovel imovel) {
 		super(parentShell);
 		
 		setTitle("Geração de contrato de promessa de compra e venda.");
@@ -31,7 +31,7 @@ public class GerarContratoPromessa extends TitleAreaDialog{
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public GerarContratoPromessa(Shell parentShell){
+	public GerarContratoPromessaDialog(Shell parentShell){
 		this(parentShell, null);
 	}
 	
