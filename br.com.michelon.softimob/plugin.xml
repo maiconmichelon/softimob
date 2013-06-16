@@ -231,6 +231,20 @@
             name="Check List"
             restorable="true">
       </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.ClientePFView"
+            icon="icons/cliente/cliente16.png"
+            id="br.com.michelon.softimob.tela.view.ClientePFView"
+            name="Pessoa Fisica"
+            restorable="true">
+      </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.ClientePJView"
+            icon="icons/cliente/cliente16.png"
+            id="br.com.michelon.softimob.tela.view.ClientePJView"
+            name="Pessoa Jurídica"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -344,16 +358,28 @@
          </menu>
          <menu
                label="Empresa">
-            <command
-                  commandId="org.eclipse.ui.views.showView"
+            <menu
                   icon="icons/cliente/cliente16.png"
-                  label="Cliente"
-                  style="push">
-               <parameter
-                     name="org.eclipse.ui.views.showView.viewId"
-                     value="br.com.michelon.softimob.tela.view.ClienteView">
-               </parameter>
-            </command>
+                  label="Cliente">
+               <command
+                     commandId="org.eclipse.ui.views.showView"
+                     label="Pessoa Fisica"
+                     style="push">
+                  <parameter
+                        name="org.eclipse.ui.views.showView.viewId"
+                        value="br.com.michelon.softimob.tela.view.ClientePFView">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.eclipse.ui.views.showView"
+                     label="Pessoa Jurídica"
+                     style="push">
+                  <parameter
+                        name="org.eclipse.ui.views.showView.viewId"
+                        value="br.com.michelon.softimob.tela.view.ClientePJView">
+                  </parameter>
+               </command>
+            </menu>
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/departamento/departamento16.png"
@@ -693,6 +719,18 @@
             icon="icons/indice/indice16.png"
             id="br.com.michelon.softimob.tela.editor.IndiceEditor"
             name="Cadastro de Indice">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.ClientePFEditor"
+            icon="icons/cliente/cliente16.png"
+            id="br.com.michelon.softimob.tela.editor.ClientePFEditor"
+            name="Cadastro Pessoa Fisica">
+      </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.ClientePJEditor"
+            icon="icons/cliente/cliente16.png"
+            id="br.com.michelon.softimob.tela.editor.ClientePJEditor"
+            name="Cadastro Pessoa Juridica">
       </editor>
    </extension>
    <extension

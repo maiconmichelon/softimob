@@ -11,9 +11,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.wb.swt.ResourceManager;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,6 +31,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 	
 	public final Class<T> mainClass;
 	protected WritableValue value;
+	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 	
 	public GenericEditor(Class<T> clazz) {
 		mainClass = clazz;
@@ -38,14 +41,14 @@ public abstract class GenericEditor<T> extends EditorPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		
-		Composite composite = new Composite(parent, SWT.NONE);
+		Composite composite = formToolkit.createComposite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, false));
 		
-		Composite cpPrincipal = new Composite(composite, SWT.NONE);
+		Composite cpPrincipal = new Composite(composite, SWT.BORDER);
 		cpPrincipal.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		cpPrincipal.setLayout(new GridLayout(2, false));
 		
-		Composite cpOpcoes = new Composite(composite, SWT.NONE);
+		Composite cpOpcoes = new Composite(composite, SWT.BORDER);
 		cpOpcoes.setLayout(new GridLayout(1, false));
 		cpOpcoes.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		

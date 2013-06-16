@@ -65,7 +65,9 @@ public enum Images{
 	VISTORIA_16("icons/vistoria/vistoria16.png"),
 	VISTORIA_32("icons/vistoria/vistoria32.png"),
 	IMOBILIARIA_16("icons/imobiliaria/imobiliaria32.png"),
-	IMOBILIARIA_32("icons/imobiliaria/imobiliaria32.png")
+	IMOBILIARIA_32("icons/imobiliaria/imobiliaria32.png"),
+	CHECKLIST_16("icons/checkList/checkList16.png"),
+	CHECKLIST_32("icons/checkList/checkList32.png")
 	;
 	
 	private String caminho;

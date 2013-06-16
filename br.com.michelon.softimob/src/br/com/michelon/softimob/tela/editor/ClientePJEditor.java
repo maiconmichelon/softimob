@@ -20,6 +20,8 @@ import br.com.michelon.softimob.tela.widget.PhoneTextField;
 
 public class ClientePJEditor extends GenericEditor<Cliente> {
 
+	public static final String ID = "br.com.michelon.softimob.tela.editor.ClientePJEditor";
+	
 	private ClienteService service = new ClienteService();
 	private Text text_9;
 	private Text text_10;
