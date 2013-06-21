@@ -3,7 +3,7 @@ package br.com.michelon.softimob.tela.view;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ClienteEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
@@ -44,7 +44,7 @@ public class ClientePFView extends GenericView<PessoaFisica>{
 
 	@Override
 	protected Image getImage() {
-		return Images.CLIENTE_32.getImage();
+		return ImageRepository.CLIENTE_32.getImage();
 	}
 
 	@Override

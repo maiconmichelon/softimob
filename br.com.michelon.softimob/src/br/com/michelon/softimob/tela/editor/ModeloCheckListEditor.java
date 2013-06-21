@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
@@ -71,7 +71,7 @@ public class ModeloCheckListEditor extends GenericEditor<CheckList>{
 		Button btnAdicionar = new Button(group, SWT.NONE);
 		btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		btnAdicionar.setText("Adicionar");
-		btnAdicionar.setImage(Images.ADD_16.getImage());
+		btnAdicionar.setImage(ImageRepository.ADD_16.getImage());
 		
 		m_bindingContext = initDataBindings();
 	}

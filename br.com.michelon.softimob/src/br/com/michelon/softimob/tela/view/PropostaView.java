@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
@@ -27,7 +27,8 @@ public class PropostaView extends GenericView<Proposta>{
 		
 		atributos.add(new ColumnProperties("Imóvel", "imovel.numero", 8));
 		atributos.add(new ColumnProperties("Data", "data", 8));
-		atributos.add(new ColumnProperties("Cliente", "cliente", 20));
+		atributos.add(new ColumnProperties("Realizador", "realizadorExtenso", 20));
+		atributos.add(new ColumnProperties("Valor", "valor", 10));
 		atributos.add(new ColumnProperties("Funcionário", "funcionario.nome", 20));
 		atributos.add(new ColumnProperties("Descrição", "descrição", 40));
 	}
@@ -45,7 +46,7 @@ public class PropostaView extends GenericView<Proposta>{
 
 	@Override
 	protected Image getImage() {
-		return Images.PROPOSTA_32.getImage();
+		return ImageRepository.PROPOSTA_32.getImage();
 	}
 
 	@Override

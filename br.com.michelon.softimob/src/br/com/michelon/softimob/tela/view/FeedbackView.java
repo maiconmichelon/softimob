@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
@@ -26,6 +26,7 @@ public class FeedbackView extends GenericView<Feedback>{
 		atributos = Lists.newArrayList();
 		
 		atributos.add(new ColumnProperties("Data", "data", 10));
+		atributos.add(new ColumnProperties("Imóvel", "imovel", 30));
 		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 30));
 		atributos.add(new ColumnProperties("Funcionário", "funcionario.nome", 30));
 		atributos.add(new ColumnProperties("Feedback", "feedback", 30));
@@ -42,7 +43,7 @@ public class FeedbackView extends GenericView<Feedback>{
 
 	@Override
 	protected Image getImage() {
-		return Images.FEEDBACK_32.getImage();
+		return ImageRepository.FEEDBACK_32.getImage();
 	}
 
 	@Override

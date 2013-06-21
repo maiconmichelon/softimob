@@ -14,6 +14,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.ReflectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
@@ -87,20 +88,22 @@ public class ListElementDialogHelper<T> {
 	
 	public enum TipoDialog{
 		
-		FUNCIONARIO("Funcionários", "Selecione um funcionário."),
-		CLIENTE("Clientes", "Selecione um cliente."), 
-		COMODO("Cômodos", "Selecione um cômodo."),
-		TIPO_IMOVEL("Tipo de imóvel", "Selecione um tipo de imóvel."),
-		IMOVEL("Imóveis", "Selecione um imóvel."), 
-		PLANOCONTA("Plano de Contas", "Selecione uma conta."), 
-		COMISSIONADO("Comissionados", "Selecione um cliente ou funcionário.");
+		FUNCIONARIO("Funcionários", "Selecione um funcionário.", ImageRepository.FUNCIONARIO_16),
+		CLIENTE("Clientes", "Selecione um cliente.", ImageRepository.CLIENTE_16), 
+		COMODO("Cômodos", "Selecione um cômodo.", ImageRepository.COMODO16),
+		TIPO_IMOVEL("Tipo de imóvel", "Selecione um tipo de imóvel.", ImageRepository.TIPO_IMOVEL_16),
+		IMOVEL("Imóveis", "Selecione um imóvel.", ImageRepository.IMOVEL_16), 
+		PLANOCONTA("Plano de Contas", "Selecione uma conta.", ImageRepository.PLANO_CONTA_16), 
+		COMISSIONADO("Comissionados", "Selecione um cliente ou funcionário.", ImageRepository.COMISSAO_16);
 		
 		private final String title;
 		private final String message;
-	
-		private TipoDialog(String title, String message) {
+		private ImageRepository images;
+		
+		private TipoDialog(String title, String message, ImageRepository images) {
 			this.title = title;
 			this.message = message;
+			this.images = images;
 		}
 		
 		public String getMessage() {
@@ -109,6 +112,10 @@ public class ListElementDialogHelper<T> {
 		
 		public String getTitle() {
 			return title;
+		}
+		
+		public ImageRepository getImages() {
+			return images;
 		}
 		
 		public void openDialogAndExecuteListeners(OkListElementDialogListener listener){
@@ -140,6 +147,7 @@ public class ListElementDialogHelper<T> {
 			dialog.setTitle(getTitle());
 			dialog.setMessage(getMessage());
 			dialog.setElements(getElements());
+			dialog.setImage(getImages().getImage());
 			
 			return dialog;
 		}

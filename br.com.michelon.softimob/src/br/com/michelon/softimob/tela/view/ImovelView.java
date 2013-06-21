@@ -8,7 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
@@ -47,7 +47,7 @@ public class ImovelView extends GenericView<Imovel>{
 
 	@Override
 	protected Image getImage() {
-		return Images.IMOVEL_32.getImage();
+		return ImageRepository.IMOVEL_32.getImage();
 	}
 
 	@Override

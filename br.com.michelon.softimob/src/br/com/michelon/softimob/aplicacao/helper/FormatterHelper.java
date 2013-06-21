@@ -39,4 +39,12 @@ public class FormatterHelper {
 		return sdfPeriodo;
 	}
 	
+	public static String formatObject(Object obj){
+		if(obj instanceof Date)
+			return getSimpleDateFormat().format(obj);
+		if(obj instanceof BigDecimal)
+			return getCurrencyFormatter().format((BigDecimal) obj);
+		return obj.toString();
+	}
+	
 }

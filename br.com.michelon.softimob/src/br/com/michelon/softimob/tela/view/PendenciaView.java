@@ -5,7 +5,7 @@ import java.util.List;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.service.PendenciaService;
@@ -47,7 +47,7 @@ public class PendenciaView extends GenericView<Pendencia>{
 
 	@Override
 	protected Image getImage() {
-		return Images.PENDENCIA_32.getImage();
+		return ImageRepository.PENDENCIA_32.getImage();
 	}
 
 	@Override

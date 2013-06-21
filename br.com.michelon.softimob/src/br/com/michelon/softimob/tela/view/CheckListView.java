@@ -3,7 +3,7 @@ package br.com.michelon.softimob.tela.view;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import com.google.common.collect.Lists;
 
@@ -39,7 +39,7 @@ public class CheckListView extends GenericView<CheckList>{
 
 	@Override
 	protected Image getImage() {
-		return Images.CHECKLIST_32.getImage();
+		return ImageRepository.CHECKLIST_32.getImage();
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package br.com.michelon.softimob.tela.view;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.PlanoContaEditorInput;
@@ -20,7 +20,7 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 	private PlanoContaService service = new PlanoContaService();
 	
 	public PlanoContaView(){
-		super(false);
+		super(true);
 		
 		atributos = Lists.newArrayList();
 		
@@ -42,7 +42,7 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 
 	@Override
 	protected Image getImage() {
-		return Images.PLANO_CONTA_32.getImage();
+		return ImageRepository.PLANO_CONTA_32.getImage();
 	}
 
 	@Override

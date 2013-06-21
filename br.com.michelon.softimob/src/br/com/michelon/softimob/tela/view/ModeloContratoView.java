@@ -3,7 +3,7 @@ package br.com.michelon.softimob.tela.view;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ModeloContratoEditorInput;
@@ -20,7 +20,7 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 	private ModeloContratoService service = new ModeloContratoService();
 	
 	public ModeloContratoView(){
-		super(false);
+		super(true);
 		
 		atributos = Lists.newArrayList();
 		
@@ -39,7 +39,7 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 
 	@Override
 	protected Image getImage() {
-		return Images.CONTRATO_32.getImage();
+		return ImageRepository.CONTRATO_32.getImage();
 	}
 
 	@Override

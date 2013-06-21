@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
@@ -193,12 +193,12 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		Button btnAdicionar = new Button(composite_1, SWT.NONE);
 		btnAdicionar.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
 		btnAdicionar.setText("Adicionar");
-		btnAdicionar.setImage(Images.ADD_16.getImage());
+		btnAdicionar.setImage(ImageRepository.ADD_16.getImage());
 		
 		Button btnRemover = new Button(composite_1, SWT.NONE);
 		btnRemover.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
 		btnRemover.setText("Remover");
-		btnRemover.setImage(Images.REMOVE_16.getImage());
+		btnRemover.setImage(ImageRepository.REMOVE_16.getImage());
 		
 		Button btnNewButton_1 = new Button(parent, SWT.NONE);
 		GridData gd_btnNewButton_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -206,7 +206,7 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		gd_btnNewButton_1.heightHint = 46;
 		btnNewButton_1.setLayoutData(gd_btnNewButton_1);
 		btnNewButton_1.setText("Buscar");
-		btnNewButton_1.setImage(Images.SEARCH_32.getImage());
+		btnNewButton_1.setImage(ImageRepository.SEARCH_32.getImage());
 		
 		createActions();
 		initializeToolBar();

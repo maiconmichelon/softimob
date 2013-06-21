@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
@@ -26,6 +26,7 @@ public class ChaveView extends GenericView<Chave>{
 		atributos = Lists.newArrayList();
 		
 		atributos.add(new ColumnProperties("Número", "numero", 10));
+		atributos.add(new ColumnProperties("Localização", "localizacaoExtenso", 30));
 		atributos.add(new ColumnProperties("Imóvel", "imóvel", 90));
 	}
 	
@@ -42,7 +43,7 @@ public class ChaveView extends GenericView<Chave>{
 
 	@Override
 	protected Image getImage() {
-		return Images.CHAVE_32.getImage();
+		return ImageRepository.CHAVE_32.getImage();
 	}
 
 	@Override

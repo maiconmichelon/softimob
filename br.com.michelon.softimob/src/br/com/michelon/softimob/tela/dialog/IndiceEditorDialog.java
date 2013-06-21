@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.modelo.Indice;
@@ -136,7 +136,7 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 				limpar();
 			}
 		});
-		btnRegistrar.setImage(Images.SAVE_16.getImage());
+		btnRegistrar.setImage(ImageRepository.SAVE_16.getImage());
 		
 		Button btnNovo = new Button(parent, SWT.PUSH);
 		btnNovo.setText("Novo");
@@ -146,11 +146,11 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 			}
 		});
 		btnNovo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
-		btnNovo.setImage(Images.NOVO_16.getImage());
+		btnNovo.setImage(ImageRepository.NOVO_16.getImage());
 		
 		Button btnFinalizar = createButton(parent, IDialogConstants.OK_ID, "Finalizar", true);
 		btnFinalizar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
-		btnFinalizar.setImage(Images.FINALIZAR_16.getImage());
+		btnFinalizar.setImage(ImageRepository.FINALIZAR_16.getImage());
 	}
 
 	@Override

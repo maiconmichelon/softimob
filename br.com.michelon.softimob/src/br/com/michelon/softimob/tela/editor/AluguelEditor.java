@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -255,7 +255,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		Button btnAdicionar = new Button(grpComisso, SWT.NONE);
 		btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		btnAdicionar.setText("Adicionar");
-		btnAdicionar.setImage(Images.ADD_16.getImage());
+		btnAdicionar.setImage(ImageRepository.ADD_16.getImage());
 		
 		CTabItem tbtmVistoria = new CTabItem(tabFolder, SWT.NONE);
 		tbtmVistoria.setText("Vistorias");
@@ -512,7 +512,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Button btnAdicionar_1 = new Button(composite_13, SWT.NONE);
 		btnAdicionar_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		btnAdicionar_1.setImage(Images.ADD_16.getImage());
+		btnAdicionar_1.setImage(ImageRepository.ADD_16.getImage());
 		new Label(composite_13, SWT.NONE);
 		
 		Label lblDescrio_2 = new Label(composite_13, SWT.NONE);

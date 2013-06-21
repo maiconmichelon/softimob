@@ -3,23 +3,23 @@ package br.com.michelon.softimob.tela.view;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ComodoEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.service.TipoComodoService;
 import br.com.michelon.softimob.modelo.TipoComodo;
-import br.com.michelon.softimob.tela.editor.ComodoEditor;
+import br.com.michelon.softimob.tela.editor.TipoComodoEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
 import com.google.common.collect.Lists;
 
-public class ComodoView extends GenericView<TipoComodo>{
+public class TipoComodoView extends GenericView<TipoComodo>{
 
 	private List<ColumnProperties> atributos;
 	private TipoComodoService service = new TipoComodoService();
 	
-	public ComodoView(){
+	public TipoComodoView(){
 		super(true);
 		
 		atributos = Lists.newArrayList();
@@ -35,12 +35,12 @@ public class ComodoView extends GenericView<TipoComodo>{
 
 	@Override
 	protected String getTitleView() {
-		return "Cômodos";
+		return "Tipos de Cômodo";
 	}
 
 	@Override
 	protected Image getImage() {
-		return Images.COMODO32.getImage();
+		return ImageRepository.COMODO32.getImage();
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class ComodoView extends GenericView<TipoComodo>{
 
 	@Override
 	protected String getEditorId(TipoComodo t) {
-		return ComodoEditor.ID;
+		return TipoComodoEditor.ID;
 	}
 
 	@Override

@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
@@ -242,56 +242,6 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tfImovel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		tfImovel.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
-		CTabItem tbtmDescrio_1 = new CTabItem(tfImovel, SWT.NONE);
-		tbtmDescrio_1.setText("Cômodos");
-		
-		Composite composite_5 = new Composite(tfImovel, SWT.NONE);
-		tbtmDescrio_1.setControl(composite_5);
-		composite_5.setLayout(new GridLayout(1, false));
-				
-		Composite composite_10 = new Composite(composite_5, SWT.NONE);
-		composite_10.setLayout(new GridLayout(1, false));
-		composite_10.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
-		
-		criarTabelaComodo(composite_10);
-		
-		Group grpCmodo = new Group(composite_5, SWT.NONE);
-		grpCmodo.setLayout(new GridLayout(3, false));
-		grpCmodo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		grpCmodo.setText("Cômodo");
-		
-		Label lblNome = new Label(grpCmodo, SWT.NONE);
-		lblNome.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNome.setText("Nome");
-		
-		text_26 = new Text(grpCmodo, SWT.BORDER);
-		text_26.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button btnSelecionarComodo = new Button(grpCmodo, SWT.NONE);
-		btnSelecionarComodo.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.COMODO, btnSelecionarComodo, valueComodo, "tipoComodo");
-
-		Label lblDescrio_3 = new Label(grpCmodo, SWT.NONE);
-		lblDescrio_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblDescrio_3.setText("Descrição");
-		
-		txtDescrio = new Text(grpCmodo, SWT.BORDER);
-		txtDescrio.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(grpCmodo, SWT.NONE);
-		new Label(grpCmodo, SWT.NONE);
-		new Label(grpCmodo, SWT.NONE);
-		
-		Button button_9 = new Button(grpCmodo, SWT.NONE);
-		button_9.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		button_9.setText("Adicionar");
-		button_9.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
-		button_9.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				addComodo();
-			}
-		});
-		
 		CTabItem tbtmEndereo = new CTabItem(tfImovel, SWT.NONE);
 		tbtmEndereo.setText("Endereço");
 		
@@ -393,6 +343,56 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		text_8 = new Text(composite_1, SWT.BORDER);
 		text_8.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_1, SWT.NONE);
+		
+		CTabItem tbtmDescrio_1 = new CTabItem(tfImovel, SWT.NONE);
+		tbtmDescrio_1.setText("Cômodos");
+		
+		Composite composite_5 = new Composite(tfImovel, SWT.NONE);
+		tbtmDescrio_1.setControl(composite_5);
+		composite_5.setLayout(new GridLayout(1, false));
+				
+		Composite composite_10 = new Composite(composite_5, SWT.NONE);
+		composite_10.setLayout(new GridLayout(1, false));
+		composite_10.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
+		
+		criarTabelaComodo(composite_10);
+		
+		Group grpCmodo = new Group(composite_5, SWT.NONE);
+		grpCmodo.setLayout(new GridLayout(3, false));
+		grpCmodo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		grpCmodo.setText("Cômodo");
+		
+		Label lblNome = new Label(grpCmodo, SWT.NONE);
+		lblNome.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblNome.setText("Nome");
+		
+		text_26 = new Text(grpCmodo, SWT.BORDER);
+		text_26.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button btnSelecionarComodo = new Button(grpCmodo, SWT.NONE);
+		btnSelecionarComodo.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.COMODO, btnSelecionarComodo, valueComodo, "tipoComodo");
+
+		Label lblDescrio_3 = new Label(grpCmodo, SWT.NONE);
+		lblDescrio_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDescrio_3.setText("Descrição");
+		
+		txtDescrio = new Text(grpCmodo, SWT.BORDER);
+		txtDescrio.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(grpCmodo, SWT.NONE);
+		new Label(grpCmodo, SWT.NONE);
+		new Label(grpCmodo, SWT.NONE);
+		
+		Button button_9 = new Button(grpCmodo, SWT.NONE);
+		button_9.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		button_9.setText("Adicionar");
+		button_9.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		button_9.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addComodo();
+			}
+		});
 		
 		CTabItem tbtmChaves = new CTabItem(tfImovel, SWT.NONE);
 		tbtmChaves.setText("Chaves");
@@ -782,7 +782,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		Button btnAdicionar_1 = new Button(grpContratoPrestaoDe, SWT.NONE);
 		btnAdicionar_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		btnAdicionar_1.setText("Adicionar");
-		btnAdicionar_1.setImage(Images.ADD_16.getImage());
+		btnAdicionar_1.setImage(ImageRepository.ADD_16.getImage());
 		
 		CTabItem tbtmLocacoes = new CTabItem(tfImovel, SWT.NONE);
 		tbtmLocacoes.setText("Locações");

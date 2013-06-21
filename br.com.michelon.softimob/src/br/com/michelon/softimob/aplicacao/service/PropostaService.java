@@ -8,5 +8,5 @@ public class PropostaService extends GenericService<Proposta>{
 	public PropostaService() {
 		super(PropostaDAO.class);
 	}
-
+	
 }

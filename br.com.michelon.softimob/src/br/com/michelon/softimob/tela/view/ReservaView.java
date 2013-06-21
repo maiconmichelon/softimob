@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
@@ -25,12 +25,13 @@ public class ReservaView extends GenericView<Reserva>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Data da Reserva", "data"));
-		atributos.add(new ColumnProperties("Data de Vencimento", "dataVencimento"));
-		atributos.add(new ColumnProperties("Cliente", "cliente.nome"));
-		atributos.add(new ColumnProperties("Valor", "valor"));
-		atributos.add(new ColumnProperties("Funcionário", "funcionario"));
-		atributos.add(new ColumnProperties("Descrição", "descricao"));
+		atributos.add(new ColumnProperties("Imóvel", "imovel", 10));
+		atributos.add(new ColumnProperties("Data da Reserva", "data", 10));
+		atributos.add(new ColumnProperties("Data de Vencimento", "dataVencimento", 10));
+		atributos.add(new ColumnProperties("Valor", "valor", 10));
+		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 15));
+		atributos.add(new ColumnProperties("Funcionário", "funcionario", 15));
+		atributos.add(new ColumnProperties("Observações", "observacao", 20));
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class ReservaView extends GenericView<Reserva>{
 
 	@Override
 	protected Image getImage() {
-		return Images.RESERVA32.getImage();
+		return ImageRepository.RESERVA32.getImage();
 	}
 
 	@Override

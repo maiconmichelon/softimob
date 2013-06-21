@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Image; 
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.DepartamentoEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
@@ -41,7 +41,7 @@ public class DepartamentoView extends GenericView<Departamento>{
 
 	@Override
 	protected Image getImage() {
-		return Images.DEPARTAMENTO_32.getImage();
+		return ImageRepository.DEPARTAMENTO_32.getImage();
 	}
 
 	@Override

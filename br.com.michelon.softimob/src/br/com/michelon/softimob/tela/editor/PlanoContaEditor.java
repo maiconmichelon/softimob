@@ -66,7 +66,7 @@ public class PlanoContaEditor extends GenericEditor<PlanoConta> {
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		
-		radioGroupViewer = new RadioGroupViewer(parent, SWT.BORDER);
+		radioGroupViewer = new RadioGroupViewer(parent, SWT.NONE);
 		RadioGroup radioGroup = radioGroupViewer.getRadioGroup();
 		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		

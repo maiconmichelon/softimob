@@ -32,7 +32,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
@@ -80,7 +80,7 @@ public abstract class GenericView<T> extends ViewPart{
 				public void run() {
 					atualizar();
 				}			};
-			actRefresh.setImageDescriptor(Images.REFRESH_16.getImageDescriptor());
+			actRefresh.setImageDescriptor(ImageRepository.REFRESH_16.getImageDescriptor());
 			actions.add(actRefresh);
 		}
 		
@@ -94,7 +94,7 @@ public abstract class GenericView<T> extends ViewPart{
 				cadastrar();
 			}
 		};
-		actAdd.setImageDescriptor(Images.ADD_16.getImageDescriptor());
+		actAdd.setImageDescriptor(ImageRepository.ADD_16.getImageDescriptor());
 		
 		return Arrays.asList(actAdd);
 	}

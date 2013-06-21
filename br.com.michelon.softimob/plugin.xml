@@ -46,6 +46,7 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.AluguelView"
+            icon="icons/aluguel/aluguel16.png"
             id="br.com.michelon.softimob.tela.view.AluguelView"
             name="Aluguel"
             restorable="true">
@@ -107,10 +108,10 @@
             restorable="true">
       </view>
       <view
-            class="br.com.michelon.softimob.tela.view.ComodoView"
+            class="br.com.michelon.softimob.tela.view.TipoComodoView"
             icon="icons/comodo/door16.png"
             id="br.com.michelon.softimob.tela.view.ComodoView"
-            name="Cômodo"
+            name="Tipo de Cômodo"
             restorable="true">
       </view>
       <view
@@ -338,7 +339,7 @@
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/casa/casa16.png"
-                  label="Tipo imóvel"
+                  label="Tipo de Imóvel"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
@@ -348,7 +349,7 @@
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/comodo/door16.png"
-                  label="Cômodo"
+                  label="Tipo de Cômodo"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
@@ -494,6 +495,7 @@
                label="Operações">
             <command
                   commandId="org.eclipse.ui.views.showView"
+                  icon="icons/aluguel/aluguel16.png"
                   label="Aluguel"
                   style="push">
                <parameter
@@ -605,10 +607,10 @@
             name="Cadastro Cliente">
       </editor>
       <editor
-            class="br.com.michelon.softimob.tela.editor.ComodoEditor"
+            class="br.com.michelon.softimob.tela.editor.TipoComodoEditor"
             icon="icons/comodo/door16.png"
             id="br.com.michelon.softimob.tela.editor.ComodoEditor"
-            name="Cadastro Cômodo">
+            name="Cadastro Tipo de Cômodo">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.ImovelEditor"
@@ -647,6 +649,7 @@
       <editor
             class="br.com.michelon.softimob.tela.editor.AluguelEditor"
             default="false"
+            icon="icons/aluguel/aluguel16.png"
             id="br.com.michelon.softimob.tela.editor.AluguelEditor"
             name="Aluguel">
       </editor>
@@ -747,7 +750,7 @@
       <command
             defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdComodo"
             id="br.com.michelon.softimob.command.cmdComodo"
-            name="Cômodo">
+            name="Tipo de Cômodo">
       </command>
       <command
             defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdFuncionario"

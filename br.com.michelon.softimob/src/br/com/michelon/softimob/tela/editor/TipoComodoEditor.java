@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
@@ -39,7 +39,7 @@ import br.com.michelon.softimob.modelo.TipoComodo;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.modelo.TipoImovelTipoComodo;
 
-public class ComodoEditor extends GenericEditor<TipoComodo>{
+public class TipoComodoEditor extends GenericEditor<TipoComodo>{
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ComodoEditor"; //$NON-NLS-1$
 	
@@ -49,7 +49,7 @@ public class ComodoEditor extends GenericEditor<TipoComodo>{
 	private Text text;
 	private TableViewer tvComodo;
 	
-	public ComodoEditor() {
+	public TipoComodoEditor() {
 		super(TipoComodo.class);
 	}
 	
@@ -166,7 +166,7 @@ public class ComodoEditor extends GenericEditor<TipoComodo>{
 			
 			@Override
 			public Image getImage(Object element) {
-				return ((TipoImovelTipoComodo)element).getPreSelecionado() ? Images.CHECKED.getImage() : Images.UNCHECKED.getImage();
+				return ((TipoImovelTipoComodo)element).getPreSelecionado() ? ImageRepository.CHECKED.getImage() : ImageRepository.UNCHECKED.getImage();
 			}
 		});
 		tvcPreselecionado.setEditingSupport(new EditingSupport(tvComodo) {

@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Form;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
@@ -52,7 +52,8 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 
 	private static final String PAGAR = "A PAGAR";
 	private static final String RECEBER = "A RECEBER";
-
+	private static final String TODAS = "TODAS";
+	
 	private Text text;
 	private Table table;
 	private Text txtConta;
@@ -104,7 +105,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 			}
 		});
 		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
-		comboViewer.setInput(Arrays.asList(PAGAR, RECEBER));
+		comboViewer.setInput(Arrays.asList(TODAS, PAGAR, RECEBER));
 		
 		final TableViewer tvContas = new TableViewer(composite_2, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tvContas.getTable();
@@ -271,7 +272,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		});
 		
 		Button btnBaixarConta = new Button(cpPrincipal, SWT.NONE);
-		btnBaixarConta.setImage(Images.FINALIZAR_16.getImage());
+		btnBaixarConta.setImage(ImageRepository.FINALIZAR_16.getImage());
 		GridData gd_btnBaixarConta = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
 		gd_btnBaixarConta.widthHint = 120;
 		gd_btnBaixarConta.heightHint = 38;
@@ -311,7 +312,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 
 	@Override
 	protected Image getImage() {
-		return Images.CONTA_32.getImage();
+		return ImageRepository.CONTA_32.getImage();
 	}
 
 	@Override

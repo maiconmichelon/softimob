@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wb.swt.Images;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
@@ -40,7 +40,7 @@ public class VistoriaView extends GenericView<Vistoria>{
 
 	@Override
 	protected Image getImage() {
-		return Images.VISTORIA_32.getImage();
+		return ImageRepository.VISTORIA_32.getImage();
 	}
 
 	@Override

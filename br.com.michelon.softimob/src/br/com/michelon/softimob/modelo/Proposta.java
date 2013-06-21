@@ -155,5 +155,10 @@ public class Proposta implements Serializable {
 	public void setTipoContraProposta(Integer tipoContraProposta) {
 		this.tipoContraProposta = tipoContraProposta;
 	}
+
+	public String getRealizador() {
+		return tipoContraProposta == CONTRA_PROPOSTA_CLIENTE ? "Cliente - " + getCliente().getNome() : 
+			"Proprietário - " + getImovel().getProprietario().getNome();
+	}
 	
 }

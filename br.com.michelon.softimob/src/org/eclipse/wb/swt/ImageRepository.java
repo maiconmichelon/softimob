@@ -5,7 +5,7 @@ import org.eclipse.swt.graphics.Image;
 
 import br.com.michelon.softimob.aplicacao.main.Activator;
 
-public enum Images{
+public enum ImageRepository{
 
 	ADD_16("icons/add/add16.png"),
 	CLIENTE_16("icons/cliente/cliente16.png"),
@@ -18,8 +18,8 @@ public enum Images{
 	FEEDBACK_32("icons/feedback/feedback32.png"),
 	IMOVEL_16("icons/casa/casa16.png"),
 	IMOVEL_32("icons/casa/casa32.png"),
-	TIPO_IMOVEL_16("icons/imovel/imovel16.png"),
-	TIPO_IMOVEL_32("icons/imovel/imovel32.png"),
+	TIPO_IMOVEL_16("icons/casa/casa16.png"),
+	TIPO_IMOVEL_32("icons/casa/casa32.png"),
 	CHAVE_16("icons/chave/key32.png"),
 	CHAVE_32("icons/chave/key32.png"),
 	COMISSAO_16("icons/comissao/comissao16.png"),
@@ -72,7 +72,7 @@ public enum Images{
 	
 	private String caminho;
 
-	Images(String caminho) {
+	ImageRepository(String caminho) {
 		this.caminho = caminho;
 	}
 	
