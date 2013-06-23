@@ -81,6 +81,7 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 		
 		
 	}
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

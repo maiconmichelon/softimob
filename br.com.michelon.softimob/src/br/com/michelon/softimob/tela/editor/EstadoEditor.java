@@ -6,7 +6,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.nebula.widgets.formattedtext.FormattedText;
 import org.eclipse.nebula.widgets.formattedtext.MaskFormatter;
 
@@ -63,6 +62,7 @@ public class EstadoEditor extends GenericEditor<Estado> {
 		
 	}
 	
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

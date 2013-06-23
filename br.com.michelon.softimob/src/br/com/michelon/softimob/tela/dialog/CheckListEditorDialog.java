@@ -113,6 +113,7 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		btnRegistrar.setText("Registrar");
 		btnRegistrar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
 		btnRegistrar.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				ItemCheckList item = getItemCheckList();
 				checkList.getItens().add(item);
@@ -125,6 +126,7 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		Button btnNovo = new Button(parent, SWT.PUSH);
 		btnNovo.setText("Novo");
 		btnNovo.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				limpar();
 			}

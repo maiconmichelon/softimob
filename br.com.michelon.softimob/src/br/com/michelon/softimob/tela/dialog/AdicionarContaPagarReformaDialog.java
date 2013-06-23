@@ -11,8 +11,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import br.com.michelon.softimob.modelo.Imovel;
-import br.com.michelon.softimob.tela.widget.DateTextField;
-import org.eclipse.swt.widgets.Button;
 
 public class AdicionarContaPagarReformaDialog extends TitleAreaDialog{
 

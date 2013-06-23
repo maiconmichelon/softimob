@@ -7,6 +7,7 @@ import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -19,6 +20,7 @@ import org.eclipse.swt.widgets.Text;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PessoaFisicaService;
 import br.com.michelon.softimob.modelo.PessoaFisica;
+import br.com.michelon.softimob.modelo.PessoaFisica.EstadoCivil;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.CPFTextField;
 import br.com.michelon.softimob.tela.widget.DateTextField;
@@ -40,7 +42,7 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 	private Text text_7;
 	private Text text_1;
 	private Text text_11;
-	private ComboViewer comboViewer;
+	private ComboViewer cvEstadoCivil;
 
 	private EnderecoGroup grpEndereco;
 
@@ -52,86 +54,79 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 	public GenericService<PessoaFisica> getService() {
 		return service;
 	}
+	
+	@Override
+	protected void afterSetIObservableValue() {
+		if(grpEndereco != null)
+			grpEndereco.setEndereco(getCurrentObject().getEndereco());
+	}
 
 	@Override
 	public void afterCreatePartControl(Composite parent1) {
 		GridLayout gl2_parent = new GridLayout(1, false);
 		gl2_parent.verticalSpacing = 10;
 		parent1.setLayout(gl2_parent);
-		parent1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1,
-				1));
+		parent1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 
 		Composite parent = new Composite(parent1, SWT.NONE);
-		parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
-				1, 1));
+		parent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		GridLayout gl_parent = new GridLayout(4, false);
 		gl_parent.verticalSpacing = 8;
 		parent.setLayout(gl_parent);
 
 		Label lblNome = new Label(parent, SWT.NONE);
-		lblNome.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
-				1, 1));
+		lblNome.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNome.setText("Nome");
 
 		text_3 = new Text(parent, SWT.BORDER);
-		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
+		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 
 		Label lblDataDeNascimento = new Label(parent, SWT.NONE);
-		lblDataDeNascimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER,
-				false, false, 1, 1));
+		lblDataDeNascimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDataDeNascimento.setText("Data de Nascimento");
 
 		DateTextField dateTextField = new DateTextField(parent);
 		text_11 = dateTextField.getControl();
-		text_11.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
-				1, 1));
+		text_11.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 
 		Label lblEndereo = new Label(parent, SWT.NONE);
-		lblEndereo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-				false, 1, 1));
+		lblEndereo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEndereo.setText("CPF");
 
 		CPFTextField textField = new CPFTextField(parent);
 		text_1 = textField.getControl();
-		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
+		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblCep = new Label(parent, SWT.NONE);
-		lblCep.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
-				1, 1));
+		lblCep.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCep.setText("RG");
 
 		text_2 = new Text(parent, SWT.BORDER);
-		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
+		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblRg = new Label(parent, SWT.NONE);
-		lblRg.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
-				1, 1));
+		lblRg.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblRg.setText("Filiação");
 
 		text_5 = new Text(parent, SWT.BORDER);
-		text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
+		text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblCpf = new Label(parent, SWT.NONE);
-		lblCpf.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
-				1, 1));
+		lblCpf.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCpf.setText("Estado Civil");
 
-		comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
-		Combo combo = comboViewer.getCombo();
-		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
-
+		cvEstadoCivil = new ComboViewer(parent, SWT.READ_ONLY);
+		Combo combo = cvEstadoCivil.getCombo();
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		cvEstadoCivil.setContentProvider(ArrayContentProvider.getInstance());
+		cvEstadoCivil.setInput(EstadoCivil.values());
+		
 		Label lblNacionalidade = new Label(parent, SWT.NONE);
-		lblNacionalidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER,
-				false, false, 1, 1));
+		lblNacionalidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNacionalidade.setText("Nacionalidade");
 
 		text = new Text(parent, SWT.BORDER);
@@ -140,52 +135,47 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 		new Label(parent, SWT.NONE);
 
 		Label lblTelefone_1 = new Label(parent, SWT.NONE);
-		lblTelefone_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-				false, 1, 1));
+		lblTelefone_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblTelefone_1.setText("Telefone");
 
 		PhoneTextField phoneTextField = new PhoneTextField(parent);
 		text_4 = phoneTextField.getControl();
-		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
+		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblCelular = new Label(parent, SWT.NONE);
-		lblCelular.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-				false, 1, 1));
+		lblCelular.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCelular.setText("Celular");
 
 		PhoneTextField phoneTextField_1 = new PhoneTextField(parent);
 		text_7 = phoneTextField_1.getControl();
-		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
+		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblEmail = new Label(parent, SWT.NONE);
-		lblEmail.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-				false, 1, 1));
+		lblEmail.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEmail.setText("E-mail");
 
 		text_6 = new Text(parent, SWT.BORDER);
-		text_6.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
+		text_6.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
-		
+
 		Composite composite_1 = new Composite(parent, SWT.NONE);
 		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 		composite_1.setLayout(new GridLayout(1, false));
-		
+
 		grpEndereco = new EnderecoGroup(composite_1, SWT.NONE);
 		grpEndereco.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		grpEndereco.setText("Endereco");
+		grpEndereco.setEndereco(getCurrentObject().getEndereco());
 	}
-	
+
 	@Override
 	public void saveCurrentObject(GenericService<PessoaFisica> service) {
-		getCurrentObject().setEndereco(grpEndereco.getEndereco());
-		
-		super.saveCurrentObject(service);
+		if(validarComMensagem(getCurrentObject().getEndereco()))
+			super.saveCurrentObject(service);
 	}
-	
+
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -209,10 +199,6 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 		IObservableValue valueFiliacaoObserveDetailValue = PojoProperties.value(PessoaFisica.class, "filiacao", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_5ObserveWidget, valueFiliacaoObserveDetailValue, null, null);
 		//
-		IObservableValue observeSingleSelectionComboViewer = ViewerProperties.singleSelection().observe(comboViewer);
-		IObservableValue valueEstadoCivilObserveDetailValue = PojoProperties.value(PessoaFisica.class, "estadoCivil", String.class).observeDetail(value);
-		bindingContext.bindValue(observeSingleSelectionComboViewer, valueEstadoCivilObserveDetailValue, null, null);
-		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
 		IObservableValue valueNacionalidadeObserveDetailValue = PojoProperties.value(PessoaFisica.class, "nacionalidade", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueNacionalidadeObserveDetailValue, null, null);
@@ -228,6 +214,10 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_6);
 		IObservableValue valueEmailObserveDetailValue = PojoProperties.value(PessoaFisica.class, "email", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_6ObserveWidget, valueEmailObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionCvEstadoCivil = ViewerProperties.singleSelection().observe(cvEstadoCivil);
+		IObservableValue valueEstadoCivilObserveDetailValue = PojoProperties.value(PessoaFisica.class, "estadoCivil", EstadoCivil.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionCvEstadoCivil, valueEstadoCivilObserveDetailValue, null, null);
 		//
 		return bindingContext;
 	}

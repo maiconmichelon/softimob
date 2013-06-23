@@ -9,6 +9,7 @@ public class EstadoService extends GenericService<Estado>{
 		super(EstadoDAO.class);
 	}
 
+	@Override
 	protected EstadoDAO getRepository(){
 		return (EstadoDAO) super.getRepository();
 	}

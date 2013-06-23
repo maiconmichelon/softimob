@@ -67,6 +67,7 @@ public class CidadeEditor extends GenericEditor<Cidade> {
 		
 	}
 	
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

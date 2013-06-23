@@ -24,14 +24,13 @@ import br.com.michelon.softimob.aplicacao.service.CidadeService;
 import br.com.michelon.softimob.aplicacao.service.EstadoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.RuaService;
+import br.com.michelon.softimob.modelo.Bairro;
 import br.com.michelon.softimob.modelo.Cidade;
 import br.com.michelon.softimob.modelo.Estado;
 import br.com.michelon.softimob.modelo.Rua;
 
 public class RuaEditor extends GenericEditor<Rua>{
 	
-	private DataBindingContext m_bindingContext;
-
 	public static final String ID = "br.com.michelon.softimob.tela.editor.RuaEditor";
 	
 	private RuaService service = new RuaService();
@@ -118,6 +117,7 @@ public class RuaEditor extends GenericEditor<Rua>{
 	public GenericService<Rua> getService() {
 		return service;
 	}
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -125,9 +125,9 @@ public class RuaEditor extends GenericEditor<Rua>{
 		IObservableValue valueNomeObserveDetailValue = PojoProperties.value(Rua.class, "nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueNomeObserveDetailValue, null, null);
 		//
-		IObservableValue observeSingleSelectionCvCidade = ViewerProperties.singleSelection().observe(cvCidade);
-		IObservableValue valueBairrocidadeestadoObserveDetailValue = PojoProperties.value(Rua.class, "bairro.cidade.estado", Estado.class).observeDetail(value);
-		bindingContext.bindValue(observeSingleSelectionCvCidade, valueBairrocidadeestadoObserveDetailValue, new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER), null);
+		IObservableValue observeSingleSelectionCvCidade = ViewerProperties.singleSelection().observe(cvBairro);
+		IObservableValue valueBairrocidadeestadoObserveDetailValue = PojoProperties.value(Rua.class, "bairro", Bairro.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionCvCidade, valueBairrocidadeestadoObserveDetailValue, null, null);
 		//
 		return bindingContext;
 	}

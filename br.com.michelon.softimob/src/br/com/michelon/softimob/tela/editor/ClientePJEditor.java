@@ -164,6 +164,7 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 		super.saveCurrentObject(service);
 	}
 	
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

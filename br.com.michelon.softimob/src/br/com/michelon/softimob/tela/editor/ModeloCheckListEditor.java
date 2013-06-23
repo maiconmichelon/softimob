@@ -83,6 +83,7 @@ public class ModeloCheckListEditor extends GenericEditor<CheckList>{
 		tvb.createColumn("Tipo").bindToProperty("tipo").build();
 	}
 	
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

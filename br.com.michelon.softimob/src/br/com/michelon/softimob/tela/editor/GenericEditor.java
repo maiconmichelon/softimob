@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
@@ -12,8 +13,11 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
@@ -38,6 +42,9 @@ public abstract class GenericEditor<T> extends EditorPart {
 	protected WritableValue value;
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 	
+	private Logger log = Logger.getLogger(getClass());
+	private Composite cpPrincipal;
+	
 	public GenericEditor(Class<T> clazz) {
 		mainClass = clazz;
 		value = WritableValue.withValueType(mainClass);
@@ -56,7 +63,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		
-		Composite cpPrincipal = new Composite(scrolledComposite, SWT.BORDER);
+		cpPrincipal = new Composite(scrolledComposite, SWT.BORDER);
 		cpPrincipal.setLayout(new GridLayout(2, false));
 		
 		afterCreatePartControl(cpPrincipal);
@@ -94,24 +101,41 @@ public abstract class GenericEditor<T> extends EditorPart {
 	
 	public abstract GenericService<T> getService();
 
+	/**
+	 * Salva o value principal
+	 * @param Service utilizado para salvar o objeto
+	 */
 	public void saveCurrentObject(GenericService<T> service) {
-		salvar(getService(), value);
+		if(salvar(getService(), value)){
+			try {
+				value.setValue(value.getValue().getClass().newInstance());
+				afterSetIObservableValue();
+			} catch (Exception e) {
+				log.error("Erro ao setar novo objeto [ " +value.getValueType()+ " ] ao value.", e);
+			}
+		}
+		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void salvar(GenericService service, IObservableValue value){
+	public boolean salvar(GenericService service, IObservableValue value){
 		try {
 			if(!validarComMensagem(value.getValue()))
-				return;
+				return false;
 				
 			service.salvar(value.getValue());
 			MessageDialog.openInformation(ShellHelper.getActiveShell(), TITLE_SALVAR, MESSAGE_SALVAR);
-			value.setValue(value.getValue().getClass().newInstance());
+			
+			setFocus();
+			
+			return true;
 		} catch (DataIntegrityViolationException e){
-			e.printStackTrace();
+			log.error("Erro ao salvar registro", e);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Erro ao salvar registro", e);
 		}
+		
+		return false;
 	}
 	
 	protected boolean validarComMensagem(Object obj){
@@ -132,6 +156,13 @@ public abstract class GenericEditor<T> extends EditorPart {
 	
 	@Override
 	public void setFocus() {
+		Control[] children = cpPrincipal.getChildren();
+		for(Control ctr : children){
+			if(ctr.isEnabled() && (ctr instanceof Text || ctr instanceof Combo)){
+				ctr.forceFocus();
+				break;
+			}
+		}
 	}
 
 	@Override

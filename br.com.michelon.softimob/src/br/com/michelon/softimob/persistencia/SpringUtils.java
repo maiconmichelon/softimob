@@ -8,7 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringUtils {
 
-	public static final String CONFIG_LOCATION = "META-INF\\application-context.xml";
+	public static final String CONFIG_LOCATION = "META-INF/application-context.xml";
 	
 	private static ApplicationContext ctx;
 	
@@ -18,10 +18,11 @@ public class SpringUtils {
 	}
 	
 	public static void initializeContext(){
-		if(ctx != null)
+		if(ctx == null){
 			ctx = new ClassPathXmlApplicationContext(CONFIG_LOCATION);
+		}
 		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SoftimobPU");
+//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SoftimobPU");
 	}
 	
 }

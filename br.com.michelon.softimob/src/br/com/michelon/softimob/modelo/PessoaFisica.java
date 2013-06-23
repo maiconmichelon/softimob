@@ -2,24 +2,55 @@ package br.com.michelon.softimob.modelo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 public class PessoaFisica extends Cliente{
 
-	private static final long serialVersionUID = 1L;
+	public enum EstadoCivil{
+		
+		CASADO("Casado"),
+		SOLTEIRO("Solteiro"),
+		VIUVO("Viuvo"),
+		DIVORCIADO("Divorciado")
+		;
 
+		private String descricao;
+		
+		EstadoCivil(String descricao){
+			this.descricao = descricao;
+		}
+		
+		@Override
+		public String toString() {
+			return descricao;
+		}
+	}
+	
+	private static final long serialVersionUID = 1L;
+	
+	@NotEmpty(message = "O CPF não pode ser vazio.")
 	@Column(nullable = false)
 	private String cpf;
 	
+	@NotEmpty(message = "O RG não pode ser vazio.")
 	@Column(nullable = false)
 	private String rg;
 	
 	@Column
 	private String filiacao;
 
+	@NotNull(message = "O estado civil deve ser informado.")
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private String estadoCivil;
+	private EstadoCivil estadoCivil;
 	
+	@NotEmpty(message="A nacionalidade não pode ser vazia")
 	@Column(nullable = false)
 	private String nacionalidade;
 
@@ -47,11 +78,11 @@ public class PessoaFisica extends Cliente{
 		this.filiacao = filiacao;
 	}
 
-	public String getEstadoCivil() {
+	public EstadoCivil getEstadoCivil() {
 		return estadoCivil;
 	}
 
-	public void setEstadoCivil(String estadoCivil) {
+	public void setEstadoCivil(EstadoCivil estadoCivil) {
 		this.estadoCivil = estadoCivil;
 	}
 

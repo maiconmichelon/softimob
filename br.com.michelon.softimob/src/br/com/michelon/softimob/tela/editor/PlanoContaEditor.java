@@ -3,15 +3,11 @@ package br.com.michelon.softimob.tela.editor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
-import org.eclipse.nebula.widgets.radiogroup.RadioItem;
-
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PlanoContaService;
 import br.com.michelon.softimob.modelo.PlanoConta;
@@ -86,6 +82,7 @@ public class PlanoContaEditor extends GenericEditor<PlanoConta> {
 		
 		
 	}
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

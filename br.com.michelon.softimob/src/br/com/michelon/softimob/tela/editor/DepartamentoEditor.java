@@ -50,6 +50,7 @@ public class DepartamentoEditor extends GenericEditor<Departamento> {
 		
 	}
 
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

@@ -195,6 +195,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		return service;
 	}	
 	
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

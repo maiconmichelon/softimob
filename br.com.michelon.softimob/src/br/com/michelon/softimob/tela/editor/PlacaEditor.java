@@ -1,6 +1,5 @@
 package br.com.michelon.softimob.tela.editor;
 
-import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -89,6 +88,7 @@ public class PlacaEditor extends GenericEditor<Placa>{
 		
 	}
 
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

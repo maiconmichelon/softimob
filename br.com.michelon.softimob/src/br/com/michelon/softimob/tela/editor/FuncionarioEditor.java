@@ -1,8 +1,6 @@
 package br.com.michelon.softimob.tela.editor;
 
 import java.util.Date;
-import java.util.Locale;
-
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -125,6 +123,7 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 		text_5.setLayoutData(gd_text_5);
 	}
 	
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

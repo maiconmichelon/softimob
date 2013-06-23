@@ -2,6 +2,7 @@ package br.com.michelon.softimob.modelo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class PessoaJuridica extends Cliente{
@@ -17,7 +18,7 @@ public class PessoaJuridica extends Cliente{
 	@Column(nullable = false)
 	private String inscrisaoEstadual;
 	
-	@Column
+	@ManyToOne
 	private PessoaFisica socioProprietario;
 
 	public String getCnpj() {

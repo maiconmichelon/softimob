@@ -20,7 +20,7 @@ public class ColumnProperties {
 	}
 
 	public ColumnProperties(String label, String atributo, Integer tamanho) {
-		this(label, atributo, tamanho, null);
+		this(label, atributo, tamanho, new NullStringValueFormatter());
 	}
 
 	

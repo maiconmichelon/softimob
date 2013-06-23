@@ -6,16 +6,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import javax.validation.constraints.NotNull;
 
 import com.google.common.collect.Lists;
 
@@ -27,45 +24,42 @@ public class Imovel implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	@Column
+	@Column(nullable=false)
 	private Boolean ativo = true;
 
 	@Column
 	private Integer metragem;
-	
+
 	@ManyToOne()
 	private Funcionario angariador;
 
-	@ManyToOne()
+	@NotNull(message="O proprietário deve ser informado.")
+	@ManyToOne(optional=false)
 	private Cliente proprietario;
 	
-	@ManyToOne()
+	@NotNull(message="O tipo de imóvel não foi informado")
+	@ManyToOne(optional=false)
 	private TipoImovel tipo;
 
 	@Column
 	private String observacoes;
 	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-	private Endereco endereco;
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional=false)
+	private Endereco endereco = new Endereco();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
-	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comodo> comodos = Lists.newArrayList();
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
-	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Chave> chaves = Lists.newArrayList();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
-	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Feedback> feedbacks = Lists.newArrayList();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
-	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Proposta> propostas = Lists.newArrayList();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
-	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Reserva> reservas = Lists.newArrayList();
  	
 	public List<Proposta> getPropostas() {

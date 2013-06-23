@@ -7,10 +7,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -18,12 +20,13 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 
 @Entity
+@MappedSuperclass
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Comissionado implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable = false)
@@ -31,7 +34,7 @@ public abstract class Comissionado implements Serializable{
 	private String nome;
 	
 	@Column(length=13, nullable = false)
-	@NotNull(message = "O telefone não pode ser nulo.")
+	@NotNull(message = "O telefone não pode ser vazio.")
 	private String telefone;
 	
 	@Column(length=13)
@@ -47,8 +50,8 @@ public abstract class Comissionado implements Serializable{
 	@Column
 	private Boolean ativo = true;
 	
-	@ManyToOne(cascade= CascadeType.PERSIST)
-	private Endereco endereco;
+	@ManyToOne(cascade= CascadeType.PERSIST, optional = false)
+	private Endereco endereco = new Endereco();
 	
 	public Long getId() {
 		return id;

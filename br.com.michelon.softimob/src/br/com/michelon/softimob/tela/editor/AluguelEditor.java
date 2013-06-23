@@ -1,16 +1,11 @@
 package br.com.michelon.softimob.tela.editor;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
-import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -41,11 +36,10 @@ import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.AcontecimentoChamado;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.ChamadoReforma;
-import br.com.michelon.softimob.modelo.Cliente;
 import br.com.michelon.softimob.modelo.Comissao;
 import br.com.michelon.softimob.modelo.Vistoria;
-import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.dialog.AdicionarContaPagarReformaDialog;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
@@ -579,7 +573,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		tvbChamadoGeral = new TableViewerBuilder(composite);
 		
 		tvbChamadoGeral.createColumn("Numero").bindToProperty("numero").build();
-		tvbChamadoGeral.createColumn("Data").bindToProperty("dataAbertura").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
+		tvbChamadoGeral.createColumn("Data").bindToProperty("dataAbertura").format(new DateStringValueFormatter()).build();
 		tvbChamadoGeral.createColumn("Cliente").bindToProperty("inquilino.nome").build();
 		tvbChamadoGeral.createColumn("Problema").bindToProperty("problema").build();
 		tvbChamadoGeral.createColumn("Status").bindToProperty("status").build();
@@ -590,7 +584,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private void criarTabelaAndamentoChamado(Composite composite){
 		tvbAndamentoChamado = new TableViewerBuilder(composite);
 		
-		tvbAndamentoChamado.createColumn("Data").bindToProperty("data").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
+		tvbAndamentoChamado.createColumn("Data").bindToProperty("data").format(new DateStringValueFormatter()).build();
 		tvbAndamentoChamado.createColumn("Funcionário").bindToProperty("funcionario.nome").build();
 		tvbAndamentoChamado.createColumn("Descrição").bindToProperty("descricao").build();
 		
@@ -635,6 +629,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		return context;
 	}
 	
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

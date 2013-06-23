@@ -7,12 +7,16 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ClienteEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.service.PessoaFisicaService;
 import br.com.michelon.softimob.modelo.PessoaFisica;
 import br.com.michelon.softimob.tela.editor.ClientePFEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 
 import com.google.common.collect.Lists;
+
+import de.ralfebert.rcputils.tables.format.Formatter;
 
 public class ClientePFView extends GenericView<PessoaFisica>{
 	
@@ -28,7 +32,7 @@ public class ClientePFView extends GenericView<PessoaFisica>{
 		atributos.add(new ColumnProperties("Nome", "nome", 23));
 		atributos.add(new ColumnProperties("CPF", "cpf",8 ));
 		atributos.add(new ColumnProperties("RG", "rg", 8));
-		atributos.add(new ColumnProperties("Data de Nascimento", "dataNascimento", 10));
+		atributos.add(new ColumnProperties("Data de Nascimento", "dataNascimento", 10, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Telefone", "telefone", 8));
 		atributos.add(new ColumnProperties("Celular", "celular", 8));
 		atributos.add(new ColumnProperties("E-mail", "email", 15));

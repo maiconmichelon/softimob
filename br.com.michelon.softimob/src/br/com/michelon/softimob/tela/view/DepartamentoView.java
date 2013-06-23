@@ -11,8 +11,6 @@ import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.service.DepartamentoService;
 import br.com.michelon.softimob.modelo.Departamento;
 import br.com.michelon.softimob.tela.editor.DepartamentoEditor;
-import br.com.michelon.softimob.tela.widget.ColumnProperties;
-
 import com.google.common.collect.Lists;
 
 public class DepartamentoView extends GenericView<Departamento>{

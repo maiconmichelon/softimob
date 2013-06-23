@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import org.eclipse.ui.IEditorInput;
 
 @Entity
+@MappedSuperclass
 public class ContaPagarReceber implements Serializable, Pendencia{
 
 	private static final long serialVersionUID = 1L;
@@ -67,6 +69,7 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 		return observacoes;
 	}
 	
+	@Override
 	public BigDecimal getValor() {
 		return valor;
 	}
@@ -91,6 +94,7 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 		this.valorJurosDesconto = valorJurosDesconto;
 	}
 
+	@Override
 	public Date getDataVencimento() {
 		return dataVencimento;
 	}

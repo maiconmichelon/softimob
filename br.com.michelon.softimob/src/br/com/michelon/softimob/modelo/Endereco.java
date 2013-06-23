@@ -8,6 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.InstantiationCopyPolicy;
 
 @Entity
 public class Endereco implements Serializable{
@@ -17,10 +21,11 @@ public class Endereco implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(length = 8)
-	private Integer cep;
+	@Column(length = 9)
+	private String cep;
 	
-	@ManyToOne
+	@NotNull(message="A rua deve ser informada.")
+	@ManyToOne(optional=false)
 	private Rua rua;
 	
 	@Column
@@ -29,11 +34,11 @@ public class Endereco implements Serializable{
 	@Column
 	private String complemento;
 
-	public Integer getCep() {
+	public String getCep() {
 		return cep;
 	}
 
-	public void setCep(Integer cep) {
+	public void setCep(String cep) {
 		this.cep = cep;
 	}
 
@@ -71,6 +76,8 @@ public class Endereco implements Serializable{
 	
 	@Override
 	public String toString() {
-		return this.rua.getBairro().getCidade().getNome() + " - " + this.rua.getNome() + " - N " + getNumero(); 
+		if(rua != null)
+			return this.rua.getBairro().getCidade().getNome() + " - " + this.rua.getNome() + " - N " + getNumero(); 
+		return StringUtils.EMPTY;
 	}
 }

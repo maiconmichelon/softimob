@@ -56,6 +56,7 @@ public class BairroEditor extends GenericEditor<Bairro>{
 		
 		ComboViewer cvUF = new ComboViewer(parent, SWT.READ_ONLY);
 		cvUF.addPostSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				Estado estado = (Estado) SelectionHelper.getObject(event.getSelection());
 				
@@ -88,6 +89,7 @@ public class BairroEditor extends GenericEditor<Bairro>{
 		
 	}
 	
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

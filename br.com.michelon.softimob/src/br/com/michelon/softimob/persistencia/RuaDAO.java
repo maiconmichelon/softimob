@@ -11,7 +11,7 @@ import br.com.michelon.softimob.modelo.Rua;
 
 public interface RuaDAO extends CrudRepository<Rua, Long>{
 
-	@Query(value="FROM Rua r WHERE r.bairro = :bairro")
+	@Query(value="SELECT r FROM Rua r WHERE r.bairro = :bairro")
 	public List<Rua> findRuaByBairro(@Param(value="bairro") Bairro bairro);
 	
 }

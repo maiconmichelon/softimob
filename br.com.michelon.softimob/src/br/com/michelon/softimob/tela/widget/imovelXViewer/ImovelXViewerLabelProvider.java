@@ -2,10 +2,12 @@ package br.com.michelon.softimob.tela.widget.imovelXViewer;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.nebula.widgets.xviewer.XViewerColumn;
 import org.eclipse.nebula.widgets.xviewer.XViewerLabelProvider;
 import org.eclipse.swt.graphics.Image; 
+import org.jsoup.helper.StringUtil;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.modelo.Chave;
@@ -30,7 +32,7 @@ public class ImovelXViewerLabelProvider extends XViewerLabelProvider {
 			if(xCol.equals(ImovelXViewerFactory.angariador))
 				return imovel.getAngariador() == null ? "" : imovel.getAngariador().getNome();
 			if(xCol.equals(ImovelXViewerFactory.metragem))
-				return imovel.getMetragem().toString();
+				return imovel.getMetragem() == null ? StringUtils.EMPTY : imovel.getMetragem().toString();
 			if(xCol.equals(ImovelXViewerFactory.codigo))
 				return imovel.getId().toString();
 			if(xCol.equals(ImovelXViewerFactory.proprietario))

@@ -134,6 +134,7 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 		
 		
 	}
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

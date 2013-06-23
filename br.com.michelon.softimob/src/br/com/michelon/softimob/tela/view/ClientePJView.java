@@ -7,7 +7,6 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ClienteEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
-import br.com.michelon.softimob.aplicacao.service.ClienteService;
 import br.com.michelon.softimob.aplicacao.service.PessoaJuridicaService;
 import br.com.michelon.softimob.modelo.PessoaJuridica;
 import br.com.michelon.softimob.tela.editor.ClientePJEditor;

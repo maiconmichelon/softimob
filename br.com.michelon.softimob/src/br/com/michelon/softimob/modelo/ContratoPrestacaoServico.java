@@ -31,6 +31,7 @@ public class ContratoPrestacaoServico implements Pendencia{
 			this.descricao = descricao;
 		}
 		
+		@Override
 		public String toString() {
 			return this.descricao;
 		};

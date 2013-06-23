@@ -188,6 +188,7 @@ public class TipoComodoEditor extends GenericEditor<TipoComodo>{
 		
 		tvComodo.setContentProvider(ArrayContentProvider.getInstance());
 	}
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

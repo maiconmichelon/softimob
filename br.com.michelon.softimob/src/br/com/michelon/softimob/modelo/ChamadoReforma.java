@@ -78,6 +78,7 @@ public class ChamadoReforma implements Serializable, Pendencia{
 		this.dataAbertura = dataAbertura;
 	}
 
+	@Override
 	public Date getDataFechamento() {
 		return dataFechamento;
 	}

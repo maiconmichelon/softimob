@@ -5,11 +5,13 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public class Funcionario extends Comissionado implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

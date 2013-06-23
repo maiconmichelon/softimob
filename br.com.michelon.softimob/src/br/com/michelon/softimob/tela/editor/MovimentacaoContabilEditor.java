@@ -34,6 +34,7 @@ import br.com.michelon.softimob.modelo.LancamentoContabil;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 
@@ -231,7 +232,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		tvb = new TableViewerBuilder(composite);
 		
 //		tvb.createColumn("Tipo").bindToProperty("tipo.descricao").build();
-		tvb.createColumn("Data").bindToProperty("dataLancamento").setPercentWidth(10).format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
+		tvb.createColumn("Data").bindToProperty("dataLancamento").setPercentWidth(10).format(new DateStringValueFormatter()).build();
 		tvb.createColumn("Conta").bindToProperty("conta.codigoDescricao").setPercentWidth(20).build();
 		tvb.createColumn("Valor").bindToProperty("valor").setPercentWidth(10).format(FormatterHelper.getCurrencyFormatter()).build();
 		tvb.createColumn("Histórico").bindToProperty("historico").setPercentWidth(40).makeEditable().build();
@@ -303,6 +304,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		}
 		
 	}
+	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

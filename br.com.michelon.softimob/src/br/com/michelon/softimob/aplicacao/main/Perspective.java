@@ -8,6 +8,7 @@ public class Perspective implements IPerspectiveFactory {
 	public Perspective() {
 	}
 	
+	@Override
 	public void createInitialLayout(IPageLayout layout) {
 		layout.setEditorAreaVisible(false);
 		layout.setFixed(false);

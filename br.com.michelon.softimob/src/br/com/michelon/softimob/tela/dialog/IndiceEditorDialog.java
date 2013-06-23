@@ -26,6 +26,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.modelo.Indice;
 import br.com.michelon.softimob.modelo.IndiceMes;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
@@ -109,7 +110,7 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 	private void criarTabelaIndices(Composite cp){
 		TableViewerBuilder tvb = new TableViewerBuilder(cp);
 		
-		tvb.createColumn("Data").bindToProperty("data").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
+		tvb.createColumn("Data").bindToProperty("data").format(new DateStringValueFormatter()).build();
 		tvb.createColumn("Porcentagem").bindToProperty("porcentagem").build();
 		
 		tvb.getTableViewer().addDoubleClickListener(new IDoubleClickListener() {
@@ -129,6 +130,7 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		btnRegistrar.setText("Registrar");
 		btnRegistrar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
 		btnRegistrar.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				IndiceMes indiceMes = getIndiceMes();
 				indice.getIndices().add(indiceMes);
@@ -141,6 +143,7 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		Button btnNovo = new Button(parent, SWT.PUSH);
 		btnNovo.setText("Novo");
 		btnNovo.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				limpar();
 			}
