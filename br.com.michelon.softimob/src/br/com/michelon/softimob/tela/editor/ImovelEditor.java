@@ -15,9 +15,7 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
 import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
@@ -39,32 +37,36 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
+import org.springframework.data.util.ReflectionUtils;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
-import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
-import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
+import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.service.ChaveService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ImovelService;
-import br.com.michelon.softimob.modelo.Bairro;
+import br.com.michelon.softimob.aplicacao.service.PropostaService;
+import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
 import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.modelo.Chave.LocalizacaoChave;
-import br.com.michelon.softimob.modelo.Cidade;
 import br.com.michelon.softimob.modelo.Comodo;
-import br.com.michelon.softimob.modelo.Estado;
+import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
+import br.com.michelon.softimob.modelo.ContratoPrestacaoServico.TipoContrato;
 import br.com.michelon.softimob.modelo.Feedback;
 import br.com.michelon.softimob.modelo.Imovel;
+import br.com.michelon.softimob.modelo.PessoaFisica;
 import br.com.michelon.softimob.modelo.Proposta;
 import br.com.michelon.softimob.modelo.Reserva;
-import br.com.michelon.softimob.modelo.Rua;
 import br.com.michelon.softimob.modelo.TipoComodo;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.dialog.ContraPropostaDialog;
-import br.com.michelon.softimob.tela.widget.CEPTextField;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;
+import br.com.michelon.softimob.tela.widget.EnderecoGroup;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
@@ -78,6 +80,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private WritableValue valueChave = WritableValue.withValueType(Chave.class);
 	private WritableValue valueComodo = WritableValue.withValueType(TipoComodo.class);
 	private WritableValue valueReserva = WritableValue.withValueType(Reserva.class);
+	private WritableValue valueContrato = WritableValue.withValueType(ContratoPrestacaoServico.class);
 	
 	private ImovelService service = new ImovelService();
 	
@@ -85,8 +88,6 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private Text text_2;
 	private Text text_3;
 	private Text text_5;
-	private Text text_7;
-	private Text text_8;
 	private Text text_11;
 	private Text text_12;
 	private Text text_13;
@@ -95,8 +96,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private Text text_20;
 	private Text text_9;
 	private Text text_6;
-	private ComboViewer comboViewer_4;
-	private ComboViewer cvRuas;
+	private ComboViewer cvTipoImovel;
 
 	private TableViewerBuilder tvbChave;
 	private TableViewerBuilder tvbFeedbacks;
@@ -114,7 +114,6 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	
 	private Text text_32;
 	private Text text_33;
-	private Text text_1;
 	private Text text_4;
 	private Text text_26;
 	private Text txtDescrio;
@@ -130,24 +129,17 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private Text text;
 	private Text text_16;
 
-	private ComboViewer cvCidades;
-	private ComboViewer cvBairros;
 	private RadioGroupViewer radioGroupViewer;
 
 	private TableViewerBuilder tvbContatoPrestacaoServico;
 
-	private TableViewerBuilder tvbLocacoes;
+	private Button btnDivulgar;
+
+	private RadioGroupViewer radioGroupViewer_1;
+
 	
 	public ImovelEditor() {
 		super(Imovel.class);
-		
-		Imovel imovel = (Imovel) value.getValue();
-		
-		valueComodo.setValue(new Comodo());
-		valueChave.setValue(new Chave(imovel));
-		valueFeedback.setValue(new Feedback(imovel));
-		valueProposta.setValue(new Proposta(imovel));
-		valueReserva.setValue(new Reserva(imovel));
 	}
 	
 	@Override
@@ -179,11 +171,19 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		Label lblTipoImvel = new Label(composite, SWT.NONE);
 		lblTipoImvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblTipoImvel.setText("Tipo Imóvel");
+		lblTipoImvel.setText("Tipo");
 		
-		comboViewer_4 = new ComboViewer(composite, SWT.READ_ONLY);
-		Combo combo_4 = comboViewer_4.getCombo();
+		cvTipoImovel = new ComboViewer(composite, SWT.READ_ONLY);
+		Combo combo_4 = cvTipoImovel.getCombo();
 		combo_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		cvTipoImovel.setLabelProvider(new LabelProvider(){
+			@Override
+			public String getText(Object element) {
+				return ((TipoImovel)element).getDescricao();
+			}
+		});
+		cvTipoImovel.setContentProvider(ArrayContentProvider.getInstance());
+		cvTipoImovel.setInput(new TipoImovelService().findAll());
 		
 		Label lblProprietario = new Label(composite, SWT.NONE);
 		lblProprietario.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -247,102 +247,11 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		Composite composite_1 = new Composite(tfImovel, SWT.NONE);
 		tbtmEndereo.setControl(composite_1);
-		GridLayout gl_composite_1 = new GridLayout(3, false);
-		composite_1.setLayout(gl_composite_1);
+		composite_1.setLayout(new GridLayout(1, false));
 		
-		Label lblCep_1 = new Label(composite_1, SWT.NONE);
-		lblCep_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblCep_1.setText("CEP");
-		
-		CEPTextField textField = new CEPTextField(composite_1);
-		text_1 = textField.getControl();
-		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_1.widthHint = 124;
-		text_1.setLayoutData(gd_text_1);
-		
-		Label label = new Label(composite_1, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		
-		Label lblUf = new Label(composite_1, SWT.NONE);
-		lblUf.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblUf.setText("UF");
-		
-		ComboViewer cvUF = new ComboViewer(composite_1, SWT.READ_ONLY);
-		Combo combo = cvUF.getCombo();
-		GridData gd_combo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_combo.widthHint = 41;
-		combo.setLayoutData(gd_combo);
-		cvUF.setContentProvider(ArrayContentProvider.getInstance());
-		cvUF.addPostSelectionChangedListener(new ISelectionChangedListener(){
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				Estado estado = (Estado) SelectionHelper.getObject((IStructuredSelection) event.getSelection());
-				
-				cvCidades.setInput(estado.getCidades());
-			}
-		});
-		new Label(composite_1, SWT.NONE);
-		
-		Label lblCidade = new Label(composite_1, SWT.NONE);
-		lblCidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblCidade.setText("Cidade");
-		
-		cvCidades = new ComboViewer(composite_1, SWT.READ_ONLY);
-		Combo combo_1 = cvCidades.getCombo();
-		combo_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		cvCidades.addPostSelectionChangedListener(new ISelectionChangedListener(){
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				Cidade cidade = (Cidade) SelectionHelper.getObject((IStructuredSelection) event.getSelection());
-				
-				cvBairros.setInput(cidade.getBairros());
-			}
-		});
-		new Label(composite_1, SWT.NONE);
-		
-		Label lblBairro = new Label(composite_1, SWT.NONE);
-		lblBairro.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblBairro.setText("Bairro");
-		
-		cvBairros = new ComboViewer(composite_1, SWT.READ_ONLY);
-		Combo combo_2 = cvBairros.getCombo();
-		combo_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		cvBairros.addPostSelectionChangedListener(new ISelectionChangedListener(){
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				Bairro bairro = (Bairro) SelectionHelper.getObject((IStructuredSelection) event.getSelection());
-				
-				cvRuas.setInput(bairro.getRuas());
-			}
-		});
-		new Label(composite_1, SWT.NONE);
-		
-		Label lblRua_1 = new Label(composite_1, SWT.NONE);
-		lblRua_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblRua_1.setText("Rua");
-		
-		cvRuas = new ComboViewer(composite_1, SWT.READ_ONLY);
-		Combo combo_3 = cvRuas.getCombo();
-		combo_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(composite_1, SWT.NONE);
-		
-		Label lblNmero = new Label(composite_1, SWT.NONE);
-		lblNmero.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNmero.setText("Número");
-		
-		text_7 = new Text(composite_1, SWT.BORDER);
-		GridData gd_text_7 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_text_7.widthHint = 98;
-		text_7.setLayoutData(gd_text_7);
-		new Label(composite_1, SWT.NONE);
-		
-		Label lblComplemento = new Label(composite_1, SWT.NONE);
-		lblComplemento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblComplemento.setText("Complemento");
-		
-		text_8 = new Text(composite_1, SWT.BORDER);
-		text_8.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(composite_1, SWT.NONE);
+		EnderecoGroup grpEndereco = new EnderecoGroup(composite_1, SWT.NONE);
+		grpEndereco.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		grpEndereco.setText("Endereco");
 		
 		CTabItem tbtmDescrio_1 = new CTabItem(tfImovel, SWT.NONE);
 		tbtmDescrio_1.setText("Cômodos");
@@ -385,8 +294,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		Button button_9 = new Button(grpCmodo, SWT.NONE);
 		button_9.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		button_9.setText("Adicionar");
-		button_9.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		button_9.setText("Registrar");
+		button_9.setImage(ImageRepository.SAVE_16.getImage());
 		button_9.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -434,7 +343,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		new Label(grpChave, SWT.NONE);
 		
 		Button btnAddChave = new Button(grpChave, SWT.NONE);
-		btnAddChave.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		btnAddChave.setImage(ImageRepository.SAVE_16.getImage());
 		btnAddChave.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -445,7 +354,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		gd_btnAddChave.heightHint = 30;
 		gd_btnAddChave.widthHint = 84;
 		btnAddChave.setLayoutData(gd_btnAddChave);
-		btnAddChave.setText("Adicionar");
+		btnAddChave.setText("Registrar");
 		
 		CTabItem tbtmHistricos = new CTabItem(tfImovel, SWT.NONE);
 		tbtmHistricos.setText("Feedbacks");
@@ -518,8 +427,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 			}
 		});
 		button_5.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		button_5.setText("Adicionar");
-		button_5.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		button_5.setText("Registrar");
+		button_5.setImage(ImageRepository.SAVE_16.getImage());
 		
 		CTabItem tbtmPropostas = new CTabItem(tfImovel, SWT.NONE);
 		tbtmPropostas.setText("Propostas");
@@ -602,8 +511,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 			}
 		});
 		button_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		button_3.setText("Adicionar");
-		button_3.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		button_3.setText("Registrar");
+		button_3.setImage(ImageRepository.SAVE_16.getImage());
 		
 		{
 			tfImovel.setSelection(0);
@@ -702,8 +611,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 			}
 		});
 		button_22.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		button_22.setText("Adicionar");
-		button_22.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		button_22.setText("Registrar");
+		button_22.setImage(ImageRepository.SAVE_16.getImage());
 		
 		CTabItem tbtmContratoPrestaoDe = new CTabItem(tfImovel, SWT.NONE);
 		tbtmContratoPrestaoDe.setText("Contrato Prestação de Serviço");
@@ -734,15 +643,17 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		button.setText("...");
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
-		Composite composite_9 = new Composite(grpContratoPrestaoDe, SWT.NONE);
-		composite_9.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		composite_9.setLayout(new GridLayout(2, false));
-		
-		Button button_1 = new Button(composite_9, SWT.CHECK);
-		button_1.setText("Venda");
-		
-		Button button_2 = new Button(composite_9, SWT.CHECK);
-		button_2.setText("Locação");
+		radioGroupViewer_1 = new RadioGroupViewer(grpContratoPrestaoDe, SWT.NONE);
+		RadioGroup radioGroup_1 = radioGroupViewer_1.getRadioGroup();
+		radioGroup_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		radioGroupViewer_1.setLabelProvider(new LabelProvider(){
+			@Override
+			public String getText(Object element) {
+				return element.toString();
+			}
+		});
+		radioGroupViewer_1.setContentProvider(ArrayContentProvider.getInstance());
+		radioGroupViewer_1.setInput(ContratoPrestacaoServico.TipoContrato.values());
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
 		Label lblData_2 = new Label(grpContratoPrestaoDe, SWT.NONE);
@@ -773,7 +684,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
-		Button btnDivulgar = new Button(grpContratoPrestaoDe, SWT.CHECK);
+		btnDivulgar = new Button(grpContratoPrestaoDe, SWT.CHECK);
 		btnDivulgar.setText("Divulgar");
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
@@ -781,8 +692,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		Button btnAdicionar_1 = new Button(grpContratoPrestaoDe, SWT.NONE);
 		btnAdicionar_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnAdicionar_1.setText("Adicionar");
-		btnAdicionar_1.setImage(ImageRepository.ADD_16.getImage());
+		btnAdicionar_1.setText("Registrar");
+		btnAdicionar_1.setImage(ImageRepository.SAVE_16.getImage());
 		
 		CTabItem tbtmLocacoes = new CTabItem(tfImovel, SWT.NONE);
 		tbtmLocacoes.setText("Locações");
@@ -791,11 +702,18 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tbtmLocacoes.setControl(composite_6);
 		
 		criarTabelaLocacoes(composite_6);
+	}
+	
+	@Override
+	protected void afterSetIObservableValue() {
+		Imovel imovel = getCurrentObject();
 		
-		value.setValue(new Imovel());
-		
-		initDataBindings();
-		
+		valueComodo.setValue(new Comodo());
+		valueChave.setValue(new Chave(imovel));
+		valueFeedback.setValue(new Feedback(imovel));
+		valueProposta.setValue(new Proposta(imovel));
+		valueReserva.setValue(new Reserva(imovel));
+		valueContrato.setValue(new ContratoPrestacaoServico(imovel));
 	}
 	
 	private void criarTabelaContratoPrestacaoServico(Composite composite) {
@@ -821,6 +739,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbReserva.setInput(((Imovel)value.getValue()).getReservas());
 		
 		tvReservas = tvbReserva.getTableViewer();
+		
+		WidgetHelper.createBasicMenus(tvReservas, valueReserva);
 	}
 
 	private void criarTabelaChave(Composite composite){
@@ -832,6 +752,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbChave.setInput(((Imovel)value.getValue()).getChaves());
 		
 		tvChaves = tvbChave.getTableViewer();
+		
+		WidgetHelper.createBasicMenus(tvChaves, valueChave);
 	}
 	
 	private void criarTabelaComodo(Composite composite){
@@ -843,6 +765,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbComodo.setInput(((Imovel)value.getValue()).getComodos());
 		
 		tvComodos = tvbComodo.getTableViewer();
+		
+		WidgetHelper.createBasicMenus(tvComodos, valueComodo);
 	}
 	
 	private void criarTabelaFeedback(Composite composite){
@@ -856,6 +780,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbFeedbacks.setInput(((Imovel)value.getValue()).getFeedbacks());
 		
 		tvFeedbacks = tvbFeedbacks.getTableViewer();
+		
+		WidgetHelper.createBasicMenus(tvFeedbacks, valueFeedback);
 	}
 	
 	private void criarTabelaProposta(Composite composite){
@@ -871,8 +797,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		tvProposta = tvbProposta.getTableViewer();
 		
-		Menu menuTvProposta = new Menu(tvProposta.getTable());
-		
+		Menu menuTvProposta = WidgetHelper.createBasicMenus(tvProposta, valueProposta);
+
 		MenuItem miContraProposta = new MenuItem(menuTvProposta, SWT.BORDER);
 		miContraProposta.setText("Contra-proposta");
 		miContraProposta.addSelectionListener(new SelectionAdapter() {
@@ -902,6 +828,10 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	
 	private void addChave() {
 		Chave chave = (Chave) valueChave.getValue();
+		
+		if(!validarComMensagem(chave))
+			return;
+		
 		Imovel imovel = (Imovel) value.getValue();
 		
 		imovel.getChaves().add(chave);
@@ -911,17 +841,32 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	}
 	
 	private void addProposta() {
-		Proposta proposta = (Proposta) valueProposta.getValue();
-		Imovel imovel = (Imovel) value.getValue();
+//		Proposta proposta = (Proposta) valueProposta.getValue();
+//
+//		if(!validarComMensagem(proposta))
+//			return;
+//		
+//		Imovel imovel = (Imovel) value.getValue();
+//		
+//		imovel.getPropostas().add(proposta);
+//		valueProposta.setValue(new Proposta(imovel));
+//		
+		salvar(new PropostaService(), valueProposta);
 		
-		imovel.getPropostas().add(proposta);
-		valueProposta.setValue(new Proposta(imovel));
+		List<Proposta> propostas = getCurrentObject().getPropostas();
+		
+		if(!propostas.contains(valueProposta.getValue()))
+			propostas.add((Proposta) valueProposta.getValue());
 		
 		tvProposta.refresh();
 	}
 	
 	private void addComodo() {
 		Comodo comodo = (Comodo) valueComodo.getValue();
+		
+		if(!validarComMensagem(comodo))
+			return;
+		
 		Imovel imovel = (Imovel) value.getValue();
 		
 		imovel.getComodos().add(comodo);
@@ -932,16 +877,27 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	
 	private void addFeedback() {
 		Feedback feedback = (Feedback) valueFeedback.getValue();
+		
+		if(!validarComMensagem(feedback))
+			return;
+		
 		Imovel imovel = (Imovel) value.getValue();
 		
 		imovel.getFeedbacks().add(feedback);
 		valueFeedback.setValue(new Feedback(imovel));
+		
+		Feedback f = new Feedback(getCurrentObject());
+		f.setCliente(new PessoaFisica());
 		
 		tvFeedbacks.refresh();
 	}
 	
 	private void addReserva() {
 		Reserva reserva = (Reserva) valueReserva.getValue();
+		
+		if(!validarComMensagem(reserva))
+			return;
+		
 		Imovel imovel = (Imovel) value.getValue();
 		
 		imovel.getReservas().add(reserva);
@@ -977,125 +933,133 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-//		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
-//		IObservableValue valueAngariadornomeObserveDetailValue = PojoProperties.value(Imovel.class, "angariador.nome", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_2ObserveWidget, valueAngariadornomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextTxtProprietarioObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtProprietario);
-//		IObservableValue valueProprietarionomeObserveDetailValue = PojoProperties.value(Imovel.class, "proprietario.nome", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextTxtProprietarioObserveWidget, valueProprietarionomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
-//		IObservableValue valueAngariadornomeObserveDetailValue_1 = PojoProperties.value(Imovel.class, "metragem", Integer.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_5ObserveWidget, valueAngariadornomeObserveDetailValue_1, null, null);
-//		//
-//		IObservableValue observeTextText_21ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_21);
-//		IObservableValue valueIdObserveDetailValue = PojoProperties.value(Imovel.class, "id", Long.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_21ObserveWidget, valueIdObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeSingleSelectionComboViewer_4 = ViewerProperties.singleSelection().observe(comboViewer_4);
-//		IObservableValue valueMetragemObserveDetailValue = PojoProperties.value(Imovel.class, "tipo", TipoImovel.class).observeDetail(value);
-//		bindingContext.bindValue(observeSingleSelectionComboViewer_4, valueMetragemObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_6);
-//		IObservableValue valueObservacoesObserveDetailValue = PojoProperties.value(Imovel.class, "observacoes", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_6ObserveWidget, valueObservacoesObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_26ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_26);
-//		IObservableValue valueComodoTipoComodoObserveDetailValue = PojoProperties.value(Comodo.class, "tipoComodo", TipoComodo.class).observeDetail(valueComodo);
-//		bindingContext.bindValue(observeTextText_26ObserveWidget, valueComodoTipoComodoObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextTxtDescrioObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDescrio);
-//		IObservableValue valueComodoDescricaoObserveDetailValue = PojoProperties.value(Comodo.class, "descricao", String.class).observeDetail(valueComodo);
-//		bindingContext.bindValue(observeTextTxtDescrioObserveWidget, valueComodoDescricaoObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
-//		IObservableValue valueEnderecocepObserveDetailValue = PojoProperties.value(Imovel.class, "endereco.cep", Integer.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_1ObserveWidget, valueEnderecocepObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeSingleSelectionComboViewer_3 = ViewerProperties.singleSelection().observe(cvRuas);
-//		IObservableValue valueEnderecoruaObserveDetailValue = PojoProperties.value(Imovel.class, "endereco.rua", Rua.class).observeDetail(value);
-//		bindingContext.bindValue(observeSingleSelectionComboViewer_3, valueEnderecoruaObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_7ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_7);
-//		IObservableValue valueEndereconumeroObserveDetailValue = PojoProperties.value(Imovel.class, "endereco.numero", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_7ObserveWidget, valueEndereconumeroObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_8ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_8);
-//		IObservableValue valueEnderecocomplementoObserveDetailValue = PojoProperties.value(Imovel.class, "endereco.complemento", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_8ObserveWidget, valueEnderecocomplementoObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_15ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_15);
-//		IObservableValue valueChaveNumeroObserveDetailValue = PojoProperties.value(Chave.class, "numero", String.class).observeDetail(valueChave);
-//		bindingContext.bindValue(observeTextText_15ObserveWidget, valueChaveNumeroObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_32ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_32);
-//		IObservableValue valueFeedbackDataObserveDetailValue = PojoProperties.value(Feedback.class, "data", Date.class).observeDetail(valueFeedback);
-//		bindingContext.bindValue(observeTextText_32ObserveWidget, valueFeedbackDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-//		//
-//		IObservableValue observeTextText_12ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_12);
-//		IObservableValue valueFeedbackFuncionarionomeObserveDetailValue = PojoProperties.value(Feedback.class, "funcionario.nome", String.class).observeDetail(valueFeedback);
-//		bindingContext.bindValue(observeTextText_12ObserveWidget, valueFeedbackFuncionarionomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_14ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_14);
-//		IObservableValue valueFeedbackClientenomeObserveDetailValue = PojoProperties.value(Feedback.class, "cliente.nome", String.class).observeDetail(valueFeedback);
-//		bindingContext.bindValue(observeTextText_14ObserveWidget, valueFeedbackClientenomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_13ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_13);
-//		IObservableValue valueFeedbackObservacoesObserveDetailValue = PojoProperties.value(Feedback.class, "observacoes", String.class).observeDetail(valueFeedback);
-//		bindingContext.bindValue(observeTextText_13ObserveWidget, valueFeedbackObservacoesObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_9ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_9);
-//		IObservableValue valuePropostaClientenomeObserveDetailValue = PojoProperties.value(Proposta.class, "cliente.nome", String.class).observeDetail(valueProposta);
-//		bindingContext.bindValue(observeTextText_9ObserveWidget, valuePropostaClientenomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_11ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_11);
-//		IObservableValue valuePropostaFuncionarionomeObserveDetailValue = PojoProperties.value(Proposta.class, "funcionario.nome", String.class).observeDetail(valueProposta);
-//		bindingContext.bindValue(observeTextText_11ObserveWidget, valuePropostaFuncionarionomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_29ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_29);
-//		IObservableValue valuePropostaValorObserveDetailValue = PojoProperties.value(Proposta.class, "valor", BigDecimal.class).observeDetail(valueProposta);
-//		Binding bindValue = bindingContext.bindValue(observeTextText_29ObserveWidget, valuePropostaValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
-//		ControlDecorationSupport.create(bindValue, SWT.LEFT | SWT.TOP);
-//		//
-//		IObservableValue observeTextText_20ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_20);
-//		IObservableValue valuePropostaObservacoesObserveDetailValue = PojoProperties.value(Proposta.class, "observacoes", String.class).observeDetail(valueProposta);
-//		bindingContext.bindValue(observeTextText_20ObserveWidget, valuePropostaObservacoesObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_33ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_33);
-//		IObservableValue valuePropostaDataObserveDetailValue = PojoProperties.value(Proposta.class, "data", Date.class).observeDetail(valueProposta);
-//		bindingContext.bindValue(observeTextText_33ObserveWidget, valuePropostaDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-//		//
-//		IObservableValue observeTextText_30ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_30);
-//		IObservableValue valueReservadataReservaObserveDetailValue = PojoProperties.value(Reserva.class, "dataReserva", Date.class).observeDetail(valueReserva);
-//		bindingContext.bindValue(observeTextText_30ObserveWidget, valueReservadataReservaObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-//		//
-//		IObservableValue observeTextText_37ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_37);
-//		IObservableValue valueReservaDataVencimentoObserveDetailValue = PojoProperties.value(Reserva.class, "dataVencimento", Date.class).observeDetail(valueReserva);
-//		bindingContext.bindValue(observeTextText_37ObserveWidget, valueReservaDataVencimentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-//		//
-//		IObservableValue observeTextText_38ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_38);
-//		IObservableValue valueReservaClientenomeObserveDetailValue = PojoProperties.value(Reserva.class, "cliente.nome", String.class).observeDetail(valueReserva);
-//		bindingContext.bindValue(observeTextText_38ObserveWidget, valueReservaClientenomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_40ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_40);
-//		IObservableValue valuePropostaFuncionarionomeObserveDetailValue_1 = PojoProperties.value(Reserva.class, "funcionario.nome", String.class).observeDetail(valueReserva);
-//		bindingContext.bindValue(observeTextText_40ObserveWidget, valuePropostaFuncionarionomeObserveDetailValue_1, null, null);
-//		//
-//		IObservableValue observeTextText_39ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_39);
-//		IObservableValue valueReservaValorObserveDetailValue = PojoProperties.value(Reserva.class, "valor", BigDecimal.class).observeDetail(valueReserva);
-//		Binding bindValue2 = bindingContext.bindValue(observeTextText_39ObserveWidget, valueReservaValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
-//		ControlDecorationSupport.create(bindValue2, SWT.LEFT | SWT.TOP);
-//		//
-//		IObservableValue observeTextText_41ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_41);
-//		IObservableValue valueReservaObservacoesObserveDetailValue = PojoProperties.value(Reserva.class, "observacoes", String.class).observeDetail(valueReserva);
-//		bindingContext.bindValue(observeTextText_41ObserveWidget, valueReservaObservacoesObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeSingleSelectionRadioGroupViewer = ViewerProperties.singleSelection().observe(radioGroupViewer);
-//		IObservableValue valueChaveLocalizacaoObserveDetailValue = PojoProperties.value(Chave.class, "localizacao", LocalizacaoChave.class).observeDetail(valueChave);
-//		bindingContext.bindValue(observeSingleSelectionRadioGroupViewer, valueChaveLocalizacaoObserveDetailValue, null, null);
-//		//
-//		bindTables(bindingContext);
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
+		IObservableValue valueAngariadornomeObserveDetailValue = PojoProperties.value(Imovel.class, "angariador.nome", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_2ObserveWidget, valueAngariadornomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextTxtProprietarioObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtProprietario);
+		IObservableValue valueProprietarionomeObserveDetailValue = PojoProperties.value(Imovel.class, "proprietario.nome", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTxtProprietarioObserveWidget, valueProprietarionomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
+		IObservableValue valueAngariadornomeObserveDetailValue_1 = PojoProperties.value(Imovel.class, "metragem", Integer.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_5ObserveWidget, valueAngariadornomeObserveDetailValue_1, null, null);
+		//
+		IObservableValue observeTextText_21ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_21);
+		IObservableValue valueIdObserveDetailValue = PojoProperties.value(Imovel.class, "id", Long.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_21ObserveWidget, valueIdObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionComboViewer_4 = ViewerProperties.singleSelection().observe(cvTipoImovel);
+		IObservableValue valueMetragemObserveDetailValue = PojoProperties.value(Imovel.class, "tipo", TipoImovel.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionComboViewer_4, valueMetragemObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_6);
+		IObservableValue valueObservacoesObserveDetailValue = PojoProperties.value(Imovel.class, "observacoes", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_6ObserveWidget, valueObservacoesObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_26ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_26);
+		IObservableValue valueComodoTipoComodoObserveDetailValue = PojoProperties.value(Comodo.class, "tipoComodo", TipoComodo.class).observeDetail(valueComodo);
+		bindingContext.bindValue(observeTextText_26ObserveWidget, valueComodoTipoComodoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextTxtDescrioObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDescrio);
+		IObservableValue valueComodoDescricaoObserveDetailValue = PojoProperties.value(Comodo.class, "descricao", String.class).observeDetail(valueComodo);
+		bindingContext.bindValue(observeTextTxtDescrioObserveWidget, valueComodoDescricaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_32ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_32);
+		IObservableValue valueFeedbackDataObserveDetailValue = PojoProperties.value(Feedback.class, "data", Date.class).observeDetail(valueFeedback);
+		bindingContext.bindValue(observeTextText_32ObserveWidget, valueFeedbackDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeTextText_12ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_12);
+		IObservableValue valueFeedbackFuncionarionomeObserveDetailValue = PojoProperties.value(Feedback.class, "funcionario.nome", String.class).observeDetail(valueFeedback);
+		bindingContext.bindValue(observeTextText_12ObserveWidget, valueFeedbackFuncionarionomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_14ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_14);
+		IObservableValue valueFeedbackClientenomeObserveDetailValue = PojoProperties.value(Feedback.class, "cliente.nome", String.class).observeDetail(valueFeedback);
+		bindingContext.bindValue(observeTextText_14ObserveWidget, valueFeedbackClientenomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_13ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_13);
+		IObservableValue valueFeedbackObservacoesObserveDetailValue = PojoProperties.value(Feedback.class, "observacoes", String.class).observeDetail(valueFeedback);
+		bindingContext.bindValue(observeTextText_13ObserveWidget, valueFeedbackObservacoesObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_9ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_9);
+		IObservableValue valuePropostaClientenomeObserveDetailValue = PojoProperties.value(Proposta.class, "cliente.nome", String.class).observeDetail(valueProposta);
+		bindingContext.bindValue(observeTextText_9ObserveWidget, valuePropostaClientenomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_11ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_11);
+		IObservableValue valuePropostaFuncionarionomeObserveDetailValue = PojoProperties.value(Proposta.class, "funcionario.nome", String.class).observeDetail(valueProposta);
+		bindingContext.bindValue(observeTextText_11ObserveWidget, valuePropostaFuncionarionomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_29ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_29);
+		IObservableValue valuePropostaValorObserveDetailValue = PojoProperties.value(Proposta.class, "valor", BigDecimal.class).observeDetail(valueProposta);
+		Binding bindValue = bindingContext.bindValue(observeTextText_29ObserveWidget, valuePropostaValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		ControlDecorationSupport.create(bindValue, SWT.LEFT | SWT.TOP);
+		//
+		IObservableValue observeTextText_20ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_20);
+		IObservableValue valuePropostaObservacoesObserveDetailValue = PojoProperties.value(Proposta.class, "observacoes", String.class).observeDetail(valueProposta);
+		bindingContext.bindValue(observeTextText_20ObserveWidget, valuePropostaObservacoesObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_33ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_33);
+		IObservableValue valuePropostaDataObserveDetailValue = PojoProperties.value(Proposta.class, "data", Date.class).observeDetail(valueProposta);
+		bindingContext.bindValue(observeTextText_33ObserveWidget, valuePropostaDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeTextText_30ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_30);
+		IObservableValue valueReservadataReservaObserveDetailValue = PojoProperties.value(Reserva.class, "dataReserva", Date.class).observeDetail(valueReserva);
+		bindingContext.bindValue(observeTextText_30ObserveWidget, valueReservadataReservaObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeTextText_37ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_37);
+		IObservableValue valueReservaDataVencimentoObserveDetailValue = PojoProperties.value(Reserva.class, "dataVencimento", Date.class).observeDetail(valueReserva);
+		bindingContext.bindValue(observeTextText_37ObserveWidget, valueReservaDataVencimentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeTextText_38ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_38);
+		IObservableValue valueReservaClientenomeObserveDetailValue = PojoProperties.value(Reserva.class, "cliente.nome", String.class).observeDetail(valueReserva);
+		bindingContext.bindValue(observeTextText_38ObserveWidget, valueReservaClientenomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_40ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_40);
+		IObservableValue valuePropostaFuncionarionomeObserveDetailValue_1 = PojoProperties.value(Reserva.class, "funcionario.nome", String.class).observeDetail(valueReserva);
+		bindingContext.bindValue(observeTextText_40ObserveWidget, valuePropostaFuncionarionomeObserveDetailValue_1, null, null);
+		//
+		IObservableValue observeTextText_39ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_39);
+		IObservableValue valueReservaValorObserveDetailValue = PojoProperties.value(Reserva.class, "valor", BigDecimal.class).observeDetail(valueReserva);
+		Binding bindValue2 = bindingContext.bindValue(observeTextText_39ObserveWidget, valueReservaValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		ControlDecorationSupport.create(bindValue2, SWT.LEFT | SWT.TOP);
+		//
+		IObservableValue observeTextText_41ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_41);
+		IObservableValue valueReservaObservacoesObserveDetailValue = PojoProperties.value(Reserva.class, "observacoes", String.class).observeDetail(valueReserva);
+		bindingContext.bindValue(observeTextText_41ObserveWidget, valueReservaObservacoesObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionRadioGroupViewer = ViewerProperties.singleSelection().observe(radioGroupViewer);
+		IObservableValue valueChaveLocalizacaoObserveDetailValue = PojoProperties.value(Chave.class, "localizacao", LocalizacaoChave.class).observeDetail(valueChave);
+		bindingContext.bindValue(observeSingleSelectionRadioGroupViewer, valueChaveLocalizacaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_15ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_15);
+		IObservableValue valueChaveNumeroObserveDetailValue = PojoProperties.value(Chave.class, "numero", String.class).observeDetail(valueChave);
+		bindingContext.bindValue(observeTextText_15ObserveWidget, valueChaveNumeroObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionRadioGroupViewer_1 = ViewerProperties.singleSelection().observe(radioGroupViewer_1);
+		IObservableValue valueContratoTipoObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "tipo", TipoContrato.class).observeDetail(valueContrato);
+		bindingContext.bindValue(observeSingleSelectionRadioGroupViewer_1, valueContratoTipoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_10ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_10);
+		IObservableValue valueContratoFuncionarionomeObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "funcionario.nome", String.class).observeDetail(valueContrato);
+		bindingContext.bindValue(observeTextText_10ObserveWidget, valueContratoFuncionarionomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue valueContratoDataInicioObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "dataInicio", Date.class).observeDetail(valueContrato);
+		bindingContext.bindValue(observeTextTextObserveWidget, valueContratoDataInicioObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_16ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_16);
+		IObservableValue valueContratoDataVencimentoObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "dataVencimento", Date.class).observeDetail(valueContrato);
+		bindingContext.bindValue(observeTextText_16ObserveWidget, valueContratoDataVencimentoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
+		IObservableValue valueContratoValorObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "valor", BigDecimal.class).observeDetail(valueContrato);
+		bindingContext.bindValue(observeTextText_4ObserveWidget, valueContratoValorObserveDetailValue, null, null);
+		//
+		IObservableValue observeSelectionBtnDivulgarObserveWidget = WidgetProperties.selection().observe(btnDivulgar);
+		IObservableValue valueContratoDivulgarObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "divulgar", Boolean.class).observeDetail(valueContrato);
+		bindingContext.bindValue(observeSelectionBtnDivulgarObserveWidget, valueContratoDivulgarObserveDetailValue, null, null);
+		//
+		bindTables(bindingContext);
 		//
 		return bindingContext;
 	}

@@ -64,12 +64,7 @@ public class CidadeEditor extends GenericEditor<Cidade> {
 		gd_text.widthHint = 222;
 		text.setLayoutData(gd_text);
 		
-		m_bindingContext = initDataBindings();
-	}
-	
-	@Override
-	public void salvar(GenericService<Cidade> service, IObservableValue value) {
-		super.salvar(service, value);
+		
 	}
 	
 	protected DataBindingContext initDataBindings() {

@@ -37,6 +37,7 @@ import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInp
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
+import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.LancamentoContabil;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
@@ -60,6 +61,8 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 	private Table tbLancamentos;
 
 	private MovimentacaoContabil movimentacao;
+	
+	private ContaPagarReceberService service = new ContaPagarReceberService();
 	
 	private List<ColumnProperties> atributos;
 	private Text text_1;
@@ -332,7 +335,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 
 	@Override
 	protected List<ContaPagarReceber> getInput() {
-		return null;
+		return service.findAll();
 	}
 
 }

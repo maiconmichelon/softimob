@@ -65,7 +65,7 @@ public class ModeloContratoEditor extends GenericEditor<ModeloContrato> {
 		
 		value.setValue(new ModeloContrato());
 		
-		m_bindingContext = initDataBindings();
+		
 		
 	}
 

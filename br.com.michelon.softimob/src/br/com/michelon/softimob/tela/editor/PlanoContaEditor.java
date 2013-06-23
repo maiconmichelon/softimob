@@ -83,7 +83,7 @@ public class PlanoContaEditor extends GenericEditor<PlanoConta> {
 		});
 		radioGroupViewer.setInput(new Integer[]{PlanoConta.ATIVA, PlanoConta.PASSIVA});
 		
-		m_bindingContext = initDataBindings();
+		
 		
 	}
 	protected DataBindingContext initDataBindings() {

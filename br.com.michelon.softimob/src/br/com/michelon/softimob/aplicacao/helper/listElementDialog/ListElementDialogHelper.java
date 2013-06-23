@@ -23,6 +23,7 @@ import br.com.michelon.softimob.aplicacao.service.FuncionarioService;
 import br.com.michelon.softimob.aplicacao.service.PlanoContaService;
 import br.com.michelon.softimob.aplicacao.service.TipoComodoService;
 import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
+import br.com.michelon.softimob.modelo.Cliente;
 
 public class ListElementDialogHelper<T> {
 	
@@ -55,7 +56,7 @@ public class ListElementDialogHelper<T> {
 		});
 	}
 	
-	private static void openDialogAndSetValue(TipoDialog tipoDialog, final WritableValue value, final String property, final OkListElementDialogListener listener) {
+	private static void openDialogAndSetValue(final TipoDialog tipoDialog, final WritableValue value, final String property, final OkListElementDialogListener listener) {
 
 		tipoDialog.openDialogAndExecuteListeners(new OkListElementDialogListener() {
 			@Override
@@ -64,7 +65,7 @@ public class ListElementDialogHelper<T> {
 					Object copy = value.getValue();
 					value.setValue(null);
 					
-					ReflectionHelper.setAtribute(copy, property, obj);
+					ReflectionHelper.setAtribute(copy, property, obj, tipoDialog.getClazz());
 					
 					value.setValue(copy);
 					
@@ -89,7 +90,7 @@ public class ListElementDialogHelper<T> {
 	public enum TipoDialog{
 		
 		FUNCIONARIO("Funcionários", "Selecione um funcionário.", ImageRepository.FUNCIONARIO_16),
-		CLIENTE("Clientes", "Selecione um cliente.", ImageRepository.CLIENTE_16), 
+		CLIENTE("Clientes", "Selecione um cliente.", ImageRepository.CLIENTE_16, Cliente.class), 
 		COMODO("Cômodos", "Selecione um cômodo.", ImageRepository.COMODO16),
 		TIPO_IMOVEL("Tipo de imóvel", "Selecione um tipo de imóvel.", ImageRepository.TIPO_IMOVEL_16),
 		IMOVEL("Imóveis", "Selecione um imóvel.", ImageRepository.IMOVEL_16), 
@@ -99,11 +100,19 @@ public class ListElementDialogHelper<T> {
 		private final String title;
 		private final String message;
 		private ImageRepository images;
+		private Class<?> clazz;
 		
 		private TipoDialog(String title, String message, ImageRepository images) {
 			this.title = title;
 			this.message = message;
 			this.images = images;
+		}
+		
+		private TipoDialog(String title, String message, ImageRepository images, Class<?> clazz) {
+			this.title = title;
+			this.message = message;
+			this.images = images;
+			this.clazz = clazz;
 		}
 		
 		public String getMessage() {
@@ -134,6 +143,10 @@ public class ListElementDialogHelper<T> {
 		
 		public String getDescription(Object obj){
 			return obj.toString();
+		}
+		
+		public Class<?> getClazz() {
+			return clazz;
 		}
 		
 		public ElementListSelectionDialog openDialog(){

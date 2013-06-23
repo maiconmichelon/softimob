@@ -7,6 +7,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ClienteEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.service.PessoaFisicaService;
 import br.com.michelon.softimob.modelo.PessoaFisica;
 import br.com.michelon.softimob.tela.editor.ClientePFEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
@@ -16,6 +17,8 @@ import com.google.common.collect.Lists;
 public class ClientePFView extends GenericView<PessoaFisica>{
 	
 	private List<ColumnProperties> atributos;
+	
+	private PessoaFisicaService service = new PessoaFisicaService();
 	
 	public ClientePFView(){
 		super(true);
@@ -64,8 +67,7 @@ public class ClientePFView extends GenericView<PessoaFisica>{
 
 	@Override
 	protected List<PessoaFisica> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 	
 }

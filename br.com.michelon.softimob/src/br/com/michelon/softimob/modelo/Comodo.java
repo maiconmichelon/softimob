@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class Comodo implements Serializable{
@@ -17,10 +20,12 @@ public class Comodo implements Serializable{
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne()
+	@NotNull(message="Selecione um tipo para o cômodo.")
+	@ManyToOne(optional=false)
 	private TipoComodo tipoComodo;
 	
-	@Column
+	@NotEmpty(message = "A descrição do cômodo não pode ser vazia.")
+	@Column(nullable=false)
 	private String descricao;
 	
 	public Long getId() {

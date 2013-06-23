@@ -3,6 +3,7 @@ package br.com.michelon.softimob.modelo;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,8 +37,8 @@ public abstract class Comissionado implements Serializable{
 	@Column(length=13)
 	private String celular;
 	
-	@Email
 	@Column
+	@Email(message="Não é um e-mail válido.")
 	private String email;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -46,7 +47,7 @@ public abstract class Comissionado implements Serializable{
 	@Column
 	private Boolean ativo = true;
 	
-	@ManyToOne
+	@ManyToOne(cascade= CascadeType.PERSIST)
 	private Endereco endereco;
 	
 	public Long getId() {

@@ -78,7 +78,7 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 		button_1.setText("...");
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_1, value, "contaContraPartida");
 		
-		m_bindingContext = initDataBindings();
+		
 		
 	}
 	protected DataBindingContext initDataBindings() {

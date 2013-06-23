@@ -123,8 +123,6 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 		GridData gd_text_5 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_5.widthHint = 79;
 		text_5.setLayoutData(gd_text_5);
-		
-		m_bindingContext = initDataBindings();
 	}
 	
 	protected DataBindingContext initDataBindings() {

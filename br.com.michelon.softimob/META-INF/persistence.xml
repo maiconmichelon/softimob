@@ -30,6 +30,8 @@
     <class>br.com.michelon.softimob.modelo.MovimentacaoContabil</class>
     <class>br.com.michelon.softimob.modelo.OrigemConta</class>
     <class>br.com.michelon.softimob.modelo.ParametrosEmpresa</class>
+    <class>br.com.michelon.softimob.modelo.PessoaFisica</class>
+    <class>br.com.michelon.softimob.modelo.PessoaJuridica</class>
     <class>br.com.michelon.softimob.modelo.Placa</class>
     <class>br.com.michelon.softimob.modelo.PlanoConta</class>
     <class>br.com.michelon.softimob.modelo.Proposta</class>

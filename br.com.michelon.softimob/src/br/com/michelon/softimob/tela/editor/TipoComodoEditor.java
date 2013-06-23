@@ -126,15 +126,8 @@ public class TipoComodoEditor extends GenericEditor<TipoComodo>{
 				tvComodo.refresh();
 			}
 		});
-		
-		m_bindingContext = initDataBindings();
 	}
 	
-	@Override
-	public void salvar(GenericService<TipoComodo> service, IObservableValue value) {
-		super.salvar(service, value);
-	}
-
 	private void criarTipoImovel(Composite cpTipoImovel) {
 		
 		tvComodo = new TableViewer(cpTipoImovel, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);

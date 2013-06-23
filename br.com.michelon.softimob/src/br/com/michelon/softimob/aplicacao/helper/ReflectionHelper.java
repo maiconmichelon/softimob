@@ -12,9 +12,13 @@ public class ReflectionHelper {
 			return getAtribute(obj, StringUtils.substringAfter(atributo, "."));
 		return obj;
 	}
-	
-	public static Object setAtribute(Object obj, String atributo, Object parameter) throws Exception{
-		return obj.getClass().getMethod("set"+ StringUtils.capitalize(StringUtils.substringBefore(atributo, ".")), parameter.getClass()).invoke(obj, parameter);
+
+	public static Object setAtribute(Object obj, String atributo, Object parameter, Class<?> clazz) throws Exception{
+		if(clazz == null)
+			clazz = parameter.getClass();
+		
+		String nomeMetodo = "set"+ StringUtils.capitalize(StringUtils.substringBefore(atributo, "."));
+		return obj.getClass().getMethod(nomeMetodo, clazz).invoke(obj, parameter);
 	}
 	
 	public static <T> T newInstance(Class<T> c) throws Exception{
@@ -30,6 +34,8 @@ public class ReflectionHelper {
 			
 			if(dado instanceof Date) 
 				dado = FormatterHelper.getSimpleDateFormat().format(dado);
+			if(!(dado instanceof String))
+				dado = dado.toString();
 			if(((String) dado).toLowerCase().matches(palavra))
 				return true;
 		}

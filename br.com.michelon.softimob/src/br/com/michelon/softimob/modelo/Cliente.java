@@ -9,9 +9,11 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @PrimaryKeyJoinColumn(name="id")
 public class Cliente extends Comissionado implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
+	@Override
+	public String toString() {
+		return getNome();
+	}
 	
 }

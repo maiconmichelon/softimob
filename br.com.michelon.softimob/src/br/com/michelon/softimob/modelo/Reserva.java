@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Reserva implements Serializable{
@@ -21,27 +22,36 @@ public class Reserva implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataReserva;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@NotNull(message="Informe a data que foi feita a reserva.")
+	@Column(nullable=false)
+	private Date dataReserva;
+
+	@NotNull(message="Informe a data de vencimento da reserva.")
+	@Column(nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataVencimento;
 	
-	@ManyToOne
+	@NotNull(message="Informe o cliente que fez a reserva.")
+	@ManyToOne(optional=false)
 	private Cliente cliente;
 	
 	@ManyToOne
 	private Funcionario funcionario;
 
 	@Column(precision=14, scale=2)
-	private BigDecimal valor;
+	private BigDecimal valor = BigDecimal.ZERO;
 	
 	@Column
 	private String observacoes;
 
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Imovel imovel;
 
+	@SuppressWarnings("unused")
+	private Reserva(){	}
+	
 	public Reserva(Imovel imovel) {
 		this.imovel = imovel;
 	}

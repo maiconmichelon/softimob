@@ -14,9 +14,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
 @Entity
-public class Proposta implements Serializable {
+public class Proposta implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,18 +32,24 @@ public class Proposta implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(nullable = false)
+	@NotNull(message = "Informe a data que foi feita a proposta.")
+	@Past(message="A data informada referente a criação da proposta esta incorreta.")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 	
+	@Past(message="A data informada para a data de fechamento da proposta esta incorreta.")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataFechamento;
 	
+	@NotNull(message="Informe o cliente que fez a proposta.")
 	@ManyToOne(optional = false)
 	private Cliente cliente;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne()
 	private Funcionario funcionario;
 	
+	@NotNull(message = "Informe o valor da proposta.")
 	@Column(precision = 14, scale = 2)
 	private BigDecimal valor;
 
@@ -63,6 +71,9 @@ public class Proposta implements Serializable {
 	public Proposta(Imovel imovel) {
 		this.imovel = imovel;
 	}
+	
+	@SuppressWarnings("unused")
+	private Proposta(){}
 	
 	public Proposta(Proposta contraProposta) {
 		this.contraProposta = contraProposta;

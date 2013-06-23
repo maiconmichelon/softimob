@@ -40,14 +40,14 @@ public class DepartamentoEditor extends GenericEditor<Departamento> {
 		
 		Label lblNome = new Label(parent, SWT.NONE);
 		lblNome.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNome.setText("Descrição");
+		lblNome.setText("Nome");
 		
 		text = new Text(parent, SWT.BORDER);
 		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text.widthHint = 206;
 		text.setLayoutData(gd_text);
 		
-		m_bindingContext = initDataBindings();
+		
 	}
 
 	protected DataBindingContext initDataBindings() {

@@ -4,10 +4,14 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class Chave implements Serializable{
@@ -33,19 +37,24 @@ public class Chave implements Serializable{
 	@Id @GeneratedValue
 	private Long id;
 	
-	@NotNull(message="O número da chave não pode ser vazio.")
+	@NotEmpty(message="O número da chave não pode ser vazio.")
 	@Column(nullable = false)
 	private String numero;
 	
 	@ManyToOne(optional=false)
 	private Imovel imovel;
 	
+	@NotNull(message = "Informe a localização da chave")
+	@Enumerated(EnumType.STRING)
 	@Column(nullable=false)
 	private LocalizacaoChave localizacao;
 	
 	public Chave(Imovel imovel) {
 		this.imovel = imovel;
 	}
+	
+	@SuppressWarnings("unused")
+	private Chave(){}
 	
 	public Imovel getImovel() {
 		return imovel;

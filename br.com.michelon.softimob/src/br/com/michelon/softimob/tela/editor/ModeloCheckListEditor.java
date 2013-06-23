@@ -73,7 +73,7 @@ public class ModeloCheckListEditor extends GenericEditor<CheckList>{
 		btnAdicionar.setText("Adicionar");
 		btnAdicionar.setImage(ImageRepository.ADD_16.getImage());
 		
-		m_bindingContext = initDataBindings();
+		
 	}
 
 	private void criarTabela(Composite cp) {

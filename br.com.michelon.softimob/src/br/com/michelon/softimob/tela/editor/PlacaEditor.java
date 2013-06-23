@@ -86,7 +86,7 @@ public class PlacaEditor extends GenericEditor<Placa>{
 		
 		value.setValue(new Placa());
 		
-		m_bindingContext = initDataBindings();
+		
 	}
 
 	protected DataBindingContext initDataBindings() {

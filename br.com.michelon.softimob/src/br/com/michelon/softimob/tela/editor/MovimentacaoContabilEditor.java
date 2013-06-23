@@ -220,7 +220,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		label_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		label_1.setBounds(0, 0, 55, 15);
 		
-		m_bindingContext = initDataBindings();
+		
 	}
 
 	private void criarTabelaLancamentosDebito(Composite cpLctosDebito) {

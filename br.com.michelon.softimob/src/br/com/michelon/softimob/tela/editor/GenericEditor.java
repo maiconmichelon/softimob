@@ -1,10 +1,12 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -21,8 +23,11 @@ import org.eclipse.wb.swt.ResourceManager;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.exception.ValidationException;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
+import br.com.michelon.softimob.aplicacao.helper.ValidatorHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.tela.dialog.ValidationErrorDialog;
 
 public abstract class GenericEditor<T> extends EditorPart {
 
@@ -44,9 +49,21 @@ public abstract class GenericEditor<T> extends EditorPart {
 		Composite composite = formToolkit.createComposite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, false));
 		
-		Composite cpPrincipal = new Composite(composite, SWT.BORDER);
-		cpPrincipal.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		ScrolledComposite scrolledComposite = new ScrolledComposite(composite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		formToolkit.adapt(scrolledComposite);
+		formToolkit.paintBordersFor(scrolledComposite);
+		scrolledComposite.setExpandHorizontal(true);
+		scrolledComposite.setExpandVertical(true);
+		
+		Composite cpPrincipal = new Composite(scrolledComposite, SWT.BORDER);
 		cpPrincipal.setLayout(new GridLayout(2, false));
+		
+		afterCreatePartControl(cpPrincipal);
+		scrolledComposite.setContent(cpPrincipal);
+		scrolledComposite.setMinSize(cpPrincipal.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		
+		initDataBindings();
 		
 		Composite cpOpcoes = new Composite(composite, SWT.BORDER);
 		cpOpcoes.setLayout(new GridLayout(1, false));
@@ -63,29 +80,54 @@ public abstract class GenericEditor<T> extends EditorPart {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				salvar(getService(), value);
+				saveCurrentObject(getService());
 			}
 
 		});
-		
-		afterCreatePartControl(cpPrincipal);
 	}
 
 	public abstract void afterCreatePartControl(Composite parent);
 	
-	public abstract GenericService<T> getService();
+	protected DataBindingContext initDataBindings(){
+		return null;
+	}
 	
-	@SuppressWarnings("unchecked")
-	public void salvar(GenericService<T> service, IObservableValue value) {
+	public abstract GenericService<T> getService();
+
+	public void saveCurrentObject(GenericService<T> service) {
+		salvar(getService(), value);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void salvar(GenericService service, IObservableValue value){
 		try {
-			service.salvar((T) value.getValue());
+			if(!validarComMensagem(value.getValue()))
+				return;
+				
+			service.salvar(value.getValue());
 			MessageDialog.openInformation(ShellHelper.getActiveShell(), TITLE_SALVAR, MESSAGE_SALVAR);
-			value.setValue(((Class<T>)value.getValueType()).newInstance());
+			value.setValue(value.getValue().getClass().newInstance());
 		} catch (DataIntegrityViolationException e){
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	protected boolean validarComMensagem(Object obj){
+		try {
+			validar(obj);
+			return true;
+		
+		} catch (ValidationException e) {
+			new ValidationErrorDialog(ShellHelper.getActiveShell(), e.getMessage()).open();
+		}
+
+		return false;
+	}
+	
+	protected void validar(Object obj) throws ValidationException{
+		ValidatorHelper.validar(obj);
 	}
 	
 	@Override
@@ -100,6 +142,11 @@ public abstract class GenericEditor<T> extends EditorPart {
 	public void doSaveAs() {
 	}
 
+	@SuppressWarnings("unchecked")
+	protected T getCurrentObject(){
+		return (T) value.getValue();
+	}
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
@@ -109,7 +156,11 @@ public abstract class GenericEditor<T> extends EditorPart {
 		if(input instanceof GenericEditorInput){
 			value.setValue(getValorInicial((GenericEditorInput<T>) input));
 		}
+		
+		afterSetIObservableValue();
 	}
+	
+	protected void afterSetIObservableValue() {}
 
 	protected T getValorInicial(GenericEditorInput<T> editorInput){
 		if(editorInput.getModelo() != null)

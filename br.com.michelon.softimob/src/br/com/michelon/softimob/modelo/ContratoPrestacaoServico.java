@@ -43,13 +43,14 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@Column(precision = 14, scale = 2)
 	private BigDecimal valor;
 	
-	@Enumerated(EnumType.STRING)
+	@NotNull(message="Informe o tipo do contrato.")
+	@Column(nullable=false)
+	@Enumerated(EnumType.ORDINAL)
 	private TipoContrato tipo;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Imovel imovel;
 	
-	@NotNull
 	@Column(nullable=false)
 	private Boolean divulgar;
 	
@@ -61,6 +62,13 @@ public class ContratoPrestacaoServico implements Pendencia{
 	
 	@ManyToOne
 	private Funcionario funcionario;
+	
+	@SuppressWarnings("unused")
+	private ContratoPrestacaoServico() {}
+	
+	public ContratoPrestacaoServico(Imovel imovel){
+		this.imovel = imovel;
+	}
 	
 	public Long getId() {
 		return id;

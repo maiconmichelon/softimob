@@ -164,7 +164,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		btnAdicionar.setText("Adicionar");
 		btnAdicionar.setImage(ImageRepository.ADD_16.getImage());
 		
-		m_bindingContext = initDataBindings();
+		
 		
 	}
 

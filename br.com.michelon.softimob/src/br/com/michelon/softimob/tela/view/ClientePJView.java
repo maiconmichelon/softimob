@@ -8,6 +8,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.editorInput.ClienteEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.service.ClienteService;
+import br.com.michelon.softimob.aplicacao.service.PessoaJuridicaService;
 import br.com.michelon.softimob.modelo.PessoaJuridica;
 import br.com.michelon.softimob.tela.editor.ClientePJEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
@@ -17,7 +18,7 @@ import com.google.common.collect.Lists;
 public class ClientePJView extends GenericView<PessoaJuridica>{
 	
 	private List<ColumnProperties> atributos;
-	private ClienteService service = new ClienteService();
+	private PessoaJuridicaService service = new PessoaJuridicaService();
 	
 	public ClientePJView(){
 		super(true);
@@ -26,8 +27,8 @@ public class ClientePJView extends GenericView<PessoaJuridica>{
 		
 		atributos.add(new ColumnProperties("Razão Social", "nome", 23));
 		atributos.add(new ColumnProperties("CNPJ", "cnpj",8 ));
-		atributos.add(new ColumnProperties("Insc. Estadual", "inscricaoEstadual", 8));
-		atributos.add(new ColumnProperties("Sócio Administrador", "socioAdministrador", 15));
+		atributos.add(new ColumnProperties("Insc. Estadual", "inscrisaoEstadual", 8));
+		atributos.add(new ColumnProperties("Sócio Administrador", "socioProprietario.nome", 15));
 		atributos.add(new ColumnProperties("Telefone", "telefone", 8));
 		atributos.add(new ColumnProperties("Celular", "celular", 8));
 		atributos.add(new ColumnProperties("E-mail", "email", 15));
@@ -37,7 +38,6 @@ public class ClientePJView extends GenericView<PessoaJuridica>{
 	@Override
 	protected void excluir(List<PessoaJuridica> objetos) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -67,8 +67,7 @@ public class ClientePJView extends GenericView<PessoaJuridica>{
 
 	@Override
 	protected List<PessoaJuridica> getInput() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 	
 }

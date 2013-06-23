@@ -25,13 +25,13 @@ import org.eclipse.swt.widgets.Text;
 
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.OrigemContaService;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 
 public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
-	private DataBindingContext m_bindingContext;
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor";
 	
@@ -41,7 +41,7 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 	private Text text_1;
 	private Text text_3;
 	private Text text_2;
-	private ComboViewer comboViewer;
+	private ComboViewer cvOrigem;
 
 	private RadioGroupViewer radioGroupViewer;
 	
@@ -86,18 +86,19 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 		lblOrigem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblOrigem.setText("Origem");
 		
-		comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
-		Combo combo_1 = comboViewer.getCombo();
+		cvOrigem = new ComboViewer(parent, SWT.READ_ONLY);
+		Combo combo_1 = cvOrigem.getCombo();
 		GridData gd_combo_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_combo_1.widthHint = 150;
 		combo_1.setLayoutData(gd_combo_1);
-		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
-		comboViewer.setLabelProvider(new LabelProvider(){
+		cvOrigem.setContentProvider(ArrayContentProvider.getInstance());
+		cvOrigem.setLabelProvider(new LabelProvider(){
 			@Override
 			public String getText(Object element) {
 				return ((OrigemConta)element).getNome();
 			}
 		});
+		cvOrigem.setInput(new OrigemContaService().findAll());
 		
 		Label lblValor = new Label(parent, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -130,7 +131,7 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 		gd_text_1.widthHint = 425;
 		gd_text_1.heightHint = 44;
 		text_1.setLayoutData(gd_text_1);
-		m_bindingContext = initDataBindings();
+		
 		
 	}
 	protected DataBindingContext initDataBindings() {
@@ -144,7 +145,7 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 		IObservableValue valueDataVencimentoObserveDetailValue = PojoProperties.value(ContaPagarReceber.class, "dataVencimento", Date.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_3ObserveWidget, valueDataVencimentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeSingleSelectionComboViewer = ViewerProperties.singleSelection().observe(comboViewer);
+		IObservableValue observeSingleSelectionComboViewer = ViewerProperties.singleSelection().observe(cvOrigem);
 		IObservableValue valueOrigemObserveDetailValue = PojoProperties.value(ContaPagarReceber.class, "origem", OrigemConta.class).observeDetail(value);
 		bindingContext.bindValue(observeSingleSelectionComboViewer, valueOrigemObserveDetailValue, null, null);
 		//

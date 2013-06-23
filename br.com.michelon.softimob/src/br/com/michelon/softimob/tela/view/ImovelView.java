@@ -30,8 +30,8 @@ public class ImovelView extends GenericView<Imovel>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Código", "codigo"));
-		atributos.add(new ColumnProperties("Endereço", "endereco"));
+		atributos.add(new ColumnProperties("Código", "id"));
+//		atributos.add(new ColumnProperties("Endereço", "endereco"));
 	}
 	
 	@Override
@@ -75,7 +75,7 @@ public class ImovelView extends GenericView<Imovel>{
 		Composite cpTable = new Composite(composite, SWT.NONE);
 		cpTable.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
-		XViewer imovelXViewer = new ImovelXViewer(cpTable, SWT.BORDER);
+		XViewer imovelXViewer = new ImovelXViewer(cpTable, SWT.BORDER | SWT.FULL_SELECTION);
 		
 		return imovelXViewer;
 	}

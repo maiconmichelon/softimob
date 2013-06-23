@@ -60,7 +60,7 @@ public class EstadoEditor extends GenericEditor<Estado> {
 		gd_text_1.widthHint = 288;
 		text_1.setLayoutData(gd_text_1);
 		
-		m_bindingContext = initDataBindings();
+		
 	}
 	
 	protected DataBindingContext initDataBindings() {
