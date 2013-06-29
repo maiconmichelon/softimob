@@ -114,7 +114,6 @@ public abstract class GenericEditor<T> extends EditorPart {
 				log.error("Erro ao setar novo objeto [ " +value.getValueType()+ " ] ao value.", e);
 			}
 		}
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -131,8 +130,10 @@ public abstract class GenericEditor<T> extends EditorPart {
 			return true;
 		} catch (DataIntegrityViolationException e){
 			log.error("Erro ao salvar registro", e);
+			MessageDialog.openError(ShellHelper.getActiveShell(), "Erro", "Erro ao salvar registro\n" + e.getMessage());
 		} catch (Exception e) {
 			log.error("Erro ao salvar registro", e);
+			MessageDialog.openError(ShellHelper.getActiveShell(), "Erro", "Erro ao salvar registro\n" + e.getMessage());
 		}
 		
 		return false;

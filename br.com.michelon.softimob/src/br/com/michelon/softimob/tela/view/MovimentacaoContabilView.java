@@ -24,9 +24,12 @@ public class MovimentacaoContabilView extends GenericView<MovimentacaoContabil>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Código", "codigo"));
-		atributos.add(new ColumnProperties("Data de Lançamento", "dataLancamento"));
-		atributos.add(new ColumnProperties("Valor", "valor"));
+		atributos.add(new ColumnProperties("Código", "codigo", 10));
+		atributos.add(new ColumnProperties("Data de Lançamento", "dataLancamento", 10));
+		atributos.add(new ColumnProperties("Contas", "planoconta", 10));
+		atributos.add(new ColumnProperties("Valor", "valor", 10));
+		atributos.add(new ColumnProperties("Histórico", "historico", 20));
+		atributos.add(new ColumnProperties("Complemento", "complemento", 20));
 	}
 	
 	@Override

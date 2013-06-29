@@ -13,6 +13,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -50,7 +51,7 @@ public abstract class Comissionado implements Serializable{
 	@Column
 	private Boolean ativo = true;
 	
-	@ManyToOne(cascade= CascadeType.PERSIST, optional = false)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional=false)
 	private Endereco endereco = new Endereco();
 	
 	public Long getId() {

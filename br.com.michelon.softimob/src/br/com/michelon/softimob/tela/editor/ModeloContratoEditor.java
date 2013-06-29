@@ -1,5 +1,9 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -11,10 +15,6 @@ import org.eclipse.swt.widgets.Text;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ModeloContratoService;
 import br.com.michelon.softimob.modelo.ModeloContrato;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.core.databinding.beans.PojoProperties;
 
 public class ModeloContratoEditor extends GenericEditor<ModeloContrato> {
 	
@@ -61,11 +61,6 @@ public class ModeloContratoEditor extends GenericEditor<ModeloContrato> {
 		
 		Button btnSelecionar = new Button(parent, SWT.NONE);
 		btnSelecionar.setText("...");
-		
-		value.setValue(new ModeloContrato());
-		
-		
-		
 	}
 
 	@Override

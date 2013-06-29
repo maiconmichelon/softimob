@@ -16,10 +16,14 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ParametrosEmpresaService;
 import br.com.michelon.softimob.modelo.ParametrosEmpresa;
 import br.com.michelon.softimob.tela.widget.CNPJTextField;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 	
@@ -39,6 +43,15 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 	private Text text_2;
 	private Text text_5;
 	private Text text_6;
+	private Text text_8;
+	private Text text_9;
+	private Text text_14;
+	private Text text_15;
+	private Text text_16;
+	private Text text_17;
+	private Text text_18;
+	private Text text_19;
+	private Text text_20;
 	
 	public ParametrosEmpresaEditor() {
 		super(ParametrosEmpresa.class);
@@ -65,6 +78,15 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		gd_text.widthHint = 112;
 		text.setLayoutData(gd_text);
 		
+		Label lblCreci = new Label(parent, SWT.NONE);
+		lblCreci.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblCreci.setText("CRECI");
+		
+		text_8 = new Text(parent, SWT.BORDER);
+		GridData gd_text_8 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_text_8.widthHint = 112;
+		text_8.setLayoutData(gd_text_8);
+		
 		CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
@@ -86,18 +108,40 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button = new Button(composite, SWT.NONE);
+		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.MODELO_CONTRATO, button, value, "contratoVenda");
 		
 		Label lblChecklist = new Label(composite, SWT.NONE);
 		lblChecklist.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblChecklist.setText("Checklist");
 		
-		ComboViewer comboViewer = new ComboViewer(composite, SWT.READ_ONLY);
-		Combo combo = comboViewer.getCombo();
-		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text_9 = new Text(composite, SWT.BORDER);
+		text_9.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_11 = new Button(composite, SWT.NONE);
 		button_11.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CHECK_LIST, button_11, value, "checkListVenda");
+		
+		Label lblConta = new Label(composite, SWT.NONE);
+		lblConta.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblConta.setText("Conta");
+		
+		text_17 = new Text(composite, SWT.BORDER);
+		text_17.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_6 = new Button(composite, SWT.NONE);
+		button_6.setText("...");
+		
+		Label lblContraPartida = new Label(composite, SWT.NONE);
+		lblContraPartida.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblContraPartida.setText("Contra - Partida");
+		
+		text_18 = new Text(composite, SWT.BORDER);
+		text_18.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_7 = new Button(composite, SWT.NONE);
+		button_7.setText("...");
 		
 		CTabItem tbtmAlguel = new CTabItem(tabFolder, SWT.NONE);
 		tbtmAlguel.setText("Aluguel");
@@ -110,7 +154,7 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Label lblDataDeRecebimento_1 = new Label(composite_1, SWT.NONE);
 		lblDataDeRecebimento_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblDataDeRecebimento_1.setText("Data de Recebimento");
+		lblDataDeRecebimento_1.setText("Dia de Recebimento");
 		
 		text_5 = new Text(composite_1, SWT.BORDER);
 		text_5.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
@@ -118,7 +162,7 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Label lblDataDeRepasse_1 = new Label(composite_1, SWT.NONE);
 		lblDataDeRepasse_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblDataDeRepasse_1.setText("Data de Repasse");
+		lblDataDeRepasse_1.setText("Dia de Repasse");
 		
 		text_6 = new Text(composite_1, SWT.BORDER);
 		text_6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
@@ -131,96 +175,92 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		text_7 = new Text(composite_1, SWT.BORDER);
 		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button button_1 = new Button(composite_1, SWT.NONE);
-		button_1.setText("...");
+		Button btnContratoAluguel = new Button(composite_1, SWT.NONE);
+		btnContratoAluguel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnContratoAluguel.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.MODELO_CONTRATO, btnContratoAluguel, value, "contratoAluguel");
 		
 		Label lblChecklist_1 = new Label(composite_1, SWT.NONE);
 		lblChecklist_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblChecklist_1.setText("Checklist");
 		
-		ComboViewer comboViewer_1 = new ComboViewer(composite_1, SWT.READ_ONLY);
-		Combo combo_1 = comboViewer_1.getCombo();
-		combo_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(composite_1, SWT.NONE);
+		text_14 = new Text(composite_1, SWT.BORDER);
+		text_14.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_1 = new Button(composite_1, SWT.NONE);
+		button_1.setText("...");
+		
+		Label lblConta_1 = new Label(composite_1, SWT.NONE);
+		lblConta_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblConta_1.setText("Conta");
+		
+		text_19 = new Text(composite_1, SWT.BORDER);
+		text_19.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_8 = new Button(composite_1, SWT.NONE);
+		button_8.setText("...");
+		
+		Label lblContraPartida_1 = new Label(composite_1, SWT.NONE);
+		lblContraPartida_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblContraPartida_1.setText("Contra - Partida");
+		
+		text_20 = new Text(composite_1, SWT.BORDER);
+		text_20.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_9 = new Button(composite_1, SWT.NONE);
+		button_9.setText("...");
+		
+		CTabItem tbtmPrestaoDeServio = new CTabItem(tabFolder, SWT.NONE);
+		tbtmPrestaoDeServio.setText("Prestação de Serviço");
+		
+		Composite composite_6 = new Composite(tabFolder, SWT.NONE);
+		tbtmPrestaoDeServio.setControl(composite_6);
+		composite_6.setLayout(new GridLayout(3, false));
+		
+		Label lblModeloDeContrato_2 = new Label(composite_6, SWT.NONE);
+		lblModeloDeContrato_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblModeloDeContrato_2.setText("Modelo de Contrato");
+		
+		text_16 = new Text(composite_6, SWT.BORDER);
+		text_16.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_3 = new Button(composite_6, SWT.NONE);
+		button_3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		button_3.setText("...");
+		
+		Label lblTipoDeConta_1 = new Label(composite_6, SWT.NONE);
+		lblTipoDeConta_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblTipoDeConta_1.setText("Tipo de Conta");
+		
+		ComboViewer comboViewer = new ComboViewer(composite_6, SWT.READ_ONLY);
+		Combo combo = comboViewer.getCombo();
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(composite_6, SWT.NONE);
 		
 		CTabItem tbtmVistoria = new CTabItem(tabFolder, SWT.NONE);
 		tbtmVistoria.setText("Vistoria");
 		
 		Composite composite_5 = new Composite(tabFolder, SWT.NONE);
 		tbtmVistoria.setControl(composite_5);
-		composite_5.setLayout(new GridLayout(2, false));
+		composite_5.setLayout(new GridLayout(3, false));
 		
 		Label lblChecklist_2 = new Label(composite_5, SWT.NONE);
 		lblChecklist_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblChecklist_2.setText("Checklist");
 		
-		ComboViewer comboViewer_4 = new ComboViewer(composite_5, SWT.READ_ONLY);
-		Combo combo_4 = comboViewer_4.getCombo();
-		combo_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text_15 = new Text(composite_5, SWT.BORDER);
+		text_15.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		CTabItem tbtmContas = new CTabItem(tabFolder, SWT.NONE);
-		tbtmContas.setText("Contas");
-		
-		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
-		tbtmContas.setControl(composite_2);
-		composite_2.setLayout(new GridLayout(1, false));
-		
-		Group grpVenda = new Group(composite_2, SWT.NONE);
-		grpVenda.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		grpVenda.setText("Venda");
-		grpVenda.setLayout(new GridLayout(3, false));
-		
-		Label label = new Label(grpVenda, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		label.setText("Conta");
-		
-		text_10 = new Text(grpVenda, SWT.BORDER);
-		text_10.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_4 = new Button(grpVenda, SWT.NONE);
-		button_4.setText("...");
-		
-		Label label_3 = new Label(grpVenda, SWT.NONE);
-		label_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		label_3.setText("Contra-partida");
-		
-		text_11 = new Text(grpVenda, SWT.BORDER);
-		text_11.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_5 = new Button(grpVenda, SWT.NONE);
-		button_5.setText("...");
-		
-		Group grpAluguel = new Group(composite_2, SWT.NONE);
-		grpAluguel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		grpAluguel.setText("Aluguel");
-		grpAluguel.setLayout(new GridLayout(3, false));
-		
-		Label label_1 = new Label(grpAluguel, SWT.NONE);
-		label_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		label_1.setText("Conta");
-		
-		text_12 = new Text(grpAluguel, SWT.BORDER);
-		text_12.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_6 = new Button(grpAluguel, SWT.NONE);
-		button_6.setText("...");
-		
-		Label label_4 = new Label(grpAluguel, SWT.NONE);
-		label_4.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		label_4.setText("Contra-partida");
-		
-		text_13 = new Text(grpAluguel, SWT.BORDER);
-		text_13.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_7 = new Button(grpAluguel, SWT.NONE);
-		button_7.setText("...");
+		Button button_2 = new Button(composite_5, SWT.NONE);
+		button_2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		button_2.setText("...");
 		
 		CTabItem tbtmReformas = new CTabItem(tabFolder, SWT.NONE);
 		tbtmReformas.setText("Reformas");
 		
 		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
 		tbtmReformas.setControl(composite_3);
-		composite_3.setLayout(new GridLayout(4, false));
+		composite_3.setLayout(new GridLayout(3, false));
 		
 		Label lblPrazoPFinalizao = new Label(composite_3, SWT.NONE);
 		lblPrazoPFinalizao.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -233,26 +273,30 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		lblDias.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
 		lblDias.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		lblDias.setText("Dias");
-		new Label(composite_3, SWT.NONE);
 		
 		Label lblResponsvel = new Label(composite_3, SWT.NONE);
 		lblResponsvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblResponsvel.setText("Funcionário Responsável");
 		
 		text_3 = new Text(composite_3, SWT.BORDER);
-		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_10 = new Button(composite_3, SWT.NONE);
+		button_10.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+		button_10.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_10.setText("...");
 		
 		Label lblTipoDaConta = new Label(composite_3, SWT.NONE);
 		lblTipoDaConta.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblTipoDaConta.setText("Tipo da Conta a Pagar");
+		lblTipoDaConta.setText("Tipo da Conta");
 		
 		ComboViewer comboViewer_2 = new ComboViewer(composite_3, SWT.READ_ONLY);
 		Combo combo_2 = comboViewer_2.getCombo();
 		combo_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(composite_3, SWT.NONE);
 		new Label(composite_3, SWT.NONE);
 		
 		CTabItem tabItem = new CTabItem(tabFolder, SWT.NONE);
@@ -260,13 +304,17 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Composite composite_4 = new Composite(tabFolder, SWT.NONE);
 		tabItem.setControl(composite_4);
-		composite_4.setLayout(new GridLayout(2, false));
+		composite_4.setLayout(new GridLayout(3, false));
 		
 		Label lblTipoDeConta = new Label(composite_4, SWT.NONE);
 		lblTipoDeConta.setText("Tipo de Conta");
 		
 		ComboViewer comboViewer_3 = new ComboViewer(composite_4, SWT.READ_ONLY);
 		Combo combo_3 = comboViewer_3.getCombo();
+		combo_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label label_2 = new Label(composite_4, SWT.NONE);
+		label_2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 
 		tabFolder.setSelection(0);
 	}
@@ -282,5 +330,4 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		return p != null ? p : new ParametrosEmpresa();
 	}
-	
 }

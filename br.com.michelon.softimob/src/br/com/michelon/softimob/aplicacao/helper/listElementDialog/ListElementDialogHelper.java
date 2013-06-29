@@ -19,13 +19,15 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.helper.ReflectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.service.ClienteService;
+import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
 import br.com.michelon.softimob.aplicacao.service.FuncionarioService;
+import br.com.michelon.softimob.aplicacao.service.ModeloContratoService;
 import br.com.michelon.softimob.aplicacao.service.PlanoContaService;
 import br.com.michelon.softimob.aplicacao.service.TipoComodoService;
 import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
 import br.com.michelon.softimob.modelo.Cliente;
 
-public class ListElementDialogHelper<T> {
+public class ListElementDialogHelper {
 	
 	public static void addListElementDialogToText(final TipoDialog tipoDialog, Text text, final WritableValue value, final String property){
 		addListElementDialogToText(tipoDialog, text, value, property, null);
@@ -79,14 +81,6 @@ public class ListElementDialogHelper<T> {
 		
 	}
 
-	public void openDialogAndExecuteListenerIfOkPressed(TipoDialog tipoDialog, Button btn, OkListElementDialogListener okListener){
-		btn.addSelectionListener(new SelectionAdapter() {
-			
-			
-			
-		});
-	}
-	
 	public enum TipoDialog{
 		
 		FUNCIONARIO("Funcionários", "Selecione um funcionário.", ImageRepository.FUNCIONARIO_16),
@@ -95,7 +89,11 @@ public class ListElementDialogHelper<T> {
 		TIPO_IMOVEL("Tipo de imóvel", "Selecione um tipo de imóvel.", ImageRepository.TIPO_IMOVEL_16),
 		IMOVEL("Imóveis", "Selecione um imóvel.", ImageRepository.IMOVEL_16), 
 		PLANOCONTA("Plano de Contas", "Selecione uma conta.", ImageRepository.PLANO_CONTA_16), 
-		COMISSIONADO("Comissionados", "Selecione um cliente ou funcionário.", ImageRepository.COMISSAO_16);
+		COMISSIONADO("Comissionados", "Selecione um cliente ou funcionário.", ImageRepository.COMISSAO_16), 
+		MODELO_CONTRATO("Modelos de Contrato", "Selecione um modelo de contrato.", ImageRepository.CONTRATO_16),
+		CONTRATO_SERVICO("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16),
+		CHECK_LIST("Modelos de check list", "Selecione uma check list", ImageRepository.CHECKLIST_16)
+		;
 		
 		private final String title;
 		private final String message;
@@ -176,6 +174,12 @@ public class ListElementDialogHelper<T> {
 				return new TipoComodoService().findAll().toArray();
 			} else if(equals(TIPO_IMOVEL)){
 				return new TipoImovelService().findAll().toArray();
+			} else if(equals(MODELO_CONTRATO)){
+				return new ModeloContratoService().findAll().toArray();
+			} else if(equals(CONTRATO_SERVICO)){
+				return new ModeloContratoService().findAll().toArray();//FIXME ARRUMAR AQUI POIS é ContratoPrestacaoServicoService, usei o modeloContrato para tirar um print
+			} else if(equals(CHECK_LIST)){
+				return new ModeloContratoService().findAll().toArray();//FIXME ARRUMAR AQUI POIS é ContratoPrestacaoServicoService, usei o modeloContrato para tirar um print
 			} else{
 				return null;
 			}

@@ -11,12 +11,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import br.com.michelon.softimob.modelo.Imovel;
+import br.com.michelon.softimob.tela.widget.DateTextField;
 
 public class AdicionarContaPagarReformaDialog extends TitleAreaDialog{
 
 	private Label lblTitle;
 	private Text text;
 	private Text text_1;
+	private Text text_2;
 
 	public AdicionarContaPagarReformaDialog(Shell parentShell, Imovel imovel) {
 		super(parentShell);
@@ -56,6 +58,14 @@ public class AdicionarContaPagarReformaDialog extends TitleAreaDialog{
 		
 		text_1 = new Text(composite, SWT.BORDER);
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblDataDeVencimento = new Label(composite, SWT.NONE);
+		lblDataDeVencimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDataDeVencimento.setText("Data de Vencimento");
+		
+		DateTextField dateTextField = new DateTextField(composite);
+		text_2 = dateTextField.getControl();
+		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 	
 		return composite;
 	}

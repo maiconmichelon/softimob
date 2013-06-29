@@ -26,8 +26,8 @@ public class ChaveView extends GenericView<Chave>{
 		atributos = Lists.newArrayList();
 		
 		atributos.add(new ColumnProperties("Número", "numero", 10));
-		atributos.add(new ColumnProperties("Localização", "localizacaoExtenso", 30));
-		atributos.add(new ColumnProperties("Imóvel", "imóvel", 90));
+		atributos.add(new ColumnProperties("Localização", "localizacao", 30));
+		atributos.add(new ColumnProperties("Imóvel", "imovel", 90));
 	}
 	
 	@Override

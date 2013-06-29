@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.google.common.collect.Lists;
+
 @Entity
 public class Indice implements Serializable{
 
@@ -21,7 +23,7 @@ public class Indice implements Serializable{
 	private String nome;
 	
 	@OneToMany
-	private List<IndiceMes> indices;
+	private List<IndiceMes> indices = Lists.newArrayList();
 
 	@Column
 	private Boolean ativo = true;

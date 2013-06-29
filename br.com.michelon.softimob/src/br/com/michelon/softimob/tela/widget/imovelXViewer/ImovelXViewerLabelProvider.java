@@ -37,10 +37,13 @@ public class ImovelXViewerLabelProvider extends XViewerLabelProvider {
 				return imovel.getId().toString();
 			if(xCol.equals(ImovelXViewerFactory.proprietario))
 				return imovel.getProprietario() == null ? "" : imovel.getProprietario().getNome();
-//			if(xCol.equals(ImovelXViewerFactory.status))
-//				return imovel.getStatus().toString();
 			if(xCol.equals(ImovelXViewerFactory.tipo))
 				return imovel.getTipo() == null ? "" : imovel.getTipo().getDescricao();
+			if(xCol.equals(ImovelXViewerFactory.endereco))
+				return imovel.getTipo() == null ? "" : imovel.getEndereco().toString();
+			if(xCol.equals(ImovelXViewerFactory.observacoes))
+				return imovel.getTipo() == null ? "" : imovel.getObservacoes();
+
 		}else if(element instanceof Chave){
 			if(columnIndex == 0)
 				return ((Chave)element).getNumero();

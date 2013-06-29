@@ -24,7 +24,7 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Descrição", "descricao", 10));
+		atributos.add(new ColumnProperties("Nome", "nome", 10));
 	}
 	
 	@Override

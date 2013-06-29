@@ -28,6 +28,16 @@ public class Comodo implements Serializable{
 	@Column(nullable=false)
 	private String descricao;
 	
+	@ManyToOne(optional=false)
+	private Imovel imovel;
+	
+	public Comodo(Imovel imovel){
+		this.imovel = imovel;
+	}
+	
+	@SuppressWarnings("unused")
+	private Comodo(){}
+	
 	public Long getId() {
 		return id;
 	}
@@ -52,6 +62,14 @@ public class Comodo implements Serializable{
 		this.tipoComodo = tipoComodo;
 	}
 
+	public Imovel getImovel() {
+		return imovel;
+	}
+	
+	public void setImovel(Imovel imovel) {
+		this.imovel = imovel;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

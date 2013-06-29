@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Placa implements Serializable{
@@ -17,6 +18,7 @@ public class Placa implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotNull(message="O número da placa não pode ser vazio")
 	@Column(unique = true, nullable = false)
 	private String numero;
 	

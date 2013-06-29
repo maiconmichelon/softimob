@@ -8,6 +8,8 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
@@ -22,6 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
@@ -37,6 +40,8 @@ import br.com.michelon.softimob.modelo.AcontecimentoChamado;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.ChamadoReforma;
 import br.com.michelon.softimob.modelo.Comissao;
+import br.com.michelon.softimob.modelo.ItemCheckList;
+import br.com.michelon.softimob.modelo.TipoImovelTipoComodo;
 import br.com.michelon.softimob.modelo.Vistoria;
 import br.com.michelon.softimob.tela.dialog.AdicionarContaPagarReformaDialog;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
@@ -48,6 +53,7 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 
 public class AluguelEditor extends GenericEditor<Aluguel>{
 	private DataBindingContext m_bindingContext;
@@ -98,6 +104,10 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 
 
 	private RadioGroupViewer radioGroupViewer;
+
+	private TableViewerBuilder tvbCheckList;
+
+	private TableViewer tvCheckList;
 	
 	public AluguelEditor() {
 		super(Aluguel.class);
@@ -118,7 +128,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Button btnSelecionar = new Button(parent, SWT.NONE);
 		btnSelecionar.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.IMOVEL, btnSelecionar, value, "imovel");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CONTRATO_SERVICO, btnSelecionar, value, "imovel");
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
@@ -198,7 +208,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		label.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
 		
 		CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 6, 1));
+		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 6, 1));
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
 		CTabItem tbtmComisso = new CTabItem(tabFolder, SWT.NONE);
@@ -250,7 +260,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Button btnAdicionar = new Button(grpComisso, SWT.NONE);
 		btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnAdicionar.setText("Adicionar");
+		btnAdicionar.setText("Registrar");
 		btnAdicionar.setImage(ImageRepository.ADD_16.getImage());
 		
 		CTabItem tbtmVistoria = new CTabItem(tabFolder, SWT.NONE);
@@ -265,59 +275,72 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		criarTabelaVistoria(cpVistoria);
 		
-		Group grpVistoria = new Group(composite_8, SWT.NONE);
-		GridLayout gl_grpVistoria = new GridLayout(3, false);
-		grpVistoria.setLayout(gl_grpVistoria);
-		grpVistoria.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
-		grpVistoria.setText("Vistoria");
+		CTabFolder tabFolder_1 = new CTabFolder(composite_8, SWT.BORDER);
+		tabFolder_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		tabFolder_1.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
-		Label lblData_2 = new Label(grpVistoria, SWT.NONE);
+		CTabItem tbtmVistoria_1 = new CTabItem(tabFolder_1, SWT.NONE);
+		tbtmVistoria_1.setText("Vistoria");
+		
+		Composite cpAddVistoria = new Composite(tabFolder_1, SWT.NONE);
+		tbtmVistoria_1.setControl(cpAddVistoria);
+		GridLayout gl_grpVistoria = new GridLayout(3, false);
+		cpAddVistoria.setLayout(gl_grpVistoria);
+		
+		Label lblData_2 = new Label(cpAddVistoria, SWT.NONE);
 		lblData_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblData_2.setText("Data");
 		
-		DateTextField dateTextField_2 = new DateTextField(grpVistoria);
+		DateTextField dateTextField_2 = new DateTextField(cpAddVistoria);
 		text_34 = dateTextField_2.getControl();
 		GridData gd_text_34 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_34.widthHint = 50;
 		text_34.setLayoutData(gd_text_34);
-		new Label(grpVistoria, SWT.NONE);
+		new Label(cpAddVistoria, SWT.NONE);
 		
-		Label lblFuncion = new Label(grpVistoria, SWT.NONE);
+		Label lblFuncion = new Label(cpAddVistoria, SWT.NONE);
 		lblFuncion.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFuncion.setText("Funcionário");
 		
-		text_16 = new Text(grpVistoria, SWT.BORDER);
+		text_16 = new Text(cpAddVistoria, SWT.BORDER);
 		text_16.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnSelecionarFuncionarioVistoria = new Button(grpVistoria, SWT.NONE);
+		Button btnSelecionarFuncionarioVistoria = new Button(cpAddVistoria, SWT.NONE);
+		btnSelecionarFuncionarioVistoria.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnSelecionarFuncionarioVistoria.setText("...");
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioVistoria, valueChamado, "funcionarioAbertura");
 		
-		Label lblArquivo = new Label(grpVistoria, SWT.NONE);
+		Label lblArquivo = new Label(cpAddVistoria, SWT.NONE);
 		lblArquivo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblArquivo.setText("Arquivo");
 		
-		text_18 = new Text(grpVistoria, SWT.BORDER);
+		text_18 = new Text(cpAddVistoria, SWT.BORDER);
 		text_18.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button button_123 = new Button(grpVistoria, SWT.NONE);
+		Button button_123 = new Button(cpAddVistoria, SWT.NONE);
 		button_123.setText("...");
 		
-		Label lblObservaes_1 = new Label(grpVistoria, SWT.NONE);
+		Label lblObservaes_1 = new Label(cpAddVistoria, SWT.NONE);
 		lblObservaes_1.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes_1.setText("Observações");
 		
-		text_19 = new Text(grpVistoria, SWT.BORDER);
-		GridData gd_text_19 = new GridData(SWT.FILL, SWT.CENTER, true, true, 2, 1);
+		text_19 = new Text(cpAddVistoria, SWT.BORDER);
+		GridData gd_text_19 = new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1);
 		gd_text_19.heightHint = 40;
 		text_19.setLayoutData(gd_text_19);
-		new Label(grpVistoria, SWT.NONE);
-		new Label(grpVistoria, SWT.NONE);
+		new Label(cpAddVistoria, SWT.NONE);
 		
-		Button button_6 = new Button(grpVistoria, SWT.NONE);
-		button_6.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		button_6.setText("Adicionar");
-		button_6.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		CTabItem tbtmCheckList = new CTabItem(tabFolder_1, SWT.NONE);
+		tbtmCheckList.setText("Check List");
+		
+		Composite composite_2 = new Composite(tabFolder_1, SWT.NONE);
+		tbtmCheckList.setControl(composite_2);
+		criarTabelaCheckList(composite_2);
+		
+		Button button_6 = new Button(composite_8, SWT.NONE);
+		button_6.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		button_6.setText("Registrar");
+		button_6.setImage(ImageRepository.SAVE_16.getImage());
 		
 		CTabItem tbtmChamada = new CTabItem(tabFolder, SWT.NONE);
 		tbtmChamada.setText("Chamados");
@@ -385,16 +408,14 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblDescrio.setText("Descrição");
 		
 		text_24 = new Text(cpAberturaChamado, SWT.BORDER);
-		GridData gd_text_24 = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
-		gd_text_24.heightHint = 70;
-		text_24.setLayoutData(gd_text_24);
+		text_24.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		new Label(cpAberturaChamado, SWT.NONE);
 		new Label(cpAberturaChamado, SWT.NONE);
 		
 		Button button_7 = new Button(cpAberturaChamado, SWT.NONE);
 		button_7.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		button_7.setText("Adicionar");
-		button_7.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		button_7.setText("Registrar");
+		button_7.setImage(ImageRepository.SAVE_16.getImage());
 		
 		CTabItem tbAndamento = new CTabItem(tfChamado, SWT.NONE);
 		tbAndamento.setText("Andamento");
@@ -445,7 +466,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Button button_8 = new Button(composite_12, SWT.NONE);
 		button_8.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		button_8.setText("Adicionar");
+		button_8.setText("Registrar");
 		button_8.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
 		
 		CTabItem tbtmFinalizar = new CTabItem(tfChamado, SWT.NONE);
@@ -541,10 +562,14 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 			tfChamado.setSelection(0);
 		}
 		
-		
-		value.setValue(new Aluguel());
-		
 		tabFolder.setSelection(0);
+		
+		CTabItem tbtmCheckList_1 = new CTabItem(tabFolder, SWT.NONE);
+		tbtmCheckList_1.setText("Check List");
+		
+		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
+		tbtmCheckList_1.setControl(composite_3);
+		criarTabelaCheckList(composite_3);
 	}
 
 	private void criarTabelaComissao(Composite composite){
@@ -601,6 +626,26 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		tvbVistoria.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
 		
 		tvVistoria = tvbVistoria.getTableViewer();
+	}
+	
+	private void criarTabelaCheckList(Composite composite){
+		tvbCheckList = new TableViewerBuilder(composite);
+		
+		tvbCheckList.createColumn("Item").bindToProperty("item.nome").build();
+		tvbCheckList.createColumn("Finalizado").setCustomLabelProvider(new ColumnLabelProvider(){
+			@Override
+			public String getText(Object element) {
+				return null;
+			}
+			
+			@Override
+			public Image getImage(Object element) {
+				return ((ItemCheckList)element).getFinalizado() ? ImageRepository.CHECKED.getImage() : ImageRepository.UNCHECKED.getImage();
+			}
+		}).build();
+		tvbCheckList.createColumn("Observações").bindToProperty("observacoes").setPercentWidth(80).build();
+		
+		tvCheckList = tvbCheckList.getTableViewer();
 	}
 	
 	@Override
@@ -720,5 +765,4 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		//
 		return bindingContext;
 	}
-
 }

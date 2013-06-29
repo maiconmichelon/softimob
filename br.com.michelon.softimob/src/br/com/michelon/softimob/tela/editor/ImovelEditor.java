@@ -45,6 +45,7 @@ import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDi
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.ChaveService;
 import br.com.michelon.softimob.aplicacao.service.ComodoService;
+import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
 import br.com.michelon.softimob.aplicacao.service.FeedbackService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ImovelService;
@@ -113,6 +114,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private TableViewer tvFeedbacks;
 	private TableViewer tvProposta;
 	private TableViewer tvReservas;
+	private TableViewer tvContratosPrestacaoServico;
 	
 	private Text text_32;
 	private Text text_33;
@@ -640,6 +642,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		Button button = new Button(grpContratoPrestaoDe, SWT.NONE);
 		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, button, valueContrato, "funcionario");
+		
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
 		radioGroupViewer_1 = new RadioGroupViewer(grpContratoPrestaoDe, SWT.NONE);
@@ -693,6 +697,12 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		btnAdicionar_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		btnAdicionar_1.setText("Registrar");
 		btnAdicionar_1.setImage(ImageRepository.SAVE_16.getImage());
+		btnAdicionar_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addContratoPrestacaoServico();
+			}
+		});
 		
 		CTabItem tbtmLocacoes = new CTabItem(tfImovel, SWT.NONE);
 		tbtmLocacoes.setText("Locações");
@@ -707,12 +717,15 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	protected void afterSetIObservableValue() {
 		Imovel imovel = getCurrentObject();
 		
-		valueComodo.setValue(new Comodo());
+		valueComodo.setValue(new Comodo(imovel));
 		valueChave.setValue(new Chave(imovel));
 		valueFeedback.setValue(new Feedback(imovel));
 		valueProposta.setValue(new Proposta(imovel));
 		valueReserva.setValue(new Reserva(imovel));
 		valueContrato.setValue(new ContratoPrestacaoServico(imovel));
+		
+		if(grpEndereco != null)
+			grpEndereco.setEndereco(getCurrentObject().getEndereco());
 	}
 	
 	private void criarTabelaContratoPrestacaoServico(Composite composite) {
@@ -723,6 +736,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbContatoPrestacaoServico.createColumn("Valor").setPercentWidth(10).bindToProperty("valor").format(FormatterHelper.getCurrencyFormatter()).build();
 		tvbContatoPrestacaoServico.createColumn("Funcionário").setPercentWidth(20).bindToProperty("funcionario.nome").format(FormatterHelper.getCurrencyFormatter()).build();
 		tvbContatoPrestacaoServico.createColumn("Tipo").setPercentWidth(10).bindToProperty("tipo").build();
+		
+		tvContratosPrestacaoServico = tvbContatoPrestacaoServico.getTableViewer();
 	}
 
 	private void criarTabelaReservas(Composite composite) {
@@ -823,6 +838,10 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbLocacao.createColumn("Reajuste").setPercentWidth(10).bindToProperty("reajuste").build();
 		
 		tvbLocacao.getTableViewer();
+	}
+	
+	private void addContratoPrestacaoServico() {
+		addItens(new ContratoPrestacaoServicoService(), valueContrato, tvContratosPrestacaoServico, getCurrentObject().getContratos());
 	}
 	
 	private void addChave() {

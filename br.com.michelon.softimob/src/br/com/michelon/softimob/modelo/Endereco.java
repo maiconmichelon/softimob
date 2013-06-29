@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.persistence.annotations.InstantiationCopyPolicy;
 
 @Entity
 public class Endereco implements Serializable{

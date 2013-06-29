@@ -25,7 +25,7 @@ public class IndiceView extends GenericView<Indice>{
 		super(true);
 		
 		atributos = Lists.newArrayList();
-		atributos.add(new ColumnProperties("nome", "Nome"));
+		atributos.add(new ColumnProperties("Nome", "nome"));
 	}
 
 	@Override

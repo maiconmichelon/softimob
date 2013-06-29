@@ -138,7 +138,7 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 		Label lblScio = new Label(composite_1, SWT.NONE);
 		lblScio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
 				1, 1));
-		lblScio.setText("Sócio");
+		lblScio.setText("Sócio Administrador");
 
 		text_19 = new Text(composite_1, SWT.BORDER);
 		text_19.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,

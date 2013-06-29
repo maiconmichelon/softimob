@@ -47,21 +47,32 @@ public class Imovel implements Serializable{
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional=false)
 	private Endereco endereco = new Endereco();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
 	private List<Comodo> comodos = Lists.newArrayList();
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
 	private List<Chave> chaves = Lists.newArrayList();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
 	private List<Feedback> feedbacks = Lists.newArrayList();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
 	private List<Proposta> propostas = Lists.newArrayList();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
 	private List<Reserva> reservas = Lists.newArrayList();
  	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
+	private List<ContratoPrestacaoServico> contratos = Lists.newArrayList();
+	
+	public void setContratos(List<ContratoPrestacaoServico> contratos) {
+		this.contratos = contratos;
+	}
+	
+	public List<ContratoPrestacaoServico> getContratos() {
+		return contratos;
+	}
+	
 	public List<Proposta> getPropostas() {
 		return propostas;
 	}

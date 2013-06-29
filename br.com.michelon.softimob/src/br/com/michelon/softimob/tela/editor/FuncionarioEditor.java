@@ -23,6 +23,7 @@ import br.com.michelon.softimob.modelo.Departamento;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateTextField;
+import br.com.michelon.softimob.tela.widget.EnderecoGroup;
 import br.com.michelon.softimob.tela.widget.PhoneTextField;
 
 public class FuncionarioEditor extends GenericEditor<Funcionario> {
@@ -40,6 +41,8 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 	private Text text_5;
 	private ComboViewer cvDepartamento;
 	private Text text_1;
+
+	private EnderecoGroup grpEndereco;
 	
 	public FuncionarioEditor() {
 		super(Funcionario.class);
@@ -121,6 +124,23 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 		GridData gd_text_5 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_5.widthHint = 79;
 		text_5.setLayoutData(gd_text_5);
+		
+		grpEndereco = new EnderecoGroup(composite, SWT.NONE);
+		grpEndereco.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		grpEndereco.setText("Endereco");
+		grpEndereco.setEndereco(getCurrentObject().getEndereco());
+	}
+	
+	@Override
+	protected void afterSetIObservableValue() {
+		if(grpEndereco != null)
+			grpEndereco.setEndereco(getCurrentObject().getEndereco());
+	}
+	
+	@Override
+	public void saveCurrentObject(GenericService<Funcionario> service) {
+		if(validarComMensagem(getCurrentObject().getEndereco()))
+			super.saveCurrentObject(service);
 	}
 	
 	@Override

@@ -41,12 +41,17 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 	
 	public IndiceEditorDialog(Shell parentShell, Indice indice) {
 		super(parentShell);
+		
+		if(indice == null)
+			indice = new Indice();
+		
+		this.indice = indice;
 	}
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		setMessage("Adicionar novos indices");
-		setTitle("Indice");
+		setMessage("Adicionar novos índices");
+		setTitle("Índice");
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));

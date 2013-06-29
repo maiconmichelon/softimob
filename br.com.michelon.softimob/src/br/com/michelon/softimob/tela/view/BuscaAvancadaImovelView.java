@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.tela.widget.EnderecoGroup;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
@@ -140,10 +141,21 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		
 		ComboViewer comboViewer = new ComboViewer(composite_5, SWT.READ_ONLY);
 		Combo combo = comboViewer.getCombo();
-		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		new Label(composite_5, SWT.NONE);
+		new Label(composite_5, SWT.NONE);
 		new Label(composite_5, SWT.NONE);
 		
+		Label lblCidade = new Label(composite_5, SWT.NONE);
+		lblCidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblCidade.setText("Cidade");
+		
+		ComboViewer comboViewer_2 = new ComboViewer(composite_5, SWT.READ_ONLY);
+		Combo combo_2 = comboViewer_2.getCombo();
+		combo_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		
 		Label lblBairro = new Label(composite_5, SWT.NONE);
+		lblBairro.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblBairro.setText("Bairro");
 		
 		ComboViewer comboViewer_1 = new ComboViewer(composite_5, SWT.READ_ONLY);

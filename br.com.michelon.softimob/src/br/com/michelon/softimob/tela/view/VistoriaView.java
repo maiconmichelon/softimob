@@ -25,7 +25,10 @@ public class VistoriaView extends GenericView<Vistoria>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Imovel", "imovel.numero", 10));
+		atributos.add(new ColumnProperties("Data", "data"));
+		atributos.add(new ColumnProperties("Funcionario", "funcionario.nome"));
+		atributos.add(new ColumnProperties("Locação", "aluguel", 10));
+		atributos.add(new ColumnProperties("Observações", "observacoes"));		
 	}
 	
 	@Override
