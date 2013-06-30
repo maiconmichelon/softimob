@@ -2,6 +2,7 @@ package br.com.michelon.softimob.aplicacao.helper;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -12,14 +13,18 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import de.ralfebert.rcputils.tables.ColumnBuilder;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class WidgetHelper {
 
+	private static Logger log = Logger.getLogger(WidgetHelper.class);
+	
 	public static TableViewerBuilder createTable(Composite composite, List<ColumnProperties> attributes){
 		Composite cpTable = new Composite(composite, SWT.NONE);
 		cpTable.setLayout(new FillLayout());
@@ -57,6 +62,34 @@ public class WidgetHelper {
 		});
 	}
 	
+	/*
+	 * Menu que excluir o elemento selecionado através do service e retira ele da tabela =)
+	 */
+	public static <Y> void createMenuItemRemover(final TableViewerBuilder tvb, final GenericService<Y> service, Menu menu) {
+		createMenuItemRemover(menu, new SelectionAdapter() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Y obj = (Y) SelectionHelper.getObject(tvb.getTableViewer().getSelection());
+				try {
+					if(!DialogHelper.openConfirmation("Deseja excluir o registro ?"))
+						return;
+					
+					service.delete(obj);
+					
+					DialogHelper.openInformation("Registro excluido com sucesso");
+					
+					List<Y> elements = (List<Y>) tvb.getTableViewer().getInput();
+					elements.remove(obj);
+					tvb.getTableViewer().refresh();
+				} catch (Exception e1) {
+					log.error("Erro ao excluir " + obj.getClass(), e1);
+					DialogHelper.openError("Erro ao excluir registro.\n" + e1.getMessage());
+				}
+			}
+		});
+	}
+	
 	public static void createMenuItemRemover(Menu menu, SelectionListener listener){
 		MenuItem miRemover = new MenuItem(menu, SWT.BORDER);
 		miRemover.setText("Remover");
@@ -64,23 +97,21 @@ public class WidgetHelper {
 		miRemover.addSelectionListener(listener);
 	}
 	
-	public static void createMenuItemRemover(Menu menu, final TableViewer tableViewer){
-		createMenuItemRemover(menu, new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				tableViewer.remove(SelectionHelper.getObjects(tableViewer).toArray());
-			}
-		});
-	}
-
-	public static Menu createBasicMenus(TableViewer tableViewer, IObservableValue value){
-		Menu menu = new Menu(tableViewer.getTable());
-		tableViewer.getTable().setMenu(menu);
+	/**
+	 * Adiciona o menu item na tabela para remover o item e o double click para setar item selecionado no value.
+	 * @return 
+	 */
+	public static <Y> Menu addMenusToTable(final TableViewerBuilder tvb, final GenericService<Y> service, final IObservableValue value){
+		Table table = tvb.getTable();
 		
-		createMenuItemAlterar(menu, value, tableViewer);
-		createMenuItemRemover(menu, tableViewer);
+		Menu menu = new Menu(table);
+		table.setMenu(menu);
+		
+		createMenuItemAlterar(menu, value, tvb.getTableViewer());
+		
+		createMenuItemRemover(tvb, service, menu);
 		
 		return menu;
 	}
-	
+
 }

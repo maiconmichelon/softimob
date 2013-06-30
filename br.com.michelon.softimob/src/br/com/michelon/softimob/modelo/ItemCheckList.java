@@ -19,7 +19,7 @@ public class ItemCheckList {
 	private String descricao;
 	
 	@Column
-	private Boolean finalizado;
+	private Boolean finalizado = false;
 
 	public Long getId() {
 		return id;

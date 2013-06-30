@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class IndiceMes implements Serializable{
@@ -18,10 +19,13 @@ public class IndiceMes implements Serializable{
 	@Id @GeneratedValue
 	private Long id;
 	
+	@NotNull(message = "A data não pode ser vazia")
+	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 	
-	@Column
+	@NotNull(message = "Valor da porcentagem não pode ser vazia")
+	@Column(nullable = false)
 	private Double porcentagem;
 
 	public Long getId() {

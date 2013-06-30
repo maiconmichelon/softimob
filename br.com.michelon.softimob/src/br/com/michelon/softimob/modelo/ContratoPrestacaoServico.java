@@ -9,6 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -49,11 +50,12 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@Enumerated(EnumType.ORDINAL)
 	private TipoContrato tipo;
 	
+	@JoinColumn(name = "imovel_id")
 	@ManyToOne(optional=false)
 	private Imovel imovel;
 	
 	@Column(nullable=false)
-	private Boolean divulgar;
+	private Boolean divulgar = true;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataInicio;
@@ -168,4 +170,9 @@ public class ContratoPrestacaoServico implements Pendencia{
 		this.funcionario = funcionario;
 	}
 
+	@Override
+	public String toString() {
+		return imovel.toString();
+	}
+	
 }

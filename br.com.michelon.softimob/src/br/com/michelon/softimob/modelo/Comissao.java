@@ -14,6 +14,13 @@ public class Comissao extends ContaPagarReceber{
 	@ManyToOne
 	private VendaAluguel vendaAluguel;
 	
+	@SuppressWarnings("unused")
+	private Comissao(){}
+	
+	public Comissao(VendaAluguel vendaAluguel){
+		this.vendaAluguel = vendaAluguel;
+	}
+	
 	public Comissionado getComissionado() {
 		return comissionado;
 	}

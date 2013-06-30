@@ -32,6 +32,8 @@ public class ReflectionHelper {
 		for (String atributo : atributos) {
 			Object dado = getAtribute(obj, atributo);
 			
+			if(dado == null)
+				return false;
 			if(dado instanceof Date) 
 				dado = FormatterHelper.getSimpleDateFormat().format(dado);
 			if(!(dado instanceof String))

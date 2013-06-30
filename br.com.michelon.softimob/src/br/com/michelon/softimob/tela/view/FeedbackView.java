@@ -29,7 +29,7 @@ public class FeedbackView extends GenericView<Feedback>{
 		atributos.add(new ColumnProperties("Imóvel", "imovel", 30));
 		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 30));
 		atributos.add(new ColumnProperties("Funcionário", "funcionario.nome", 30));
-		atributos.add(new ColumnProperties("Feedback", "feedback", 30));
+		atributos.add(new ColumnProperties("Feedback", "observacoes", 30));
 	}
 	
 	@Override

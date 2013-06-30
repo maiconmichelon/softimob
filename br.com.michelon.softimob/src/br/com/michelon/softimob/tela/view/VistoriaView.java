@@ -8,10 +8,13 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.editorInput.VendaEditorInput;
 import br.com.michelon.softimob.aplicacao.service.VistoriaService;
+import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.Vistoria;
 import br.com.michelon.softimob.tela.editor.AluguelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 
 import com.google.common.collect.Lists;
 
@@ -25,7 +28,7 @@ public class VistoriaView extends GenericView<Vistoria>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Data", "data"));
+		atributos.add(new ColumnProperties("Data", "data", 10, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Funcionario", "funcionario.nome"));
 		atributos.add(new ColumnProperties("Locação", "aluguel", 10));
 		atributos.add(new ColumnProperties("Observações", "observacoes"));		
@@ -53,12 +56,12 @@ public class VistoriaView extends GenericView<Vistoria>{
 
 	@Override
 	protected GenericEditorInput<?> getIEditorInput(Vistoria t) {
-		return new AluguelEditorInput();
+		return t.getVendaAluguel() instanceof Aluguel ? new AluguelEditorInput() : new VendaEditorInput();
 	}
 
 	@Override
 	protected Object getModelOfEditorInput(Vistoria element) {
-		return element.getAluguel();
+		return element.getVendaAluguel();
 	}
 	
 	@Override

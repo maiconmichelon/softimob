@@ -12,6 +12,7 @@ import br.com.michelon.softimob.aplicacao.service.ReservaService;
 import br.com.michelon.softimob.modelo.Reserva;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 
 import com.google.common.collect.Lists;
 
@@ -26,12 +27,12 @@ public class ReservaView extends GenericView<Reserva>{
 		atributos = Lists.newArrayList();
 		
 		atributos.add(new ColumnProperties("Imóvel", "imovel", 10));
-		atributos.add(new ColumnProperties("Data da Reserva", "data", 10));
-		atributos.add(new ColumnProperties("Data de Vencimento", "dataVencimento", 10));
+		atributos.add(new ColumnProperties("Data da Reserva", "dataReserva", 10, new DateStringValueFormatter()));
+		atributos.add(new ColumnProperties("Data de Vencimento", "dataVencimento", 10, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Valor", "valor", 10));
 		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 15));
 		atributos.add(new ColumnProperties("Funcionário", "funcionario", 15));
-		atributos.add(new ColumnProperties("Observações", "observacao", 20));
+		atributos.add(new ColumnProperties("Observações", "observacoes", 20));
 	}
 
 	@Override

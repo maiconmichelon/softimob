@@ -8,5 +8,5 @@ public class ImovelService extends GenericService<Imovel>{
 	public ImovelService() {
 		super(ImovelDAO.class);
 	}
-	
+
 }

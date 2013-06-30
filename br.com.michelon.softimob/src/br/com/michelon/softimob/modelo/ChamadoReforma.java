@@ -62,6 +62,13 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	@OneToOne
 	private ContaPagarReceber conta;
 	
+	public ChamadoReforma(Aluguel aluguel){
+		this.aluguel = aluguel;
+	}
+	
+	@SuppressWarnings("unused")
+	private ChamadoReforma(){};
+	
 	public Long getId() {
 		return id;
 	}

@@ -11,6 +11,8 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import br.com.michelon.softimob.aplicacao.service.ParametrosEmpresaService;
+
 @Entity
 public class ParametrosEmpresa implements Serializable{
 
@@ -57,13 +59,16 @@ public class ParametrosEmpresa implements Serializable{
 	private Integer diasFinalizacaoReforma;
 	
 	@OneToOne
-	private Funcionario funcionarioResponsavel;
+	private Funcionario funcionarioResponsavelReforma;
 	
 	@OneToOne
 	private OrigemConta tipoContaReforma;
 	
 	@OneToOne
 	private OrigemConta tipoContaComissao;
+	
+	@OneToOne
+	private OrigemConta tipoContaPrestacaoServico;
 	
 	@OneToOne
 	private PlanoConta contaVenda;
@@ -76,6 +81,18 @@ public class ParametrosEmpresa implements Serializable{
 	
 	@OneToOne
 	private PlanoConta contraPartidaAluguel;
+	
+	private ParametrosEmpresa(){}
+	
+	private static transient ParametrosEmpresaService service;
+	
+	public static ParametrosEmpresa getInstance(){
+		if(service == null)
+			service = new ParametrosEmpresaService();
+		
+		ParametrosEmpresa params = service.findParametrosEmpresa();
+		return params == null ? new ParametrosEmpresa() : params;
+	}
 	
 	public String getCreci() {
 		return creci;
@@ -133,12 +150,12 @@ public class ParametrosEmpresa implements Serializable{
 		this.diasFinalizacaoReforma = diasFinalizacaoReforma;
 	}
 
-	public Funcionario getFuncionarioResponsavel() {
-		return funcionarioResponsavel;
+	public Funcionario getFuncionarioResponsavelReforma() {
+		return funcionarioResponsavelReforma;
 	}
 
-	public void setFuncionarioResponsavel(Funcionario funcionarioResponsavel) {
-		this.funcionarioResponsavel = funcionarioResponsavel;
+	public void setFuncionarioResponsavelReforma(Funcionario funcionarioResponsavelReforma) {
+		this.funcionarioResponsavelReforma = funcionarioResponsavelReforma;
 	}
 
 	public OrigemConta getTipoContaReforma() {
@@ -235,6 +252,14 @@ public class ParametrosEmpresa implements Serializable{
 
 	public void setDiaRecebAluguel(Integer diaRecebAluguel) {
 		this.diaRecebAluguel = diaRecebAluguel;
+	}
+
+	public OrigemConta getTipoContaPrestacaoServico() {
+		return tipoContaPrestacaoServico;
+	}
+
+	public void setTipoContaPrestacaoServico(OrigemConta tipoContaPrestacaoServico) {
+		this.tipoContaPrestacaoServico = tipoContaPrestacaoServico;
 	}
 	
 }

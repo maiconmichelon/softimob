@@ -69,7 +69,7 @@ public class CheckListView extends GenericView<CheckList>{
 	
 	@Override
 	protected void alterar(CheckList element) {
-		CheckListEditorDialog dialog = new CheckListEditorDialog(ShellHelper.getActiveShell(), new CheckList());
+		CheckListEditorDialog dialog = new CheckListEditorDialog(ShellHelper.getActiveShell(), getSelecionado());
 		dialog.open();
 	}
 	

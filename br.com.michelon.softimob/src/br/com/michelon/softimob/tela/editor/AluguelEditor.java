@@ -1,14 +1,17 @@
 package br.com.michelon.softimob.tela.editor;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Date;
 
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -17,6 +20,9 @@ import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -24,25 +30,29 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
+import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
+import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.VistoriaService;
 import br.com.michelon.softimob.modelo.AcontecimentoChamado;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.ChamadoReforma;
+import br.com.michelon.softimob.modelo.Cliente;
 import br.com.michelon.softimob.modelo.Comissao;
+import br.com.michelon.softimob.modelo.Comissionado;
+import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.ItemCheckList;
-import br.com.michelon.softimob.modelo.TipoImovelTipoComodo;
 import br.com.michelon.softimob.modelo.Vistoria;
+import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.dialog.AdicionarContaPagarReformaDialog;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
@@ -50,14 +60,8 @@ import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.properties.IValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
-import de.ralfebert.rcputils.tables.format.Formatter;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
 
 public class AluguelEditor extends GenericEditor<Aluguel>{
-	private DataBindingContext m_bindingContext;
-	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.AluguelEditor";
 	
 	private WritableValue valueVistoria = WritableValue.withValueType(Vistoria.class);
@@ -84,7 +88,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private Text text_35;
 	private Text text_19;
 	private Text text_18;
-	private Text text_17;
 	private Text text_16;
 	private Text text_34;
 	private Text text_27;
@@ -92,22 +95,20 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private Text text_8;
 	private Text text_9;
 	private Text text_11;
+	private Text textChamado;
 
 	private TableViewerBuilder tvbComissao;
 	private TableViewerBuilder tvbChamadoGeral;
 	private TableViewerBuilder tvbAndamentoChamado;
 	private TableViewerBuilder tvbVistoria;
+	private TableViewerBuilder tvbCheckList;
 	private TableViewer tvVistoria;
 	private TableViewer tvAndamentoChamado;
 	private TableViewer tvChamadoGeral;
 	private TableViewer tvComissao;
-
+	private TableViewer tvCheckList;
 
 	private RadioGroupViewer radioGroupViewer;
-
-	private TableViewerBuilder tvbCheckList;
-
-	private TableViewer tvCheckList;
 	
 	public AluguelEditor() {
 		super(Aluguel.class);
@@ -128,7 +129,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Button btnSelecionar = new Button(parent, SWT.NONE);
 		btnSelecionar.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CONTRATO_SERVICO, btnSelecionar, value, "imovel");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CONTRATO_SERVICO, btnSelecionar, value, "contrato");
+		
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
@@ -196,16 +198,16 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		text_2 = moneyTextField.getControl();
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		
-		Label lblReajuste = new Label(parent, SWT.NONE);
-		lblReajuste.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblReajuste.setText("Reajuste");
-		
-		text_5 = new Text(parent, SWT.BORDER);
-		text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Label label = new Label(parent, SWT.NONE);
-		label.setText("%");
-		label.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
+//		Label lblReajuste = new Label(parent, SWT.NONE);
+//		lblReajuste.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+//		lblReajuste.setText("Reajuste");
+//		
+//		text_5 = new Text(parent, SWT.BORDER);
+//		text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+//		
+//		Button btnIndice = new Button(parent, SWT.NONE);
+//		btnIndice.setText("...");
+//		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.INDICE, button_1, value, "");
 		
 		CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 6, 1));
@@ -262,6 +264,12 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		btnAdicionar.setText("Registrar");
 		btnAdicionar.setImage(ImageRepository.ADD_16.getImage());
+		btnAdicionar.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addComissao(valueComissao);
+			}
+		});
 		
 		CTabItem tbtmVistoria = new CTabItem(tabFolder, SWT.NONE);
 		tbtmVistoria.setText("Vistorias");
@@ -308,7 +316,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		Button btnSelecionarFuncionarioVistoria = new Button(cpAddVistoria, SWT.NONE);
 		btnSelecionarFuncionarioVistoria.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnSelecionarFuncionarioVistoria.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioVistoria, valueChamado, "funcionarioAbertura");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioVistoria, valueVistoria, "funcionario");
 		
 		Label lblArquivo = new Label(cpAddVistoria, SWT.NONE);
 		lblArquivo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -341,6 +349,12 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		button_6.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		button_6.setText("Registrar");
 		button_6.setImage(ImageRepository.SAVE_16.getImage());
+		button_6.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addVistoria(valueVistoria);
+			}
+		});
 		
 		CTabItem tbtmChamada = new CTabItem(tabFolder, SWT.NONE);
 		tbtmChamada.setText("Chamados");
@@ -376,8 +390,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblNmero_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNmero_2.setText("Número");
 		
-		text = new Text(cpAberturaChamado, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		textChamado = new Text(cpAberturaChamado, SWT.BORDER);
+		textChamado.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		new Label(cpAberturaChamado, SWT.NONE);
 		
 		Label lblData_3 = new Label(cpAberturaChamado, SWT.NONE);
@@ -572,6 +586,22 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		criarTabelaCheckList(composite_3);
 	}
 
+	@Override
+	protected void afterSetIObservableValue() {
+		valueComissao.setValue(new Comissao(getCurrentObject()));
+		valueChamado.setValue(new ChamadoReforma(getCurrentObject()));
+		valueVistoria.setValue(new Vistoria(getCurrentObject()));
+	}
+	
+	private void addComissao(WritableValue valueComissao) {
+		
+		addItens(new ComissaoService(), valueComissao, tvComissao, getCurrentObject().getComissoes());
+	}
+
+	protected void addVistoria(WritableValue valueVistoria2) {
+		addItens(new VistoriaService(), valueVistoria, tvVistoria, getCurrentObject().getVistorias());
+	}
+	
 	private void criarTabelaComissao(Composite composite){
 		TableViewerBuilder tvbComissao = new TableViewerBuilder(composite);
 		
@@ -590,6 +620,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 			}
 		}).makeEditable().build();
 		tvbComissao.createColumn("Valor (R$)").bindToProperty("valor").makeEditable().build();
+		
+		tvbComissao.setInput(getCurrentObject().getComissoes());
 		
 		tvComissao = tvbComissao.getTableViewer();
 	}
@@ -625,6 +657,10 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		tvbVistoria.createColumn("Fotos").bindToProperty("fotos").build();
 		tvbVistoria.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
 		
+		tvbVistoria.setInput(getCurrentObject().getVistorias());
+		
+		WidgetHelper.addMenusToTable(tvbVistoria, new VistoriaService(), valueVistoria);
+		
 		tvVistoria = tvbVistoria.getTableViewer();
 	}
 	
@@ -653,115 +689,128 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		return service;
 	}
 
-	protected DataBindingContext initBindTables(DataBindingContext context) {
-		//
-		IObservableValue observeSingleSelectionTableViewerAndamento = ViewerProperties.input().observe(tvAndamentoChamado);
-		IObservableValue valueObserveDetailValueAndamento = PojoProperties.value(ChamadoReforma.class, "acontecimentoChamado", List.class).observeDetail(valueChamado);
-		context.bindValue(observeSingleSelectionTableViewerAndamento, valueObserveDetailValueAndamento, null, null);
-		//
-		IObservableValue observeSingleSelectionTableViewerChamado = ViewerProperties.input().observe(tvChamadoGeral);
-		IObservableValue valueObserveDetailValueChamado = PojoProperties.value(Aluguel.class, "chamados", List.class).observeDetail(value);
-		context.bindValue(observeSingleSelectionTableViewerChamado, valueObserveDetailValueChamado, null, null);
-		//
-		IObservableValue observeSingleSelectionTableViewerVistoria = ViewerProperties.input().observe(tvVistoria);
-		IObservableValue valueObserveDetailValueVistoria = PojoProperties.value(Aluguel.class, "vistorias", List.class).observeDetail(value);
-		context.bindValue(observeSingleSelectionTableViewerVistoria, valueObserveDetailValueVistoria, null, null);
-		//
-		IObservableValue observeSingleSelectionTableViewerComissao = ViewerProperties.input().observe(tvComissao);
-		IObservableValue valueObserveDetailValueComissao = PojoProperties.value(Aluguel.class, "comissoes", List.class).observeDetail(value);
-		context.bindValue(observeSingleSelectionTableViewerComissao, valueObserveDetailValueComissao, null, null);
-		//
-		return context;
-	}
+//	private DataBindingContext initBindTables(DataBindingContext context) {
+//		//
+//		IObservableValue observeSingleSelectionTableViewerAndamento = ViewerProperties.input().observe(tvAndamentoChamado);
+//		IObservableValue valueObserveDetailValueAndamento = PojoProperties.value(ChamadoReforma.class, "acontecimentoChamado", List.class).observeDetail(valueChamado);
+//		context.bindValue(observeSingleSelectionTableViewerAndamento, valueObserveDetailValueAndamento, null, null);
+//		//
+//		IObservableValue observeSingleSelectionTableViewerChamado = ViewerProperties.input().observe(tvChamadoGeral);
+//		IObservableValue valueObserveDetailValueChamado = PojoProperties.value(Aluguel.class, "chamados", List.class).observeDetail(value);
+//		context.bindValue(observeSingleSelectionTableViewerChamado, valueObserveDetailValueChamado, null, null);
+//		//
+//		IObservableValue observeSingleSelectionTableViewerVistoria = ViewerProperties.input().observe(tvVistoria);
+//		IObservableValue valueObserveDetailValueVistoria = PojoProperties.value(Aluguel.class, "vistorias", List.class).observeDetail(value);
+//		context.bindValue(observeSingleSelectionTableViewerVistoria, valueObserveDetailValueVistoria, null, null);
+//		//
+//		IObservableValue observeSingleSelectionTableViewerComissao = ViewerProperties.input().observe(tvComissao);
+//		IObservableValue valueObserveDetailValueComissao = PojoProperties.value(Aluguel.class, "comissoes", List.class).observeDetail(value);
+//		context.bindValue(observeSingleSelectionTableViewerComissao, valueObserveDetailValueComissao, null, null);
+//		//
+//		return context;
+//	}
 	
 	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-//		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_1);
-//		IObservableValue valueClientenomeObserveDetailValue = PojoProperties.value(Aluguel.class, "cliente.nome", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_1ObserveWidget, valueClientenomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_7ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_7);
-//		IObservableValue valueFuncionarionomeObserveDetailValue = PojoProperties.value(Aluguel.class, "funcionario.nome", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_7ObserveWidget, valueFuncionarionomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_6);
-//		IObservableValue valueFiadorObserveDetailValue = PojoProperties.value(Aluguel.class, "fiador", Cliente.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_6ObserveWidget, valueFiadorObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_3);
-//		IObservableValue valueDataAssinaturaContratoObserveDetailValue = PojoProperties.value(Aluguel.class, "dataAssinaturaContrato", Date.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_3ObserveWidget, valueDataAssinaturaContratoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-//		//
-//		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
-//		IObservableValue valueDuracaoObserveDetailValue = PojoProperties.value(Aluguel.class, "duracao", Integer.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_4ObserveWidget, valueDuracaoObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_2);
-//		IObservableValue valueValorObserveDetailValue = PojoProperties.value(Aluguel.class, "valor", BigDecimal.class).observeDetail(value);
-//		Binding bindValor = bindingContext.bindValue(observeTextText_2ObserveWidget, valueValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
-//		ControlDecorationSupport.create(bindValor, SWT.LEFT | SWT.TOP);
-//		//
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.NONE).observe(text);
+		IObservableValue valueContratonomeObserveDetailValue = PojoProperties.value(Aluguel.class, "contrato", ContratoPrestacaoServico.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTextObserveWidget, valueContratonomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_1);
+		IObservableValue valueClientenomeObserveDetailValue = PojoProperties.value(Aluguel.class, "cliente.nome", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_1ObserveWidget, valueClientenomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_7ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_7);
+		IObservableValue valueFuncionarionomeObserveDetailValue = PojoProperties.value(Aluguel.class, "funcionario.nome", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_7ObserveWidget, valueFuncionarionomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_6);
+		IObservableValue valueFiadorObserveDetailValue = PojoProperties.value(Aluguel.class, "fiador", Cliente.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_6ObserveWidget, valueFiadorObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_3);
+		IObservableValue valueDataAssinaturaContratoObserveDetailValue = PojoProperties.value(Aluguel.class, "dataAssinaturaContrato", Date.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_3ObserveWidget, valueDataAssinaturaContratoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
+		IObservableValue valueDuracaoObserveDetailValue = PojoProperties.value(Aluguel.class, "duracao", Integer.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_4ObserveWidget, valueDuracaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_2);
+		IObservableValue valueValorObserveDetailValue = PojoProperties.value(Aluguel.class, "valor", BigDecimal.class).observeDetail(value);
+		Binding bindValor = bindingContext.bindValue(observeTextText_2ObserveWidget, valueValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		ControlDecorationSupport.create(bindValor, SWT.LEFT | SWT.TOP);
+		//
 //		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
 //		IObservableValue valueReajusteObserveDetailValue = PojoProperties.value(Aluguel.class, "reajuste", Integer.class).observeDetail(value);
 //		bindingContext.bindValue(observeTextText_5ObserveWidget, valueReajusteObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_34ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_34);
-//		IObservableValue valueVistoriaDataObserveDetailValue = PojoProperties.value(Vistoria.class, "data", Date.class).observeDetail(valueVistoria);
-//		bindingContext.bindValue(observeTextText_34ObserveWidget, valueVistoriaDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-//		//
-//		IObservableValue observeTextText_16ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_16);
-//		IObservableValue valueVistoriaFuncionarionomeObserveDetailValue = PojoProperties.value(Vistoria.class, "funcionario.nome", String.class).observeDetail(valueVistoria);
-//		bindingContext.bindValue(observeTextText_16ObserveWidget, valueVistoriaFuncionarionomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_19ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_19);
-//		IObservableValue valueVistoriaObservacoesObserveDetailValue = PojoProperties.value(Vistoria.class, "observacoes", String.class).observeDetail(valueVistoria);
-//		bindingContext.bindValue(observeTextText_19ObserveWidget, valueVistoriaObservacoesObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextTextObserveWidget_1 = WidgetProperties.text(SWT.Modify).observe(text);
-//		IObservableValue valueChamadoNumeroObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "id", Long.class).observeDetail(valueChamado);
-//		bindingContext.bindValue(observeTextTextObserveWidget_1, valueChamadoNumeroObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_35ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_35);
-//		IObservableValue valueVistoriaDataAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "dataAbertura", Date.class).observeDetail(valueVistoria);
-//		bindingContext.bindValue(observeTextText_35ObserveWidget, valueVistoriaDataAberturaObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-//		//
-//		IObservableValue observeTextText_23ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_23);
-//		IObservableValue valueChamadoFuncionarioAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "funcionarioAbertura.nome", String.class).observeDetail(valueChamado);
-//		bindingContext.bindValue(observeTextText_23ObserveWidget, valueChamadoFuncionarioAberturaObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_24ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_24);
-//		IObservableValue valueProblemaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "problema", String.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_24ObserveWidget, valueProblemaObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_10ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_10);
-//		IObservableValue valueAcontecimentoChamadoDataObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "data", Date.class).observeDetail(valueAcontecimentoChamado);
-//		bindingContext.bindValue(observeTextText_10ObserveWidget, valueAcontecimentoChamadoDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-//		//
-//		IObservableValue observeTextText_27ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_27);
-//		IObservableValue valueAcontecimentoChamadoFuncionarionomeObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "funcionario.nome", String.class).observeDetail(valueAcontecimentoChamado);
-//		bindingContext.bindValue(observeTextText_27ObserveWidget, valueAcontecimentoChamadoFuncionarionomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_28ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_28);
-//		IObservableValue valueAcontecimentoChamadoDescricaoObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "descricao", String.class).observeDetail(valueAcontecimentoChamado);
-//		bindingContext.bindValue(observeTextText_28ObserveWidget, valueAcontecimentoChamadoDescricaoObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_36ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_36);
-//		IObservableValue valueChamadoDataFechamentoObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "dataFechamento", Date.class).observeDetail(valueChamado);
-//		bindingContext.bindValue(observeTextText_36ObserveWidget, valueChamadoDataFechamentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-//		//
-//		IObservableValue observeSingleSelectionRadioGroupViewer = ViewerProperties.singleSelection().observe(radioGroupViewer);
-//		IObservableValue valueChaveLocalizacaoObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "status", Integer.class).observeDetail(valueChamado);
-//		bindingContext.bindValue(observeSingleSelectionRadioGroupViewer, valueChaveLocalizacaoObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_25ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_25);
-//		IObservableValue valueChamadoFuncionarioFechamentonomeObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "funcionarioFechamento.nome", String.class).observeDetail(valueChamado);
-//		bindingContext.bindValue(observeTextText_25ObserveWidget, valueChamadoFuncionarioFechamentonomeObserveDetailValue, null, null);
-//		//
-//		IObservableValue observeTextText_31ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_31);
-//		IObservableValue valueChamadoDescricaoConclusaoObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "descricaoConclusao", String.class).observeDetail(valueChamado);
-//		bindingContext.bindValue(observeTextText_31ObserveWidget, valueChamadoDescricaoConclusaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_8ObserveWidget = WidgetProperties.text(SWT.None).observe(text_8);
+		IObservableValue valueComissionadoComissaoObserveDetailValue = PojoProperties.value(Comissao.class, "comissionado", Comissionado.class).observeDetail(valueComissao);
+		bindingContext.bindValue(observeTextText_8ObserveWidget, valueComissionadoComissaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_11ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_11);
+		IObservableValue valueValorComissaoObserveDetailValue = PojoProperties.value(Comissao.class, "valor", BigDecimal.class).observeDetail(value);
+		Binding bindValorComissao = bindingContext.bindValue(observeTextText_11ObserveWidget, valueValorComissaoObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		ControlDecorationSupport.create(bindValorComissao, SWT.LEFT | SWT.TOP);
+		//
+		IObservableValue observeTextText_34ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_34);
+		IObservableValue valueVistoriaDataObserveDetailValue = PojoProperties.value(Vistoria.class, "data", Date.class).observeDetail(valueVistoria);
+		bindingContext.bindValue(observeTextText_34ObserveWidget, valueVistoriaDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeTextText_16ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_16);
+		IObservableValue valueVistoriaFuncionarionomeObserveDetailValue = PojoProperties.value(Vistoria.class, "funcionario.nome", String.class).observeDetail(valueVistoria);
+		bindingContext.bindValue(observeTextText_16ObserveWidget, valueVistoriaFuncionarionomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_19ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_19);
+		IObservableValue valueVistoriaObservacoesObserveDetailValue = PojoProperties.value(Vistoria.class, "observacoes", String.class).observeDetail(valueVistoria);
+		bindingContext.bindValue(observeTextText_19ObserveWidget, valueVistoriaObservacoesObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextTextObserveWidget_1 = WidgetProperties.text(SWT.Modify).observe(textChamado);
+		IObservableValue valueChamadoNumeroObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "id", Long.class).observeDetail(valueChamado);
+		bindingContext.bindValue(observeTextTextObserveWidget_1, valueChamadoNumeroObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_35ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_35);
+		IObservableValue valueVistoriaDataAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "dataAbertura", Date.class).observeDetail(valueVistoria);
+		bindingContext.bindValue(observeTextText_35ObserveWidget, valueVistoriaDataAberturaObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeTextText_23ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_23);
+		IObservableValue valueChamadoFuncionarioAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "funcionarioAbertura.nome", String.class).observeDetail(valueChamado);
+		bindingContext.bindValue(observeTextText_23ObserveWidget, valueChamadoFuncionarioAberturaObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_24ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_24);
+		IObservableValue valueProblemaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "problema", String.class).observeDetail(valueChamado);
+		bindingContext.bindValue(observeTextText_24ObserveWidget, valueProblemaObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_10ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_10);
+		IObservableValue valueAcontecimentoChamadoDataObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "data", Date.class).observeDetail(valueAcontecimentoChamado);
+		bindingContext.bindValue(observeTextText_10ObserveWidget, valueAcontecimentoChamadoDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeTextText_27ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_27);
+		IObservableValue valueAcontecimentoChamadoFuncionarionomeObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "funcionario.nome", String.class).observeDetail(valueAcontecimentoChamado);
+		bindingContext.bindValue(observeTextText_27ObserveWidget, valueAcontecimentoChamadoFuncionarionomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_28ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_28);
+		IObservableValue valueAcontecimentoChamadoDescricaoObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "descricao", String.class).observeDetail(valueAcontecimentoChamado);
+		bindingContext.bindValue(observeTextText_28ObserveWidget, valueAcontecimentoChamadoDescricaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_36ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_36);
+		IObservableValue valueChamadoDataFechamentoObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "dataFechamento", Date.class).observeDetail(valueChamado);
+		bindingContext.bindValue(observeTextText_36ObserveWidget, valueChamadoDataFechamentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeSingleSelectionRadioGroupViewer = ViewerProperties.singleSelection().observe(radioGroupViewer);
+		IObservableValue valueChaveLocalizacaoObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "status", Integer.class).observeDetail(valueChamado);
+		bindingContext.bindValue(observeSingleSelectionRadioGroupViewer, valueChaveLocalizacaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_25ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_25);
+		IObservableValue valueChamadoFuncionarioFechamentonomeObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "funcionarioFechamento.nome", String.class).observeDetail(valueChamado);
+		bindingContext.bindValue(observeTextText_25ObserveWidget, valueChamadoFuncionarioFechamentonomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_31ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_31);
+		IObservableValue valueChamadoDescricaoConclusaoObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "descricaoConclusao", String.class).observeDetail(valueChamado);
+		bindingContext.bindValue(observeTextText_31ObserveWidget, valueChamadoDescricaoConclusaoObserveDetailValue, null, null);
 		//
 		return bindingContext;
 	}

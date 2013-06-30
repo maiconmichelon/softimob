@@ -44,10 +44,12 @@ public class EnderecoGroup extends Group {
 	private EstadoService estadoService = new EstadoService();
 	private ComboViewer cvUF;
 
-	public EnderecoGroup(Composite parent, int style) {
+	public EnderecoGroup(Composite parent, Endereco endereco, int style) {
 		super(parent, style);
-
+		
 		createComponents();
+
+		setEndereco(endereco);
 	}
 
 	private void createComponents() {
@@ -167,7 +169,6 @@ public class EnderecoGroup extends Group {
 		txtComplemento.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(this, SWT.NONE);
 
-		value.setValue(new Endereco());
 		initDataBindings();
 	}
 

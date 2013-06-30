@@ -14,6 +14,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PessoaJuridicaService;
 import br.com.michelon.softimob.modelo.PessoaJuridica;
@@ -53,32 +55,27 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 		GridLayout gl2_parent = new GridLayout(1, false);
 		gl2_parent.verticalSpacing = 10;
 		parent1.setLayout(gl2_parent);
-		parent1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1,
-				1));
+		parent1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 
 		Composite composite_1 = new Composite(parent1, SWT.NONE);
-		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-				true, 1, 1));
+		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		GridLayout gl_composite_1 = new GridLayout(4, false);
 		gl_composite_1.verticalSpacing = 10;
 		composite_1.setLayout(gl_composite_1);
 
 		Label lblRazoSocial = new Label(composite_1, SWT.NONE);
-		lblRazoSocial.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-				false, 1, 1));
+		lblRazoSocial.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblRazoSocial.setText("Razão Social");
 
 		text_12 = new Text(composite_1, SWT.BORDER);
-		text_12.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
-				1, 1));
+		text_12.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_1, SWT.NONE);
 		new Label(composite_1, SWT.NONE);
 
 		Label lblDataDeAbertura = new Label(composite_1, SWT.NONE);
-		lblDataDeAbertura.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER,
-				false, false, 1, 1));
+		lblDataDeAbertura.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDataDeAbertura.setText("Data de Abertura");
-		
+
 		DateTextField dateTextField = new DateTextField(composite_1);
 		text = dateTextField.getControl();
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -86,82 +83,80 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 		new Label(composite_1, SWT.NONE);
 
 		Label lblCnpj = new Label(composite_1, SWT.NONE);
-		lblCnpj.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
-				1, 1));
+		lblCnpj.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCnpj.setText("CNPJ");
 
 		CNPJTextField textField_2 = new CNPJTextField(composite_1);
 		text_14 = textField_2.getControl();
-		text_14.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
-				1, 1));
+		text_14.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblInscEstadual = new Label(composite_1, SWT.NONE);
-		lblInscEstadual.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER,
-				false, false, 1, 1));
+		lblInscEstadual.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblInscEstadual.setText("Insc Estadual");
 
 		text_15 = new Text(composite_1, SWT.BORDER);
-		text_15.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
-				1, 1));
+		text_15.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblTelefone = new Label(composite_1, SWT.NONE);
-		lblTelefone.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-				false, 1, 1));
+		lblTelefone.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblTelefone.setText("Telefone");
 
 		PhoneTextField phoneTextField_2 = new PhoneTextField(composite_1);
 		text_16 = phoneTextField_2.getControl();
-		text_16.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
-				1, 1));
+		text_16.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblCelular_1 = new Label(composite_1, SWT.NONE);
-		lblCelular_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-				false, 1, 1));
+		lblCelular_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCelular_1.setText("Celular");
 
 		PhoneTextField phoneTextField_3 = new PhoneTextField(composite_1);
 		text_13 = phoneTextField_3.getControl();
-		text_13.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
-				1, 1));
+		text_13.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblEmail_1 = new Label(composite_1, SWT.NONE);
-		lblEmail_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-				false, 1, 1));
+		lblEmail_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEmail_1.setText("E-mail");
 
 		text_17 = new Text(composite_1, SWT.BORDER);
-		text_17.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
-				1, 1));
+		text_17.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_1, SWT.NONE);
 		new Label(composite_1, SWT.NONE);
 
 		Label lblScio = new Label(composite_1, SWT.NONE);
-		lblScio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
-				1, 1));
+		lblScio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblScio.setText("Sócio Administrador");
 
 		text_19 = new Text(composite_1, SWT.BORDER);
-		text_19.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
-				2, 1));
+		text_19.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		Button button = new Button(composite_1, SWT.NONE);
 		button.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PESSOA_FISICA, button, value, "socioProprietario");
 		
 		Composite composite = new Composite(composite_1, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 		composite.setLayout(new GridLayout(1, false));
-		
-		grpEndereco = new EnderecoGroup(composite, SWT.NONE);
+
+		grpEndereco = new EnderecoGroup(composite, getCurrentObject().getEndereco(), SWT.NONE);
 		grpEndereco.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		grpEndereco.setText("Endereco");
-		
+		grpEndereco.setEndereco(getCurrentObject().getEndereco());
 	}
-	
+
 	@Override
 	public void saveCurrentObject(GenericService<PessoaJuridica> service) {
 		getCurrentObject().setEndereco(grpEndereco.getEndereco());
 		
+		if(!validarComMensagem(grpEndereco.getEndereco()))
+			return;
+		
 		super.saveCurrentObject(service);
+	}
+
+	@Override
+	protected void afterSetIObservableValue() {
+		if(grpEndereco != null)
+			grpEndereco.setEndereco(getCurrentObject().getEndereco());
 	}
 	
 	@Override

@@ -163,10 +163,9 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 		composite_1.setLayout(new GridLayout(1, false));
 
-		grpEndereco = new EnderecoGroup(composite_1, SWT.NONE);
+		grpEndereco = new EnderecoGroup(composite_1, getCurrentObject().getEndereco(), SWT.NONE);
 		grpEndereco.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		grpEndereco.setText("Endereco");
-		grpEndereco.setEndereco(getCurrentObject().getEndereco());
 	}
 
 	@Override

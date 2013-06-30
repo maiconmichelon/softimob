@@ -2,7 +2,6 @@ package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 public class LancamentoContabil implements Serializable{
@@ -36,9 +33,18 @@ public class LancamentoContabil implements Serializable{
 	@ManyToOne
 	private PlanoConta conta;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataLancamento;
+	@ManyToOne(optional = false)
+	private final MovimentacaoContabil movimentacao;
 
+	public LancamentoContabil(MovimentacaoContabil movimentacao){
+		this.movimentacao = movimentacao;
+	}
+	
+	@SuppressWarnings("unused")
+	private LancamentoContabil(){
+		this(null);
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -87,29 +93,32 @@ public class LancamentoContabil implements Serializable{
 		this.tipo = tipo;
 	}
 	
-	public Date getDataLancamento() {
-		return dataLancamento;
-	}
-
-	public void setDataLancamento(Date dataLancamento) {
-		this.dataLancamento = dataLancamento;
+	public MovimentacaoContabil getMovimentacao() {
+		return movimentacao;
 	}
 	
-	public static LancamentoContabil createDebito(Date dataLancamento, PlanoConta contaDebito, BigDecimal valor, String historico, String complemento) {
-		return create(TipoLancamento.DEBITO, dataLancamento, contaDebito, valor, historico, complemento);
+	public boolean isDebito(){
+		return TipoLancamento.DEBITO.equals(tipo);
 	}
 	
-	public static LancamentoContabil createCredito(Date dataLancamento, PlanoConta contaDebito, BigDecimal valor, String historico, String complemento) {
-		return create(TipoLancamento.DEBITO, dataLancamento, contaDebito, valor, historico, complemento);
+	public boolean isCredito(){
+		return TipoLancamento.CREDITO.equals(tipo);
 	}
 	
-	public static LancamentoContabil create(TipoLancamento tipo, Date dataLancamento, PlanoConta contaDebito, BigDecimal valor, String historico, String complemento) {
-		LancamentoContabil lcto = new LancamentoContabil();
+	public static LancamentoContabil createDebito(MovimentacaoContabil mov, PlanoConta contaDebito, BigDecimal valor, String historico, String complemento) {
+		return create(mov, TipoLancamento.DEBITO, contaDebito, valor, historico, complemento);
+	}
+	
+	public static LancamentoContabil createCredito(MovimentacaoContabil mov, PlanoConta contaCredito, BigDecimal valor, String historico, String complemento) {
+		return create(mov, TipoLancamento.CREDITO, contaCredito, valor, historico, complemento);
+	}
+	
+	public static LancamentoContabil create(MovimentacaoContabil mov, TipoLancamento tipo, PlanoConta conta, BigDecimal valor, String historico, String complemento) {
+		LancamentoContabil lcto = new LancamentoContabil(mov);
 		
 		lcto.setTipo(tipo);
 		lcto.setComplemento(complemento);
-		lcto.setDataLancamento(dataLancamento);
-		lcto.setConta(contaDebito);
+		lcto.setConta(conta);
 		lcto.setValor(valor);
 		lcto.setHistorico(historico);
 		

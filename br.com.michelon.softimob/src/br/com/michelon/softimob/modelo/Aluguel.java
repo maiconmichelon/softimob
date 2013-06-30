@@ -4,19 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 
 import org.eclipse.ui.IEditorInput;
 
-import com.google.common.collect.Lists;
+import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 
 @Entity
 public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
@@ -31,12 +25,6 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	
 	@Column
 	private Integer reajuste;
-
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Vistoria> vistoria = Lists.newArrayList();
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ChamadoReforma> chamados = Lists.newArrayList();
 	
 	public Cliente getFiador() {
 		return fiador;
@@ -62,20 +50,8 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 		this.reajuste = reajuste;
 	}
 
-	public List<Vistoria> getVistoria() {
-		return vistoria;
-	}
-
-	public void setVistoria(List<Vistoria> vistoria) {
-		this.vistoria = vistoria;
-	}
-
 	public List<ChamadoReforma> getChamados() {
-		return chamados;
-	}
-
-	public void setChamados(List<ChamadoReforma> chamados) {
-		this.chamados = chamados;
+		return new ChamadoReformaService().findByAluguel(this);
 	}
 
 	@Override

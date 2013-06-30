@@ -10,11 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.collect.Lists;
+import br.com.michelon.softimob.aplicacao.service.ChaveService;
+import br.com.michelon.softimob.aplicacao.service.ComodoService;
+import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
+import br.com.michelon.softimob.aplicacao.service.FeedbackService;
+import br.com.michelon.softimob.aplicacao.service.PropostaService;
+import br.com.michelon.softimob.aplicacao.service.ReservaService;
 
 @Entity
 public class Imovel implements Serializable{
@@ -47,64 +51,37 @@ public class Imovel implements Serializable{
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional=false)
 	private Endereco endereco = new Endereco();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
-	private List<Comodo> comodos = Lists.newArrayList();
-
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
-	private List<Chave> chaves = Lists.newArrayList();
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
-	private List<Feedback> feedbacks = Lists.newArrayList();
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
-	private List<Proposta> propostas = Lists.newArrayList();
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
-	private List<Reserva> reservas = Lists.newArrayList();
- 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="imovel")
-	private List<ContratoPrestacaoServico> contratos = Lists.newArrayList();
-	
-	public void setContratos(List<ContratoPrestacaoServico> contratos) {
-		this.contratos = contratos;
-	}
-	
 	public List<ContratoPrestacaoServico> getContratos() {
-		return contratos;
+		return new ContratoPrestacaoServicoService().findByImovel(this);
 	}
 	
 	public List<Proposta> getPropostas() {
-		return propostas;
-	}
-
-	public void setPropostas(List<Proposta> propostas) {
-		this.propostas = propostas;
+		return new PropostaService().findByImovel(this);
 	}
 
 	public List<Reserva> getReservas() {
-		return reservas;
+		return new ReservaService().findByReserva(this);
 	}
 
-	public void setReservas(List<Reserva> reservas) {
-		this.reservas = reservas;
+	public List<Comodo> getComodos() {
+		return new ComodoService().findByImovel(this);
 	}
 
+	public List<Chave> getChaves() {
+		return new ChaveService().findByImovel(this);
+	}
+	
+	public List<Feedback> getFeedbacks() {
+		return new FeedbackService().findByImovel(this);
+	}
+	
 	public Cliente getProprietario() {
 		return proprietario;
-	}
-
-	public void setProprietario(Cliente proprietario) {
-		this.proprietario = proprietario;
 	}
 
 	public Funcionario getAngariador() {
 		return angariador;
 	}
-
-	public void setAngariador(Funcionario angariador) {
-		this.angariador = angariador;
-	}
-
 
 	public Integer getMetragem() {
 		return metragem;
@@ -112,22 +89,6 @@ public class Imovel implements Serializable{
 
 	public void setMetragem(Integer metragem) {
 		this.metragem = metragem;
-	}
-
-	public List<Comodo> getComodos() {
-		return comodos;
-	}
-
-	public void setComodos(List<Comodo> comodos) {
-		this.comodos = comodos;
-	}
-
-	public List<Chave> getChaves() {
-		return chaves;
-	}
-
-	public void setChaves(List<Chave> chaves) {
-		this.chaves = chaves;
 	}
 
 	public TipoImovel getTipo() {
@@ -154,14 +115,6 @@ public class Imovel implements Serializable{
 		this.id = id;
 	}
 	
-	public List<Feedback> getFeedbacks() {
-		return feedbacks;
-	}
-
-	public void setFeedbacks(List<Feedback> feedbacks) {
-		this.feedbacks = feedbacks;
-	}
-
 	public Boolean getAtivo() {
 		return ativo;
 	}

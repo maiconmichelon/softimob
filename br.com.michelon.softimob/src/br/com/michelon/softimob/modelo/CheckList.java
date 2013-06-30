@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.google.common.collect.Lists;
 
@@ -17,13 +20,14 @@ public class CheckList {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column
+	@NotEmpty(message = "Nome da check list não pode ser vazia")
+	@Column(nullable = false)
 	private String nome;
 	
 	@OneToMany
 	private List<ItemCheckList> itens = Lists.newArrayList();
 
-	@Column
+	@Column(nullable = false)
 	private Boolean ativo = true;
 	
 	public Long getId() {

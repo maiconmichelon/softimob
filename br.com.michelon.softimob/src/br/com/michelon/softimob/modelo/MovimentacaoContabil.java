@@ -15,6 +15,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
 @Entity
@@ -25,13 +29,15 @@ public class MovimentacaoContabil implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 14, scale = 2)
+	@Column(length = 14, scale = 2, nullable = false)
 	private BigDecimal valor;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@NotEmpty(message = "A movimentação deve conter lançamentos")
+	@OneToMany(cascade=CascadeType.ALL, mappedBy = "movimentacao")
 	private List<LancamentoContabil> lancamentos = Lists.newArrayList();
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
 	private Date data;
 
 	public Long getId() {
@@ -64,6 +70,32 @@ public class MovimentacaoContabil implements Serializable{
 
 	public void setData(Date data) {
 		this.data = data;
+	}
+
+	void setLancamentosDebito(){
+		
+	}
+	
+	void setLancamentosCredito(){
+		
+	}
+	
+	public List<LancamentoContabil> getLancamentosCredito() {
+		return Lists.newArrayList(Collections2.filter(lancamentos, new Predicate<LancamentoContabil>() {
+			@Override
+			public boolean apply(LancamentoContabil arg0) {
+				return arg0.isCredito();
+			}
+		}));
+	}
+	
+	public List<LancamentoContabil> getLancamentosDebito() {
+		return Lists.newArrayList(Collections2.filter(lancamentos, new Predicate<LancamentoContabil>() {
+			@Override
+			public boolean apply(LancamentoContabil arg0) {
+				return arg0.isDebito();
+			}
+		}));
 	}
 	
 }

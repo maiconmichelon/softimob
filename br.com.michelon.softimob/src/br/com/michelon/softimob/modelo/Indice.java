@@ -3,11 +3,13 @@ package br.com.michelon.softimob.modelo;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import com.google.common.collect.Lists;
 
@@ -19,13 +21,14 @@ public class Indice implements Serializable{
 	@Id @GeneratedValue
 	private Long id;
 	
-	@Column
+	@NotNull(message = "O nome do índice não pode ser vazio")
+	@Column(nullable = false)
 	private String nome;
 	
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<IndiceMes> indices = Lists.newArrayList();
 
-	@Column
+	@Column(nullable = false)
 	private Boolean ativo = true;
 	
 	public Long getId() {

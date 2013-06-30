@@ -1,14 +1,19 @@
 package br.com.michelon.softimob.tela.dialog;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -23,21 +28,23 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 
-import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
+import br.com.michelon.softimob.aplicacao.service.IndiceService;
 import br.com.michelon.softimob.modelo.Indice;
 import br.com.michelon.softimob.modelo.IndiceMes;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
-import de.ralfebert.rcputils.tables.format.Formatter;
 
 public class IndiceEditorDialog extends TitleAreaDialog{
-	private Text text;
+	
+	private Text txtNome;
 	private Text txtData;
 	private Text txtPorcentagem;
 	private DateTextField dtIndice;
 	private IndiceMes current;
 	private Indice indice;
+	private TableViewer tvIndices;
+	private Logger log = Logger.getLogger(getClass());
 	
 	public IndiceEditorDialog(Shell parentShell, Indice indice) {
 		super(parentShell);
@@ -61,13 +68,22 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		lblNome.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNome.setText("Nome");
 		
-		text = new Text(composite, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtNome = new Text(composite, SWT.BORDER);
+		txtNome.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtNome.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				indice.setNome(((Text)e.widget).getText());
+			}
+		});
+		
+		if(indice != null)
+			txtNome.setText(indice.getNome());
 		
 		Composite cpTabela = new Composite(composite, SWT.NONE);
 		cpTabela.setLayout(new GridLayout(1, false));
 		cpTabela.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		criarTabelaIndices(cpTabela);
+		tvIndices = criarTabelaIndices(cpTabela, indice.getIndices()).getTableViewer();
 		
 		Group grpIndiceDoPerodo = new Group(composite, SWT.NONE);
 		grpIndiceDoPerodo.setLayout(new GridLayout(2, false));
@@ -93,12 +109,14 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 	}
 	
 	private void setItens(IndiceMes indice){
+		current = indice;
 		dtIndice.setValue(indice.getData());
 		txtPorcentagem.setText(indice.getPorcentagem().toString());
 	}
 	
 	private void limpar(){
 		dtIndice.setValue(null);
+		current = null;
 		txtPorcentagem.setText(StringUtils.EMPTY);
 	}
 	
@@ -112,7 +130,7 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		return current;
 	}
 	
-	private void criarTabelaIndices(Composite cp){
+	private TableViewerBuilder criarTabelaIndices(Composite cp, List<IndiceMes> indices){
 		TableViewerBuilder tvb = new TableViewerBuilder(cp);
 		
 		tvb.createColumn("Data").bindToProperty("data").format(new DateStringValueFormatter()).build();
@@ -125,6 +143,14 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 				setItens((IndiceMes) ((IStructuredSelection)event.getSelection()).getFirstElement());
 			}
 		});
+		
+		tvb.setInput(indices);
+		
+		return tvb;
+	}
+	
+	private boolean isNovo() {
+		return current == null;
 	}
 	
 	@Override
@@ -137,8 +163,15 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		btnRegistrar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				IndiceMes indiceMes = getIndiceMes();
-				indice.getIndices().add(indiceMes);
+
+				if(isNovo()){ 
+					IndiceMes indiceMes = getIndiceMes();
+					indice.getIndices().add(indiceMes);
+				} else {
+					getIndiceMes();
+				}
+				
+				tvIndices.refresh();
 				
 				limpar();
 			}
@@ -159,6 +192,16 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		Button btnFinalizar = createButton(parent, IDialogConstants.OK_ID, "Finalizar", true);
 		btnFinalizar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
 		btnFinalizar.setImage(ImageRepository.FINALIZAR_16.getImage());
+		btnFinalizar.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				try {
+					new IndiceService().salvar(indice);
+				} catch (Exception e1) {
+					log.error("Erro ao salvar indice", e1);
+				}
+			}
+		});
 	}
 
 	@Override

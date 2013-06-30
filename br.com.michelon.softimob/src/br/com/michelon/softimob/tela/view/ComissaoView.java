@@ -2,6 +2,7 @@ package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.ImageRepository;
 
@@ -26,6 +27,11 @@ public class ComissaoView extends GenericView<Comissao>{
 		atributos.add(new ColumnProperties("Valor", "valor", 10));
 	}
 
+	@Override
+	protected List<Action> createMoreActions() {
+		return null;
+	}
+	
 	@Override
 	protected void excluir(List<Comissao> objetos) {
 		// TODO Auto-generated method stub

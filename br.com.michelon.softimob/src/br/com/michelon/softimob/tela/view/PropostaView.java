@@ -12,6 +12,7 @@ import br.com.michelon.softimob.aplicacao.service.PropostaService;
 import br.com.michelon.softimob.modelo.Proposta;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 
 import com.google.common.collect.Lists;
 
@@ -25,12 +26,12 @@ public class PropostaView extends GenericView<Proposta>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Imóvel", "imovel.numero", 8));
-		atributos.add(new ColumnProperties("Data", "data", 8));
-		atributos.add(new ColumnProperties("Realizador", "realizadorExtenso", 20));
+		atributos.add(new ColumnProperties("Imóvel", "imovel", 8));
+		atributos.add(new ColumnProperties("Data", "data", 8, new DateStringValueFormatter()));
+		atributos.add(new ColumnProperties("Realizador", "cliente.nome", 20));
 		atributos.add(new ColumnProperties("Valor", "valor", 10));
 		atributos.add(new ColumnProperties("Funcionário", "funcionario.nome", 20));
-		atributos.add(new ColumnProperties("Descrição", "descrição", 40));
+		atributos.add(new ColumnProperties("Descrição", "observacoes", 40));
 	}
 	
 	@Override

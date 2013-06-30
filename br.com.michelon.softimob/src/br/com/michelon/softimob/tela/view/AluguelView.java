@@ -11,6 +11,7 @@ import br.com.michelon.softimob.aplicacao.service.AluguelService;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.tela.editor.AluguelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 
 import com.google.common.collect.Lists;
 
@@ -24,14 +25,14 @@ public class AluguelView extends GenericView<Aluguel>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Imóvel", "imovel.numero", 7));
-		atributos.add(new ColumnProperties("Locatário", "locatario.nome", 20));
-		atributos.add(new ColumnProperties("Corretor", "|20|corretor.nome", 20));
-		atributos.add(new ColumnProperties("Fiador", "|20|fiador.nome",20));
-		atributos.add(new ColumnProperties("Valor", "|10|valor",10));
-		atributos.add(new ColumnProperties("Data", "|10|data",10));
-		atributos.add(new ColumnProperties("Duração", "|10|duracao",10));
-		atributos.add(new ColumnProperties("Reajuste", "|10|reajuste", 10));
+		atributos.add(new ColumnProperties("Imóvel", "contrato", 7));
+		atributos.add(new ColumnProperties("Locatário", "cliente.nome", 20));
+		atributos.add(new ColumnProperties("Corretor", "funcionario.nome", 20));
+		atributos.add(new ColumnProperties("Fiador", "fiador.nome",20));
+		atributos.add(new ColumnProperties("Valor", "valor", 10));
+		atributos.add(new ColumnProperties("Data", "dataAssinaturaContrato", 10, new DateStringValueFormatter()));
+		atributos.add(new ColumnProperties("Duração", "duracao",10));
+		atributos.add(new ColumnProperties("Reajuste", "reajuste", 10));
 	}
 	
 	@Override

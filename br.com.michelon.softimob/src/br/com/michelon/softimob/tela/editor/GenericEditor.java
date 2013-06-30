@@ -1,11 +1,14 @@
 package br.com.michelon.softimob.tela.editor;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -137,6 +140,26 @@ public abstract class GenericEditor<T> extends EditorPart {
 		}
 		
 		return false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, TableViewer tv, List<Y> list){
+		if(!salvar(service, value))
+			return;
+			
+		List<Y> elementos = (List<Y>) tv.getInput();
+		if(!elementos.contains(value.getValue()))
+			elementos.add((Y) value.getValue());
+
+		//Aqui ele tenta resetar o value
+		try {
+			Class<Y> clazz = (Class<Y>) value.getValue().getClass();
+			value.setValue(clazz.getConstructor(getCurrentObject().getClass()).newInstance(getCurrentObject()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		tv.refresh();
 	}
 	
 	protected boolean validarComMensagem(Object obj){

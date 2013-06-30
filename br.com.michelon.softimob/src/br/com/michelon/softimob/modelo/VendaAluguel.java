@@ -14,11 +14,11 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.google.common.collect.Lists;
+import br.com.michelon.softimob.aplicacao.service.ComissaoService;
+import br.com.michelon.softimob.aplicacao.service.VistoriaService;
 
 @Inheritance(strategy=InheritanceType.JOINED)
 @MappedSuperclass
@@ -47,9 +47,6 @@ public class VendaAluguel implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAssinaturaContrato;
 
-	@OneToMany
-	private List<Comissao> comissoes = Lists.newArrayList();
-	
 	@ManyToOne
 	private CheckList checkList;
 	
@@ -102,13 +99,13 @@ public class VendaAluguel implements Serializable{
 	}
 
 	public List<Comissao> getComissoes() {
-		return comissoes;
+		return new ComissaoService().findByVendaAluguel(this);
 	}
 
-	public void setComissoes(List<Comissao> comissoes) {
-		this.comissoes = comissoes;
+	public List<Vistoria> getVistorias(){
+		return new VistoriaService().findByVendaAluguel(this);
 	}
-
+	
 	public CheckList getCheckList() {
 		return checkList;
 	}

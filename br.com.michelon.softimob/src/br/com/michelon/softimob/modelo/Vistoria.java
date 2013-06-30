@@ -38,7 +38,14 @@ public class Vistoria implements Serializable{
 	private String observacoes;
 
 	@ManyToOne
-	private Aluguel aluguel;
+	private VendaAluguel vendaAluguel;
+	
+	@SuppressWarnings("unused")
+	private Vistoria(){}
+	
+	public Vistoria(VendaAluguel vendaAluguel){
+		this.vendaAluguel = vendaAluguel;
+	}
 	
 	public Long getId() {
 		return id;
@@ -80,12 +87,12 @@ public class Vistoria implements Serializable{
 		this.arquivo = arquivo;
 	}
 
-	public Aluguel getAluguel() {
-		return aluguel;
+	public VendaAluguel getVendaAluguel() {
+		return vendaAluguel;
 	}
-
-	public void setAluguel(Aluguel aluguel) {
-		this.aluguel = aluguel;
+	
+	public void setVendaAluguel(VendaAluguel vendaAluguel) {
+		this.vendaAluguel = vendaAluguel;
 	}
 	
 }

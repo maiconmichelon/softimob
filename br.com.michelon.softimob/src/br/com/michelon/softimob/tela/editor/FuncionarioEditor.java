@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.tela.editor;
 
 import java.util.Date;
+
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -125,7 +126,7 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 		gd_text_5.widthHint = 79;
 		text_5.setLayoutData(gd_text_5);
 		
-		grpEndereco = new EnderecoGroup(composite, SWT.NONE);
+		grpEndereco = new EnderecoGroup(composite, getCurrentObject().getEndereco(), SWT.NONE);
 		grpEndereco.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		grpEndereco.setText("Endereco");
 		grpEndereco.setEndereco(getCurrentObject().getEndereco());

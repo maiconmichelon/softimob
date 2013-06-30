@@ -11,6 +11,7 @@ import br.com.michelon.softimob.aplicacao.service.MovimentacaoContabilService;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 
 import com.google.common.collect.Lists;
 
@@ -24,12 +25,9 @@ public class MovimentacaoContabilView extends GenericView<MovimentacaoContabil>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Código", "codigo", 10));
-		atributos.add(new ColumnProperties("Data de Lançamento", "dataLancamento", 10));
-		atributos.add(new ColumnProperties("Contas", "planoconta", 10));
+		atributos.add(new ColumnProperties("Código", "id", 10));
+		atributos.add(new ColumnProperties("Data de Lançamento", "data", 10, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Valor", "valor", 10));
-		atributos.add(new ColumnProperties("Histórico", "historico", 20));
-		atributos.add(new ColumnProperties("Complemento", "complemento", 20));
 	}
 	
 	@Override

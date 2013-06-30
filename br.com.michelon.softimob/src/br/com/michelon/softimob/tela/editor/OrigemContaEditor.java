@@ -3,6 +3,7 @@ package br.com.michelon.softimob.tela.editor;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -21,7 +22,7 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.OrigemContaEditor";
 	
-	private DataBindingContext m_bindingContext;
+	private WritableValue value = WritableValue.withValueType(OrigemConta.class);
 	
 	private OrigemContaService service = new OrigemContaService();
 	
@@ -77,10 +78,8 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 		button_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_1.setText("...");
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_1, value, "contaContraPartida");
-		
-		
-		
 	}
+	
 	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
