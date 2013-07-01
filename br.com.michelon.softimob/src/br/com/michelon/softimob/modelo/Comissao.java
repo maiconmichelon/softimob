@@ -19,6 +19,8 @@ public class Comissao extends ContaPagarReceber{
 	
 	public Comissao(VendaAluguel vendaAluguel){
 		this.vendaAluguel = vendaAluguel;
+		
+		setTipo(ContaPagarReceber.PAGAR);
 	}
 	
 	public Comissionado getComissionado() {

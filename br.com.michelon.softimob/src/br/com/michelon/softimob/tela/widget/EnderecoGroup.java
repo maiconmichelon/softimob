@@ -14,6 +14,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -22,8 +24,14 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.cep.CEP;
+import br.com.michelon.softimob.aplicacao.cep.CEPServiceFactory;
+import br.com.michelon.softimob.aplicacao.helper.NumberHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
+import br.com.michelon.softimob.aplicacao.service.BairroService;
+import br.com.michelon.softimob.aplicacao.service.CidadeService;
 import br.com.michelon.softimob.aplicacao.service.EstadoService;
+import br.com.michelon.softimob.aplicacao.service.RuaService;
 import br.com.michelon.softimob.modelo.Bairro;
 import br.com.michelon.softimob.modelo.Cidade;
 import br.com.michelon.softimob.modelo.Endereco;
@@ -42,6 +50,9 @@ public class EnderecoGroup extends Group {
 	private WritableValue value = WritableValue.withValueType(Endereco.class);
 
 	private EstadoService estadoService = new EstadoService();
+	private CidadeService cidadeService = new CidadeService();
+	private BairroService bairroService = new BairroService();
+	private RuaService ruaService = new RuaService();
 	private ComboViewer cvUF;
 
 	public EnderecoGroup(Composite parent, Endereco endereco, int style) {
@@ -66,6 +77,35 @@ public class EnderecoGroup extends Group {
 		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_1.widthHint = 124;
 		txtCep.setLayoutData(gd_text_1);
+		txtCep.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				Text txt = (Text) e.widget;
+				String txtCep = NumberHelper.extractNumbers(txt.getText());
+				
+				CEP cep = CEPServiceFactory.getCEPService().obtemPorNumeroCEP(txtCep);
+				
+				Rua rua = ruaService.findByNome(cep.getLogradouro());
+				if(rua == null){
+					Bairro bairro = bairroService.findByNome(cep.getBairro());
+					if(bairro == null){
+						Cidade cidade = cidadeService.findByNome(cep.getLocalidade());
+						if(cidade == null){
+							Estado estado = estadoService.findByUf(cep.getUf());
+							if(estado != null){
+								selecionarEstado(estado);
+							}
+						} else {
+							selecionarCidade(cidade);
+						}
+					} else {
+						selecionarBairro(bairro);
+					}
+				} else {
+					selecionarRua(rua);
+				}
+			}
+		});
 		new Label(this, SWT.NONE);
 
 		Label lblUf = new Label(this, SWT.NONE);
@@ -189,10 +229,10 @@ public class EnderecoGroup extends Group {
 			Estado estado = cidade.getEstado();
 			Rua rua = endereco.getRua();
 			
-			cvUF.setSelection(new StructuredSelection(estado));
-			cvCidades.setSelection(new StructuredSelection(cidade));
-			cvBairros.setSelection(new StructuredSelection(bairro));
-			cvRuas.setSelection(new StructuredSelection(rua));
+			selecionarEstado(estado);
+			selecionarCidade(cidade);
+			selecionarBairro(bairro);
+			selecionarRua(rua);
 		} else {
 			cvCidades.setInput(null);
 			cvBairros.setInput(null);
@@ -235,5 +275,24 @@ public class EnderecoGroup extends Group {
 		bindingContext.bindValue(observeSingleSelectionCvRuas, valueRuaObserveDetailValue, null, null);
 		//
 		return bindingContext;
+	}
+
+	private void selecionarRua(Rua rua) {
+		selecionarBairro(rua.getBairro());
+		cvRuas.setSelection(new StructuredSelection(rua));
+	}
+
+	private void selecionarBairro(Bairro bairro) {
+		selecionarCidade(bairro.getCidade());
+		cvBairros.setSelection(new StructuredSelection(bairro));
+	}
+
+	private void selecionarCidade(Cidade cidade) {
+		selecionarEstado(cidade.getEstado());
+		cvCidades.setSelection(new StructuredSelection(cidade));
+	}
+
+	private void selecionarEstado(Estado estado) {
+		cvUF.setSelection(new StructuredSelection(estado));
 	}
 }

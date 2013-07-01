@@ -20,5 +20,9 @@ public class CidadeService extends GenericService<Cidade>{
 	protected CidadeDAO getRepository() {
 		return (CidadeDAO) super.getRepository();
 	}
+
+	public Cidade findByNome(String nome) {
+		return getRepository().findByNome(nome);
+	}
 	
 }

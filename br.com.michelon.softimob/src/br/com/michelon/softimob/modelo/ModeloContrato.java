@@ -50,4 +50,9 @@ public class ModeloContrato implements Serializable{
 		this.arquivo = arquivo;
 	}
 	
+	@Override
+	public String toString() {
+		return nome;
+	}
+	
 }

@@ -20,5 +20,9 @@ public class RuaService extends GenericService<Rua>{
 	public List<Rua> findRuasByBairro(Bairro bairro) {
 		return getRepository().findRuaByBairro(bairro);
 	}
+
+	public Rua findByNome(String nome) {
+		return getRepository().findByNome(nome);
+	}
 	
 }

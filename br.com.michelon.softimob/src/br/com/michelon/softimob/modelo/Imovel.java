@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
@@ -19,6 +20,8 @@ import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoServic
 import br.com.michelon.softimob.aplicacao.service.FeedbackService;
 import br.com.michelon.softimob.aplicacao.service.PropostaService;
 import br.com.michelon.softimob.aplicacao.service.ReservaService;
+
+import com.google.common.collect.Lists;
 
 @Entity
 public class Imovel implements Serializable{
@@ -48,8 +51,11 @@ public class Imovel implements Serializable{
 	@Column
 	private String observacoes;
 	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional=false)
+	@OneToOne(cascade = CascadeType.ALL, optional=false)
 	private Endereco endereco = new Endereco();
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Foto> fotos = Lists.newArrayList();
 	
 	public List<ContratoPrestacaoServico> getContratos() {
 		return new ContratoPrestacaoServicoService().findByImovel(this);
@@ -131,6 +137,14 @@ public class Imovel implements Serializable{
 		this.observacoes = observacoes;
 	}
 
+	public List<Foto> getFotos() {
+		return fotos;
+	}
+	
+	public void setFotos(List<Foto> fotos) {
+		this.fotos = fotos;
+	}
+	
 	@Override
 	public String toString() {
 		return this.id + " - " + this.endereco.toString() ;

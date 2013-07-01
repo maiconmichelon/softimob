@@ -10,5 +10,7 @@ import br.com.michelon.softimob.modelo.Cidade;
 public interface BairroDAO extends CrudRepository<Bairro, Long>{
 
 	public List<Bairro> findBairroByCidade(Cidade cidade);
+
+	public Bairro findByNome(String nome);
 	
 }

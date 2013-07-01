@@ -13,5 +13,7 @@ public interface RuaDAO extends CrudRepository<Rua, Long>{
 
 	@Query(value="SELECT r FROM Rua r WHERE r.bairro = :bairro")
 	public List<Rua> findRuaByBairro(@Param(value="bairro") Bairro bairro);
+
+	public Rua findByNome(String nome);
 	
 }

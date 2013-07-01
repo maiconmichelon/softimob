@@ -142,8 +142,16 @@ public abstract class GenericEditor<T> extends EditorPart {
 		return false;
 	}
 	
-	@SuppressWarnings("unchecked")
+	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, TableViewer tv){
+		addItens(service, value, tv, null);
+	}
+	
 	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, TableViewer tv, List<Y> list){
+		addItens(service, value, tv, true, getCurrentObject());
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, TableViewer tv, boolean resetValue, Object father){
 		if(!salvar(service, value))
 			return;
 			
@@ -151,12 +159,15 @@ public abstract class GenericEditor<T> extends EditorPart {
 		if(!elementos.contains(value.getValue()))
 			elementos.add((Y) value.getValue());
 
+		
 		//Aqui ele tenta resetar o value
-		try {
-			Class<Y> clazz = (Class<Y>) value.getValue().getClass();
-			value.setValue(clazz.getConstructor(getCurrentObject().getClass()).newInstance(getCurrentObject()));
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(resetValue){
+			try {
+				Class<Y> clazz = (Class<Y>) value.getValue().getClass();
+				value.setValue(clazz.getConstructor(getCurrentObject().getClass()).newInstance(father));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		tv.refresh();

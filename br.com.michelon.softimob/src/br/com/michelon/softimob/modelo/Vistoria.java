@@ -43,8 +43,12 @@ public class Vistoria implements Serializable{
 	@SuppressWarnings("unused")
 	private Vistoria(){}
 	
-	public Vistoria(VendaAluguel vendaAluguel){
-		this.vendaAluguel = vendaAluguel;
+	public Vistoria(Venda venda){
+		this.vendaAluguel = venda;
+	}
+	
+	public Vistoria(Aluguel aluguel){
+		this.vendaAluguel = aluguel;
 	}
 	
 	public Long getId() {

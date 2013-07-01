@@ -8,6 +8,7 @@ import org.eclipse.core.internal.databinding.validation.StringToDateValidator;
 import org.eclipse.core.internal.databinding.validation.StringToIntegerValidator;
 
 import br.com.michelon.softimob.tela.binding.convert.DateToStringConverter;
+import br.com.michelon.softimob.tela.binding.convert.ExtractNumbersConverter;
 
 @SuppressWarnings("restriction")
 public class UVSHelper {
@@ -89,6 +90,14 @@ public class UVSHelper {
 		DateToStringConverter converter = new DateToStringConverter();
 		updateValueStrategy.setConverter(converter);
 		
+		return updateValueStrategy;
+	}
+
+	public static UpdateValueStrategy uvsExtractNumbers() {
+		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
+		
+		updateValueStrategy.setConverter(new ExtractNumbersConverter());
+
 		return updateValueStrategy;
 	}
 	

@@ -62,4 +62,9 @@ public class CheckList {
 		this.ativo = ativo;
 	}
 	
+	@Override
+	public String toString() {
+		return nome;
+	}
+	
 }

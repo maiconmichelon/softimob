@@ -18,12 +18,14 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.ReflectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
+import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.aplicacao.service.ClienteService;
 import br.com.michelon.softimob.aplicacao.service.ComissionadoService;
 import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
 import br.com.michelon.softimob.aplicacao.service.FuncionarioService;
 import br.com.michelon.softimob.aplicacao.service.IndiceService;
 import br.com.michelon.softimob.aplicacao.service.ModeloContratoService;
+import br.com.michelon.softimob.aplicacao.service.OrigemContaService;
 import br.com.michelon.softimob.aplicacao.service.PessoaFisicaService;
 import br.com.michelon.softimob.aplicacao.service.PlanoContaService;
 import br.com.michelon.softimob.aplicacao.service.TipoComodoService;
@@ -98,7 +100,8 @@ public class ListElementDialogHelper {
 		CONTRATO_SERVICO("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16),
 		CHECK_LIST("Modelos de check list", "Selecione uma check list", ImageRepository.CHECKLIST_16),
 		INDICE("Índices", "Selecione um índice", ImageRepository.INDICE_16), 
-		PESSOA_FISICA("Pessoas Físicas", "Selecione uma pessoa física", ImageRepository.CLIENTE_16);
+		PESSOA_FISICA("Pessoas Físicas", "Selecione uma pessoa física", ImageRepository.CLIENTE_16),
+		ORIGEM_CONTA("Origens de Contas", "Selecione uma origem para sua conta", ImageRepository.ORIGEM_CONTA_16)
 		;
 		
 		private final String title;
@@ -185,13 +188,15 @@ public class ListElementDialogHelper {
 			} else if(equals(CONTRATO_SERVICO)){
 				return new ContratoPrestacaoServicoService().findAll().toArray();
 			} else if(equals(CHECK_LIST)){
-				return new ModeloContratoService().findAll().toArray();//FIXME ARRUMAR AQUI POIS é ContratoPrestacaoServicoService, usei o modeloContrato para tirar um print
+				return new CheckListService().findAll().toArray();
 			} else if(equals(INDICE)){
 				return new IndiceService().findAll().toArray();
 			} else if(equals(COMISSIONADO)){
 				return new ComissionadoService().findAll().toArray();
 			} else if(equals(PESSOA_FISICA)){
 				return new PessoaFisicaService().findAll().toArray();
+			} else if(equals(ORIGEM_CONTA)){
+				return new OrigemContaService().findAll().toArray();
 			} else{
 				return null;
 			}

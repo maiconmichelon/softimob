@@ -3,6 +3,7 @@ package br.com.michelon.softimob.modelo;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,9 +27,19 @@ public class AcontecimentoChamado implements Serializable{
 	@ManyToOne(optional=false)
 	private Funcionario funcionario;
 	
+	@ManyToOne
+	private ChamadoReforma chamadoReforma;
+	
 	@Column(nullable=false)
 	private String descricao;
 
+	public AcontecimentoChamado(ChamadoReforma chamadoReforma){
+		this.chamadoReforma = chamadoReforma;
+	}
+	
+	@SuppressWarnings("unused")
+	private AcontecimentoChamado(){}
+	
 	public Long getId() {
 		return id;
 	}
@@ -59,6 +70,14 @@ public class AcontecimentoChamado implements Serializable{
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	public ChamadoReforma getChamadoReforma() {
+		return chamadoReforma;
+	}
+	
+	public void setChamadoReforma(ChamadoReforma chamadoReforma) {
+		this.chamadoReforma = chamadoReforma;
 	}
 	
 }

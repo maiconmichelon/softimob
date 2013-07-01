@@ -14,4 +14,6 @@ public interface CidadeDAO extends CrudRepository<Cidade, Long>{
 	@Query(value = "SELECT c FROM Cidade c WHERE c.estado = :uf")
 	public List<Cidade> findCidadesByEstado(@Param(value="uf") Estado estado);
 
+	public Cidade findByNome(String nome);
+
 }

@@ -1,10 +1,12 @@
 package br.com.michelon.softimob.tela.editor;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -31,6 +33,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
@@ -38,6 +41,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.aplicacao.helper.FileHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
@@ -53,12 +57,14 @@ import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.aplicacao.service.PropostaService;
 import br.com.michelon.softimob.aplicacao.service.ReservaService;
 import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
+import br.com.michelon.softimob.modelo.ArquivoFoto;
 import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.modelo.Chave.LocalizacaoChave;
 import br.com.michelon.softimob.modelo.Comodo;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico.TipoContrato;
 import br.com.michelon.softimob.modelo.Feedback;
+import br.com.michelon.softimob.modelo.Foto;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.Proposta;
 import br.com.michelon.softimob.modelo.Reserva;
@@ -92,7 +98,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	
 	private Text txtProprietario;
 	private Text text_2;
-	private Text text_3;
+	private Text txtArquivoFoto;
 	private Text text_5;
 	private Text text_11;
 	private Text text_12;
@@ -223,11 +229,33 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblFotos.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFotos.setText("Fotos");
 		
-		text_3 = new Text(composite, SWT.BORDER);
-		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		txtArquivoFoto = new Text(composite, SWT.BORDER);
+		txtArquivoFoto.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
 		Button btnSelecionar_8 = new Button(composite, SWT.NONE);
 		btnSelecionar_8.setText("...");
+		btnSelecionar_8.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog dialog = new FileDialog(ShellHelper.getActiveShell());
+				dialog.setFilterExtensions(new String[]{"*.png", "*.jpg"});
+				
+				String caminho = dialog.open();
+				
+				if(caminho == null)
+					return;
+				
+				File arquivo = new File(caminho);
+				
+				Foto foto = new Foto();
+				foto.setNome(arquivo.getName());
+				foto.setArquivoFoto(new ArquivoFoto(FileHelper.getBytes(arquivo)));
+				
+				getCurrentObject().getFotos().add(foto);
+				
+				atualizaTextArquivoFotos();
+			}
+		});
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
@@ -716,6 +744,17 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		criarTabelaLocacoes(composite_6);
 	}
 	
+	protected void atualizaTextArquivoFotos() {
+		if(txtArquivoFoto == null)
+			return;
+		
+		String texto = StringUtils.EMPTY;
+		for(Foto foto : getCurrentObject().getFotos()){
+			texto += foto.getNome() + ";";
+		}
+		txtArquivoFoto.setText(texto);
+	}
+
 	@Override
 	protected void afterSetIObservableValue() {
 		Imovel imovel = getCurrentObject();
@@ -729,6 +768,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		if(grpEndereco != null)
 			grpEndereco.setEndereco(getCurrentObject().getEndereco());
+		
+		atualizaTextArquivoFotos();
 	}
 	
 	private void criarTabelaContratoPrestacaoServico(Composite composite) {
@@ -1042,8 +1083,6 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		IObservableValue observeSelectionBtnDivulgarObserveWidget = WidgetProperties.selection().observe(btnDivulgar);
 		IObservableValue valueContratoDivulgarObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "divulgar", Boolean.class).observeDetail(valueContrato);
 		bindingContext.bindValue(observeSelectionBtnDivulgarObserveWidget, valueContratoDivulgarObserveDetailValue, null, null);
-		//
-//		bindTables(bindingContext);
 		//
 		return bindingContext;
 	}

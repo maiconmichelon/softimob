@@ -5,9 +5,15 @@ import java.util.List;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.nebula.widgets.xviewer.XViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
@@ -70,6 +76,26 @@ public class ImovelView extends GenericView<Imovel>{
 		return service.findAll();
 	}
 
+	@Override
+	protected void setMenuItems(Menu menu) {
+		super.setMenuItems(menu);
+		
+		MenuItem miFotos = new MenuItem(menu, SWT.BORDER);
+		miFotos.setText("Visualizar Fotos");
+		miFotos.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Imovel imovel = getSelecionado();
+				try {
+					PhotosView showView = (PhotosView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PhotosView.ID);
+					showView.setFotos(imovel.getFotos());
+				} catch (PartInitException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+	}
+	
 	@Override
 	protected ColumnViewer criarTabela(Composite composite) {
 		Composite cpTable = new Composite(composite, SWT.NONE);

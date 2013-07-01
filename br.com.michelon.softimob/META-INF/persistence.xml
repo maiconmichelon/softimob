@@ -4,6 +4,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> 
      <class>br.com.michelon.softimob.modelo.AcontecimentoChamado</class>
     <class>br.com.michelon.softimob.modelo.Aluguel</class>
+    <class>br.com.michelon.softimob.modelo.ArquivoFoto</class>
     <class>br.com.michelon.softimob.modelo.Bairro</class>
     <class>br.com.michelon.softimob.modelo.ChamadoReforma</class>
     <class>br.com.michelon.softimob.modelo.Chave</class>
@@ -18,7 +19,9 @@
     <class>br.com.michelon.softimob.modelo.Endereco</class>
     <class>br.com.michelon.softimob.modelo.Estado</class>
     <class>br.com.michelon.softimob.modelo.Feedback</class>
+    <class>br.com.michelon.softimob.modelo.Foto</class>
     <class>br.com.michelon.softimob.modelo.Funcionario</class>
+    <class>br.com.michelon.softimob.modelo.FinalizacaoChamadoReforma</class>
     <class>br.com.michelon.softimob.modelo.Imovel</class>
     <class>br.com.michelon.softimob.modelo.Indice</class>
     <class>br.com.michelon.softimob.modelo.IndiceMes</class>

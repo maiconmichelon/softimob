@@ -20,5 +20,9 @@ public class BairroService extends GenericService<Bairro>{
 	protected BairroDAO getRepository() {
 		return (BairroDAO) super.getRepository();
 	}
+
+	public Bairro findByNome(String nome) {
+		return getRepository().findByNome(nome);
+	}
 	
 }

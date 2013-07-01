@@ -5,20 +5,22 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import com.google.common.collect.Lists;
+import br.com.michelon.softimob.aplicacao.service.AcontecimentoChamadoService;
 
 @Entity
 public class ChamadoReforma implements Serializable, Pendencia{
@@ -32,35 +34,22 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Aluguel aluguel;
 	
+	@NotNull(message = "A data do chamado não pode ser vazia")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataAbertura;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataFechamento;
+	private Date data;
 	
 	@ManyToOne
-	private Funcionario funcionarioAbertura;
+	private Funcionario funcionario;
 	
-	@ManyToOne
-	private Funcionario funcionarioFechamento;
-	
+	@NotEmpty(message = "A descrição do problema não pode ser vazia.")
 	@Column(nullable = false)
 	private String problema;
 	
-	@OneToMany(orphanRemoval = true)
-	private List<AcontecimentoChamado> acontecimentos = Lists.newArrayList();
-	
-	@Column
-	private Integer status;
-
-	@Column(nullable = false)
-	private String descricaoConclusao;
-
-	@OneToOne
-	private ContaPagarReceber conta;
+	@OneToOne(cascade = CascadeType.ALL)
+	private FinalizacaoChamadoReforma finalizacao;
 	
 	public ChamadoReforma(Aluguel aluguel){
 		this.aluguel = aluguel;
@@ -77,39 +66,6 @@ public class ChamadoReforma implements Serializable, Pendencia{
 		this.id = id;
 	}
 
-	public Date getDataAbertura() {
-		return dataAbertura;
-	}
-
-	public void setDataAbertura(Date dataAbertura) {
-		this.dataAbertura = dataAbertura;
-	}
-
-	@Override
-	public Date getDataFechamento() {
-		return dataFechamento;
-	}
-
-	public void setDataFechamento(Date dataFechamento) {
-		this.dataFechamento = dataFechamento;
-	}
-
-	public Funcionario getFuncionarioAbertura() {
-		return funcionarioAbertura;
-	}
-
-	public void setFuncionarioAbertura(Funcionario funcionarioAbertura) {
-		this.funcionarioAbertura = funcionarioAbertura;
-	}
-
-	public Funcionario getFuncionarioFechamento() {
-		return funcionarioFechamento;
-	}
-
-	public void setFuncionarioFechamento(Funcionario funcionarioFechamento) {
-		this.funcionarioFechamento = funcionarioFechamento;
-	}
-
 	public String getProblema() {
 		return problema;
 	}
@@ -119,32 +75,12 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	}
 
 	public List<AcontecimentoChamado> getAcontecimentos() {
-		return acontecimentos;
-	}
-
-	public void setAcontecimentos(List<AcontecimentoChamado> acontecimentos) {
-		this.acontecimentos = acontecimentos;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public String getDescricaoConclusao() {
-		return descricaoConclusao;
-	}
-
-	public void setDescricaoConclusao(String descricaoConclusao) {
-		this.descricaoConclusao = descricaoConclusao;
+		return new AcontecimentoChamadoService().findByChamadoReforma(this);
 	}
 
 	@Override
 	public Date getDataGeracao() {
-		return dataAbertura;
+		return data;
 	}
 
 	@Override
@@ -155,6 +91,22 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	@Override
 	public String getDescricao() {
 		return "Chamado de Reforma"; 
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 
 	@Override
@@ -175,20 +127,26 @@ public class ChamadoReforma implements Serializable, Pendencia{
 		return null;
 	}
 
-	public ContaPagarReceber getConta() {
-		return conta;
+	@Override
+	public Date getDataFechamento() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-
-	public void setConta(ContaPagarReceber conta) {
-		this.conta = conta;
-	}
-
+	
 	public Aluguel getAluguel() {
 		return aluguel;
 	}
 
 	public void setAluguel(Aluguel aluguel) {
 		this.aluguel = aluguel;
+	}
+
+	public FinalizacaoChamadoReforma getFinalizacao() {
+		return finalizacao;
+	}
+
+	public void setFinalizacao(FinalizacaoChamadoReforma finalizacao) {
+		this.finalizacao = finalizacao;
 	}
 	
 }

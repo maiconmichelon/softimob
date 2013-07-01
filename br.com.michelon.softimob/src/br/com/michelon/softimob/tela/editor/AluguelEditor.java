@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.tela.editor;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.core.databinding.Binding;
@@ -22,6 +23,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -30,16 +32,23 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.service.AcontecimentoChamadoService;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
+import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.VistoriaService;
@@ -50,7 +59,9 @@ import br.com.michelon.softimob.modelo.Cliente;
 import br.com.michelon.softimob.modelo.Comissao;
 import br.com.michelon.softimob.modelo.Comissionado;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
+import br.com.michelon.softimob.modelo.FinalizacaoChamadoReforma;
 import br.com.michelon.softimob.modelo.ItemCheckList;
+import br.com.michelon.softimob.modelo.ParametrosEmpresa;
 import br.com.michelon.softimob.modelo.Vistoria;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.dialog.AdicionarContaPagarReformaDialog;
@@ -58,7 +69,6 @@ import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
-import de.ralfebert.rcputils.properties.IValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class AluguelEditor extends GenericEditor<Aluguel>{
@@ -67,6 +77,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private WritableValue valueVistoria = WritableValue.withValueType(Vistoria.class);
 	private WritableValue valueChamado = WritableValue.withValueType(ChamadoReforma.class);
 	private WritableValue valueAcontecimentoChamado = WritableValue.withValueType(AcontecimentoChamado.class);
+	private WritableValue valueFinalizacaoChamado = WritableValue.withValueType(FinalizacaoChamadoReforma.class);
 	private WritableValue valueComissao = WritableValue.withValueType(Comissao.class);
 	
 	private AluguelService service = new AluguelService();
@@ -76,7 +87,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private Text text_4;
 	private Text text_3;
 	private Text text_2;
-	private Text text_5;
 	private Text text_6;
 	private Text text_7;
 	private Text text_31;
@@ -97,7 +107,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private Text text_11;
 	private Text textChamado;
 
-	private TableViewerBuilder tvbComissao;
 	private TableViewerBuilder tvbChamadoGeral;
 	private TableViewerBuilder tvbAndamentoChamado;
 	private TableViewerBuilder tvbVistoria;
@@ -415,7 +424,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		Button btnSelecionar_4 = new Button(cpAberturaChamado, SWT.NONE);
 		btnSelecionar_4.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnSelecionar_4.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar_4, valueChamado, "funcionarioAbertura");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar_4, valueChamado, "funcionario");
 		
 		Label lblDescrio = new Label(cpAberturaChamado, SWT.NONE);
 		lblDescrio.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -430,6 +439,12 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		button_7.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		button_7.setText("Registrar");
 		button_7.setImage(ImageRepository.SAVE_16.getImage());
+		button_7.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addChamadoReforma(valueChamado);
+			}
+		});
 		
 		CTabItem tbAndamento = new CTabItem(tfChamado, SWT.NONE);
 		tbAndamento.setText("Andamento");
@@ -482,6 +497,12 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		button_8.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		button_8.setText("Registrar");
 		button_8.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		button_8.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addAndamentoChamadoReforma(valueAcontecimentoChamado);
+			}
+		});
 		
 		CTabItem tbtmFinalizar = new CTabItem(tfChamado, SWT.NONE);
 		tbtmFinalizar.setText("Fechamento");
@@ -528,7 +549,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Button btnSelecionar_6 = new Button(composite_13, SWT.NONE);
 		btnSelecionar_6.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar_6, valueChamado, "funcionarioFechamento");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar_6, valueChamado, "funcionario");
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		
@@ -551,12 +572,10 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		btnAdicionar_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
 		btnAdicionar_1.setImage(ImageRepository.ADD_16.getImage());
 		btnAdicionar_1.addSelectionListener(new SelectionAdapter() {
-			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				new AdicionarContaPagarReformaDialog(ShellHelper.getActiveShell()).open();
 			}
-		
 		});
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
@@ -566,6 +585,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		btnFinalizar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				addFinalizacaoChamado(valueFinalizacaoChamado);
 			}
 		});
 		btnFinalizar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
@@ -586,14 +606,68 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		criarTabelaCheckList(composite_3);
 	}
 
+	protected void addChamadoReforma(WritableValue value) {
+		ChamadoReforma chamadoReforma = (ChamadoReforma) value.getValue();
+		
+		if(chamadoReforma.getFinalizacao() != null && !validarComMensagem(chamadoReforma.getFinalizacao()))
+			return;
+		
+		addItens(new ChamadoReformaService(), value, tvChamadoGeral, null);
+		
+		valueAcontecimentoChamado.setValue(new AcontecimentoChamado((ChamadoReforma) valueChamado.getValue()));
+		valueFinalizacaoChamado.setValue(new FinalizacaoChamadoReforma());
+	}
+
+	protected void addAndamentoChamadoReforma(WritableValue value){
+		ChamadoReforma chamadoReforma = (ChamadoReforma)valueChamado.getValue();
+		if(chamadoReforma.getId() == null){
+			DialogHelper.openError("O chamado deve ser salvo primeiro antes de ser adicionado novos acontecimentos a ele.");
+			return;
+		}
+
+		AcontecimentoChamado acontecimento = (AcontecimentoChamado) valueAcontecimentoChamado.getValue();
+
+		if(validarComMensagem(acontecimento)){
+			ChamadoReforma findOne = new ChamadoReformaService().findOne(chamadoReforma.getId());
+			acontecimento.setChamadoReforma(findOne);
+			addItens(new AcontecimentoChamadoService(), valueAcontecimentoChamado, tvAndamentoChamado, true, valueChamado.getValue());
+		}
+	}
+
+	protected void addFinalizacaoChamado(WritableValue value){
+		// O Usuario deve salvar primeiro o chamado de reforma para depois finalizar
+		if(((ChamadoReforma)valueChamado.getValue()).getId() == null){
+			DialogHelper.openError("O chamado deve ser salvo primeiro antes de ser finalizado.");
+			return;
+		}
+		
+		if(validarComMensagem(valueFinalizacaoChamado.getValue()) && validarComMensagem(valueChamado.getValue())){
+			((ChamadoReforma)valueChamado.getValue()).setFinalizacao((FinalizacaoChamadoReforma) valueFinalizacaoChamado.getValue());
+			addItens(new ChamadoReformaService(), valueChamado, tvChamadoGeral, null);
+			
+			valueFinalizacaoChamado.setValue(new FinalizacaoChamadoReforma());
+			valueAcontecimentoChamado.setValue(new AcontecimentoChamado((ChamadoReforma) valueChamado.getValue()));
+		}
+	}
+	
 	@Override
 	protected void afterSetIObservableValue() {
 		valueComissao.setValue(new Comissao(getCurrentObject()));
 		valueChamado.setValue(new ChamadoReforma(getCurrentObject()));
 		valueVistoria.setValue(new Vistoria(getCurrentObject()));
+		valueAcontecimentoChamado.setValue(new AcontecimentoChamado((ChamadoReforma) valueChamado.getValue()));
+		valueFinalizacaoChamado.setValue(new FinalizacaoChamadoReforma());
 	}
 	
 	private void addComissao(WritableValue valueComissao) {
+		Comissao comissao = (Comissao) valueComissao.getValue();
+		comissao.setOrigem(ParametrosEmpresa.getInstance().getTipoContaComissao());
+		
+		Calendar c = Calendar.getInstance();
+		c.setTime(getCurrentObject().getDataAssinaturaContrato());
+		c.set(Calendar.MONTH, c.get(Calendar.MONTH) + 1);
+		
+		comissao.setDataVencimento(c.getTime());
 		
 		addItens(new ComissaoService(), valueComissao, tvComissao, getCurrentObject().getComissoes());
 	}
@@ -605,21 +679,21 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private void criarTabelaComissao(Composite composite){
 		TableViewerBuilder tvbComissao = new TableViewerBuilder(composite);
 		
-		tvbComissao.createColumn("Nome").bindToProperty("funcionario.nome").build();
-		tvbComissao.createColumn("Valor ( % )").bindToValue(new IValue() {
-			//TODO AQUI TEM QUE RECALCULAR VALOR			
-			@Override
-			public void setValue(Object arg0, Object arg1) {
-				// TODO Auto-generated method stub
-			}
-			
-			@Override
-			public Object getValue(Object arg0) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		}).makeEditable().build();
-		tvbComissao.createColumn("Valor (R$)").bindToProperty("valor").makeEditable().build();
+		tvbComissao.createColumn("Nome").bindToProperty("comissionado.nome").build();
+//		tvbComissao.createColumn("Valor ( % )").bindToValue(new IValue() {
+//			//TODO AQUI TEM QUE RECALCULAR VALOR			
+//			@Override
+//			public void setValue(Object arg0, Object arg1) {
+//				// TODO Auto-generated method stub
+//			}
+//			
+//			@Override
+//			public Object getValue(Object arg0) {
+//				// TODO Auto-generated method stub
+//				return null;
+//			}
+//		}).makeEditable().build();
+		tvbComissao.createColumn("Valor (R$)").bindToProperty("valor").build();
 		
 		tvbComissao.setInput(getCurrentObject().getComissoes());
 		
@@ -629,11 +703,26 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private void criarTabelaChamadosGerais(Composite composite){
 		tvbChamadoGeral = new TableViewerBuilder(composite);
 		
-		tvbChamadoGeral.createColumn("Numero").bindToProperty("numero").build();
-		tvbChamadoGeral.createColumn("Data").bindToProperty("dataAbertura").format(new DateStringValueFormatter()).build();
-		tvbChamadoGeral.createColumn("Cliente").bindToProperty("inquilino.nome").build();
+		tvbChamadoGeral.createColumn("Numero").bindToProperty("id").build();
+		tvbChamadoGeral.createColumn("Data").bindToProperty("data").format(new DateStringValueFormatter()).build();
 		tvbChamadoGeral.createColumn("Problema").bindToProperty("problema").build();
-		tvbChamadoGeral.createColumn("Status").bindToProperty("status").build();
+		tvbChamadoGeral.createColumn("Status").bindToProperty("finalizacao.status").build();
+		
+		tvbChamadoGeral.setInput(getCurrentObject().getChamados());
+		
+		Table table = tvbChamadoGeral.getTable();
+		Menu menu = new Menu(table);
+		table.setMenu(menu);
+		
+		WidgetHelper.createMenuItemAlterar(menu, new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ChamadoReforma selecionado = (ChamadoReforma) SelectionHelper.getObject(tvbChamadoGeral.getTableViewer());
+				valueChamado.setValue(selecionado);
+				valueFinalizacaoChamado.setValue(selecionado.getFinalizacao() != null ? selecionado.getFinalizacao() : new FinalizacaoChamadoReforma());
+				tvbAndamentoChamado.setInput(selecionado.getAcontecimentos());
+			}
+		});
 		
 		tvChamadoGeral = tvbChamadoGeral.getTableViewer();
 	}
@@ -653,8 +742,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		tvbVistoria.createColumn("Data da Vistoria").bindToProperty("data").build();
 		tvbVistoria.createColumn("Funcionário").bindToProperty("funcionario.nome").build();
-		tvbVistoria.createColumn("Inquilino").bindToProperty("inquilino.nome").build();
-		tvbVistoria.createColumn("Fotos").bindToProperty("fotos").build();
+		tvbVistoria.createColumn("Fotos").bindToProperty("arquivo").build();
 		tvbVistoria.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
 		
 		tvbVistoria.setInput(getCurrentObject().getVistorias());
@@ -752,7 +840,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		bindingContext.bindValue(observeTextText_8ObserveWidget, valueComissionadoComissaoObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_11ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_11);
-		IObservableValue valueValorComissaoObserveDetailValue = PojoProperties.value(Comissao.class, "valor", BigDecimal.class).observeDetail(value);
+		IObservableValue valueValorComissaoObserveDetailValue = PojoProperties.value(Comissao.class, "valor", BigDecimal.class).observeDetail(valueComissao);
 		Binding bindValorComissao = bindingContext.bindValue(observeTextText_11ObserveWidget, valueValorComissaoObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
 		ControlDecorationSupport.create(bindValorComissao, SWT.LEFT | SWT.TOP);
 		//
@@ -773,11 +861,11 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		bindingContext.bindValue(observeTextTextObserveWidget_1, valueChamadoNumeroObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_35ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_35);
-		IObservableValue valueVistoriaDataAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "dataAbertura", Date.class).observeDetail(valueVistoria);
+		IObservableValue valueVistoriaDataAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "data", Date.class).observeDetail(valueChamado);
 		bindingContext.bindValue(observeTextText_35ObserveWidget, valueVistoriaDataAberturaObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
 		IObservableValue observeTextText_23ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_23);
-		IObservableValue valueChamadoFuncionarioAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "funcionarioAbertura.nome", String.class).observeDetail(valueChamado);
+		IObservableValue valueChamadoFuncionarioAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "funcionario.nome", String.class).observeDetail(valueChamado);
 		bindingContext.bindValue(observeTextText_23ObserveWidget, valueChamadoFuncionarioAberturaObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_24ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_24);
@@ -797,19 +885,19 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		bindingContext.bindValue(observeTextText_28ObserveWidget, valueAcontecimentoChamadoDescricaoObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_36ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_36);
-		IObservableValue valueChamadoDataFechamentoObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "dataFechamento", Date.class).observeDetail(valueChamado);
+		IObservableValue valueChamadoDataFechamentoObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "data", Date.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindValue(observeTextText_36ObserveWidget, valueChamadoDataFechamentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
 		IObservableValue observeSingleSelectionRadioGroupViewer = ViewerProperties.singleSelection().observe(radioGroupViewer);
-		IObservableValue valueChaveLocalizacaoObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "status", Integer.class).observeDetail(valueChamado);
+		IObservableValue valueChaveLocalizacaoObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "status", Integer.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindValue(observeSingleSelectionRadioGroupViewer, valueChaveLocalizacaoObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_25ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_25);
-		IObservableValue valueChamadoFuncionarioFechamentonomeObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "funcionarioFechamento.nome", String.class).observeDetail(valueChamado);
+		IObservableValue valueChamadoFuncionarioFechamentonomeObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "funcionario.nome", String.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindValue(observeTextText_25ObserveWidget, valueChamadoFuncionarioFechamentonomeObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_31ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_31);
-		IObservableValue valueChamadoDescricaoConclusaoObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "descricaoConclusao", String.class).observeDetail(valueChamado);
+		IObservableValue valueChamadoDescricaoConclusaoObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "descricaoConclusao", String.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindValue(observeTextText_31ObserveWidget, valueChamadoDescricaoConclusaoObserveDetailValue, null, null);
 		//
 		return bindingContext;

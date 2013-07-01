@@ -6,4 +6,6 @@ import br.com.michelon.softimob.modelo.Estado;
 
 public interface EstadoDAO extends CrudRepository<Estado, Long> {
 
+	Estado findByUf(String uf);
+
 }
