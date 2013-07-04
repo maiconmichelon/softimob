@@ -1,4 +1,4 @@
-package br.com.michelon.softimob.tela.widget.imovelXViewer;
+package br.com.michelon.softimob.tela.widget.movimentacaoXViewer;
 
 import java.util.List;
 
@@ -15,9 +15,9 @@ import br.com.michelon.softimob.modelo.Comodo;
 import br.com.michelon.softimob.modelo.Feedback;
 import br.com.michelon.softimob.modelo.Imovel;
 
-public class ImovelXViewerLabelProvider extends XViewerLabelProvider {
+public class MovimentacaoContabilXViewerLabelProvider extends XViewerLabelProvider {
 
-	public ImovelXViewerLabelProvider(ImovelXViewer viewer) {
+	public MovimentacaoContabilXViewerLabelProvider(MovimentacaoXViewer viewer) {
 		super(viewer);
 	}
 	

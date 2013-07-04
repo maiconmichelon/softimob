@@ -172,6 +172,29 @@ public abstract class GenericEditor<T> extends EditorPart {
 		
 		tv.refresh();
 	}
+
+//	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, TableViewer tv, List<Y> list){
+//		addItens(value, tv, list, getCurrentObject());
+//	}
+//	
+//	@SuppressWarnings("unchecked")
+//	protected <Y> void addItens(IObservableValue value, TableViewer tv, List<Y> list, Object father){
+//		Y obj = (Y) value.getValue();
+//		if(validarComMensagem(obj)){
+//
+//			if(!list.contains(obj)){
+//				list.add(obj);
+//			}
+//			
+//			tv.refresh();
+//			
+//			try {
+//				value.setValue(obj.getClass().getConstructor(getCurrentObject().getClass()).newInstance(father));
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 	
 	protected boolean validarComMensagem(Object obj){
 		try {

@@ -1,6 +1,5 @@
 package br.com.michelon.softimob.tela.editor;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +32,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
@@ -41,7 +39,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 
-import br.com.michelon.softimob.aplicacao.helper.FileHelper;
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
@@ -57,14 +55,13 @@ import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.aplicacao.service.PropostaService;
 import br.com.michelon.softimob.aplicacao.service.ReservaService;
 import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
-import br.com.michelon.softimob.modelo.ArquivoFoto;
 import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.modelo.Chave.LocalizacaoChave;
 import br.com.michelon.softimob.modelo.Comodo;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico.TipoContrato;
 import br.com.michelon.softimob.modelo.Feedback;
-import br.com.michelon.softimob.modelo.Foto;
+import br.com.michelon.softimob.modelo.Arquivo;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.Proposta;
 import br.com.michelon.softimob.modelo.Reserva;
@@ -77,6 +74,7 @@ import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.EnderecoGroup;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
+import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
 import de.ralfebert.rcputils.properties.BaseValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
@@ -189,7 +187,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		cvTipoImovel.setLabelProvider(new LabelProvider(){
 			@Override
 			public String getText(Object element) {
-				return ((TipoImovel)element).getDescricao();
+				return ((TipoImovel)element).getNome();
 			}
 		});
 		cvTipoImovel.setContentProvider(ArrayContentProvider.getInstance());
@@ -237,21 +235,10 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		btnSelecionar_8.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				FileDialog dialog = new FileDialog(ShellHelper.getActiveShell());
-				dialog.setFilterExtensions(new String[]{"*.png", "*.jpg"});
+				Arquivo photo = DialogHelper.openPhotoDialog();
 				
-				String caminho = dialog.open();
-				
-				if(caminho == null)
-					return;
-				
-				File arquivo = new File(caminho);
-				
-				Foto foto = new Foto();
-				foto.setNome(arquivo.getName());
-				foto.setArquivoFoto(new ArquivoFoto(FileHelper.getBytes(arquivo)));
-				
-				getCurrentObject().getFotos().add(foto);
+				if(photo != null)
+					getCurrentObject().getFotos().add(photo);
 				
 				atualizaTextArquivoFotos();
 			}
@@ -326,8 +313,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		Button button_9 = new Button(grpCmodo, SWT.NONE);
 		button_9.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		button_9.setText("Registrar");
-		button_9.setImage(ImageRepository.SAVE_16.getImage());
+		button_9.setImage(ImageRepository.ADD_16.getImage());
 		button_9.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -375,7 +361,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		new Label(grpChave, SWT.NONE);
 		
 		Button btnAddChave = new Button(grpChave, SWT.NONE);
-		btnAddChave.setImage(ImageRepository.SAVE_16.getImage());
+		btnAddChave.setImage(ImageRepository.ADD_16.getImage());
 		btnAddChave.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -386,7 +372,6 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		gd_btnAddChave.heightHint = 30;
 		gd_btnAddChave.widthHint = 84;
 		btnAddChave.setLayoutData(gd_btnAddChave);
-		btnAddChave.setText("Registrar");
 		
 		CTabItem tbtmHistricos = new CTabItem(tfImovel, SWT.NONE);
 		tbtmHistricos.setText("Feedbacks");
@@ -459,8 +444,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 			}
 		});
 		button_5.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		button_5.setText("Registrar");
-		button_5.setImage(ImageRepository.SAVE_16.getImage());
+		button_5.setImage(ImageRepository.ADD_16.getImage());
 		
 		CTabItem tbtmPropostas = new CTabItem(tfImovel, SWT.NONE);
 		tbtmPropostas.setText("Propostas");
@@ -543,8 +527,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 			}
 		});
 		button_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		button_3.setText("Registrar");
-		button_3.setImage(ImageRepository.SAVE_16.getImage());
+		button_3.setImage(ImageRepository.ADD_16.getImage());
 		
 		{
 			tfImovel.setSelection(0);
@@ -643,8 +626,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 			}
 		});
 		button_22.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		button_22.setText("Registrar");
-		button_22.setImage(ImageRepository.SAVE_16.getImage());
+		button_22.setImage(ImageRepository.ADD_16.getImage());
 		
 		CTabItem tbtmContratoPrestaoDe = new CTabItem(tfImovel, SWT.NONE);
 		tbtmContratoPrestaoDe.setText("Contrato Prestação de Serviço");
@@ -726,8 +708,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		Button btnAdicionar_1 = new Button(grpContratoPrestaoDe, SWT.NONE);
 		btnAdicionar_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnAdicionar_1.setText("Registrar");
-		btnAdicionar_1.setImage(ImageRepository.SAVE_16.getImage());
+		btnAdicionar_1.setImage(ImageRepository.ADD_16.getImage());
 		btnAdicionar_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -749,7 +730,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 			return;
 		
 		String texto = StringUtils.EMPTY;
-		for(Foto foto : getCurrentObject().getFotos()){
+		for(Arquivo foto : getCurrentObject().getFotos()){
 			texto += foto.getNome() + ";";
 		}
 		txtArquivoFoto.setText(texto);
@@ -799,9 +780,9 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbReserva.createColumn("Data da Reserva").setPercentWidth(10).bindToProperty("dataReserva").format(new DateStringValueFormatter()).build();
 		tvbReserva.createColumn("Data de Vencimento").setPercentWidth(10).bindToProperty("dataVencimento").format(new DateStringValueFormatter()).build();
 		tvbReserva.createColumn("Cliente").setPercentWidth(15).bindToProperty("cliente.nome").build();
-		tvbReserva.createColumn("Funcionário").setPercentWidth(15).bindToProperty("funcionario.nome").build();
+		tvbReserva.createColumn("Funcionário").setPercentWidth(15).bindToProperty("funcionario.nome").format(new NullStringValueFormatter()).build();
 		tvbReserva.createColumn("Valor").bindToProperty("valor").setPercentWidth(10).format(FormatterHelper.getCurrencyFormatter()).build();
-		tvbReserva.createColumn("Observações").setPercentWidth(40).bindToProperty("observacoes").build();
+		tvbReserva.createColumn("Observações").setPercentWidth(40).bindToProperty("observacoes").format(new NullStringValueFormatter()).build();
 		
 		tvbReserva.setInput(((Imovel)value.getValue()).getReservas());
 		
@@ -856,9 +837,9 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 			
 		tvbProposta.createColumn("Data da Proposta").setPercentWidth(10).bindToProperty("data").format(new DateStringValueFormatter()).build();
 		tvbProposta.createColumn("Cliente").setPercentWidth(15).bindToProperty("cliente.nome").build();
-		tvbProposta.createColumn("Funcionário").setPercentWidth(15).bindToProperty("funcionario.nome").build();
+		tvbProposta.createColumn("Funcionário").setPercentWidth(15).bindToProperty("funcionario.nome").format(new NullStringValueFormatter()).build();
 		tvbProposta.createColumn("Valor").bindToProperty("valor").format(FormatterHelper.getCurrencyFormatter()).build();
-		tvbProposta.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
+		tvbProposta.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").format(new NullStringValueFormatter()).build();
 		
 		tvbProposta.setInput(((Imovel)value.getValue()).getPropostas());
 		
@@ -1083,6 +1064,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		IObservableValue observeSelectionBtnDivulgarObserveWidget = WidgetProperties.selection().observe(btnDivulgar);
 		IObservableValue valueContratoDivulgarObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "divulgar", Boolean.class).observeDetail(valueContrato);
 		bindingContext.bindValue(observeSelectionBtnDivulgarObserveWidget, valueContratoDivulgarObserveDetailValue, null, null);
+		//
+//		bindTables(bindingContext);
 		//
 		return bindingContext;
 	}

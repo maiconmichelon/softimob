@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.google.common.collect.Lists;
 
 @Entity
@@ -21,7 +23,7 @@ public class Indice implements Serializable{
 	@Id @GeneratedValue
 	private Long id;
 	
-	@NotNull(message = "O nome do índice não pode ser vazio")
+	@NotEmpty(message = "O nome do índice não pode ser vazio")
 	@Column(nullable = false)
 	private String nome;
 	

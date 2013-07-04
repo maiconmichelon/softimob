@@ -8,7 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class OrigemConta implements Serializable{
@@ -18,7 +19,7 @@ public class OrigemConta implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull(message = "Nome não pode ser vazio")
+	@NotEmpty(message = "Nome não pode ser vazio")
 	@Column(unique = true, nullable = false)
 	private String nome;
 

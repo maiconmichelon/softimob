@@ -87,7 +87,7 @@ public class Chave implements Serializable{
 	public LocalizacaoChave getLocalizacao() {
 		return localizacao;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -110,7 +110,7 @@ public class Chave implements Serializable{
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		return true;
+		return false;
 	}
-
+	
 }

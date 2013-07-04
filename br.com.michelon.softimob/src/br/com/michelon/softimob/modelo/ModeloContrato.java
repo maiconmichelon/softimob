@@ -2,12 +2,14 @@ package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -23,9 +25,10 @@ public class ModeloContrato implements Serializable{
 	@Column(nullable = false, unique = true)
 	private String nome;
 	
-	@Lob
-	private Byte[] arquivo;
-
+	@NotNull(message = "Insira o arquivo referente ao modelo")
+	@OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Arquivo arquivo;
+	
 	public Long getId() {
 		return id;
 	}
@@ -42,11 +45,11 @@ public class ModeloContrato implements Serializable{
 		this.nome = nome;
 	}
 
-	public Byte[] getArquivo() {
+	public Arquivo getArquivo() {
 		return arquivo;
 	}
-
-	public void setArquivo(Byte[] arquivo) {
+	
+	public void setArquivo(Arquivo arquivo) {
 		this.arquivo = arquivo;
 	}
 	

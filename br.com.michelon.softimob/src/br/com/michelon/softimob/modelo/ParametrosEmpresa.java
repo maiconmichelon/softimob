@@ -261,5 +261,21 @@ public class ParametrosEmpresa implements Serializable{
 	public void setTipoContaPrestacaoServico(OrigemConta tipoContaPrestacaoServico) {
 		this.tipoContaPrestacaoServico = tipoContaPrestacaoServico;
 	}
+
+	public PlanoConta getContaDescontoConcedido() {
+		return null;
+	}
+
+	public PlanoConta getContaJurosRecebido() {
+		return null;
+	}
+
+	public PlanoConta getContaJurosPagos() {
+		return null;
+	}
+
+	public PlanoConta getContaDescontoObtidos() {
+		return null;
+	}
 	
 }

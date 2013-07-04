@@ -5,6 +5,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.ralfebert.rcputils.properties.IValueFormatter;
 
 public class FormatterHelper {
@@ -40,6 +42,8 @@ public class FormatterHelper {
 	}
 	
 	public static String formatObject(Object obj){
+		if(obj == null)
+			return StringUtils.EMPTY;
 		if(obj instanceof Date)
 			return getSimpleDateFormat().format(obj);
 		if(obj instanceof BigDecimal)

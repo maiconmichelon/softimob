@@ -5,6 +5,8 @@ import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -12,8 +14,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ModeloContratoService;
+import br.com.michelon.softimob.modelo.Arquivo;
 import br.com.michelon.softimob.modelo.ModeloContrato;
 
 public class ModeloContratoEditor extends GenericEditor<ModeloContrato> {
@@ -61,6 +65,18 @@ public class ModeloContratoEditor extends GenericEditor<ModeloContrato> {
 		
 		Button btnSelecionar = new Button(parent, SWT.NONE);
 		btnSelecionar.setText("...");
+		btnSelecionar.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Arquivo openFileDialog = DialogHelper.openDocDialog();
+				
+				if(openFileDialog != null){
+					getCurrentObject().setArquivo(openFileDialog);
+					text_1.setText(openFileDialog.getNome());
+				}
+				
+			}
+		});
 	}
 
 	@Override

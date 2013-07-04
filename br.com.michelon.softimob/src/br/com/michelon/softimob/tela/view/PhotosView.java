@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
 
-import br.com.michelon.softimob.modelo.Foto;
+import br.com.michelon.softimob.modelo.Arquivo;
 
 public class PhotosView extends ViewPart {
 
@@ -37,13 +37,13 @@ public class PhotosView extends ViewPart {
 	public PhotosView() {
 	}
 
-	public void setFotos(List<Foto> fotos) {
-		for (Foto foto : fotos) {
-			if(foto.getArquivoFoto() == null)
+	public void setFotos(List<Arquivo> fotos) {
+		for (Arquivo foto : fotos) {
+			if(foto.getArquivo() == null)
 				continue;
 			
 			try {
-				ByteArrayInputStream in = new ByteArrayInputStream(foto.getArquivoFoto().getArquivo());
+				ByteArrayInputStream in = new ByteArrayInputStream(foto.getArquivo().getArquivo());
 				DataInputStream readIn = new DataInputStream(in);
 
 				ImageData imdata = new ImageData(readIn);

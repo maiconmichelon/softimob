@@ -143,7 +143,7 @@ public class TipoComodoEditor extends GenericEditor<TipoComodo>{
 		tvcNomeTipoImovel.setLabelProvider(new ColumnLabelProvider(){
 			@Override
 			public String getText(Object element) {
-				return ((TipoImovelTipoComodo)element).getTipoImovel().getDescricao();
+				return ((TipoImovelTipoComodo)element).getTipoImovel().getNome();
 			}
 		});
 		

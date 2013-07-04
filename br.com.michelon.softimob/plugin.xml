@@ -584,6 +584,39 @@
                </parameter>
             </command>
          </menu>
+         <menu
+               label="Relatórios">
+            <command
+                  commandId="br.com.michelon.softimob.command1"
+                  label="Aluguéis"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command1"
+                  label="Balancete"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command1"
+                  label="Clientes"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command1"
+                  label="Contas a Pagar / Receber"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command1"
+                  label="Razão"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command1"
+                  label="Vendas"
+                  style="push">
+            </command>
+         </menu>
       </menuContribution>
    </extension>
    <extension

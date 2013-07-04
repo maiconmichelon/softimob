@@ -24,13 +24,12 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Nome", "descricao", 60));
+		atributos.add(new ColumnProperties("Nome", "nome", 60));
 	}
 	
 	@Override
 	protected void excluir(List<TipoImovel> objetos) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package br.com.michelon.softimob.tela.editor;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -21,8 +20,6 @@ import br.com.michelon.softimob.modelo.OrigemConta;
 public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.OrigemContaEditor";
-	
-	private WritableValue value = WritableValue.withValueType(OrigemConta.class);
 	
 	private OrigemContaService service = new OrigemContaService();
 	

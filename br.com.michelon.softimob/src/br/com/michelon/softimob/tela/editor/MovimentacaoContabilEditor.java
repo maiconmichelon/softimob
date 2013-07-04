@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -171,6 +170,17 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 			public void widgetSelected(SelectionEvent e) {
 				MovimentacaoContabil mov = getCurrentObject();
 				ModeloLancamentos mod = (ModeloLancamentos) valueModeloLcto.getValue();
+				
+				if(mod.getContaCredito() == null && mod.getContaDebito() == null){
+					DialogHelper.openWarning("Informe pelo menos uma conta");
+					return;
+				}
+				
+				if(mod.getValor() == null || mod.getValor().signum() <= 0){
+					DialogHelper.openWarning("Informe um valor que zero.");
+					return;
+				}
+					
 				mov.getLancamentos().addAll(mod.getLancamentos());
 				
 				tvLancamentosCredito.refresh();

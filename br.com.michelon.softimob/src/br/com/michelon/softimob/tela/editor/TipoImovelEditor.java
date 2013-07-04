@@ -56,7 +56,7 @@ public class TipoImovelEditor extends GenericEditor<TipoImovel>{
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
-		IObservableValue valueDescricaoObserveDetailValue = PojoProperties.value(TipoImovel.class, "descricao", String.class).observeDetail(value);
+		IObservableValue valueDescricaoObserveDetailValue = PojoProperties.value(TipoImovel.class, "nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueDescricaoObserveDetailValue, null, null);
 		//
 		return bindingContext;

@@ -54,9 +54,51 @@ public class Imovel implements Serializable{
 	@OneToOne(cascade = CascadeType.ALL, optional=false)
 	private Endereco endereco = new Endereco();
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Foto> fotos = Lists.newArrayList();
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Arquivo> fotos = Lists.newArrayList();
 	
+//	@OneToMany(cascade = CascadeType.ALL)
+//	private List<ContratoPrestacaoServico> contratos = Lists.newArrayList();
+//	
+//	@OneToMany(cascade = CascadeType.ALL)
+//	private List<Proposta> propostas = Lists.newArrayList();
+//	
+//	@OneToMany(cascade = CascadeType.ALL)
+//	private List<Reserva> reservas = Lists.newArrayList();
+//	
+//	@OneToMany(cascade = CascadeType.ALL)
+//	private List<Comodo> comodos = Lists.newArrayList();
+//
+//	@OneToMany(cascade = CascadeType.ALL)
+//	private List<Chave> chaves = Lists.newArrayList();
+//	
+//	@OneToMany(cascade = CascadeType.ALL)
+//	private List<Feedback> feedbacks = Lists.newArrayList();
+//	
+//	public List<ContratoPrestacaoServico> getContratos() {
+//		return contratos;
+//	}
+//	
+//	public List<Chave> getChaves() {
+//		return chaves;
+//	}
+//	
+//	public List<Comodo> getComodos() {
+//		return comodos;
+//	}
+//	
+//	public List<Feedback> getFeedbacks() {
+//		return feedbacks;
+//	}
+//	
+//	public List<Proposta> getPropostas() {
+//		return propostas;
+//	}
+//	
+//	public List<Reserva> getReservas() {
+//		return reservas;
+//	}
+//	
 	public List<ContratoPrestacaoServico> getContratos() {
 		return new ContratoPrestacaoServicoService().findByImovel(this);
 	}
@@ -81,10 +123,18 @@ public class Imovel implements Serializable{
 		return new FeedbackService().findByImovel(this);
 	}
 	
+	public void setProprietario(Cliente proprietario) {
+		this.proprietario = proprietario;
+	}
+	
 	public Cliente getProprietario() {
 		return proprietario;
 	}
 
+	public void setAngariador(Funcionario angariador) {
+		this.angariador = angariador;
+	}
+	
 	public Funcionario getAngariador() {
 		return angariador;
 	}
@@ -137,11 +187,11 @@ public class Imovel implements Serializable{
 		this.observacoes = observacoes;
 	}
 
-	public List<Foto> getFotos() {
+	public List<Arquivo> getFotos() {
 		return fotos;
 	}
 	
-	public void setFotos(List<Foto> fotos) {
+	public void setFotos(List<Arquivo> fotos) {
 		this.fotos = fotos;
 	}
 	

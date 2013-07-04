@@ -2,6 +2,7 @@ package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Foto implements Serializable{
+public class Arquivo implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,8 +22,8 @@ public class Foto implements Serializable{
 	@Column
 	private String nome;
 	
-	@OneToOne(fetch=FetchType.LAZY)
-	private ArquivoFoto arquivoFoto;
+	@OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	private ArquivoBytes arquivo;
 
 	public Long getId() {
 		return id;
@@ -32,12 +33,12 @@ public class Foto implements Serializable{
 		this.id = id;
 	}
 
-	public void setArquivoFoto(ArquivoFoto arquivoFoto) {
-		this.arquivoFoto = arquivoFoto;
+	public ArquivoBytes getArquivo() {
+		return arquivo;
 	}
 	
-	public ArquivoFoto getArquivoFoto() {
-		return arquivoFoto;
+	public void setArquivo(ArquivoBytes arquivo) {
+		this.arquivo = arquivo;
 	}
 	
 	public String getNome() {

@@ -2,9 +2,10 @@
 <persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
   <persistence-unit name="SoftimobPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> 
-     <class>br.com.michelon.softimob.modelo.AcontecimentoChamado</class>
+    <class>br.com.michelon.softimob.modelo.AcontecimentoChamado</class>
     <class>br.com.michelon.softimob.modelo.Aluguel</class>
-    <class>br.com.michelon.softimob.modelo.ArquivoFoto</class>
+    <class>br.com.michelon.softimob.modelo.Arquivo</class>
+    <class>br.com.michelon.softimob.modelo.ArquivoBytes</class>
     <class>br.com.michelon.softimob.modelo.Bairro</class>
     <class>br.com.michelon.softimob.modelo.ChamadoReforma</class>
     <class>br.com.michelon.softimob.modelo.Chave</class>
@@ -19,7 +20,6 @@
     <class>br.com.michelon.softimob.modelo.Endereco</class>
     <class>br.com.michelon.softimob.modelo.Estado</class>
     <class>br.com.michelon.softimob.modelo.Feedback</class>
-    <class>br.com.michelon.softimob.modelo.Foto</class>
     <class>br.com.michelon.softimob.modelo.Funcionario</class>
     <class>br.com.michelon.softimob.modelo.FinalizacaoChamadoReforma</class>
     <class>br.com.michelon.softimob.modelo.Imovel</class>

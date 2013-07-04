@@ -44,15 +44,12 @@ public class GenericXViewerLabelProvider extends XViewerStyledTextLabelProvider{
 
 	@Override
 	public StyledString getStyledText(Object arg0, XViewerColumn arg1, int arg2) throws Exception {
-		if(arg1 instanceof GenericXViewerColumn){
-			GenericXViewerColumn column = (GenericXViewerColumn)arg1;
-			
-			String atributo = column.getProperties().get(arg0.getClass());
-			Object obj = ReflectionHelper.getAtribute(arg0, atributo);
-			
-			return new StyledString(FormatterHelper.formatObject(obj), null);
-		}
+		GenericXViewerColumn col = ((GenericXViewer<?>)xViewer).getGenericXViewerColumn(arg1.getId());
 		
-		return new StyledString(StringUtils.EMPTY, null);
+		String property = col.getProperties().get(arg0.getClass());
+		
+		Object obj = property == null ? StringUtils.EMPTY : ReflectionHelper.getAtribute(arg0, property);
+			
+		return new StyledString(FormatterHelper.formatObject(obj), null);
 	}
 }

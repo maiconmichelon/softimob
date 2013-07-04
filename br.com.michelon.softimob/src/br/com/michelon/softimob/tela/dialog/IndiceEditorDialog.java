@@ -28,6 +28,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.aplicacao.exception.ValidationException;
+import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
+import br.com.michelon.softimob.aplicacao.helper.ValidatorHelper;
 import br.com.michelon.softimob.aplicacao.service.IndiceService;
 import br.com.michelon.softimob.modelo.Indice;
 import br.com.michelon.softimob.modelo.IndiceMes;
@@ -77,7 +80,7 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 			}
 		});
 		
-		if(indice != null)
+		if(indice != null && indice.getNome() != null)
 			txtNome.setText(indice.getNome());
 		
 		Composite cpTabela = new Composite(composite, SWT.NONE);
@@ -111,7 +114,7 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 	private void setItens(IndiceMes indice){
 		current = indice;
 		dtIndice.setValue(indice.getData());
-		txtPorcentagem.setText(indice.getPorcentagem().toString());
+		txtPorcentagem.setText(indice.getPorcentagem() != null ? indice.getPorcentagem().toString() : StringUtils.EMPTY);
 	}
 	
 	private void limpar(){
@@ -125,7 +128,9 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 			current = new IndiceMes();
 		
 		current.setData((Date) dtIndice.getValue());
-		current.setPorcentagem(new Double(txtPorcentagem.getText()));
+		try{
+			current.setPorcentagem(new Double(txtPorcentagem.getText()));
+		}catch(NumberFormatException ne){}
 		
 		return current;
 	}
@@ -166,7 +171,16 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 
 				if(isNovo()){ 
 					IndiceMes indiceMes = getIndiceMes();
-					indice.getIndices().add(indiceMes);
+					
+					try {
+						ValidatorHelper.validar(indiceMes);
+
+						indice.getIndices().add(indiceMes);
+					} catch (ValidationException e) {
+						current = null;
+						new ValidationErrorDialog(ShellHelper.getActiveShell(), e.getMessage()).open();
+						return;
+					}
 				} else {
 					getIndiceMes();
 				}

@@ -17,18 +17,14 @@ public class TipoImovel implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull(message = "A descrição do tipo de imóvel não pode ser vazio.")
+	@NotNull(message = "O nome do tipo de imóvel não pode ser vazio.")
 	@Column(nullable = false, unique = true)
-	private String descricao;
+	private String nome;
 
 	@Column(nullable = false)
 	private Boolean ativo = true;
 
 	public TipoImovel() {
-	}
-	
-	public TipoImovel(String descricao) {
-		this.descricao = descricao;
 	}
 	
 	public Long getId() {
@@ -39,14 +35,14 @@ public class TipoImovel implements Serializable{
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getNome() {
+		return nome;
 	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -82,7 +78,7 @@ public class TipoImovel implements Serializable{
 	
 	@Override
 	public String toString() {
-		return getDescricao();
+		return getNome();
 	}
 
 }

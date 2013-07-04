@@ -3,6 +3,7 @@ package br.com.michelon.softimob.tela.editor;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -23,7 +24,6 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
@@ -630,7 +629,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		if(validarComMensagem(acontecimento)){
 			ChamadoReforma findOne = new ChamadoReformaService().findOne(chamadoReforma.getId());
 			acontecimento.setChamadoReforma(findOne);
-			addItens(new AcontecimentoChamadoService(), valueAcontecimentoChamado, tvAndamentoChamado, true, valueChamado.getValue());
+//			addItens(valueAcontecimentoChamado, tvAndamentoChamado, ((ChamadoReforma)valueChamado.getValue()).getAcontecimentos(), valueChamado.getValue());
 		}
 	}
 
@@ -777,26 +776,26 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		return service;
 	}
 
-//	private DataBindingContext initBindTables(DataBindingContext context) {
-//		//
-//		IObservableValue observeSingleSelectionTableViewerAndamento = ViewerProperties.input().observe(tvAndamentoChamado);
-//		IObservableValue valueObserveDetailValueAndamento = PojoProperties.value(ChamadoReforma.class, "acontecimentoChamado", List.class).observeDetail(valueChamado);
-//		context.bindValue(observeSingleSelectionTableViewerAndamento, valueObserveDetailValueAndamento, null, null);
-//		//
-//		IObservableValue observeSingleSelectionTableViewerChamado = ViewerProperties.input().observe(tvChamadoGeral);
-//		IObservableValue valueObserveDetailValueChamado = PojoProperties.value(Aluguel.class, "chamados", List.class).observeDetail(value);
-//		context.bindValue(observeSingleSelectionTableViewerChamado, valueObserveDetailValueChamado, null, null);
-//		//
-//		IObservableValue observeSingleSelectionTableViewerVistoria = ViewerProperties.input().observe(tvVistoria);
-//		IObservableValue valueObserveDetailValueVistoria = PojoProperties.value(Aluguel.class, "vistorias", List.class).observeDetail(value);
-//		context.bindValue(observeSingleSelectionTableViewerVistoria, valueObserveDetailValueVistoria, null, null);
-//		//
-//		IObservableValue observeSingleSelectionTableViewerComissao = ViewerProperties.input().observe(tvComissao);
-//		IObservableValue valueObserveDetailValueComissao = PojoProperties.value(Aluguel.class, "comissoes", List.class).observeDetail(value);
-//		context.bindValue(observeSingleSelectionTableViewerComissao, valueObserveDetailValueComissao, null, null);
-//		//
-//		return context;
-//	}
+	private DataBindingContext initBindTables(DataBindingContext context) {
+		//
+		IObservableValue observeSingleSelectionTableViewerAndamento = ViewerProperties.input().observe(tvAndamentoChamado);
+		IObservableValue valueObserveDetailValueAndamento = PojoProperties.value(ChamadoReforma.class, "acontecimentoChamado", List.class).observeDetail(valueChamado);
+		context.bindValue(observeSingleSelectionTableViewerAndamento, valueObserveDetailValueAndamento, null, null);
+		//
+		IObservableValue observeSingleSelectionTableViewerChamado = ViewerProperties.input().observe(tvChamadoGeral);
+		IObservableValue valueObserveDetailValueChamado = PojoProperties.value(Aluguel.class, "chamados", List.class).observeDetail(value);
+		context.bindValue(observeSingleSelectionTableViewerChamado, valueObserveDetailValueChamado, null, null);
+		//
+		IObservableValue observeSingleSelectionTableViewerVistoria = ViewerProperties.input().observe(tvVistoria);
+		IObservableValue valueObserveDetailValueVistoria = PojoProperties.value(Aluguel.class, "vistorias", List.class).observeDetail(value);
+		context.bindValue(observeSingleSelectionTableViewerVistoria, valueObserveDetailValueVistoria, null, null);
+		//
+		IObservableValue observeSingleSelectionTableViewerComissao = ViewerProperties.input().observe(tvComissao);
+		IObservableValue valueObserveDetailValueComissao = PojoProperties.value(Aluguel.class, "comissoes", List.class).observeDetail(value);
+		context.bindValue(observeSingleSelectionTableViewerComissao, valueObserveDetailValueComissao, null, null);
+		//
+		return context;
+	}
 	
 	@Override
 	protected DataBindingContext initDataBindings() {
@@ -899,6 +898,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		IObservableValue observeTextText_31ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_31);
 		IObservableValue valueChamadoDescricaoConclusaoObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "descricaoConclusao", String.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindValue(observeTextText_31ObserveWidget, valueChamadoDescricaoConclusaoObserveDetailValue, null, null);
+		//
+		initBindTables(bindingContext);
 		//
 		return bindingContext;
 	}

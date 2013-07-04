@@ -75,8 +75,14 @@ public class Endereco implements Serializable{
 	
 	@Override
 	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
 		if(rua != null)
-			return this.rua.getBairro().getCidade().getNome() + " - " + this.rua.getNome() + " - N " + getNumero(); 
-		return StringUtils.EMPTY;
+			sb = sb.append(this.rua.getBairro().getCidade().getNome() + " - " + this.rua.getNome());
+
+		if(numero != null)
+			sb = sb.append(" - N " + getNumero());
+
+		return sb.toString();
 	}
 }

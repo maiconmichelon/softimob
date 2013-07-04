@@ -11,6 +11,7 @@ import br.com.michelon.softimob.aplicacao.service.VendaService;
 import br.com.michelon.softimob.modelo.Venda;
 import br.com.michelon.softimob.tela.editor.VendaEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 
 import com.google.common.collect.Lists;
 
@@ -24,8 +25,8 @@ public class VendaView extends GenericView<Venda>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Imóvel", "imovel.numero", 10));
-		atributos.add(new ColumnProperties("Data", "data", 15));
+		atributos.add(new ColumnProperties("Imóvel", "contrato.imovel", 10));
+		atributos.add(new ColumnProperties("Data", "dataAssinaturaContrato", 15, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 30));
 		atributos.add(new ColumnProperties("Vendedor", "funcionario.nome", 30));
 		atributos.add(new ColumnProperties("Valor", "valor", 15));

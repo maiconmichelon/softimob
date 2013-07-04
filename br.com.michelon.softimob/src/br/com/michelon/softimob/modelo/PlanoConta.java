@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 public class PlanoConta implements Serializable{
 
@@ -20,13 +22,14 @@ public class PlanoConta implements Serializable{
 	private Long id;
 	
 	@Column(unique = true, nullable = false)
-	@NotNull(message = "O código da conta não pode ser vazio.")
+	@NotEmpty(message = "O código da conta não pode ser vazio.")
 	private String codigo;
 	
-	@NotNull(message = "A descrição do plano de conta não pode ser vazio.")
+	@NotEmpty(message = "A descrição do plano de conta não pode ser vazio.")
 	@Column(nullable = false)
 	private String nome;
 	
+	@NotNull(message = "Informe o tipo da conta.")
 	@Column(nullable = false)
 	private Integer tipo;
 	

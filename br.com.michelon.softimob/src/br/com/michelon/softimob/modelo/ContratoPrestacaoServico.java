@@ -43,7 +43,7 @@ public class ContratoPrestacaoServico implements Pendencia{
 	private Long id;
 	
 	@Column(precision = 14, scale = 2)
-	private BigDecimal valor;
+	private BigDecimal valor = BigDecimal.ZERO;
 	
 	@NotNull(message="Informe o tipo do contrato.")
 	@Column(nullable=false)
@@ -57,11 +57,13 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@Column(nullable=false)
 	private Boolean divulgar = true;
 	
+	@NotNull(message="Informe a data que foi feito o contrato.")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataInicio;
+	private Date dataInicio = new Date();
 	
+	@NotNull(message="Informe a data de vencimento do contrato.")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataVencimento;
+	private Date dataVencimento = new Date();
 	
 	@ManyToOne
 	private Funcionario funcionario;

@@ -34,10 +34,10 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	private BigDecimal valor;
 	
 	@Column(precision = 14, scale = 2)
-	private BigDecimal valorPagoParcial;
+	private BigDecimal valorPagoParcial = BigDecimal.ZERO;
 	
 	@Column(precision = 14, scale = 2)
-	private BigDecimal valorJurosDesconto;
+	private BigDecimal valorJurosDesconto = BigDecimal.ZERO;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataConta;
@@ -48,7 +48,7 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataPagamento;
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private OrigemConta origem;
 	
 	@NotNull(message = "Selecione o tipo da conta.")
@@ -183,4 +183,46 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 		return null;
 	}
 
+	public BigDecimal getValorPagoParcialTratado(){
+		if(valorPagoParcial == null || valorPagoParcial.signum() == 0 || valorPagoParcial.compareTo(valor) == 0)
+			return BigDecimal.ZERO;
+		return valorPagoParcial;
+	}
+	
+	public BigDecimal getValorParcialOuValorCheio(){
+		return getValorPagoParcialTratado().signum() == 0 ? getValor() : getValorPagoParcialTratado();
+	}
+	
+	public BigDecimal getValorJurDescTratado(){
+		return valorJurosDesconto == null ? BigDecimal.ZERO : valorJurosDesconto;
+	}
+	
+	public boolean isApagar(){
+		return tipo == PAGAR;
+	}
+	
+	public boolean isAReceber(){
+		return tipo == RECEBER;
+	}
+	
+	public BigDecimal getValorMovimentacao(){
+		return getValorParcialOuValorCheio().add(getValorJurDescTratado());
+	}
+	
+	public BigDecimal getValorDebito(){
+		if( getValorJurDescTratado().signum() == 0 )
+			return getValorParcialOuValorCheio();
+		else{
+			return isAReceber() ? getValorParcialOuValorCheio().add(getValorJurDescTratado()) : getValorParcialOuValorCheio();
+		}
+	}
+	
+	public BigDecimal getValorCredito(){
+		if( getValorJurDescTratado().signum() == 0 )
+			return getValorParcialOuValorCheio();
+		else{
+			return isApagar() ? getValorParcialOuValorCheio().add(getValorJurDescTratado()) : getValorParcialOuValorCheio();
+		}
+	}
+	
 }

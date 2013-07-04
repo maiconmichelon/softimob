@@ -50,6 +50,12 @@ public class VendaAluguel implements Serializable{
 	@ManyToOne
 	private CheckList checkList;
 	
+//	@OneToMany(cascade=CascadeType.ALL)
+//	private List<Comissao> comissoes = Lists.newArrayList();
+//	
+//	@OneToMany(cascade=CascadeType.ALL)
+//	private List<Vistoria> vistorias = Lists.newArrayList();
+	
 	public Long getId() {
 		return id;
 	}
@@ -98,6 +104,14 @@ public class VendaAluguel implements Serializable{
 		this.dataAssinaturaContrato = dataAssinaturaContrato;
 	}
 
+//	public List<Comissao> getComissoes() {
+//		return comissoes;
+//	}
+//	
+//	public List<Vistoria> getVistorias() {
+//		return vistorias;
+//	}
+	
 	public List<Comissao> getComissoes() {
 		return new ComissaoService().findByVendaAluguel(this);
 	}

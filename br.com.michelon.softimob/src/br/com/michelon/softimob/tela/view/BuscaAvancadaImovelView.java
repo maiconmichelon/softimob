@@ -1,9 +1,13 @@
 package br.com.michelon.softimob.tela.view;
 
+import java.util.List;
+
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -16,6 +20,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.aplicacao.service.ImovelService;
+import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.tela.widget.EnderecoGroup;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
@@ -219,6 +225,12 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		btnNewButton_1.setLayoutData(gd_btnNewButton_1);
 		btnNewButton_1.setText("Buscar");
 		btnNewButton_1.setImage(ImageRepository.SEARCH_32.getImage());
+		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				buscar();
+			}
+		});
 		
 		createActions();
 		initializeToolBar();
@@ -251,6 +263,11 @@ public class BuscaAvancadaImovelView extends ViewPart {
 	@Override
 	public void setFocus() {
 		// Set the focus
+	}
+	
+	private void buscar(){
+		List<Imovel> imoveis = new ImovelService().findImoveis(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		System.out.println(imoveis.size());
 	}
 	
 	private void criarTabelaComodo(Composite composite){

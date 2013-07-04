@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 @Entity
-public class ArquivoFoto implements Serializable {
+public class ArquivoBytes implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,10 +21,10 @@ public class ArquivoFoto implements Serializable {
 	@Column(nullable=false)
 	private byte[] arquivo;
 
-	public ArquivoFoto() {
+	public ArquivoBytes() {
 	}
 	
-	public ArquivoFoto(byte[] arquivo){
+	public ArquivoBytes(byte[] arquivo){
 		this.arquivo = arquivo;
 	}
 	
