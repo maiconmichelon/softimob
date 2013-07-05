@@ -7,6 +7,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ClienteEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PessoaJuridicaService;
 import br.com.michelon.softimob.modelo.PessoaJuridica;
 import br.com.michelon.softimob.tela.editor.ClientePJEditor;
@@ -67,6 +68,11 @@ public class ClientePJView extends GenericView<PessoaJuridica>{
 	@Override
 	protected List<PessoaJuridica> getInput() {
 		return service.findAll();
+	}
+	
+	@Override
+	protected GenericService<PessoaJuridica> getService() {
+		return service;
 	}
 	
 }

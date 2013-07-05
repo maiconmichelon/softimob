@@ -29,7 +29,6 @@ public class ChamadoReforma implements Serializable, Pendencia{
 
 	public static final int ACEITO = 1;
 	public static final int RECUSADO = 2;
-	public static final int ABERTO = 3;
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -109,6 +108,10 @@ public class ChamadoReforma implements Serializable, Pendencia{
 		this.funcionario = funcionario;
 	}
 
+	public String getStatus(){
+		return getFinalizacao() == null ? "Em aberto" : getFinalizacao().getStatus() == ACEITO ? "Aceito" : "Recusado";
+	}
+	
 	@Override
 	public String getIdEditor() {
 		// TODO Auto-generated method stub

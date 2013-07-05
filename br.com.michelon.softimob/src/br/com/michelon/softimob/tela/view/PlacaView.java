@@ -7,6 +7,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.PlacaEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PlacaService;
 import br.com.michelon.softimob.modelo.Placa;
 import br.com.michelon.softimob.tela.editor.PlacaEditor;
@@ -65,4 +66,9 @@ public class PlacaView extends GenericView<Placa>{
 		return service.findAll();
 	}
 
+	@Override
+	protected GenericService<Placa> getService() {
+		return service;
+	}	
+	
 }

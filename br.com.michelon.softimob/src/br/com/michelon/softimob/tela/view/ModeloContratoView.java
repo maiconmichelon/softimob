@@ -7,6 +7,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ModeloContratoEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ModeloContratoService;
 import br.com.michelon.softimob.modelo.ModeloContrato;
 import br.com.michelon.softimob.tela.editor.ModeloContratoEditor;
@@ -62,4 +63,9 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 		return service.findAll();
 	}
 
+	@Override
+	protected GenericService<ModeloContrato> getService() {
+		return service;
+	}	
+	
 }

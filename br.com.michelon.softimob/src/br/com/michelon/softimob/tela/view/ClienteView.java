@@ -8,6 +8,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.editorInput.ClienteEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.service.ClienteService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Cliente;
 import br.com.michelon.softimob.tela.editor.ClienteEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
@@ -67,4 +68,10 @@ public class ClienteView extends GenericView<Cliente>{
 	protected List<Cliente> getInput() {
 		return service.findAll();
 	}
+	
+	@Override
+	protected GenericService<Cliente> getService() {
+		return service;
+	}
+	
 }

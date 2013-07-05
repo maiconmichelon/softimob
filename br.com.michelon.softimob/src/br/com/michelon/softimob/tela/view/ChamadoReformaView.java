@@ -9,9 +9,11 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.ChamadoReforma;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 
 import com.google.common.collect.Lists;
 
@@ -25,10 +27,10 @@ public class ChamadoReformaView extends GenericView<ChamadoReforma>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Número", "numero", 5));
-		atributos.add(new ColumnProperties("Data do chamado", "dataChamado", 8));
-		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 25));
-		atributos.add(new ColumnProperties("Observações", "observacoes", 40));
+		atributos.add(new ColumnProperties("Número", "id", 5));
+		atributos.add(new ColumnProperties("Data do chamado", "data", 8, new DateStringValueFormatter()));
+		atributos.add(new ColumnProperties("Cliente", "aluguel.cliente.nome", 25));
+		atributos.add(new ColumnProperties("Problema", "problema", 40));
 		atributos.add(new ColumnProperties("Status", "status", 20));
 	}
 	
@@ -75,6 +77,11 @@ public class ChamadoReformaView extends GenericView<ChamadoReforma>{
 	@Override
 	protected List<Action> createMoreActions() {
 		return null;
+	}
+	
+	@Override
+	protected GenericService<ChamadoReforma> getService() {
+		return service;
 	}
 	
 }

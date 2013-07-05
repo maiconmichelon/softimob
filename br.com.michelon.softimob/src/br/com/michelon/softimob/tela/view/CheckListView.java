@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.CheckList;
 import br.com.michelon.softimob.tela.dialog.CheckListEditorDialog;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
@@ -71,6 +72,11 @@ public class CheckListView extends GenericView<CheckList>{
 	protected void alterar(CheckList element) {
 		CheckListEditorDialog dialog = new CheckListEditorDialog(ShellHelper.getActiveShell(), getSelecionado());
 		dialog.open();
+	}
+	
+	@Override
+	protected GenericService<CheckList> getService() {
+		return service;
 	}
 	
 }

@@ -8,6 +8,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.editorInput.ClienteEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PessoaFisicaService;
 import br.com.michelon.softimob.modelo.PessoaFisica;
 import br.com.michelon.softimob.tela.editor.ClientePFEditor;
@@ -72,6 +73,11 @@ public class ClientePFView extends GenericView<PessoaFisica>{
 	@Override
 	protected List<PessoaFisica> getInput() {
 		return service.findAll();
+	}
+	
+	@Override
+	protected GenericService<PessoaFisica> getService() {
+		return service;
 	}
 	
 }

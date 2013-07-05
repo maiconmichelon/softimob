@@ -7,6 +7,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.PlanoContaEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PlanoContaService;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.tela.editor.PlanoContaEditor;
@@ -26,7 +27,7 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 		
 		atributos.add(new ColumnProperties("Código", "codigo"));
 		atributos.add(new ColumnProperties("Nome", "nome"));
-		atributos.add(new ColumnProperties("Tipo", "tipo"));
+		atributos.add(new ColumnProperties("Tipo", "tipoExtenso"));
 	}
 	
 	@Override
@@ -65,4 +66,9 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 		return service.findAll();
 	}
 
+	@Override
+	protected GenericService<PlanoConta> getService() {
+		return service;
+	}	
+	
 }

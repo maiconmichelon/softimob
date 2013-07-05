@@ -39,7 +39,8 @@ public class FinalizacaoChamadoReforma implements Serializable{
 	@OneToOne
 	private ContaPagarReceber conta;
 
-	@Column
+	@NotNull(message = "Informe se o chamado foi aceito ou recusado.")
+	@Column(nullable = false)
 	private Integer status;
 	
 	public Long getId() {

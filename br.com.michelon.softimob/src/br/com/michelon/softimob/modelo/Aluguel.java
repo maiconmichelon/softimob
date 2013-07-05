@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
 
@@ -20,6 +21,7 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	@ManyToOne
 	private Cliente fiador;
 	
+	@NotNull(message = "A duração do contrato não pode ser vazia.")
 	@Column
 	private Integer duracao;
 	

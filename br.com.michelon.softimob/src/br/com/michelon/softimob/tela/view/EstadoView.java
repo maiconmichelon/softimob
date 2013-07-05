@@ -8,6 +8,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.editorInput.EstadoEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.service.EstadoService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Estado;
 import br.com.michelon.softimob.tela.editor.EstadoEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
@@ -65,4 +66,9 @@ public class EstadoView extends GenericView<Estado>{
 		return new EstadoService().findAll();
 	}
 
+	@Override
+	protected GenericService<Estado> getService() {
+		return service;
+	}
+	
 }

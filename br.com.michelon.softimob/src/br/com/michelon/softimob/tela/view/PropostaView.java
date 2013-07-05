@@ -8,6 +8,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PropostaService;
 import br.com.michelon.softimob.modelo.Proposta;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
@@ -79,5 +80,10 @@ public class PropostaView extends GenericView<Proposta>{
 	protected List<Action> createMoreActions() {
 		return null;
 	}
+	
+	@Override
+	protected GenericService<Proposta> getService() {
+		return service;
+	}	
 	
 }

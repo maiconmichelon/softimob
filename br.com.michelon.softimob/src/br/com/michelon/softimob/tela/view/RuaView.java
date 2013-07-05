@@ -7,6 +7,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.RuaEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.RuaService;
 import br.com.michelon.softimob.modelo.Rua;
 import br.com.michelon.softimob.tela.editor.RuaEditor;
@@ -66,4 +67,9 @@ public class RuaView extends GenericView<Rua>{
 		return service.findAll();
 	}
 
+	@Override
+	protected GenericService<Rua> getService() {
+		return service;
+	}	
+	
 }

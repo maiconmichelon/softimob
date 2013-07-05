@@ -9,6 +9,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
 import br.com.michelon.softimob.aplicacao.service.FeedbackService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Feedback;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
@@ -75,5 +76,10 @@ public class FeedbackView extends GenericView<Feedback>{
 	protected List<Action> createMoreActions() {
 		return null;
 	}
+	
+	@Override
+	protected GenericService<Feedback> getService() {
+		return service;
+	}	
 	
 }

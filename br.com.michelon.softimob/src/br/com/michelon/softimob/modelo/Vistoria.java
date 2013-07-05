@@ -14,6 +14,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang.StringUtils;
+
 @Entity
 public class Vistoria implements Serializable{
 
@@ -25,7 +27,7 @@ public class Vistoria implements Serializable{
 	@NotNull(message="Informe a data da vistoria.")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable=false)
-	private Date data;
+	private Date data = new Date();
 	
 	@NotNull(message = "Selecione o funcionário responsável pela vistoria.")
 	@ManyToOne(optional=false)
@@ -35,9 +37,9 @@ public class Vistoria implements Serializable{
 	private Byte[] arquivo;
 	
 	@Column
-	private String observacoes;
+	private String observacoes = StringUtils.EMPTY;
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private VendaAluguel vendaAluguel;
 	
 	@SuppressWarnings("unused")

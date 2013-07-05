@@ -9,6 +9,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
 import br.com.michelon.softimob.aplicacao.service.ChaveService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
@@ -74,6 +75,11 @@ public class ChaveView extends GenericView<Chave>{
 	@Override
 	protected List<Action> createMoreActions() {
 		return null;
+	}
+	
+	@Override
+	protected GenericService<Chave> getService() {
+		return service;
 	}
 	
 }

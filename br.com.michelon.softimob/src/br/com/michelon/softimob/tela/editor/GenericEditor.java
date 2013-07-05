@@ -164,7 +164,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 		if(resetValue){
 			try {
 				Class<Y> clazz = (Class<Y>) value.getValue().getClass();
-				value.setValue(clazz.getConstructor(getCurrentObject().getClass()).newInstance(father));
+				value.setValue(clazz.getConstructor(father.getClass()).newInstance(father));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -7,6 +7,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.OrigemContaEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.OrigemContaService;
 import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.tela.editor.OrigemContaEditor;
@@ -66,4 +67,9 @@ public class OrigemContaView extends GenericView<OrigemConta>{
 		return service.findAll();
 	}
 
+	@Override
+	protected GenericService<OrigemConta> getService() {
+		return service;
+	}	
+	
 }

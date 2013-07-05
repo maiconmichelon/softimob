@@ -6,9 +6,16 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.editorInput.VendaEditorInput;
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.Comissao;
+import br.com.michelon.softimob.modelo.Vistoria;
+import br.com.michelon.softimob.tela.editor.AluguelEditor;
+import br.com.michelon.softimob.tela.editor.VendaEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
 import com.google.common.collect.Lists;
@@ -54,14 +61,17 @@ public class ComissaoView extends GenericView<Comissao>{
 
 	@Override
 	protected GenericEditorInput<?> getIEditorInput(Comissao t) {
-		// TODO Auto-generated method stub
-		return null;
+		return t.getVendaAluguel() instanceof Aluguel ? new AluguelEditorInput() : new VendaEditorInput();
 	}
 
 	@Override
+	protected Object getModelOfEditorInput(Comissao element) {
+		return element.getVendaAluguel();
+	}
+	
+	@Override
 	protected String getEditorId(Comissao t) {
-		// TODO Auto-generated method stub
-		return null;
+		return t.getVendaAluguel() instanceof Aluguel ? AluguelEditor.ID : VendaEditor.ID;
 	}
 
 	@Override
@@ -69,4 +79,9 @@ public class ComissaoView extends GenericView<Comissao>{
 		return service.findAll();
 	}
 
+	@Override
+	protected GenericService<Comissao> getService() {
+		return service;
+	}
+	
 }

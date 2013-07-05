@@ -7,6 +7,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.VendaEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.VendaService;
 import br.com.michelon.softimob.modelo.Venda;
 import br.com.michelon.softimob.tela.editor.VendaEditor;
@@ -66,4 +67,9 @@ public class VendaView extends GenericView<Venda>{
 		return service.findAll();
 	}
 
+	@Override
+	protected GenericService<Venda> getService() {
+		return service;
+	}
+	
 }

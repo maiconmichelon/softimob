@@ -199,7 +199,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		cpLctosCredito.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		cpLctosCredito.setLayout(new GridLayout(1, false));
 		
-		criarTabelaLancamentosCredito(cpLctosCredito);
+		criarTabelaLancamentosDebito(cpLctosCredito);
 		
 		Label lblTotal = new Label(grpDbito, SWT.NONE);
 		lblTotal.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
@@ -218,12 +218,12 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		grpCrdito.setLayout(new GridLayout(2, false));
 		grpCrdito.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 6, 1));
 		grpCrdito.setText("Crédito");
-		
+
 		Composite cpLctosDebito = new Composite(grpCrdito, SWT.NONE);
 		cpLctosDebito.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		cpLctosDebito.setLayout(new GridLayout(1, false));
 		
-		criarTabelaLancamentosDebito(cpLctosDebito);
+		criarTabelaLancamentosCredito(cpLctosDebito);
 		
 		Label label = new Label(grpCrdito, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
@@ -251,7 +251,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		final TableViewerBuilder tvb = new TableViewerBuilder(composite);
 		
 		tvb.createColumn("Conta").bindToProperty("conta.codigoDescricao").setPercentWidth(20).build();
-		tvb.createColumn("Valor").bindToProperty("valor").setPercentWidth(10).format(FormatterHelper.getCurrencyFormatter()).build();
+		tvb.createColumn("Valor").bindToProperty("valor").setPercentWidth(10).format(FormatterHelper.getDecimalFormatter()).build();
 		tvb.createColumn("Histórico").bindToProperty("historico").setPercentWidth(40).makeEditable().build();
 		tvb.createColumn("Complemento").bindToProperty("complemento").setPercentWidth(40).makeEditable().build();
 		
@@ -306,7 +306,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		private PlanoConta contaDebito;
 		private PlanoConta contaCredito;
 		private BigDecimal valor;
-		private String historico;
+		private String historico = StringUtils.EMPTY;
 		private Date dataLancamento;
 		
 		public PlanoConta getContaDebito() {

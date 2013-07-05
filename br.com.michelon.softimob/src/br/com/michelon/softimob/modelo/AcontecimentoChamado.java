@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class AcontecimentoChamado implements Serializable{
@@ -21,15 +24,17 @@ public class AcontecimentoChamado implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull(message = "A data não pode ser vazia")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date data;
+	private Date data = new Date();
 	
 	@ManyToOne(optional=false)
 	private Funcionario funcionario;
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private ChamadoReforma chamadoReforma;
 	
+	@NotEmpty(message = "A descrição do acontecimento não pode ser vazia.")
 	@Column(nullable=false)
 	private String descricao;
 

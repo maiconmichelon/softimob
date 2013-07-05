@@ -80,6 +80,10 @@ public class PlanoConta implements Serializable{
 		this.nome = nome;
 	}
 	
+	public String getTipoExtenso(){
+		return tipo == ATIVA ? "Ativo " : "Passivo";
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("%s - %s", getCodigo() , getNome());

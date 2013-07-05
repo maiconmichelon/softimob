@@ -18,6 +18,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
@@ -105,5 +106,10 @@ public class ImovelView extends GenericView<Imovel>{
 		
 		return imovelXViewer;
 	}
+	
+	@Override
+	protected GenericService<Imovel> getService() {
+		return service;
+	}	
 	
 }

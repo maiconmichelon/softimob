@@ -7,6 +7,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.TipoImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.tela.editor.TipoImovelEditor;
@@ -61,5 +62,10 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 	protected List<TipoImovel> getInput() {
 		return service.findAll();
 	}
+
+	@Override
+	protected GenericService<TipoImovel> getService() {
+		return service;
+}	
 
 }

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -32,10 +33,11 @@ public class MovimentacaoContabil implements Serializable{
 	@Column(length = 14, scale = 2, nullable = false)
 	private BigDecimal valor;
 	
-	@NotEmpty(message = "A movimentação deve conter lançamentos")
+	@NotEmpty(message = "A movimentação deve conter lançamentos.")
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "movimentacao")
 	private List<LancamentoContabil> lancamentos = Lists.newArrayList();
 
+	@NotNull(message = "A data da movimentação não pode ser vazia.")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date data;

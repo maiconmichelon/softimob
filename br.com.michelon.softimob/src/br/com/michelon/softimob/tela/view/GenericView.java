@@ -40,6 +40,7 @@ import br.com.michelon.softimob.aplicacao.filter.GenericFilter;
 import br.com.michelon.softimob.aplicacao.filter.PropertyFilter;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
 import com.google.common.base.Function;
@@ -334,6 +335,10 @@ public abstract class GenericView<T> extends ViewPart{
 		};
 	};
 	
+	protected GenericService<T> getService(){
+		return null;
+	}
+	
 	@Override
 	public void setFocus() {
 		if(txtFiltro != null)
@@ -342,6 +347,8 @@ public abstract class GenericView<T> extends ViewPart{
 
 	protected void alterar(T element) {
 		try {
+			if(getService() != null)
+				element = getService().refreshObject(element);
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getEditorInputWithModel(element), getEditorId(element));
 		} catch (PartInitException e1) {
 			e1.printStackTrace();

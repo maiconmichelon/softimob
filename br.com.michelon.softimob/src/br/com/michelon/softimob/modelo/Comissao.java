@@ -17,10 +17,18 @@ public class Comissao extends ContaPagarReceber{
 	@SuppressWarnings("unused")
 	private Comissao(){}
 	
-	public Comissao(VendaAluguel vendaAluguel){
-		this.vendaAluguel = vendaAluguel;
+	public Comissao(Venda venda){
+		this.vendaAluguel = venda;
 		
 		setTipo(ContaPagarReceber.PAGAR);
+		setOrigem(ParametrosEmpresa.getInstance().getTipoContaComissao());
+	}
+	
+	public Comissao(Aluguel aluguel){
+		this.vendaAluguel = aluguel;
+		
+		setTipo(ContaPagarReceber.PAGAR);
+		setOrigem(ParametrosEmpresa.getInstance().getTipoContaComissao());
 	}
 	
 	public Comissionado getComissionado() {

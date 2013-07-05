@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.VistoriaService;
@@ -30,20 +31,25 @@ public class VendaAluguel implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotNull(message = "O imóvel não pode ser vazio.")
 	@ManyToOne
 	private ContratoPrestacaoServico contrato;
 	
 	//Cliente que vai alugar ou comprar a casa
+	@NotNull(message = "O cliente não pode ser vazio.")
 	@ManyToOne
 	private Cliente cliente;
 	
 	//Corretor que vendeu ou alugou
+	@NotNull(message = "Informe o funcionário responsável.")
 	@ManyToOne
 	private Funcionario funcionario;
 	
+	@NotNull(message = "O valor não pode ser vazio.")
 	@Column(length=14, scale = 2)
 	private BigDecimal valor;
 	
+	@NotNull(message = "A data não pode ser vazia.")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAssinaturaContrato;
 

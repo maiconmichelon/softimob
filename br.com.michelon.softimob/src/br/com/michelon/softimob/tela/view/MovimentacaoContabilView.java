@@ -7,6 +7,7 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.MovimentacaoContabilEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.MovimentacaoContabilService;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor;
@@ -65,6 +66,9 @@ public class MovimentacaoContabilView extends GenericView<MovimentacaoContabil>{
 		return service.findAll();
 	}
 	
-	
+	@Override
+	protected GenericService<MovimentacaoContabil> getService() {
+		return service;
+	}	
 
 }

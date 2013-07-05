@@ -8,6 +8,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.editorInput.CidadeEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.service.CidadeService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Cidade;
 import br.com.michelon.softimob.tela.editor.CidadeEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
@@ -62,6 +63,11 @@ public class CidadeView extends GenericView<Cidade>{
 	@Override
 	protected List<Cidade> getInput() {
 		return service.findAll();
+	}
+	
+	@Override
+	protected GenericService<Cidade> getService() {
+		return service;
 	}
 
 }

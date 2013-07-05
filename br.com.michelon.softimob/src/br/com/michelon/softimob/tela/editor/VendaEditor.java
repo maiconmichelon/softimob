@@ -31,17 +31,19 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.VendaService;
+import br.com.michelon.softimob.aplicacao.service.VistoriaService;
 import br.com.michelon.softimob.modelo.Comissao;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.ItemCheckList;
 import br.com.michelon.softimob.modelo.Venda;
 import br.com.michelon.softimob.modelo.Vistoria;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
-import de.ralfebert.rcputils.properties.IValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class VendaEditor extends GenericEditor<Venda>{
@@ -71,6 +73,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 	private TableViewer tvComissao;
 	private TableViewer tvCheckList;
 	private TableViewer tvVistoria;
+	private Text text_8;
 	
 	public VendaEditor() {
 		super(Venda.class);
@@ -165,6 +168,15 @@ public class VendaEditor extends GenericEditor<Venda>{
 		button_2.setText("...");
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.COMISSIONADO, button_2, valueComissao, "comissionado");
 		
+		Label lblDataDeVencimento = new Label(composite_1, SWT.NONE);
+		lblDataDeVencimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDataDeVencimento.setText("Data de Vencimento");
+		
+		DateTextField dateTextField_1 = new DateTextField(composite_1);
+		text_8 = dateTextField_1.getControl();
+		text_8.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(composite_1, SWT.NONE);
+		
 		Label lblValor = new Label(composite_1, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblValor.setText("Valor");
@@ -190,7 +202,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		btnAdicionar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				addComissao((Comissao) valueComissao.getValue());
+				addComissao(valueComissao);
 			}
 		});
 		
@@ -238,8 +250,8 @@ public class VendaEditor extends GenericEditor<Venda>{
 		
 		Button btnSelecionarFuncionarioVistoria = new Button(cpAddVistoria, SWT.NONE);
 		btnSelecionarFuncionarioVistoria.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		btnSelecionarFuncionarioVistoria.setText("..."); //FIXME ARRUMAR ESSE NULL AQUI...
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioVistoria, null, "funcionarioAbertura");
+		btnSelecionarFuncionarioVistoria.setText("..."); 
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioVistoria, valueVistoria, "funcionario");
 		
 		Label lblArquivo = new Label(cpAddVistoria, SWT.NONE);
 		lblArquivo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -256,7 +268,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		lblObservaes_1.setText("Observações");
 		
 		text_19 = new Text(cpAddVistoria, SWT.BORDER);
-		GridData gd_text_19 = new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1);
+		GridData gd_text_19 = new GridData(SWT.FILL, SWT.CENTER, true, true, 2, 1);
 		gd_text_19.heightHint = 40;
 		text_19.setLayoutData(gd_text_19);
 		new Label(cpAddVistoria, SWT.NONE);
@@ -274,7 +286,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		button_6.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				addVistoria((Vistoria) valueVistoria.getValue());
+				addVistoria(valueVistoria);
 			}
 		});
 		
@@ -284,47 +296,44 @@ public class VendaEditor extends GenericEditor<Venda>{
 		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
 		tbtmCheckList_1.setControl(composite_3);
 		criarTabelaCheckList(composite_3);
+		
+		tabFolder.setSelection(0);
+		tabFolder_1.setSelection(0);
 	}
 
 	@Override
 	protected void afterSetIObservableValue() {
 		valueComissao.setValue(new Comissao(getCurrentObject()));
+		valueVistoria.setValue(new Vistoria(getCurrentObject()));
 	}
 	
-	private void addComissao(Comissao comissao){
-		if(validarComMensagem(comissao)){
-			getCurrentObject().getComissoes().add(comissao);
-			
-			tvComissao.refresh();
-		}
+	private void addComissao(WritableValue valueComissao) {
+		addItens(new ComissaoService(), valueComissao, tvComissao, getCurrentObject().getComissoes());
 	}
 	
-	private void addVistoria(Vistoria vistoria){
-		if(validarComMensagem(vistoria)){
-			getCurrentObject().getVistorias().add(vistoria);
-			
-			tvVistoria.refresh();
-		}
+	protected void addVistoria(WritableValue valueVistoria) {
+		addItens(new VistoriaService(), valueVistoria, tvVistoria, getCurrentObject().getVistorias());
 	}
 	
 	private void criarTabelaComissao(Composite composite){
 		TableViewerBuilder tvbComissao = new TableViewerBuilder(composite);
 		
 		tvbComissao.createColumn("Nome").bindToProperty("comissionado.nome").build();
-		tvbComissao.createColumn("Valor ( % )").bindToValue(new IValue() {
-			//TODO AQUI TEM QUE RECALCULAR VALOR			
-			@Override
-			public void setValue(Object arg0, Object arg1) {
-				// TODO Auto-generated method stub
-			}
-			
-			@Override
-			public Object getValue(Object arg0) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		}).build();
+//		tvbComissao.createColumn("Valor ( % )").bindToValue(new IValue() {
+//			//TODO AQUI TEM QUE RECALCULAR VALOR			
+//			@Override
+//			public void setValue(Object arg0, Object arg1) {
+//				// TODO Auto-generated method stub
+//			}
+//			
+//			@Override
+//			public Object getValue(Object arg0) {
+//				// TODO Auto-generated method stub
+//				return null;
+//			}
+//		}).makeEditable().build();
 		tvbComissao.createColumn("Valor (R$)").bindToProperty("valor").build();
+		tvbComissao.createColumn("Data de Vencimento").bindToProperty("dataVencimento").format(new DateStringValueFormatter()).build();
 		
 		tvbComissao.setInput(getCurrentObject().getComissoes());
 		
@@ -334,10 +343,8 @@ public class VendaEditor extends GenericEditor<Venda>{
 	private void criarTabelaVistoria(Composite composite){
 		tvbVistoria = new TableViewerBuilder(composite);
 		
-		tvbVistoria.createColumn("Data da Vistoria").bindToProperty("data").build();
+		tvbVistoria.createColumn("Data da Vistoria").bindToProperty("data").format(new DateStringValueFormatter()).build();
 		tvbVistoria.createColumn("Funcionário").bindToProperty("funcionario.nome").build();
-		tvbVistoria.createColumn("Inquilino").bindToProperty("inquilino.nome").build();
-		tvbVistoria.createColumn("Fotos").bindToProperty("fotos").build();
 		tvbVistoria.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
 		
 		tvbVistoria.setInput(getCurrentObject().getVistorias());
@@ -408,10 +415,6 @@ public class VendaEditor extends GenericEditor<Venda>{
 		IObservableValue valueDataAssinaturaContratoObserveDetailValue = PojoProperties.value(Venda.class, "dataAssinaturaContrato", Date.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_3ObserveWidget, valueDataAssinaturaContratoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeSingleSelectionTableViewer = ViewerProperties.input().observe(tvComissao);
-		IObservableValue valueComissoesObserveDetailValue = PojoProperties.value(Venda.class, "comissoes", List.class).observeDetail(value);
-		bindingContext.bindValue(observeSingleSelectionTableViewer, valueComissoesObserveDetailValue, null, null);
-		//
 		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_5);
 		IObservableValue valueComissaoComissionadonomeObserveDetailValue = PojoProperties.value(Comissao.class, "comissionado.nome", String.class).observeDetail(valueComissao);
 		bindingContext.bindValue(observeTextText_5ObserveWidget, valueComissaoComissionadonomeObserveDetailValue, null, null);
@@ -421,7 +424,23 @@ public class VendaEditor extends GenericEditor<Venda>{
 		Binding bindValue2 = bindingContext.bindValue(observeTextText_6ObserveWidget, valueComissaoValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
 		ControlDecorationSupport.create(bindValue2, SWT.LEFT | SWT.TOP);
 		//
-		bindTables(bindingContext);
+		IObservableValue observeTextText_8ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_8);
+		IObservableValue valueComissaoDataVencimentoObserveDetailValue = PojoProperties.value(Comissao.class, "dataVencimento", Date.class).observeDetail(valueComissao);
+		bindingContext.bindValue(observeTextText_8ObserveWidget, valueComissaoDataVencimentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeTextText_34ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_34);
+		IObservableValue valueVistoriaDataObserveDetailValue = PojoProperties.value(Vistoria.class, "data", Date.class).observeDetail(valueVistoria);
+		bindingContext.bindValue(observeTextText_34ObserveWidget, valueVistoriaDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		//
+		IObservableValue observeTextText_16ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_16);
+		IObservableValue valueVistoriaFuncionarionomeObserveDetailValue = PojoProperties.value(Vistoria.class, "funcionario.nome", String.class).observeDetail(valueVistoria);
+		bindingContext.bindValue(observeTextText_16ObserveWidget, valueVistoriaFuncionarionomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_19ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_19);
+		IObservableValue valueVistoriaObservacoesObserveDetailValue = PojoProperties.value(Vistoria.class, "observacoes", String.class).observeDetail(valueVistoria);
+		bindingContext.bindValue(observeTextText_19ObserveWidget, valueVistoriaObservacoesObserveDetailValue, null, null);
+		//
+//		bindTables(bindingContext);
 		//
 		return bindingContext;
 	}

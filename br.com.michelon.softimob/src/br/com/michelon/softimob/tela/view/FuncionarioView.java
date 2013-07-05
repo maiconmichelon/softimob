@@ -9,6 +9,7 @@ import br.com.michelon.softimob.aplicacao.editorInput.FuncionarioEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.service.FuncionarioService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.tela.editor.FuncionarioEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
@@ -72,4 +73,9 @@ public class FuncionarioView extends GenericView<Funcionario>{
 		return service.findAll();
 	}
 
+	@Override
+	protected GenericService<Funcionario> getService() {
+		return service;
+	}	
+	
 }
