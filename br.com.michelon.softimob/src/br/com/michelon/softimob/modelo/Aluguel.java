@@ -28,6 +28,18 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	@Column
 	private Integer reajuste;
 	
+	public Aluguel(){
+		ParametrosEmpresa instance = ParametrosEmpresa.getInstance();
+		if(instance != null){
+			CheckList chkList = instance.getCheckListAluguel();
+			if (chkList != null) {
+				for (ItemCheckList item : chkList.getItens()) {
+					getItensCheckList().add(new ItemCheckListDescricao(item));
+				}
+			}
+		}
+	}
+	
 	public Cliente getFiador() {
 		return fiador;
 	}

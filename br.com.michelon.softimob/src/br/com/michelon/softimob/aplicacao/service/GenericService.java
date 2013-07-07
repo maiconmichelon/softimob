@@ -14,7 +14,8 @@ public class GenericService<T> {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" }) 
 	public GenericService(Class clazz){
-		crudRepository = SpringUtils.getContext().getBean(clazz);
+		if(SpringUtils.getContext() != null)
+			crudRepository = SpringUtils.getContext().getBean(clazz);
 	}
 	
 	protected CrudRepository<T, ?> getRepository() {

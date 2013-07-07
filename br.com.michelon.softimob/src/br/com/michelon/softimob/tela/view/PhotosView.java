@@ -1,7 +1,5 @@
 package br.com.michelon.softimob.tela.view;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -16,7 +14,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -26,6 +23,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
 
+import br.com.michelon.softimob.aplicacao.service.ArquivoService;
 import br.com.michelon.softimob.modelo.Arquivo;
 
 public class PhotosView extends ViewPart {
@@ -33,28 +31,21 @@ public class PhotosView extends ViewPart {
 	public static final String ID = "br.com.michelon.softimob.tela.view.PhotosView"; //$NON-NLS-1$
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 	private GalleryItem galleryItem;
+	private ArquivoService arquivoService = new ArquivoService();
 
 	public PhotosView() {
 	}
 
 	public void setFotos(List<Arquivo> fotos) {
 		for (Arquivo foto : fotos) {
+			
 			if(foto.getArquivo() == null)
 				continue;
 			
 			try {
-				ByteArrayInputStream in = new ByteArrayInputStream(foto.getArquivo().getArquivo());
-				DataInputStream readIn = new DataInputStream(in);
-
-				ImageData imdata = new ImageData(readIn);
-				
-				readIn.close();
-
-				Image image = new Image(Display.getCurrent(), imdata);
-				
 				GalleryItem galleryItem_1 = new GalleryItem(galleryItem, SWT.NONE);
 				galleryItem_1.setText(foto.getNome());
-				galleryItem_1.setImage(image);
+				galleryItem_1.setImage(arquivoService.getImage(foto.getArquivo().getArquivo()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -86,9 +77,6 @@ public class PhotosView extends ViewPart {
 		Gallery gallery = new Gallery(parent, SWT.BORDER);
 		gallery.setGroupRenderer(new NoGroupRenderer());
 		gallery.setItemRenderer(new DefaultGalleryItemRenderer());
-
-		galleryItem = new GalleryItem(gallery, SWT.NONE);
-		galleryItem.setText("New Item");
 
 		gallery.addSelectionListener(new SelectionAdapter() {
 

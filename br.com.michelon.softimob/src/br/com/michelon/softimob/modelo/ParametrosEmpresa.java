@@ -82,16 +82,33 @@ public class ParametrosEmpresa implements Serializable{
 	@OneToOne
 	private PlanoConta contraPartidaAluguel;
 	
+	@OneToOne
+	private PlanoConta contaDescontoConcedido;
+	
+	@OneToOne
+	private PlanoConta contaDescontoRecebido;
+	
+	@OneToOne
+	private PlanoConta contaJurosPagos;
+	
+	@OneToOne
+	private PlanoConta contaJurosRecebido;
+	
 	private ParametrosEmpresa(){}
 	
 	private static transient ParametrosEmpresaService service;
 	
 	public static ParametrosEmpresa getInstance(){
-		if(service == null)
-			service = new ParametrosEmpresaService();
+		try{
+			if(service == null)
+				service = new ParametrosEmpresaService();
+			
+			ParametrosEmpresa params = service.findParametrosEmpresa();
+			return params == null ? new ParametrosEmpresa() : params;
 		
-		ParametrosEmpresa params = service.findParametrosEmpresa();
-		return params == null ? new ParametrosEmpresa() : params;
+		}catch(Exception e){
+			return null;
+		}
 	}
 	
 	public String getCreci() {
@@ -263,19 +280,35 @@ public class ParametrosEmpresa implements Serializable{
 	}
 
 	public PlanoConta getContaDescontoConcedido() {
-		return null;
+		return contaDescontoConcedido;
 	}
 
-	public PlanoConta getContaJurosRecebido() {
-		return null;
+	public void setContaDescontoConcedido(PlanoConta contaDescontoConcedido) {
+		this.contaDescontoConcedido = contaDescontoConcedido;
+	}
+
+	public PlanoConta getContaDescontoRecebido() {
+		return contaDescontoRecebido;
+	}
+
+	public void setContaDescontoRecebido(PlanoConta contaDescontoRecebido) {
+		this.contaDescontoRecebido = contaDescontoRecebido;
 	}
 
 	public PlanoConta getContaJurosPagos() {
-		return null;
+		return contaJurosPagos;
 	}
 
-	public PlanoConta getContaDescontoObtidos() {
-		return null;
+	public void setContaJurosPagos(PlanoConta contaJurosPagos) {
+		this.contaJurosPagos = contaJurosPagos;
 	}
-	
+
+	public PlanoConta getContaJurosRecebido() {
+		return contaJurosRecebido;
+	}
+
+	public void setContaJurosRecebido(PlanoConta contaJurosRecebido) {
+		this.contaJurosRecebido = contaJurosRecebido;
+	}
+
 }

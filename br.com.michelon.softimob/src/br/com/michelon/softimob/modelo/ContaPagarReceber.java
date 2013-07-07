@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,6 +49,7 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataPagamento;
 
+	@NotNull(message = "O tipo da conta não pode ser vazia.")
 	@ManyToOne(optional = false)
 	private OrigemConta origem;
 	
@@ -55,7 +57,7 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	@Column(length = 1, nullable = false)
 	private Integer tipo;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private MovimentacaoContabil movimentacao;
 
 	@Column
@@ -167,8 +169,7 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 
 	@Override
 	public String getDescricao() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Conta " + getTipoExtenso() + " originada de "+ getTipoExtenso();
 	}
 
 	@Override
@@ -203,6 +204,10 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	
 	public boolean isAReceber(){
 		return tipo == RECEBER;
+	}
+	
+	public String getTipoExtenso(){
+		return isApagar() ? "A Pagar" : isAReceber() ? "A Receber" : "";
 	}
 	
 	public BigDecimal getValorMovimentacao(){

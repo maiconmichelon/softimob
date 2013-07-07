@@ -34,7 +34,6 @@ import br.com.michelon.softimob.aplicacao.exception.ValidationException;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.ValidatorHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
-import br.com.michelon.softimob.tela.dialog.ValidationErrorDialog;
 
 public abstract class GenericEditor<T> extends EditorPart {
 
@@ -197,15 +196,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 //	}
 	
 	protected boolean validarComMensagem(Object obj){
-		try {
-			validar(obj);
-			return true;
-		
-		} catch (ValidationException e) {
-			new ValidationErrorDialog(ShellHelper.getActiveShell(), e.getMessage()).open();
-		}
-
-		return false;
+		return ValidatorHelper.validarComMensagem(obj);
 	}
 	
 	protected void validar(Object obj) throws ValidationException{

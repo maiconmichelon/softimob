@@ -87,7 +87,7 @@ public class FormatterHelper {
 		if(obj instanceof Date)
 			return getSimpleDateFormat().format(obj);
 		if(obj instanceof BigDecimal)
-			return getCurrencyFormatter().format((BigDecimal) obj);
+			return getDefaultValueFormatterToMoney().format((BigDecimal) obj);
 		return obj.toString();
 	}
 	

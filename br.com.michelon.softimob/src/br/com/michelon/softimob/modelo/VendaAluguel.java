@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,9 +15,12 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import com.google.common.collect.Lists;
 
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.VistoriaService;
@@ -53,8 +57,8 @@ public class VendaAluguel implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAssinaturaContrato;
 
-	@ManyToOne
-	private CheckList checkList;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ItemCheckListDescricao> itensCheckList = Lists.newArrayList();
 	
 //	@OneToMany(cascade=CascadeType.ALL)
 //	private List<Comissao> comissoes = Lists.newArrayList();
@@ -126,12 +130,12 @@ public class VendaAluguel implements Serializable{
 		return new VistoriaService().findByVendaAluguel(this);
 	}
 	
-	public CheckList getCheckList() {
-		return checkList;
+	public List<ItemCheckListDescricao> getItensCheckList() {
+		return itensCheckList;
 	}
 
-	public void setCheckList(CheckList checkList) {
-		this.checkList = checkList;
+	public void setItensCheckList(List<ItemCheckListDescricao> itensCheckList) {
+		this.itensCheckList = itensCheckList;
 	}
 	
 }

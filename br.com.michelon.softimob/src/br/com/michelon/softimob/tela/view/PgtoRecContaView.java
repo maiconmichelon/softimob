@@ -6,17 +6,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.nebula.widgets.xviewer.XViewerColumn.SortDataType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -28,43 +27,42 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
-import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.LancamentoContabil;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
-import br.com.michelon.softimob.modelo.OrigemConta;
+import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.xViewer.GenericXViewer;
 import br.com.michelon.softimob.tela.widget.xViewer.GenericXViewerColumn;
 import br.com.michelon.softimob.tela.widget.xViewer.GenericXViewerContentProvider;
+import br.com.michelon.softimob.tela.widget.xViewer.XViewerColumnProperties;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import de.ralfebert.rcputils.properties.PropertyEditingSupport;
-import de.ralfebert.rcputils.tables.ColumnBuilder;
+import de.ralfebert.rcputils.properties.BaseValue;
+import de.ralfebert.rcputils.properties.IValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
-import de.ralfebert.rcputils.tables.format.Formatter;
-
-import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 
@@ -72,20 +70,22 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 	private static final String RECEBER = "A RECEBER";
 	private static final String TODAS = "TODAS";
 	
-	private Text text;
-	private Table table;
-	private Text txtConta;
-	private Table tbLancamentos;
-
-	private MovimentacaoContabil movimentacao;
+	private Logger log = Logger.getLogger(getClass());
 	
+	private Text text;
+	private Text txtConta;
+	private Text txtDataBaixa;
+	private DateTextField dtBaixa;
+
 	private ContaPagarReceberService service = new ContaPagarReceberService();
 	
 	private List<ColumnProperties> atributos;
-	private Text text_1;
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 	private GenericXViewer<MovimentacaoContabil> viewerMovimentacoes;
-	private DateTextField dtBaixa;
+	
+	private List<ContaPagarReceber> selecionados;
+	
+	private WritableValue value = WritableValue.withValueType(ModeloPgtoConta.class);
 	
 	public PgtoRecContaView() {
 		super(false);
@@ -131,112 +131,53 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		
 		Composite composite_tvb = new Composite(tabFolder, SWT.NONE);
 		tbtmContas.setControl(composite_tvb);
-//		composite_tvb.setLayout(new GridLayout(3, false));
 		
 		final TableViewerBuilder tvbContas = new TableViewerBuilder(composite_tvb, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
 		
-		tvbContas.createColumn("Tipo").bindToProperty("tipo").format(new NullStringValueFormatter()).build();
-		tvbContas.createColumn("Data de Vencimento").bindToProperty("dataVencimento").format(Formatter.forDate(FormatterHelper.getSimpleDateFormat())).build();
-		tvbContas.createColumn("Origem").bindToProperty("origem.nome").build();
-		tvbContas.createColumn("Valor").bindToProperty("valor").build();
-		tvbContas.createColumn("Valor Juros e Descontos").bindToProperty("valorJurosDesconto").makeEditable().build();
-		tvbContas.createColumn("Valor Parcial").bindToProperty("valorPagoParcial").build();
+		tvbContas.createColumn("Tipo").setPercentWidth(1).bindToProperty("tipoExtenso").format(new NullStringValueFormatter()).build();
+		tvbContas.createColumn("Data").setPercentWidth(1).bindToProperty("dataConta").format(new DateStringValueFormatter()).build();
+		tvbContas.createColumn("Data de Vencimento").setPercentWidth(1).bindToProperty("dataVencimento").format(new DateStringValueFormatter()).build();
+		tvbContas.createColumn("Origem").setPercentWidth(1).bindToProperty("origem.nome").build();
+		tvbContas.createColumn("Valor").setPercentWidth(1).bindToProperty("valor").format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
 		
-//		final TableViewer tvContas = new TableViewer(composite_2, SWT.BORDER | SWT.FULL_SELECTION);
-//		table = tvContas.getTable();
-//		table.setLinesVisible(true);
-//		table.setHeaderVisible(true);
-//		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
-//		
-//		TableViewerColumn tvcTipo = new TableViewerColumn(tvContas, SWT.NONE);
-//		TableColumn tblclmnTipo = tvcTipo.getColumn();
-//		tblclmnTipo.setWidth(100);
-//		tblclmnTipo.setText("Tipo");
-//		tvcTipo.setLabelProvider(new ColumnLabelProvider(){
-//			@Override
-//			public String getText(Object element) {
-//				int tipo = ((ContaPagarReceber)element).getTipo();
-//				return tipo == ContaPagarReceber.PAGAR ? PAGAR : RECEBER;
-//			}
-//		});
-//		
-//		TableViewerColumn tvcDataVencimento = new TableViewerColumn(tvContas, SWT.NONE);
-//		TableColumn tblclmnDataVencimento = tvcDataVencimento.getColumn();
-//		tblclmnDataVencimento.setWidth(100);
-//		tblclmnDataVencimento.setText("Data Vencimento");
-//		tvcDataVencimento.setLabelProvider(new ColumnLabelProvider(){
-//			@Override
-//			public String getText(Object element) {
-//				Date dataVencimento = ((ContaPagarReceber)element).getDataVencimento();
-//				if(dataVencimento != null)
-//					return FormatterHelper.getSimpleDateFormat().format(dataVencimento);
-//				return StringUtils.EMPTY;
-//			}
-//		});
-//		
-//		TableViewerColumn tvcOrigem = new TableViewerColumn(tvContas, SWT.NONE);
-//		TableColumn tblclmnOrigem = tvcOrigem.getColumn();
-//		tblclmnOrigem.setWidth(100);
-//		tblclmnOrigem.setText("Origem");
-//		tvcOrigem.setLabelProvider(new ColumnLabelProvider(){
-//			@Override
-//			public String getText(Object element) {
-//				OrigemConta origem = ((ContaPagarReceber) element).getOrigem();
-//				if(origem != null)
-//					return origem.getNome();
-//				return StringUtils.EMPTY;
-//			}
-//		});	
-//		
-//		TableViewerColumn tvcValor = new TableViewerColumn(tvContas, SWT.NONE);
-//		TableColumn tblclmnValor = tvcValor.getColumn();
-//		tblclmnValor.setWidth(100);
-//		tblclmnValor.setText("Valor");
-//		tvcValor.setLabelProvider(new ColumnLabelProvider(){
-//			@Override
-//			public String getText(Object element) {
-//				BigDecimal valor = ((ContaPagarReceber)element).getValor();
-//				if(valor != null)
-//					return valor.toString();
-//				return StringUtils.EMPTY;
-//			}
-//		});
-//		
-//		TableViewerColumn tvcValorJurDescontos = new TableViewerColumn(tvContas, SWT.NONE);
-//		TableColumn tblclmnValorComJuros = tvcValorJurDescontos.getColumn();
-//		tblclmnValorComJuros.setWidth(122);
-//		tblclmnValorComJuros.setText("Valor Juros e Desconto");
-//		tvcValorJurDescontos.setLabelProvider(new ColumnLabelProvider(){
-//			@Override
-//			public String getText(Object element) {
-//				BigDecimal valorJurosDescontos = ((ContaPagarReceber)element).getValorJurosDesconto();
-//				if(valorJurosDescontos != null)
-//					return valorJurosDescontos.toString();
-//				return StringUtils.EMPTY;
-//			}
-//		});
-//		tvcValorJurDescontos.setEditingSupport(new PropertyEditingSupport(tvContas, "valorJurosDesconto", new TextCellEditor()));
-//		
-//		TableViewerColumn tableViewerColumn = new TableViewerColumn(tvContas, SWT.NONE);
-//		TableColumn tblclmnJuros = tableViewerColumn.getColumn();
-//		tblclmnJuros.setWidth(122);
-//		tblclmnJuros.setText("Juros");
-//		tableViewerColumn.setLabelProvider(new ColumnLabelProvider(){
-//			@Override
-//			public String getText(Object element) {
-//				return "";
-//			}
-//		});
-//		
-//		TableViewerColumn tableViewerColumnParcial = new TableViewerColumn(tvContas, SWT.NONE);
-//		TableColumn tblclmnJurosParcial = tableViewerColumn.getColumn();
-//		tblclmnJurosParcial.setWidth(122);
-//		tblclmnJurosParcial.setText("Valor Parcial");
-//		tableViewerColumnParcial.setLabelProvider(new ColumnLabelProvider(){
-//			public String getText(Object element) {
-//				return "";
-//			};
-//		});
+		tvbContas.createColumn("Valor Parcial").setPercentWidth(1).bindToValue(new IValue() {
+			@Override
+			public void setValue(Object element, Object value) {
+				ContaPagarReceber c = (ContaPagarReceber) element;
+				BigDecimal valorPagoParcial = new BigDecimal(value.toString().replace(',', '.'));
+				
+				if(valorPagoParcial.compareTo(c.getValor()) < 1)
+					c.setValorPagoParcial(valorPagoParcial);
+			}
+			
+			@Override
+			public Object getValue(Object element) {
+				ContaPagarReceber c = (ContaPagarReceber) element;
+				return FormatterHelper.getDefaultValueFormatterToMoney().format(c.getValorParcialOuValorCheio());
+			}
+		}).makeEditable().build();
+		
+		tvbContas.createColumn("Valor com Juros e Descontos").setPercentWidth(1).bindToValue(new IValue() {
+			
+			@Override
+			public void setValue(Object element, Object value) {
+				ContaPagarReceber c = (ContaPagarReceber) element;
+				BigDecimal valorComJurosDesconto = new BigDecimal(value.toString().replace(',', '.'));
+				c.setValorJurosDesconto(valorComJurosDesconto.subtract(c.getValorParcialOuValorCheio()));
+			}
+			
+			@Override
+			public Object getValue(Object element) {
+				ContaPagarReceber c = (ContaPagarReceber) element;
+				return FormatterHelper.getDecimalFormat().format(c.getValorParcialOuValorCheio().add(c.getValorJurDescTratado()));
+			}
+		}).makeEditable().build();
+		tvbContas.createColumn("Juros / Desconto").setPercentWidth(1).bindToValue(new BaseValue<ContaPagarReceber>() {
+			@Override
+			public Object get(ContaPagarReceber element) {
+				return element.getValorJurDescTratado().abs();
+			}
+		}).format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
 		
 		CTabItem tbtmLanamentos = new CTabItem(tabFolder, SWT.NONE);
 		tbtmLanamentos.setText("Lançamentos");
@@ -250,10 +191,10 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		lblDataPagamento.setText("Data pagamento");
 		
 		dtBaixa = new DateTextField(composite_3);
-		text_1 = dtBaixa.getControl();
+		txtDataBaixa = dtBaixa.getControl();
 		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_1.widthHint = 79;
-		text_1.setLayoutData(gd_text_1);
+		txtDataBaixa.setLayoutData(gd_text_1);
 		new Label(composite_3, SWT.NONE);
 		
 		Label lblConta = new Label(composite_3, SWT.NONE);
@@ -261,23 +202,44 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		lblConta.setText("Conta");
 		
 		txtConta = new Text(composite_3, SWT.BORDER);
+		txtConta.setEditable(false);
 		txtConta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar = new Button(composite_3, SWT.NONE);
-		btnSelecionar.setText("Selecionar");
+		btnSelecionar.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnSelecionar.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, btnSelecionar, value, "conta");
 		
 		Button btnGerarLanamentos = new Button(composite_3, SWT.NONE);
 		btnGerarLanamentos.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnGerarLanamentos.setText("Gerar Lançamentos");
 		btnGerarLanamentos.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				List<ContaPagarReceber> selecionados = getSelecionados();
+				if(dtBaixa.getValue() == null){
+					DialogHelper.openError("Informe a data da baixa.");
+					return;
+				}
+				
+				selecionados = getSelecionados();
 				List<MovimentacaoContabil> movs = Lists.newArrayList();
 				ContaPagarReceberService service = new ContaPagarReceberService();
 				
-				for(ContaPagarReceber c : selecionados){
-					movs.add(service.geraMovimentacao(c, (Date) dtBaixa.getValue()));
+				try{
+					Date dataBaixa = (Date) dtBaixa.getValue();
+
+					for(ContaPagarReceber c : selecionados){
+						MovimentacaoContabil geraMovimentacao = service.geraMovimentacao(c, (ModeloPgtoConta) value.getValue());
+						
+						c.setMovimentacao(geraMovimentacao);
+						c.setDataPagamento(dataBaixa);
+						
+						movs.add(geraMovimentacao);
+					}
+				}catch(Exception e1){
+					log.error("Erro ao gerar movimentação.", e1);
+					DialogHelper.openError("Erro ao gerar movimentação.\n"+e1.getMessage());
 				}
 				
 				viewerMovimentacoes.setInput(movs);
@@ -286,58 +248,6 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		new Label(composite_3, SWT.NONE);
 		
 		criarTabelaDeMovimentacoes(composite_3);
-		
-//		TableViewer tvLancamentos = new TableViewer(composite_3, SWT.BORDER | SWT.FULL_SELECTION);
-//		tbLancamentos = tvLancamentos.getTable();
-//		tbLancamentos.setHeaderVisible(true);
-//		tbLancamentos.setLinesVisible(true);
-//		GridData gd_table_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
-//		gd_table_1.heightHint = 165;
-//		tbLancamentos.setLayoutData(gd_table_1);
-//		
-//		TableViewerColumn tvTipoLancamento = new TableViewerColumn(tvLancamentos, SWT.NONE);
-//		TableColumn tblclmnTipo_1 = tvTipoLancamento.getColumn();
-//		tblclmnTipo_1.setWidth(100);
-//		tblclmnTipo_1.setText("Tipo");
-//		tvTipoLancamento.setLabelProvider(new ColumnLabelProvider(){
-//			@Override
-//			public String getText(Object element) {
-//				return ((LancamentoContabil)element).getTipo().toString();
-//			}
-//		});
-//		
-//		TableViewerColumn tvcContaLancamento = new TableViewerColumn(tvLancamentos, SWT.NONE);
-//		TableColumn tblclmnConta = tvcContaLancamento.getColumn();
-//		tblclmnConta.setWidth(100);
-//		tblclmnConta.setText("Conta");
-//		tvcContaLancamento.setLabelProvider(new ColumnLabelProvider(){
-//			@Override
-//			public String getText(Object element) {
-//				return ((LancamentoContabil)element).getConta().toString();
-//			}
-//		});
-//		
-//		TableViewerColumn tvcValorConta = new TableViewerColumn(tvLancamentos, SWT.NONE);
-//		TableColumn tblclmnValor_1 = tvcValorConta.getColumn();
-//		tblclmnValor_1.setWidth(100);
-//		tblclmnValor_1.setText("Valor");
-//		tvcValorConta.setLabelProvider(new ColumnLabelProvider(){
-//			@Override
-//			public String getText(Object element) {
-//				return ((LancamentoContabil)element).getValor().toString();
-//			}
-//		});
-//		
-//		TableViewerColumn tvcHistoricoLancamento = new TableViewerColumn(tvLancamentos, SWT.NONE);
-//		TableColumn tblclmnHistrico = tvcHistoricoLancamento.getColumn();
-//		tblclmnHistrico.setWidth(100);
-//		tblclmnHistrico.setText("Histórico");
-//		tvcHistoricoLancamento.setLabelProvider(new ColumnLabelProvider(){
-//			@Override
-//			public String getText(Object element) {
-//				return ((LancamentoContabil)element).getHistorico();
-//			}
-//		});
 		
 		Button btnBaixarConta = new Button(cpPrincipal, SWT.NONE);
 		btnBaixarConta.setImage(ImageRepository.FINALIZAR_16.getImage());
@@ -349,50 +259,59 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		btnBaixarConta.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				List<Object> contas = SelectionHelper.getObjects(tvbContas.getTableViewer());
-				for (Object conta : contas) {
-					((ContaPagarReceber)conta).efetuarBaixa(movimentacao);
+				try {
+					if(selecionados == null || selecionados.isEmpty()){
+						DialogHelper.openWarning("Para efetuar a baixa das contas selecionadas deverá ser gerado todas as movimentações correspondentes.");
+						return;
+					}
+					
+					service.baixarContas(selecionados);
+				} catch (Exception e1) {
+					log.error("Erro ao baixar contas.", e1);
 				}
 			}
 		});
 		
 		tabFolder.setSelection(0);
+
+		value.setValue(new ModeloPgtoConta());
+		initDataBindings();
 		
 		return tvbContas.getTableViewer();
 	}
 
 	private void criarTabelaDeMovimentacoes(Composite composite_3) {
-		Map<Class<?>, String> m1 = Maps.newHashMap();
-		m1.put(MovimentacaoContabil.class, "id");
-		m1.put(LancamentoContabil.class, "tipo");
+		Map<Class<?>, XViewerColumnProperties> m1 = Maps.newHashMap();
+		m1.put(MovimentacaoContabil.class, new XViewerColumnProperties("id"));
+		m1.put(LancamentoContabil.class, new XViewerColumnProperties("tipo"));
 		GenericXViewerColumn c1 = new GenericXViewerColumn("Lote", 100, m1);
 		
-		Map<Class<?>, String> m2 = Maps.newHashMap();
-		m2.put(MovimentacaoContabil.class, "data");
-		m2.put(LancamentoContabil.class, "conta");
+		Map<Class<?>, XViewerColumnProperties> m2 = Maps.newHashMap();
+		m2.put(MovimentacaoContabil.class, new XViewerColumnProperties("data"));
+		m2.put(LancamentoContabil.class, new XViewerColumnProperties("conta"));
 		GenericXViewerColumn c2 = new GenericXViewerColumn("Data", 100, m2);
 		
-		Map<Class<?>, String> m3 = Maps.newHashMap();
-		m3.put(MovimentacaoContabil.class, "valor");
-		m3.put(LancamentoContabil.class, "valor");
+		Map<Class<?>, XViewerColumnProperties> m3 = Maps.newHashMap();
+		m3.put(MovimentacaoContabil.class, new XViewerColumnProperties("valor"));
+		m3.put(LancamentoContabil.class, new XViewerColumnProperties("valor"));
 		GenericXViewerColumn c3 = new GenericXViewerColumn("Valor", 100, m3);
 		
-		Map<Class<?>, String> m4 = Maps.newHashMap();
-		m4.put(LancamentoContabil.class, "historico");
-		GenericXViewerColumn c4 = new GenericXViewerColumn("Histórico", 100, m4);
+		Map<Class<?>, XViewerColumnProperties> m4 = Maps.newHashMap();
+		m4.put(LancamentoContabil.class, new XViewerColumnProperties("historico"));
+		GenericXViewerColumn c4 = new GenericXViewerColumn("Histórico", 300, m4);
 
-		Map<Class<?>, String> m5 = Maps.newHashMap();
-		m5.put(LancamentoContabil.class, "complemento");
-		GenericXViewerColumn c5 = new GenericXViewerColumn("Complemento", 100, m5);
+		Map<Class<?>, XViewerColumnProperties> m5 = Maps.newHashMap();
+		m5.put(LancamentoContabil.class, new XViewerColumnProperties("complemento"));
+		GenericXViewerColumn c5 = new GenericXViewerColumn("Complemento", 300, m5);
 		
 		List<GenericXViewerColumn> columns = Arrays.asList(c1, c2, c3, c4, c5);
 		
-		viewerMovimentacoes = new GenericXViewer<MovimentacaoContabil>(composite_3, SWT.BORDER, columns, new GenericXViewerContentProvider() {
+		viewerMovimentacoes = new GenericXViewer<MovimentacaoContabil>(composite_3, SWT.BORDER | SWT.FULL_SELECTION, columns, new GenericXViewerContentProvider() {
 			
 			@Override
 			public Object[] getElements(Object inputElement) {
 				if(inputElement instanceof List)
-					return ((List) inputElement).toArray();
+					return ((List<?>) inputElement).toArray();
 				return null;
 			}
 			
@@ -456,5 +375,43 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 	protected GenericService<ContaPagarReceber> getService() {
 		return service;
 	}	
+	
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataBaixa);
+		IObservableValue valueDataBaixaObserveDetailValue = PojoProperties.value(ModeloPgtoConta.class, "dataBaixa", Date.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_1ObserveWidget, valueDataBaixaObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextTxtContaObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtConta);
+		IObservableValue valueContaObserveDetailValue = PojoProperties.value(ModeloPgtoConta.class, "conta", PlanoConta.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTxtContaObserveWidget, valueContaObserveDetailValue, null, null);
+		//
+		return bindingContext;
+	}
+	
+	public class ModeloPgtoConta{
+		
+		private PlanoConta conta;
+		
+		private Date dataBaixa;
+		
+		public PlanoConta getConta() {
+			return conta;
+		}
+		
+		public Date getDataBaixa() {
+			return dataBaixa;
+		}
+		
+		public void setConta(PlanoConta conta) {
+			this.conta = conta;
+		}
+		
+		public void setDataBaixa(Date dataBaixa) {
+			this.dataBaixa = dataBaixa;
+		}
+		
+	}
 	
 }

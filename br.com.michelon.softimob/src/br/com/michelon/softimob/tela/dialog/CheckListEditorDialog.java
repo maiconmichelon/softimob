@@ -2,8 +2,6 @@ package br.com.michelon.softimob.tela.dialog;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -27,6 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.ValidatorHelper;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
@@ -45,6 +44,10 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 	
 	public CheckListEditorDialog(Shell parentShell, CheckList checkList) {
 		super(parentShell);
+		
+		if(checkList == null)
+			checkList = new CheckList();
+		
 		this.checkList = checkList;
 	}
 
@@ -116,7 +119,8 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		
 		tvb.createColumn("Nome").bindToProperty("nome").build();
 		
-		tvb.setInput(checkList.getItens());
+		if(checkList != null)
+			tvb.setInput(checkList.getItens());
 		
 		tvb.getTableViewer().addDoubleClickListener(new IDoubleClickListener() {
 			
@@ -145,7 +149,13 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 			public void widgetSelected(SelectionEvent event) {
 				if(isNovo()){
 					ItemCheckList item = getItemCheckList();
-					checkList.getItens().add(item);
+					
+					if(ValidatorHelper.validarComMensagem(item))
+						checkList.getItens().add(item);
+					else{
+						current = null;
+						return;
+					}
 				}else{
 					getItemCheckList();
 				}
@@ -168,7 +178,8 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		btnNovo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
 		btnNovo.setImage(ImageRepository.NOVO_16.getImage());
 		
-		Button btnFinalizar = createButton(parent, IDialogConstants.OK_ID, "Finalizar", true);
+		Button btnFinalizar = new Button(parent, SWT.PUSH);
+		btnFinalizar.setText("Finalizar");
 		btnFinalizar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
 		btnFinalizar.setImage(ImageRepository.FINALIZAR_16.getImage());
 		btnFinalizar.addSelectionListener(new SelectionAdapter() {
@@ -186,9 +197,11 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 
 	private void salvar() {
 		try {
-			ValidatorHelper.validar(checkList);
-			
-			new CheckListService().salvar(checkList);
+			if(ValidatorHelper.validarComMensagem(checkList)){
+				new CheckListService().salvar(checkList);
+				DialogHelper.openInformation("Registro salvo com sucesso.");
+				close();
+			}
 		} catch (Exception e1) {
 			new ValidationErrorDialog(ShellHelper.getActiveShell(), e1.getMessage());
 			log.error("Erro ao salvar check list", e1);

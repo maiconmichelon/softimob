@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.aplicacao.service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,10 @@ public class ImovelService extends GenericService<Imovel>{
 //		return getRepository().buscaAvancada(null, null, null, null, null, null, null, null, null, null, null, null);
 //		return getRepository().buscaAvancada(null, null, null, null, null, null, null, null, null, null, null);
 //		return getRepository().buscaAvancada(new Date(), null, null, null, null, null, null, null, null, null, null, null);
+	}
+	
+	public Integer sizeImages(Imovel imovel){
+		return getRepository().sizeImages(imovel);
 	}
 	
 }

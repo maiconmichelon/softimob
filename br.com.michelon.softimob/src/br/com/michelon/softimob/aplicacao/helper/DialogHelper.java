@@ -1,9 +1,13 @@
 package br.com.michelon.softimob.aplicacao.helper;
 
 import java.io.File;
+import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
+
+import com.google.common.collect.Lists;
 
 import br.com.michelon.softimob.modelo.ArquivoBytes;
 import br.com.michelon.softimob.modelo.Arquivo;
@@ -26,16 +30,16 @@ public class DialogHelper {
 		return MessageDialog.openConfirm(ShellHelper.getActiveShell(), "Softimob", message);
 	}
 	
-	public static Arquivo openPhotoDialog(){
-		return openFileDialog(new String[]{"*.png", "*.jpg"});
+	public static List<Arquivo> openPhotoDialog(){
+		return openFileDialog(new String[]{"*.png;*.jpg"});
 	}
 	
-	public static Arquivo openDocDialog(){
+	public static List<Arquivo> openDocDialog(){
 		return openFileDialog(null);
 	}
 	
-	public static Arquivo openFileDialog(String[] filters){
-		FileDialog dialog = new FileDialog(ShellHelper.getActiveShell());
+	public static List<Arquivo> openFileDialog(String[] filters){
+		FileDialog dialog = new FileDialog(ShellHelper.getActiveShell(), SWT.MULTI);
 		
 		if(filters != null && filters.length > 0)
 			dialog.setFilterExtensions(filters);
@@ -45,13 +49,17 @@ public class DialogHelper {
 		if(caminho == null)
 			return null;
 		
-		File file = new File(caminho);
+		List<Arquivo> arquivos = Lists.newArrayList();
+		for(String arq : dialog.getFileNames()){
+			File file = new File(dialog.getFilterPath() + "/" + arq);
+
+			Arquivo arquivo = new Arquivo();
+			arquivo.setNome(file.getName());
+			arquivo.setArquivo(new ArquivoBytes(FileHelper.getBytes(file)));
+			arquivos.add(arquivo);
+		}
 		
-		Arquivo arquivo = new Arquivo();
-		arquivo.setNome(file.getName());
-		arquivo.setArquivo(new ArquivoBytes(FileHelper.getBytes(file)));
-		
-		return arquivo;
+		return arquivos;
 	}
 	
 }

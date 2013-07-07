@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -28,8 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 
-import br.com.michelon.softimob.aplicacao.exception.ValidationException;
-import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.ValidatorHelper;
 import br.com.michelon.softimob.aplicacao.service.IndiceService;
 import br.com.michelon.softimob.modelo.Indice;
@@ -172,13 +170,10 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 				if(isNovo()){ 
 					IndiceMes indiceMes = getIndiceMes();
 					
-					try {
-						ValidatorHelper.validar(indiceMes);
-
+					if(ValidatorHelper.validarComMensagem(indiceMes))
 						indice.getIndices().add(indiceMes);
-					} catch (ValidationException e) {
+					else {
 						current = null;
-						new ValidationErrorDialog(ShellHelper.getActiveShell(), e.getMessage()).open();
 						return;
 					}
 				} else {
@@ -203,14 +198,19 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		btnNovo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
 		btnNovo.setImage(ImageRepository.NOVO_16.getImage());
 		
-		Button btnFinalizar = createButton(parent, IDialogConstants.OK_ID, "Finalizar", true);
+		Button btnFinalizar = new Button(parent, SWT.PUSH);
+		btnFinalizar.setText("Finalizar");
 		btnFinalizar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
 		btnFinalizar.setImage(ImageRepository.FINALIZAR_16.getImage());
 		btnFinalizar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					new IndiceService().salvar(indice);
+					if(ValidatorHelper.validarComMensagem(indice)){
+						new IndiceService().salvar(indice);
+						DialogHelper.openInformation("Índice registrado com sucesso.");
+						close();
+					}
 				} catch (Exception e1) {
 					log.error("Erro ao salvar indice", e1);
 				}

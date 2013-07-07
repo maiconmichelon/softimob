@@ -1,5 +1,7 @@
 package br.com.michelon.softimob.tela.editor;
 
+import java.util.List;
+
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -23,8 +25,6 @@ import br.com.michelon.softimob.modelo.ModeloContrato;
 public class ModeloContratoEditor extends GenericEditor<ModeloContrato> {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ModeloContratoEditor";
-	
-	private DataBindingContext m_bindingContext;
 	
 	private ModeloContratoService service = new ModeloContratoService();
 	
@@ -68,11 +68,12 @@ public class ModeloContratoEditor extends GenericEditor<ModeloContrato> {
 		btnSelecionar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Arquivo openFileDialog = DialogHelper.openDocDialog();
+				List<Arquivo> files = DialogHelper.openDocDialog();
 				
-				if(openFileDialog != null){
-					getCurrentObject().setArquivo(openFileDialog);
-					text_1.setText(openFileDialog.getNome());
+				if(files != null && files.size() > 0){
+					Arquivo file = files.get(0);
+					getCurrentObject().setArquivo(file);
+					text_1.setText(file.getNome());
 				}
 				
 			}

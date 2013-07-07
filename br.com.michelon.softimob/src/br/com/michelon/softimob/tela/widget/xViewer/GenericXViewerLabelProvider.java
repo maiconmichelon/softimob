@@ -29,7 +29,12 @@ public class GenericXViewerLabelProvider extends XViewerStyledTextLabelProvider{
 
 	@Override
 	public Image getColumnImage(Object arg0, XViewerColumn arg1, int arg2) throws Exception {
-		return null;
+		GenericXViewerColumn col = ((GenericXViewer<?>)xViewer).getGenericXViewerColumn(arg1.getId());
+		
+		XViewerColumnProperties xViewerColumnProperties = col.getProperties().get(arg0.getClass());
+		Image image = xViewerColumnProperties == null ? null : xViewerColumnProperties.getImage();
+		
+		return image;
 	}
 
 	@Override
@@ -46,10 +51,12 @@ public class GenericXViewerLabelProvider extends XViewerStyledTextLabelProvider{
 	public StyledString getStyledText(Object arg0, XViewerColumn arg1, int arg2) throws Exception {
 		GenericXViewerColumn col = ((GenericXViewer<?>)xViewer).getGenericXViewerColumn(arg1.getId());
 		
-		String property = col.getProperties().get(arg0.getClass());
+		XViewerColumnProperties xViewerColumnProperties = col.getProperties().get(arg0.getClass());
+		String property = xViewerColumnProperties == null ? null : xViewerColumnProperties.getProperty();
 		
 		Object obj = property == null ? StringUtils.EMPTY : ReflectionHelper.getAtribute(arg0, property);
 			
 		return new StyledString(FormatterHelper.formatObject(obj), null);
 	}
+	
 }

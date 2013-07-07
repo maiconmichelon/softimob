@@ -59,6 +59,8 @@ import br.com.michelon.softimob.modelo.Comissionado;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.FinalizacaoChamadoReforma;
 import br.com.michelon.softimob.modelo.ItemCheckList;
+import br.com.michelon.softimob.modelo.ItemCheckListDescricao;
+import br.com.michelon.softimob.modelo.ParametrosEmpresa;
 import br.com.michelon.softimob.modelo.Vistoria;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.dialog.AdicionarContaPagarReformaDialog;
@@ -669,7 +671,13 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	}
 	
 	private void addComissao(WritableValue valueComissao) {
-		addItens(new ComissaoService(), valueComissao, tvComissao, getCurrentObject().getComissoes());
+		ParametrosEmpresa parametrosEmpresa = ParametrosEmpresa.getInstance();
+		if(parametrosEmpresa.getTipoContaComissao() == null){
+			DialogHelper.openWarning("Não foi possivel encontrar o tipo da conta de comissão nos Parâmetros da Empresa");
+		}else{
+			((Comissao)valueComissao.getValue()).setOrigem(parametrosEmpresa.getTipoContaComissao());
+			addItens(new ComissaoService(), valueComissao, tvComissao, getCurrentObject().getComissoes());
+		}
 	}
 
 	protected void addVistoria(WritableValue valueVistoria) {
@@ -765,7 +773,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 			
 			@Override
 			public Image getImage(Object element) {
-				return ((ItemCheckList)element).getFinalizado() ? ImageRepository.CHECKED.getImage() : ImageRepository.UNCHECKED.getImage();
+				return ((ItemCheckListDescricao)element).getFinalizado() ? ImageRepository.CHECKED.getImage() : ImageRepository.UNCHECKED.getImage();
 			}
 		}).build();
 		tvbCheckList.createColumn("Observações").bindToProperty("observacoes").setPercentWidth(80).build();

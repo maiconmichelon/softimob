@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang.StringUtils;
-
 @Entity
 public class Endereco implements Serializable{
 
@@ -23,7 +21,7 @@ public class Endereco implements Serializable{
 	@Column(length = 9)
 	private String cep;
 	
-	@NotNull(message="A rua deve ser informada.")
+	@NotNull(message="O endereço deve ser informado.")
 	@ManyToOne(optional=false)
 	private Rua rua;
 	

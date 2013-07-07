@@ -38,6 +38,7 @@ import br.com.michelon.softimob.aplicacao.service.VistoriaService;
 import br.com.michelon.softimob.modelo.Comissao;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.ItemCheckList;
+import br.com.michelon.softimob.modelo.ItemCheckListDescricao;
 import br.com.michelon.softimob.modelo.Venda;
 import br.com.michelon.softimob.modelo.Vistoria;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
@@ -364,7 +365,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 			
 			@Override
 			public Image getImage(Object element) {
-				return ((ItemCheckList)element).getFinalizado() ? ImageRepository.CHECKED.getImage() : ImageRepository.UNCHECKED.getImage();
+				return ((ItemCheckListDescricao)element).getFinalizado() ? ImageRepository.CHECKED.getImage() : ImageRepository.UNCHECKED.getImage();
 			}
 		}).build();
 		tvbCheckList.createColumn("Observações").bindToProperty("observacoes").setPercentWidth(80).build();

@@ -246,6 +246,11 @@
             name="Pessoa Jurídica"
             restorable="true">
       </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.ReportView"
+            id="br.com.michelon.softimob.tela.view.ReportView"
+            name="New ViewPart">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -592,7 +597,7 @@
                   style="push">
             </command>
             <command
-                  commandId="br.com.michelon.softimob.command1"
+                  commandId="br.com.michelon.softimob.command.cmdBalancete"
                   label="Balancete"
                   style="push">
             </command>
@@ -810,6 +815,11 @@
             defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdParametroEmpresa"
             id="br.com.michelon.softimob.command.cmdParametroEmpresa"
             name="Parametros Empresa">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.BalanceteCommand"
+            id="br.com.michelon.softimob.command.cmdBalancete"
+            name="Balancete">
       </command>
    </extension>
    <extension

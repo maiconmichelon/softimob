@@ -14,7 +14,6 @@ import br.com.michelon.softimob.modelo.Cliente;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.TipoImovel;
-import br.com.michelon.softimob.modelo.ContratoPrestacaoServico.TipoContrato;
 
 public interface ImovelDAO extends CrudRepository<Imovel, Long>{
 
@@ -56,5 +55,8 @@ public interface ImovelDAO extends CrudRepository<Imovel, Long>{
 			, @Param(value = "reservado")Boolean reservado
 			, @Param(value = "naoReservado")Boolean naoReservado
 			);
+
+	@Query("SELECT size(i.fotos) FROM Imovel i WHERE i = :imovel")
+	public Integer sizeImages(@Param(value = "imovel")Imovel imovel);
 	
 }

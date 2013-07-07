@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.tela.widget;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -25,7 +26,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import br.com.michelon.softimob.aplicacao.cep.CEP;
+import br.com.michelon.softimob.aplicacao.cep.CEPNaoEncontradoException;
 import br.com.michelon.softimob.aplicacao.cep.CEPServiceFactory;
+import br.com.michelon.softimob.aplicacao.cep.CEPServiceFailureException;
 import br.com.michelon.softimob.aplicacao.helper.NumberHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.service.BairroService;
@@ -40,6 +43,8 @@ import br.com.michelon.softimob.modelo.Rua;
 
 public class EnderecoGroup extends Group {
 
+	private Logger log = Logger.getLogger(getClass());
+	
 	private ComboViewer cvCidades;
 	private ComboViewer cvBairros;
 	private ComboViewer cvRuas;
@@ -83,26 +88,18 @@ public class EnderecoGroup extends Group {
 				Text txt = (Text) e.widget;
 				String txtCep = NumberHelper.extractNumbers(txt.getText());
 				
-				CEP cep = CEPServiceFactory.getCEPService().obtemPorNumeroCEP(txtCep);
-				
-				Rua rua = ruaService.findByNome(cep.getLogradouro());
-				if(rua == null){
-					Bairro bairro = bairroService.findByNome(cep.getBairro());
-					if(bairro == null){
-						Cidade cidade = cidadeService.findByNome(cep.getLocalidade());
-						if(cidade == null){
-							Estado estado = estadoService.findByUf(cep.getUf());
-							if(estado != null){
-								selecionarEstado(estado);
-							}
-						} else {
-							selecionarCidade(cidade);
-						}
-					} else {
-						selecionarBairro(bairro);
-					}
-				} else {
-					selecionarRua(rua);
+				try{
+					CEP cep = CEPServiceFactory.getCEPService().obtemPorNumeroCEP(txtCep);
+
+					Rua rua = cadastrarCep(cep);
+					if(rua != null)
+						selecionarRua(rua);
+				}catch(CEPNaoEncontradoException ce){
+					log.info("Cep não encontrado", ce);
+				}catch(CEPServiceFailureException se){
+					log.error("Não houve exito em conectar-se com o serviço dos correios.", se);
+				}catch(Exception e1){
+					log.error("Erro ao buscar CEP.", e1);
 				}
 			}
 		});
@@ -212,6 +209,47 @@ public class EnderecoGroup extends Group {
 		initDataBindings();
 	}
 
+	protected Rua cadastrarCep(CEP cep) {
+		try{
+			Estado estado = estadoService.findByUf(cep.getUf());
+			if(estado == null){
+				estado = new Estado();
+				estado.setNome(cep.getUf()+ "a");
+				estado.setUf(cep.getUf());
+				estadoService.salvar(estado);
+			}
+			
+			Cidade cidade = cidadeService.findByNome(cep.getLocalidade());
+			if(cidade == null){
+				cidade = new Cidade();
+				cidade.setNome(cep.getLocalidade());
+				cidade.setEstado(estado);
+				cidadeService.salvar(cidade);
+			}
+			
+			Bairro bairro = bairroService.findByNome(cep.getBairro());
+			if(bairro == null){
+				bairro = new Bairro();
+				bairro.setNome(cep.getBairro());
+				bairro.setCidade(cidade);
+				bairroService.salvar(bairro);
+			}
+			
+			Rua rua = ruaService.findByNome(cep.getLogradouro());
+			if(rua == null){
+				rua = new Rua();
+				rua.setNome(cep.getLogradouro());
+				rua.setBairro(bairro);
+				ruaService.salvar(rua);
+			}
+			
+			return rua;
+		}catch(Exception e){
+			log.error("Erro ao cadastrar cep.\n" + e.getLocalizedMessage(), e);
+			return null;
+		}
+	}
+
 	@Override
 	protected void checkSubclass() {
 	}
@@ -279,20 +317,24 @@ public class EnderecoGroup extends Group {
 
 	private void selecionarRua(Rua rua) {
 		selecionarBairro(rua.getBairro());
+		cvRuas.setInput(ruaService.findRuasByBairro(rua.getBairro()));
 		cvRuas.setSelection(new StructuredSelection(rua));
 	}
 
 	private void selecionarBairro(Bairro bairro) {
 		selecionarCidade(bairro.getCidade());
+		cvBairros.setInput(bairroService.findByCidade(bairro.getCidade()));
 		cvBairros.setSelection(new StructuredSelection(bairro));
 	}
 
 	private void selecionarCidade(Cidade cidade) {
 		selecionarEstado(cidade.getEstado());
+		cvCidades.setInput(cidadeService.findCidadesByEstado(cidade.getEstado()));
 		cvCidades.setSelection(new StructuredSelection(cidade));
 	}
 
 	private void selecionarEstado(Estado estado) {
+		cvUF.setInput(estadoService.findAll());
 		cvUF.setSelection(new StructuredSelection(estado));
 	}
 }
