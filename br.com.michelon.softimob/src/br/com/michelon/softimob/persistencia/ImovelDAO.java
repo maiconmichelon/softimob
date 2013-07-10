@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +20,7 @@ import br.com.michelon.softimob.modelo.TipoImovel;
 
 public interface ImovelDAO extends CrudRepository<Imovel, Long>{
 
-	@Query(value = "SELECT i " +
+	@Query(value = "SELECT distinct(i) " +
 			"FROM Imovel i " +
 				"LEFT JOIN ContratoPrestacaoServico c on c.imovel = i " +
 				"LEFT JOIN Reserva r on r.imovel = i " +
@@ -29,16 +32,16 @@ public interface ImovelDAO extends CrudRepository<Imovel, Long>{
 				"AND (:valMax is null OR :valMax >= c.valor ) " +
 //				"AND (:tipoContrato is null OR :tipoContrato = c.tipo) " +
 //				"AND ((:valMin is null AND :valMax is null AND :tipoContrato is null) OR " +
-				"AND (c.dataVencimento >= :dataHoje) " +
-			"AND (:angariador is null OR :angariador = i.angariador) " +
-			"AND (:proprietario is null OR :proprietario = i.proprietario) " +
-			"AND (:tipoImovel is null OR :tipoImovel = i.tipo) " +
-			"AND (:bairro is null OR :bairro = i.endereco.rua.bairro) " +
-			"AND (:cidade is null OR :cidade = i.endereco.rua.bairro.cidade) " +
+//				"AND (c.dataVencimento >= :dataHoje) " +
+			"AND (:angariador is null OR i.angariador = :angariador) " +
+			"AND (:proprietario is null OR i.proprietario = :proprietario) " +
+			"AND (i.tipo = :tipoImovel) " +
+			"AND (:bairro is null OR i.endereco.rua.bairro = :bairro) " +
+			"AND (:cidade is null OR i.endereco.rua.bairro.cidade = :cidade) " +
 			"AND (:observacoes is null OR i.observacoes like CONCAT('%', :observacoes, '%')) " +
-			"AND ((:naoReservado = true AND r is null) OR (:reservado = true AND r.dataVencimento >= :dataHoje))" +
+			"AND ((:naoReservado = true AND r is null) OR (:reservado = true AND r is not null AND r.dataVencimento >= :dataHoje) OR (:reservado = true AND :naoReservado = true))" +
 			"")
-	public List<Imovel> buscaAvancada(
+	public abstract List<Imovel> buscaAvancada(
 			@Param(value="dataHoje") Date dataHoje
 			, @Param(value = "codigo")Long codigo
 			, @Param(value = "valMin")BigDecimal valMin
@@ -57,6 +60,6 @@ public interface ImovelDAO extends CrudRepository<Imovel, Long>{
 			);
 
 	@Query("SELECT size(i.fotos) FROM Imovel i WHERE i = :imovel")
-	public Integer sizeImages(@Param(value = "imovel")Imovel imovel);
+	public abstract Integer sizeImages(@Param(value = "imovel")Imovel imovel);
 	
 }

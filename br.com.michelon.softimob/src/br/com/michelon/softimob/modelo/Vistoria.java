@@ -2,7 +2,9 @@ package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,11 +12,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.StringUtils;
+
+import com.google.common.collect.Lists;
 
 @Entity
 public class Vistoria implements Serializable{
@@ -41,6 +46,10 @@ public class Vistoria implements Serializable{
 
 	@ManyToOne(optional = false)
 	private VendaAluguel vendaAluguel;
+	
+	@NotNull()
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ItemCheckListDescricao> itensCheckList = Lists.newArrayList();
 	
 	@SuppressWarnings("unused")
 	private Vistoria(){}
@@ -99,6 +108,14 @@ public class Vistoria implements Serializable{
 	
 	public void setVendaAluguel(VendaAluguel vendaAluguel) {
 		this.vendaAluguel = vendaAluguel;
+	}
+	
+	public List<ItemCheckListDescricao> getItensCheckList() {
+		return itensCheckList;
+	}
+	
+	public void setItensCheckList(List<ItemCheckListDescricao> itensCheckList) {
+		this.itensCheckList = itensCheckList;
 	}
 	
 }

@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Entity
 public class ItemCheckListDescricao {
 
@@ -14,7 +16,7 @@ public class ItemCheckListDescricao {
 	private Long id;
 	
 	@Column
-	private String descricao;
+	private String descricao = StringUtils.EMPTY;
 	
 	@Column
 	private Boolean finalizado = false;

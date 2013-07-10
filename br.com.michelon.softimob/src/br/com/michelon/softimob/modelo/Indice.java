@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -27,7 +26,7 @@ public class Indice implements Serializable{
 	@Column(nullable = false)
 	private String nome;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private List<IndiceMes> indices = Lists.newArrayList();
 
 	@Column(nullable = false)

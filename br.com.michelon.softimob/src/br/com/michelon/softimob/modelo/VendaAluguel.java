@@ -57,6 +57,7 @@ public class VendaAluguel implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAssinaturaContrato;
 
+	@NotNull()
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemCheckListDescricao> itensCheckList = Lists.newArrayList();
 	

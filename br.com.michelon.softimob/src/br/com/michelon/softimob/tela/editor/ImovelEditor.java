@@ -16,6 +16,8 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
@@ -37,14 +39,18 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.service.AluguelService;
 import br.com.michelon.softimob.aplicacao.service.ChaveService;
 import br.com.michelon.softimob.aplicacao.service.ComodoService;
 import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
@@ -54,6 +60,7 @@ import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.aplicacao.service.PropostaService;
 import br.com.michelon.softimob.aplicacao.service.ReservaService;
 import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
+import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.modelo.Chave.LocalizacaoChave;
 import br.com.michelon.softimob.modelo.Comodo;
@@ -839,13 +846,29 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private void criarTabelaLocacoes(Composite composite) {
 		tvbLocacao = new TableViewerBuilder(composite);
 		
-		tvbLocacao.createColumn("Locatario").setPercentWidth(10).bindToProperty("locatario.nome").build();
+		tvbLocacao.createColumn("Locatario").setPercentWidth(10).bindToProperty("cliente.nome").build();
 		tvbLocacao.createColumn("Fiador").setPercentWidth(10).bindToProperty("fiador.nome").build();
-		tvbLocacao.createColumn("Corretor").setPercentWidth(10).bindToProperty("corretor.nome").build();
+		tvbLocacao.createColumn("Corretor").setPercentWidth(10).bindToProperty("funcionario.nome").build();
 		tvbLocacao.createColumn("Valor").setPercentWidth(10).format(FormatterHelper.getCurrencyFormatter()).bindToProperty("valor").build();
-		tvbLocacao.createColumn("Data").setPercentWidth(10).format(new DateStringValueFormatter()).bindToProperty("data").build();
+		tvbLocacao.createColumn("Data").setPercentWidth(10).format(new DateStringValueFormatter()).bindToProperty("dataAssinaturaContrato").build();
 		tvbLocacao.createColumn("Ducação (meses)").setPercentWidth(10).bindToProperty("duracao").build();
-		tvbLocacao.createColumn("Reajuste").setPercentWidth(10).bindToProperty("reajuste").build();
+//		tvbLocacao.createColumn("Reajuste").setPercentWidth(10).bindToProperty("reajuste").build();
+		
+		tvbLocacao.setInput(new AluguelService().findByImovel(getCurrentObject()));
+		tvbLocacao.getTableViewer().addDoubleClickListener(new IDoubleClickListener() {
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				Aluguel aluguel = (Aluguel) SelectionHelper.getObject(tvbLocacao.getTableViewer());
+				AluguelEditorInput ei = new AluguelEditorInput();
+				ei.setModelo(aluguel);
+				
+				try {
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(ei, AluguelEditor.ID);
+				} catch (PartInitException e) {
+					log.error("Erro ao abrir tela de aluguel.", e);
+				}
+			}
+		});
 		
 		tvbLocacao.getTableViewer();
 	}

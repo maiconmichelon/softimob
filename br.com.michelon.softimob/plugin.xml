@@ -248,8 +248,9 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.ReportView"
+            icon="icons/report/report16.png"
             id="br.com.michelon.softimob.tela.view.ReportView"
-            name="New ViewPart">
+            name="Relatório">
       </view>
    </extension>
    <extension
@@ -612,7 +613,7 @@
                   style="push">
             </command>
             <command
-                  commandId="br.com.michelon.softimob.command1"
+                  commandId="br.com.michelon.softimob.command.cmdRazao"
                   label="Razão"
                   style="push">
             </command>
@@ -820,6 +821,11 @@
             defaultHandler="br.com.michelon.softimob.aplicacao.command.BalanceteCommand"
             id="br.com.michelon.softimob.command.cmdBalancete"
             name="Balancete">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.RazaoCommand"
+            id="br.com.michelon.softimob.command.cmdRazao"
+            name="Razão">
       </command>
    </extension>
    <extension

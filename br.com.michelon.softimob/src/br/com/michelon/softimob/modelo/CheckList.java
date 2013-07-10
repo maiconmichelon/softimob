@@ -2,6 +2,7 @@ package br.com.michelon.softimob.modelo;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class CheckList {
 	@Column(nullable = false)
 	private String nome;
 	
-	@OneToMany
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private List<ItemCheckList> itens = Lists.newArrayList();
 
 	@Column(nullable = false)

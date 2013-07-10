@@ -1,9 +1,17 @@
 package br.com.michelon.softimob.tela.view;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -17,18 +25,34 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.service.BairroService;
+import br.com.michelon.softimob.aplicacao.service.CidadeService;
 import br.com.michelon.softimob.aplicacao.service.ImovelService;
+import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
+import br.com.michelon.softimob.modelo.Bairro;
+import br.com.michelon.softimob.modelo.Cidade;
+import br.com.michelon.softimob.modelo.Cliente;
+import br.com.michelon.softimob.modelo.Comodo;
+import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Imovel;
-import br.com.michelon.softimob.tela.widget.EnderecoGroup;
+import br.com.michelon.softimob.modelo.TipoImovel;
+import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class BuscaAvancadaImovelView extends ViewPart {
-
+	
 	public static final String ID = "br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView"; //$NON-NLS-1$
+	
+	private WritableValue value = WritableValue.withValueType(ModeloBusca.class);
+	
 	private Text text;
 	private Text text_1;
 	private Text text_2;
@@ -37,7 +61,14 @@ public class BuscaAvancadaImovelView extends ViewPart {
 	private Text text_5;
 	private Text text_6;
 	private TableViewerBuilder tvbComodo;
-	private Text text_21;
+	private Text txtCodigo;
+	private Button btnVenda;
+	private Button btnAluguel;
+	private ComboViewer cvTipoImovel;
+	private ComboViewer cvCidade;
+	private ComboViewer cvBairro;
+	private Button btnReservado;
+	private Button btnReservado_1;
 
 	public BuscaAvancadaImovelView() {
 	}
@@ -62,7 +93,7 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		lblCdigo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCdigo.setText("Código");
 		
-		text_21 = new Text(composite, SWT.BORDER);
+		txtCodigo = new Text(composite, SWT.BORDER);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
@@ -108,11 +139,11 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		composite_15.setLayout(new GridLayout(2, false));
 		composite_15.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		
-		Button btnVenda = new Button(composite_15, SWT.CHECK);
+		btnVenda = new Button(composite_15, SWT.CHECK);
 		btnVenda.setSelection(true);
 		btnVenda.setText("Venda");
 		
-		Button btnAluguel = new Button(composite_15, SWT.CHECK);
+		btnAluguel = new Button(composite_15, SWT.CHECK);
 		btnAluguel.setSelection(true);
 		btnAluguel.setText("Locação");
 		new Label(composite, SWT.NONE);
@@ -131,6 +162,7 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		
 		Button btnNewButton = new Button(composite_5, SWT.NONE);
 		btnNewButton.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnNewButton, value, "angariador");
 		
 		Label lblProprietario = new Label(composite_5, SWT.NONE);
 		lblProprietario.setText("Proprietário");
@@ -141,13 +173,16 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		Button btnSelecionar_7 = new Button(composite_5, SWT.NONE);
 		btnSelecionar_7.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnSelecionar_7.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionar_7, value, "proprietario");
 		
 		Label lblTipoImvel = new Label(composite_5, SWT.NONE);
 		lblTipoImvel.setText("Tipo Imóvel");
 		
-		ComboViewer comboViewer = new ComboViewer(composite_5, SWT.READ_ONLY);
-		Combo combo = comboViewer.getCombo();
+		cvTipoImovel = new ComboViewer(composite_5, SWT.READ_ONLY);
+		Combo combo = cvTipoImovel.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		cvTipoImovel.setContentProvider(ArrayContentProvider.getInstance());
+		cvTipoImovel.setInput(new TipoImovelService().findAll());
 		new Label(composite_5, SWT.NONE);
 		new Label(composite_5, SWT.NONE);
 		new Label(composite_5, SWT.NONE);
@@ -156,16 +191,20 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		lblCidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCidade.setText("Cidade");
 		
-		ComboViewer comboViewer_2 = new ComboViewer(composite_5, SWT.READ_ONLY);
-		Combo combo_2 = comboViewer_2.getCombo();
+		cvCidade = new ComboViewer(composite_5, SWT.READ_ONLY);
+		Combo combo_2 = cvCidade.getCombo();
+		cvCidade.setContentProvider(ArrayContentProvider.getInstance());
+		cvCidade.setInput(new CidadeService().findAll());
 		combo_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		
 		Label lblBairro = new Label(composite_5, SWT.NONE);
 		lblBairro.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblBairro.setText("Bairro");
 		
-		ComboViewer comboViewer_1 = new ComboViewer(composite_5, SWT.READ_ONLY);
-		Combo combo_1 = comboViewer_1.getCombo();
+		cvBairro = new ComboViewer(composite_5, SWT.READ_ONLY);
+		Combo combo_1 = cvBairro.getCombo();
+		cvBairro.setContentProvider(ArrayContentProvider.getInstance());
+		cvBairro.setInput(new BairroService().findAll());
 		combo_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		new Label(composite_5, SWT.NONE);
 		
@@ -183,11 +222,11 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		Composite composite_3 = new Composite(composite, SWT.NONE);
 		composite_3.setLayout(new GridLayout(2, false));
 		
-		Button btnReservado = new Button(composite_3, SWT.CHECK);
+		btnReservado = new Button(composite_3, SWT.CHECK);
 		btnReservado.setSelection(true);
 		btnReservado.setText("Não Reservado");
 		
-		Button btnReservado_1 = new Button(composite_3, SWT.CHECK);
+		btnReservado_1 = new Button(composite_3, SWT.CHECK);
 		btnReservado_1.setText("Reservado");
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
@@ -235,6 +274,9 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		createActions();
 		initializeToolBar();
 		initializeMenu();
+		
+		value.setValue(new ModeloBusca());
+		initDataBindings();
 	}
 
 	/**
@@ -248,16 +290,14 @@ public class BuscaAvancadaImovelView extends ViewPart {
 	 * Initialize the toolbar.
 	 */
 	private void initializeToolBar() {
-		IToolBarManager toolbarManager = getViewSite().getActionBars()
-				.getToolBarManager();
+		IToolBarManager toolbarManager = getViewSite().getActionBars().getToolBarManager();
 	}
 
 	/**
 	 * Initialize the menu.
 	 */
 	private void initializeMenu() {
-		IMenuManager menuManager = getViewSite().getActionBars()
-				.getMenuManager();
+		IMenuManager menuManager = getViewSite().getActionBars().getMenuManager();
 	}
 
 	@Override
@@ -266,8 +306,14 @@ public class BuscaAvancadaImovelView extends ViewPart {
 	}
 	
 	private void buscar(){
-		List<Imovel> imoveis = new ImovelService().findImoveis(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-		System.out.println(imoveis.size());
+		List<Imovel> imoveis = new ImovelService().findImoveis((ModeloBusca) value.getValue());
+		
+		try {
+			ImovelView showView = (ImovelView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ImovelView.ID);
+			showView.setInput(imoveis);
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void criarTabelaComodo(Composite composite){
@@ -275,5 +321,234 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		
 		tvbComodo.createColumn("Cômodo").bindToProperty("tipoComodo.nome").build();
 		tvbComodo.createColumn("Descrição").bindToProperty("descricao").makeEditable().build();
+	}
+	
+	public class ModeloBusca{
+	
+		private Long codigo;
+		
+		private BigDecimal valMin;
+		
+		private BigDecimal valMax;
+		
+		private Integer metroMin;
+		
+		private Integer metroMax;
+		
+		private boolean isVenda = true;
+		
+		private boolean isLocacao = true;
+		
+		private Funcionario angariador;
+		
+		private Cliente proprietario;
+		
+		private TipoImovel tipoImovel;
+		
+		private Cidade cidade;
+		
+		private Bairro bairro;
+		
+		private String observacoes;
+		
+		private boolean reservado = true;
+		
+		private boolean naoReservado = true;
+
+		private List<Comodo> comodos;
+		
+		public Long getCodigo() {
+			return codigo;
+		}
+
+		public void setCodigo(Long codigo) {
+			this.codigo = codigo;
+		}
+
+		public BigDecimal getValMin() {
+			return valMin;
+		}
+
+		public void setValMin(BigDecimal valMin) {
+			this.valMin = valMin;
+		}
+
+		public BigDecimal getValMax() {
+			return valMax;
+		}
+
+		public void setValMax(BigDecimal valMax) {
+			this.valMax = valMax;
+		}
+
+		public Integer getMetroMin() {
+			return metroMin;
+		}
+
+		public void setMetroMin(Integer metroMin) {
+			this.metroMin = metroMin;
+		}
+
+		public Integer getMetroMax() {
+			return metroMax;
+		}
+
+		public void setMetroMax(Integer metroMax) {
+			this.metroMax = metroMax;
+		}
+
+		public boolean isVenda() {
+			return isVenda;
+		}
+
+		public void setVenda(boolean isVenda) {
+			this.isVenda = isVenda;
+		}
+
+		public boolean isLocacao() {
+			return isLocacao;
+		}
+
+		public void setLocacao(boolean isLocacao) {
+			this.isLocacao = isLocacao;
+		}
+
+		public Funcionario getAngariador() {
+			return angariador;
+		}
+
+		public void setAngariador(Funcionario angariador) {
+			this.angariador = angariador;
+		}
+
+		public Cliente getProprietario() {
+			return proprietario;
+		}
+
+		public void setProprietario(Cliente proprietario) {
+			this.proprietario = proprietario;
+		}
+
+		public TipoImovel getTipoImovel() {
+			return tipoImovel;
+		}
+
+		public void setTipoImovel(TipoImovel tipoImovel) {
+			this.tipoImovel = tipoImovel;
+		}
+
+		public Cidade getCidade() {
+			return cidade;
+		}
+
+		public void setCidade(Cidade cidade) {
+			this.cidade = cidade;
+		}
+
+		public Bairro getBairro() {
+			return bairro;
+		}
+
+		public void setBairro(Bairro bairro) {
+			this.bairro = bairro;
+		}
+
+		public String getObservacoes() {
+			return observacoes;
+		}
+
+		public void setObservacoes(String observacoes) {
+			this.observacoes = observacoes;
+		}
+
+		public boolean isReservado() {
+			return reservado;
+		}
+
+		public void setReservado(boolean reservado) {
+			this.reservado = reservado;
+		}
+
+		public boolean isNaoReservado() {
+			return naoReservado;
+		}
+
+		public void setNaoReservado(boolean naoReservado) {
+			this.naoReservado = naoReservado;
+		}
+		
+		public List<Comodo> getComodos() {
+			return comodos;
+		}
+		
+		public void setComodos(List<Comodo> comodos) {
+			this.comodos = comodos;
+		}
+		
+	}
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextTxtCodigoObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtCodigo);
+		IObservableValue valueCodigoObserveDetailValue = PojoProperties.value(ModeloBusca.class, "codigo", Long.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTxtCodigoObserveWidget, valueCodigoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_3);
+		IObservableValue valueValMinObserveDetailValue = PojoProperties.value(ModeloBusca.class, "valMin", BigDecimal.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_3ObserveWidget, valueValMinObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		//
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue valueValMaxObserveDetailValue = PojoProperties.value(ModeloBusca.class, "valMax", BigDecimal.class).observeDetail(value);
+		bindingContext.bindValue(observeTextTextObserveWidget, valueValMaxObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
+		//
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_2);
+		IObservableValue valueMetroMinObserveDetailValue = PojoProperties.value(ModeloBusca.class, "metroMin", Integer.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_2ObserveWidget, valueMetroMinObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
+		IObservableValue valueMetroMaxObserveDetailValue = PojoProperties.value(ModeloBusca.class, "metroMax", Integer.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_1ObserveWidget, valueMetroMaxObserveDetailValue, null, null);
+		//
+		IObservableValue observeSelectionBtnVendaObserveWidget = WidgetProperties.selection().observe(btnVenda);
+		IObservableValue valueVendaObserveDetailValue = PojoProperties.value(ModeloBusca.class, "venda", boolean.class).observeDetail(value);
+		bindingContext.bindValue(observeSelectionBtnVendaObserveWidget, valueVendaObserveDetailValue, null, null);
+		//
+		IObservableValue observeSelectionBtnAluguelObserveWidget = WidgetProperties.selection().observe(btnAluguel);
+		IObservableValue valueLocacaoObserveDetailValue = PojoProperties.value(ModeloBusca.class, "locacao", boolean.class).observeDetail(value);
+		bindingContext.bindValue(observeSelectionBtnAluguelObserveWidget, valueLocacaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_4);
+		IObservableValue valueAngariadorObserveDetailValue = PojoProperties.value(ModeloBusca.class, "angariador", Funcionario.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_4ObserveWidget, valueAngariadorObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_5);
+		IObservableValue valueProprietarioObserveDetailValue = PojoProperties.value(ModeloBusca.class, "proprietario", Cliente.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_5ObserveWidget, valueProprietarioObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionComboViewer = ViewerProperties.singleSelection().observe(cvTipoImovel);
+		IObservableValue valueTipoImovelObserveDetailValue = PojoProperties.value(ModeloBusca.class, "tipoImovel", TipoImovel.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionComboViewer, valueTipoImovelObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionComboViewer_2 = ViewerProperties.singleSelection().observe(cvCidade);
+		IObservableValue valueCidadeObserveDetailValue = PojoProperties.value(ModeloBusca.class, "cidade", Cidade.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionComboViewer_2, valueCidadeObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionComboViewer_1 = ViewerProperties.singleSelection().observe(cvBairro);
+		IObservableValue valueBairroObserveDetailValue = PojoProperties.value(ModeloBusca.class, "bairro", Bairro.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionComboViewer_1, valueBairroObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_6);
+		IObservableValue valueObservacoesObserveDetailValue = PojoProperties.value(ModeloBusca.class, "observacoes", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_6ObserveWidget, valueObservacoesObserveDetailValue, null, null);
+		//
+		IObservableValue observeSelectionBtnReservadoObserveWidget = WidgetProperties.selection().observe(btnReservado);
+		IObservableValue valueNaoReservadoObserveDetailValue = PojoProperties.value(ModeloBusca.class, "naoReservado", boolean.class).observeDetail(value);
+		bindingContext.bindValue(observeSelectionBtnReservadoObserveWidget, valueNaoReservadoObserveDetailValue, null, null);
+		//
+		IObservableValue observeSelectionBtnReservado_1ObserveWidget = WidgetProperties.selection().observe(btnReservado_1);
+		IObservableValue valueReservadoObserveDetailValue = PojoProperties.value(ModeloBusca.class, "reservado", boolean.class).observeDetail(value);
+		bindingContext.bindValue(observeSelectionBtnReservado_1ObserveWidget, valueReservadoObserveDetailValue, null, null);
+		//
+		return bindingContext;
 	}
 }

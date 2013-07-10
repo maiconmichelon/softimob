@@ -43,7 +43,6 @@ public class TipoComodoEditor extends GenericEditor<TipoComodo>{
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ComodoEditor"; //$NON-NLS-1$
 	
-	private DataBindingContext m_bindingContext;
 	private TipoComodoService service = new TipoComodoService();
 	
 	private Text text;

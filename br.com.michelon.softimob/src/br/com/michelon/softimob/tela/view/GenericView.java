@@ -347,8 +347,6 @@ public abstract class GenericView<T> extends ViewPart{
 
 	protected void alterar(T element) {
 		try {
-			if(getService() != null)
-				element = getService().refreshObject(element);
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getEditorInputWithModel(element), getEditorId(element));
 		} catch (PartInitException e1) {
 			e1.printStackTrace();

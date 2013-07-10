@@ -29,8 +29,12 @@ import com.google.common.collect.Lists;
 
 public class ImovelView extends GenericView<Imovel>{
 
+	public static final String ID = "br.com.michelon.softimob.tela.view.ImovelView";
+	
 	private List<ColumnProperties> atributos;
 	private ImovelService service = new ImovelService();
+
+	private List<Imovel> input;
 	
 	public ImovelView() {
 		super(true);
@@ -39,6 +43,8 @@ public class ImovelView extends GenericView<Imovel>{
 		
 		atributos.add(new ColumnProperties("Código", "id"));
 //		atributos.add(new ColumnProperties("Endereço", "endereco"));
+		
+		input = service.findAll();
 	}
 	
 	@Override
@@ -74,7 +80,7 @@ public class ImovelView extends GenericView<Imovel>{
 
 	@Override
 	protected List<Imovel> getInput() {
-		return service.findAll();
+		return input;
 	}
 
 	@Override
@@ -110,6 +116,11 @@ public class ImovelView extends GenericView<Imovel>{
 	@Override
 	protected GenericService<Imovel> getService() {
 		return service;
+	}
+
+	public void setInput(List<Imovel> imoveis) {
+		input = imoveis;
+		atualizar();
 	}	
 	
 }

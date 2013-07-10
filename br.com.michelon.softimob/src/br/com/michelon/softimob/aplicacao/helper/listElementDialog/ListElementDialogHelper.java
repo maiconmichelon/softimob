@@ -51,6 +51,21 @@ public class ListElementDialogHelper {
 		});
 	}
 	
+	// Esse é isolado dos outros, ele faz o simples, só executa o listener quando o usuario seleciona um objeto e da OK
+	public static void addSelectionListDialogToButton(final TipoDialog tipoDialog, Button button, final OkListElementDialogListener listener){
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				tipoDialog.openDialogAndExecuteListeners(new OkListElementDialogListener() {
+					@Override
+					public void ok(Object obj) {
+						listener.ok(obj);
+					}
+				});
+			}
+		});
+	}
+	
 	public static void addSelectionListDialogToButton(final TipoDialog tipoDialog, Button button, final WritableValue value, final String property){
 		addSelectionListDialogToButton(tipoDialog, button, value, property, null);
 	}

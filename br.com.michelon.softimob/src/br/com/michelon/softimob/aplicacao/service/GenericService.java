@@ -46,9 +46,4 @@ public class GenericService<T> {
 		return model;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public T refreshObject(T object){
-		return object;
-	}
-	
 }

@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
+
 import br.com.michelon.softimob.aplicacao.service.ChaveService;
 import br.com.michelon.softimob.aplicacao.service.ComodoService;
 import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
@@ -49,7 +51,7 @@ public class Imovel implements Serializable{
 	private TipoImovel tipo;
 
 	@Column
-	private String observacoes;
+	private String observacoes = StringUtils.EMPTY;
 	
 	@OneToOne(cascade = CascadeType.ALL, optional=false)
 	private Endereco endereco = new Endereco();

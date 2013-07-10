@@ -52,6 +52,7 @@ import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
+import br.com.michelon.softimob.tela.widget.movimentacaoXViewer.MovimentacaoGenericXViewer;
 import br.com.michelon.softimob.tela.widget.xViewer.GenericXViewer;
 import br.com.michelon.softimob.tela.widget.xViewer.GenericXViewerColumn;
 import br.com.michelon.softimob.tela.widget.xViewer.GenericXViewerContentProvider;
@@ -63,6 +64,7 @@ import com.google.common.collect.Maps;
 import de.ralfebert.rcputils.properties.BaseValue;
 import de.ralfebert.rcputils.properties.IValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
+import org.eclipse.swt.layout.FillLayout;
 
 public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 
@@ -247,8 +249,14 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		});
 		new Label(composite_3, SWT.NONE);
 		
-		criarTabelaDeMovimentacoes(composite_3);
+		Composite composite = new Composite(composite_3, SWT.NONE);
+		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+		formToolkit.adapt(composite);
+		formToolkit.paintBordersFor(composite);
 		
+		criarTabelaDeMovimentacoes(composite);
+
 		Button btnBaixarConta = new Button(cpPrincipal, SWT.NONE);
 		btnBaixarConta.setImage(ImageRepository.FINALIZAR_16.getImage());
 		GridData gd_btnBaixarConta = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
@@ -281,52 +289,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 	}
 
 	private void criarTabelaDeMovimentacoes(Composite composite_3) {
-		Map<Class<?>, XViewerColumnProperties> m1 = Maps.newHashMap();
-		m1.put(MovimentacaoContabil.class, new XViewerColumnProperties("id"));
-		m1.put(LancamentoContabil.class, new XViewerColumnProperties("tipo"));
-		GenericXViewerColumn c1 = new GenericXViewerColumn("Lote", 100, m1);
-		
-		Map<Class<?>, XViewerColumnProperties> m2 = Maps.newHashMap();
-		m2.put(MovimentacaoContabil.class, new XViewerColumnProperties("data"));
-		m2.put(LancamentoContabil.class, new XViewerColumnProperties("conta"));
-		GenericXViewerColumn c2 = new GenericXViewerColumn("Data", 100, m2);
-		
-		Map<Class<?>, XViewerColumnProperties> m3 = Maps.newHashMap();
-		m3.put(MovimentacaoContabil.class, new XViewerColumnProperties("valor"));
-		m3.put(LancamentoContabil.class, new XViewerColumnProperties("valor"));
-		GenericXViewerColumn c3 = new GenericXViewerColumn("Valor", 100, m3);
-		
-		Map<Class<?>, XViewerColumnProperties> m4 = Maps.newHashMap();
-		m4.put(LancamentoContabil.class, new XViewerColumnProperties("historico"));
-		GenericXViewerColumn c4 = new GenericXViewerColumn("Histórico", 300, m4);
-
-		Map<Class<?>, XViewerColumnProperties> m5 = Maps.newHashMap();
-		m5.put(LancamentoContabil.class, new XViewerColumnProperties("complemento"));
-		GenericXViewerColumn c5 = new GenericXViewerColumn("Complemento", 300, m5);
-		
-		List<GenericXViewerColumn> columns = Arrays.asList(c1, c2, c3, c4, c5);
-		
-		viewerMovimentacoes = new GenericXViewer<MovimentacaoContabil>(composite_3, SWT.BORDER | SWT.FULL_SELECTION, columns, new GenericXViewerContentProvider() {
-			
-			@Override
-			public Object[] getElements(Object inputElement) {
-				if(inputElement instanceof List)
-					return ((List<?>) inputElement).toArray();
-				return null;
-			}
-			
-			@Override
-			public Object[] getChildren(Object parentElement) {
-				if(parentElement instanceof MovimentacaoContabil){
-					return ((MovimentacaoContabil)parentElement).getLancamentos().toArray();
-				}
-				return null;
-			}
-		});
-		Tree tree = viewerMovimentacoes.getTree();
-		GridData gd_table_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
-		gd_table_1.heightHint = 165;
-		tree.setLayoutData(gd_table_1);
+		viewerMovimentacoes = MovimentacaoGenericXViewer.createXviewer(composite_3);
 	}
 
 	@Override
