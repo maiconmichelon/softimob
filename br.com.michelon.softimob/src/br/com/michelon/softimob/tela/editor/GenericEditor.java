@@ -46,6 +46,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 	
 	private Logger log = Logger.getLogger(getClass());
 	private Composite cpPrincipal;
+	private DataBindingContext initDataBindings;
 	
 	public GenericEditor(Class<T> clazz) {
 		mainClass = clazz;
@@ -72,7 +73,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 		scrolledComposite.setContent(cpPrincipal);
 		scrolledComposite.setMinSize(cpPrincipal.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
-		initDataBindings();
+		initDataBindings = initDataBindings();
 		
 		Composite cpOpcoes = new Composite(composite, SWT.BORDER);
 		cpOpcoes.setLayout(new GridLayout(1, false));
@@ -112,6 +113,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 			try {
 				value.setValue(value.getValue().getClass().newInstance());
 				afterSetIObservableValue();
+				initDataBindings.updateTargets();
 			} catch (Exception e) {
 				log.error("Erro ao setar novo objeto [ " +value.getValueType()+ " ] ao value.", e);
 			}
@@ -137,6 +139,8 @@ public abstract class GenericEditor<T> extends EditorPart {
 			log.error("Erro ao salvar registro", e);
 			MessageDialog.openError(ShellHelper.getActiveShell(), "Erro", "Erro ao salvar registro\n" + e.getMessage());
 		}
+		
+		
 		
 		return false;
 	}
@@ -164,6 +168,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 			try {
 				Class<Y> clazz = (Class<Y>) value.getValue().getClass();
 				value.setValue(clazz.getConstructor(father.getClass()).newInstance(father));
+				initDataBindings.updateTargets();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

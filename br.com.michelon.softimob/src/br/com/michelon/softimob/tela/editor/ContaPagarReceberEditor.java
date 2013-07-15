@@ -117,8 +117,6 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 		new Label(parent, SWT.NONE);
 		
 		radioGroupViewer = new RadioGroupViewer(parent, SWT.NONE);
-		RadioGroup radioGroup = radioGroupViewer.getRadioGroup();
-		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		radioGroupViewer.setContentProvider(ArrayContentProvider.getInstance());
 		radioGroupViewer.setLabelProvider(new LabelProvider(){
 			@Override
@@ -127,6 +125,9 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 			}
 		});
 		radioGroupViewer.setInput(new Integer[]{ContaPagarReceber.PAGAR, ContaPagarReceber.RECEBER});
+
+		RadioGroup radioGroup = radioGroupViewer.getRadioGroup();
+		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		
 		Label lblObservaes = new Label(parent, SWT.NONE);
@@ -136,9 +137,8 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 		text_4 = new Text(parent, SWT.BORDER);
 		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
-		
-		
 	}
+	
 	@Override
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();

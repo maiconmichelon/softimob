@@ -36,11 +36,6 @@ public class ClientePJView extends GenericView<PessoaJuridica>{
 	}
 
 	@Override
-	protected void excluir(List<PessoaJuridica> objetos) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Pessoa Jurídica";
 	}
@@ -71,7 +66,7 @@ public class ClientePJView extends GenericView<PessoaJuridica>{
 	}
 	
 	@Override
-	protected GenericService<PessoaJuridica> getService() {
+	protected GenericService<PessoaJuridica> getService(Object obj) {
 		return service;
 	}
 	

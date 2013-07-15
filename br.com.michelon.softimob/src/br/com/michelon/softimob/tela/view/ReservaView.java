@@ -37,11 +37,6 @@ public class ReservaView extends GenericView<Reserva>{
 	}
 
 	@Override
-	protected void excluir(List<Reserva> objetos) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Reservas";
 	}
@@ -82,7 +77,7 @@ public class ReservaView extends GenericView<Reserva>{
 	}
 	
 	@Override
-	protected GenericService<Reserva> getService() {
+	protected GenericService<Reserva> getService(Object obj) {
 		return service;
 	}	
 	

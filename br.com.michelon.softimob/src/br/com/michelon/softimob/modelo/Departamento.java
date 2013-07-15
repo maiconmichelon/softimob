@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
+
 @Entity
 public class Departamento implements Serializable {
 
@@ -22,6 +24,7 @@ public class Departamento implements Serializable {
 	private String nome;
 
 	@Column
+	@DeactivateOnDelete
 	private Boolean ativo = true;
 	
 	public Long getId() {

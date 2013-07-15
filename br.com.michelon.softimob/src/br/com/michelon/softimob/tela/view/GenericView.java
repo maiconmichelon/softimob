@@ -1,15 +1,22 @@
 package br.com.michelon.softimob.tela.view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
+import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -19,10 +26,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -36,8 +41,12 @@ import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.filter.AtivadoDesativadoFilter;
+import br.com.michelon.softimob.aplicacao.filter.AtivadoDesativadoFilter.AtivadoDesativado;
 import br.com.michelon.softimob.aplicacao.filter.GenericFilter;
 import br.com.michelon.softimob.aplicacao.filter.PropertyFilter;
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.ReflectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
@@ -51,6 +60,8 @@ public abstract class GenericView<T> extends ViewPart{
 	
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 	
+	protected Logger log = Logger.getLogger(getClass());
+	
 	private Composite cpBody;
 	private Action actAdd;
 	private Action actRefresh;
@@ -60,6 +71,10 @@ public abstract class GenericView<T> extends ViewPart{
 	private GenericFilter filter;
 	
 	private boolean addGroupAtivadoDesativado;
+
+	private AtivadoDesativadoFilter ativadoDesativadoFilter;
+	private RadioGroup radioGroup;
+	private RadioGroupViewer radioGroupViewer;
 	
 	public GenericView(boolean addGroupAtivadoDesativado) {
 		this.addGroupAtivadoDesativado = addGroupAtivadoDesativado;
@@ -119,13 +134,17 @@ public abstract class GenericView<T> extends ViewPart{
 		formToolkit.paintBordersFor(cpBody);
 		
 		viewer = criarTabela(cpBody);
+		new Label(frmNewForm.getBody(), SWT.NONE);
 		
-		if(addGroupAtivadoDesativado)
+		if(addGroupAtivadoDesativado){
+			ativadoDesativadoFilter = new AtivadoDesativadoFilter();
+			viewer.addFilter(ativadoDesativadoFilter);
 			addGroupAtivadoDesativado(frmNewForm);
+		}
 		
 		Menu menu = new Menu(viewer.getControl());
 		
-		setMenuItems(menu);
+		createMenuItens(menu);
 		
 		if(menu.getItemCount() > 0)
 			viewer.getControl().setMenu(menu);
@@ -150,24 +169,26 @@ public abstract class GenericView<T> extends ViewPart{
 	}
 
 	private void addGroupAtivadoDesativado(Form frmNewForm) {
-		Group group = new Group(frmNewForm.getBody(), SWT.NONE);
-		group.setLayout(new GridLayout(3, false));
-		group.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false, 2, 1));
-		formToolkit.adapt(group);
-		formToolkit.paintBordersFor(group);
-		
-		Button btnAtivados = new Button(group, SWT.RADIO);
-		btnAtivados.setSelection(true);
-		formToolkit.adapt(btnAtivados, true, true);
-		btnAtivados.setText("Ativados");
-		
-		Button btnDesativados = new Button(group, SWT.RADIO);
-		formToolkit.adapt(btnDesativados, true, true);
-		btnDesativados.setText("Desativados");
-		
-		Button btnTodos = new Button(group, SWT.RADIO);
-		formToolkit.adapt(btnTodos, true, true);
-		btnTodos.setText("Todos");
+		radioGroupViewer = new RadioGroupViewer(frmNewForm.getBody(), SWT.NONE);
+		radioGroup = radioGroupViewer.getRadioGroup();
+		radioGroup.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false, 1, 1));
+		formToolkit.paintBordersFor(radioGroup);
+		formToolkit.adapt(radioGroup);
+		radioGroupViewer.setContentProvider(ArrayContentProvider.getInstance());
+		radioGroupViewer.setInput(AtivadoDesativadoFilter.AtivadoDesativado.values());
+		radioGroupViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				AtivadoDesativado selecao = SelectionHelper.getObject(radioGroupViewer);
+				if(selecao != null)
+					ativadoDesativadoFilter.setEstado(selecao);
+				
+				if(!viewer.getControl().isDisposed())
+					viewer.refresh();
+			}
+		});
+		radioGroupViewer.setSelection(new StructuredSelection(AtivadoDesativado.ATIVADOS));
 	}
 
 	/**
@@ -224,24 +245,24 @@ public abstract class GenericView<T> extends ViewPart{
 	 * Adiciona os MenuItems no menu da tabela, podendo ser dado um Override, adionando mais ou ainda não adicionando os itens.
 	 * @param menu que será adicionado na tabela
 	 */
-	protected void setMenuItems(Menu menu){
-		MenuItem miAlterar = new MenuItem(menu, SWT.NONE);
-		miAlterar.setText("Alterar");
-		miAlterar.addSelectionListener(new SelectionAdapter() {
+	protected void createMenuItens(Menu menu){
+		WidgetHelper.createMenuItemAlterar(menu, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				alterar(getSelecionado());
 			}
 		});
 		
-		MenuItem miRemover = new MenuItem(menu, SWT.NONE);
-		miRemover.setText("Remover");
-		miRemover.addSelectionListener(new SelectionAdapter() {
+		MenuItem miRemover = WidgetHelper.createMenuItemRemover(menu, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				excluir(getSelecionados());
+				excluirDesativarAtivar(getSelecionado());
+				
+				atualizar();
 			}
 		});
+		miRemover.setText(addGroupAtivadoDesativado ? "Desativar / Reativar" : "Remover");
+		miRemover.setImage(addGroupAtivadoDesativado ? null : ImageRepository.REMOVE_16.getImage());
 	};
 	
 	/**
@@ -285,7 +306,16 @@ public abstract class GenericView<T> extends ViewPart{
 	 * Método para a exclusão dos objetos
 	 * @param objetos selecionados na tabela
 	 */
-	protected abstract void excluir(List<T> objetos);
+	protected void excluirDesativarAtivar(T objeto){
+		try {
+			getService(objeto).removerAtivarOuDesativar(objeto);
+			
+			DialogHelper.openInformation((String.format("Registro %s com sucesso.", addGroupAtivadoDesativado ? "desativado / reativado" : "removido")));
+		} catch (Exception e) {
+			DialogHelper.openError("Houveram erros ao remover registro.");
+			log.error("Erro ao remover registro.", e);
+		}
+	}
 	
 	/**
 	 * @return o título da View
@@ -335,9 +365,7 @@ public abstract class GenericView<T> extends ViewPart{
 		};
 	};
 	
-	protected GenericService<T> getService(){
-		return null;
-	}
+	protected abstract GenericService<T> getService(Object obj);
 	
 	@Override
 	public void setFocus() {
@@ -347,10 +375,19 @@ public abstract class GenericView<T> extends ViewPart{
 
 	protected void alterar(T element) {
 		try {
+			refresh(element);
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getEditorInputWithModel(element), getEditorId(element));
 		} catch (PartInitException e1) {
-			e1.printStackTrace();
+			log.error("Erro ao abrir tela de alteração.", e1);
+		} catch (Exception e) {
+			log.error("Erro ao alterar elemento.", e);
 		}
+	}
+	
+	public Object refresh(Object obj) throws Exception{
+		String atributoID = ReflectionHelper.getAtributoID(obj);
+		Object atribute = ReflectionHelper.getAtribute(obj, atributoID);
+		return getService(obj).findOne((Serializable) atribute);
 	}
 	
 	protected GenericEditorInput<?> getEditorInputWithModel(T element){
@@ -362,4 +399,5 @@ public abstract class GenericView<T> extends ViewPart{
 	protected Object getModelOfEditorInput(T element) {
 		return element;
 	}
+	
 }

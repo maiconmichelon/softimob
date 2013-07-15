@@ -31,12 +31,6 @@ public class EstadoView extends GenericView<Estado>{
 	}
 	
 	@Override
-	protected void excluir(List<Estado> objetos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Estados";
 	}
@@ -67,7 +61,7 @@ public class EstadoView extends GenericView<Estado>{
 	}
 
 	@Override
-	protected GenericService<Estado> getService() {
+	protected GenericService<Estado> getService(Object obj) {
 		return service;
 	}
 	

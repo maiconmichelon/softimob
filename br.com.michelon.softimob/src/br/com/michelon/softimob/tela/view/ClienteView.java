@@ -34,10 +34,6 @@ public class ClienteView extends GenericView<Cliente>{
 		atributos.add(new ColumnProperties("E-mail", "email", 15));
 		atributos.add(new ColumnProperties("Endereço", "Oendereco",20));
 	}
-	
-	@Override
-	protected void excluir(List<Cliente> objetos) {
-	}
 
 	@Override
 	protected String getTitleView() {
@@ -70,7 +66,7 @@ public class ClienteView extends GenericView<Cliente>{
 	}
 	
 	@Override
-	protected GenericService<Cliente> getService() {
+	protected GenericService<Cliente> getService(Object obj) {
 		return service;
 	}
 	

@@ -32,12 +32,6 @@ public class ChaveView extends GenericView<Chave>{
 	}
 	
 	@Override
-	protected void excluir(List<Chave> objetos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Chaves";
 	}
@@ -78,7 +72,7 @@ public class ChaveView extends GenericView<Chave>{
 	}
 	
 	@Override
-	protected GenericService<Chave> getService() {
+	protected GenericService<Chave> getService(Object obj) {
 		return service;
 	}
 	

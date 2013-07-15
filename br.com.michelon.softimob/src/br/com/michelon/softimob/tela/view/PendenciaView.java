@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.tela.view;
 
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
@@ -33,14 +34,9 @@ public class PendenciaView extends GenericView<Pendencia>{
 	}
 	
 	@Override
-	protected void setMenuItems(Menu menu) {
+	protected void createMenuItens(Menu menu) {
 	}
 	
-	@Override
-	protected void excluir(List<Pendencia> objetos) {
-		// TODO Auto-generated method stub
-	}
-
 	@Override
 	protected String getTitleView() {
 		return "Pendências";
@@ -68,9 +64,14 @@ public class PendenciaView extends GenericView<Pendencia>{
 
 	@Override
 	protected List<Pendencia> getInput() {
-		return null;
+		return service.findPendencias(new Date());
 	}
 
+	@Override
+	protected GenericService<Pendencia> getService(Object obj) {
+		return null;
+	}
+	
 	@Override
 	protected List<Action> createMoreActions() {
 		return null;

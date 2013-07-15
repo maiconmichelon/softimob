@@ -29,10 +29,6 @@ public class DepartamentoView extends GenericView<Departamento>{
 	}
 	
 	@Override
-	protected void excluir(List<Departamento> objetos) {
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Departamento";
 	}
@@ -62,7 +58,7 @@ public class DepartamentoView extends GenericView<Departamento>{
 		return service.findAll();
 	}
 
-	public DepartamentoService getService() {
+	public DepartamentoService getService(Object obj) {
 		return service;
 	}
 

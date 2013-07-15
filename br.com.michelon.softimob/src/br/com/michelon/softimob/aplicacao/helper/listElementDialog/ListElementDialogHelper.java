@@ -30,8 +30,17 @@ import br.com.michelon.softimob.aplicacao.service.PessoaFisicaService;
 import br.com.michelon.softimob.aplicacao.service.PlanoContaService;
 import br.com.michelon.softimob.aplicacao.service.TipoComodoService;
 import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
+import br.com.michelon.softimob.modelo.CheckList;
 import br.com.michelon.softimob.modelo.Cliente;
 import br.com.michelon.softimob.modelo.Comissionado;
+import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
+import br.com.michelon.softimob.modelo.Funcionario;
+import br.com.michelon.softimob.modelo.Imovel;
+import br.com.michelon.softimob.modelo.Indice;
+import br.com.michelon.softimob.modelo.OrigemConta;
+import br.com.michelon.softimob.modelo.PlanoConta;
+import br.com.michelon.softimob.modelo.TipoComodo;
+import br.com.michelon.softimob.modelo.TipoImovel;
 
 public class ListElementDialogHelper {
 	
@@ -104,19 +113,19 @@ public class ListElementDialogHelper {
 
 	public enum TipoDialog{
 		
-		FUNCIONARIO("Funcionários", "Selecione um funcionário.", ImageRepository.FUNCIONARIO_16),
+		FUNCIONARIO("Funcionários", "Selecione um funcionário.", ImageRepository.FUNCIONARIO_16, Funcionario.class),
 		CLIENTE("Clientes", "Selecione um cliente.", ImageRepository.CLIENTE_16, Cliente.class), 
-		COMODO("Cômodos", "Selecione um cômodo.", ImageRepository.COMODO16),
-		TIPO_IMOVEL("Tipo de imóvel", "Selecione um tipo de imóvel.", ImageRepository.TIPO_IMOVEL_16),
-		IMOVEL("Imóveis", "Selecione um imóvel.", ImageRepository.IMOVEL_16), 
-		PLANOCONTA("Plano de Contas", "Selecione uma conta.", ImageRepository.PLANO_CONTA_16), 
+		COMODO("Cômodos", "Selecione um cômodo.", ImageRepository.COMODO16, TipoComodo.class),
+		TIPO_IMOVEL("Tipo de imóvel", "Selecione um tipo de imóvel.", ImageRepository.TIPO_IMOVEL_16, TipoImovel.class),
+		IMOVEL("Imóveis", "Selecione um imóvel.", ImageRepository.IMOVEL_16, Imovel.class), 
+		PLANOCONTA("Plano de Contas", "Selecione uma conta.", ImageRepository.PLANO_CONTA_16, PlanoConta.class), 
 		COMISSIONADO("Comissionados", "Selecione um cliente ou funcionário.", ImageRepository.COMISSAO_16, Comissionado.class), 
-		MODELO_CONTRATO("Modelos de Contrato", "Selecione um modelo de contrato.", ImageRepository.CONTRATO_16),
-		CONTRATO_SERVICO("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16),
-		CHECK_LIST("Modelos de check list", "Selecione uma check list", ImageRepository.CHECKLIST_16),
-		INDICE("Índices", "Selecione um índice", ImageRepository.INDICE_16), 
-		PESSOA_FISICA("Pessoas Físicas", "Selecione uma pessoa física", ImageRepository.CLIENTE_16),
-		ORIGEM_CONTA("Origens de Contas", "Selecione uma origem para sua conta", ImageRepository.ORIGEM_CONTA_16)
+		MODELO_CONTRATO("Modelos de Contrato", "Selecione um modelo de contrato.", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
+		CONTRATO_SERVICO("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
+		CHECK_LIST("Modelos de check list", "Selecione uma check list", ImageRepository.CHECKLIST_16, CheckList.class),
+		INDICE("Índices", "Selecione um índice", ImageRepository.INDICE_16, Indice.class), 
+		PESSOA_FISICA("Pessoas Físicas", "Selecione uma pessoa física", ImageRepository.CLIENTE_16, Cliente.class),
+		ORIGEM_CONTA("Origens de Contas", "Selecione uma origem para sua conta", ImageRepository.ORIGEM_CONTA_16, OrigemConta.class)
 		;
 		
 		private final String title;
@@ -157,9 +166,11 @@ public class ListElementDialogHelper {
 			ElementListSelectionDialog dialog = openDialog();
 			
 			if(dialog.open() == IDialogConstants.OK_ID){
-				
 				for(OkListElementDialogListener listener : listeners)
 					listener.ok(dialog.getFirstResult());
+			} else {
+				for(OkListElementDialogListener listener : listeners)
+					listener.ok(null);
 			}
 		}
 		

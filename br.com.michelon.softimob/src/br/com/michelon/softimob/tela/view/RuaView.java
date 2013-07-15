@@ -32,12 +32,6 @@ public class RuaView extends GenericView<Rua>{
 	}
 	
 	@Override
-	protected void excluir(List<Rua> objetos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Ruas";
 	}
@@ -68,7 +62,7 @@ public class RuaView extends GenericView<Rua>{
 	}
 
 	@Override
-	protected GenericService<Rua> getService() {
+	protected GenericService<Rua> getService(Object obj) {
 		return service;
 	}	
 	

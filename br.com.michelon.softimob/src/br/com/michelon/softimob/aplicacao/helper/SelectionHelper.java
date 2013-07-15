@@ -8,27 +8,30 @@ import org.eclipse.jface.viewers.StructuredViewer;
 
 public class SelectionHelper {
 
-	public static List<Object> getObjects(StructuredViewer viewer){
-		return getObjects((IStructuredSelection)viewer.getSelection());
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> getObjects(StructuredViewer viewer){
+		return (List<T>) getObjects((IStructuredSelection)viewer.getSelection());
 	}
 
-	public static Object getObject(StructuredViewer viewer){
-		return getObject((IStructuredSelection)viewer.getSelection());
+	@SuppressWarnings("unchecked")
+	public static <T> T getObject(StructuredViewer viewer){
+		return (T) getObject((IStructuredSelection)viewer.getSelection());
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Object> getObjects(IStructuredSelection selection){
+	public static <T> List<T> getObjects(IStructuredSelection selection){
 		if(selection == null)
 			return null;
 		
 		return selection.toList();
 	}
 	
-	public static Object getObject(IStructuredSelection selection){
+	@SuppressWarnings("unchecked")
+	public static <T> T getObject(IStructuredSelection selection){
 		if(selection == null)
 			return null;
 		
-		return selection.getFirstElement();
+		return (T) selection.getFirstElement();
 	}
 
 	public static Object getObject(ISelection selection) {

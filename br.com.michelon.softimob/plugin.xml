@@ -252,6 +252,11 @@
             id="br.com.michelon.softimob.tela.view.ReportView"
             name="Relatório">
       </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.ImovelMapView"
+            id="br.com.michelon.softimob.tela.view.ImovelMapView"
+            name="New ViewPart">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">

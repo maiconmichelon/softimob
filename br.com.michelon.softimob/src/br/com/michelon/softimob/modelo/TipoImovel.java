@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
+
 @Entity
 public class TipoImovel implements Serializable{
 	
@@ -22,6 +24,7 @@ public class TipoImovel implements Serializable{
 	private String nome;
 
 	@Column(nullable = false)
+	@DeactivateOnDelete
 	private Boolean ativo = true;
 
 	public TipoImovel() {

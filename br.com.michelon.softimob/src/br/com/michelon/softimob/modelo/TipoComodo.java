@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
+
 import com.google.common.collect.Lists;
 
 @Entity
@@ -31,6 +33,7 @@ public class TipoComodo implements Serializable{
 	private List<TipoImovelTipoComodo> tipoImovelTipoComodo = Lists.newArrayList();
 	
 	@Column
+	@DeactivateOnDelete
 	private Boolean ativo = true;
 	
 	public TipoComodo(String nome) {

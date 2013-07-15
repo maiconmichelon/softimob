@@ -35,11 +35,6 @@ public class ChamadoReformaView extends GenericView<ChamadoReforma>{
 	}
 	
 	@Override
-	protected void excluir(List<ChamadoReforma> objetos) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Chamados";
 	}
@@ -80,7 +75,7 @@ public class ChamadoReformaView extends GenericView<ChamadoReforma>{
 	}
 	
 	@Override
-	protected GenericService<ChamadoReforma> getService() {
+	protected GenericService<ChamadoReforma> getService(Object obj) {
 		return service;
 	}
 	

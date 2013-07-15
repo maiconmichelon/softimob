@@ -2,7 +2,6 @@ package br.com.michelon.softimob.tela.editor;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -11,6 +10,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -319,8 +319,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		DateTextField dateTextField_2 = new DateTextField(cpAddVistoria);
 		text_34 = dateTextField_2.getControl();
-		GridData gd_text_34 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_34.widthHint = 50;
+		GridData gd_text_34 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		text_34.setLayoutData(gd_text_34);
 		new Label(cpAddVistoria, SWT.NONE);
 		
@@ -361,7 +360,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Composite composite_2 = new Composite(tabFolder_1, SWT.NONE);
 		tbtmCheckList.setControl(composite_2);
-		tvCheckListVistoria = criarTabelaCheckList(composite_2, ((Vistoria)valueVistoria.getValue()).getItensCheckList());
+		tvCheckListVistoria = criarTabelaCheckList(composite_2);
 		
 		Button button_6 = new Button(composite_8, SWT.NONE);
 		button_6.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -613,7 +612,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
 		tbtmCheckList_1.setControl(composite_3);
-		tvCheckListAluguel = criarTabelaCheckList(composite_3, getCurrentObject().getItensCheckList());
+		tvCheckListAluguel = criarTabelaCheckList(composite_3);
 	}
 
 	protected void addChamadoReforma(WritableValue value) {
@@ -687,19 +686,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		TableViewerBuilder tvbComissao = new TableViewerBuilder(composite);
 		
 		tvbComissao.createColumn("Nome").bindToProperty("comissionado.nome").build();
-//		tvbComissao.createColumn("Valor ( % )").bindToValue(new IValue() {
-//			//TODO AQUI TEM QUE RECALCULAR VALOR			
-//			@Override
-//			public void setValue(Object arg0, Object arg1) {
-//				// TODO Auto-generated method stub
-//			}
-//			
-//			@Override
-//			public Object getValue(Object arg0) {
-//				// TODO Auto-generated method stub
-//				return null;
-//			}
-//		}).makeEditable().build();
 		tvbComissao.createColumn("Valor (R$)").bindToProperty("valor").build();
 		tvbComissao.createColumn("Data de Vencimento").bindToProperty("dataVencimento").format(new DateStringValueFormatter()).build();
 		
@@ -750,7 +736,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		tvbVistoria.createColumn("Data da Vistoria").bindToProperty("data").format(new DateStringValueFormatter()).build();
 		tvbVistoria.createColumn("Funcionário").bindToProperty("funcionario.nome").build();
-//		tvbVistoria.createColumn("Fotos").bindToProperty("arquivo").build();
 		tvbVistoria.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
 		
 		tvbVistoria.setInput(getCurrentObject().getVistorias());
@@ -760,8 +745,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		tvVistoria = tvbVistoria.getTableViewer();
 	}
 	
-	private TableViewer criarTabelaCheckList(Composite composite, List<ItemCheckListDescricao> input){
-		return new CheckListService().criarTabela(composite, getCurrentObject().getItensCheckList());
+	private TableViewer criarTabelaCheckList(Composite composite){
+		return new CheckListService().criarTabela(composite);
 	}
 	
 	@Override
@@ -771,29 +756,11 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 
 	private DataBindingContext initBindTables(DataBindingContext bindingContext) {
 		//
-//		IObservableValue observeSingleSelectionTableViewerAndamento = ViewerProperties.input().observe(tvAndamentoChamado);
-//		IObservableValue valueObserveDetailValueAndamento = PojoProperties.value(ChamadoReforma.class, "acontecimentoChamado", List.class).observeDetail(valueChamado);
-//		context.bindValue(observeSingleSelectionTableViewerAndamento, valueObserveDetailValueAndamento, null, null);
-//		//
-//		IObservableValue observeSingleSelectionTableViewerChamado = ViewerProperties.input().observe(tvChamadoGeral);
-//		IObservableValue valueObserveDetailValueChamado = PojoProperties.value(Aluguel.class, "chamados", List.class).observeDetail(value);
-//		context.bindValue(observeSingleSelectionTableViewerChamado, valueObserveDetailValueChamado, null, null);
-//		//
-//		IObservableValue observeSingleSelectionTableViewerVistoria = ViewerProperties.input().observe(tvVistoria);
-//		IObservableValue valueObserveDetailValueVistoria = PojoProperties.value(Aluguel.class, "vistorias", List.class).observeDetail(value);
-//		context.bindValue(observeSingleSelectionTableViewerVistoria, valueObserveDetailValueVistoria, null, null);
-//		//
-//		IObservableValue observeSingleSelectionTableViewerComissao = ViewerProperties.input().observe(tvComissao);
-//		IObservableValue valueObserveDetailValueComissao = PojoProperties.value(Aluguel.class, "comissoes", List.class).observeDetail(value);
-//		context.bindValue(observeSingleSelectionTableViewerComissao, valueObserveDetailValueComissao, null, null);
+		tvCheckListAluguel.setContentProvider(new ObservableListContentProvider());
+		tvCheckListAluguel.setInput(PojoProperties.list(VendaAluguel.class, "itensCheckList", ItemCheckListDescricao.class).observeDetail(value));
 		//
-		IObservableValue observeSingleSelectionTableViewerCheckListVenda = ViewerProperties.input().observe(tvCheckListAluguel);
-		IObservableValue valueObserveDetailValueCheckListVenda = PojoProperties.value(VendaAluguel.class, "itensCheckList", List.class).observeDetail(value);
-		bindingContext.bindValue(observeSingleSelectionTableViewerCheckListVenda, valueObserveDetailValueCheckListVenda, null, null);
-		//
-		IObservableValue observeSingleSelectionTableViewerCheckListVistoria = ViewerProperties.input().observe(tvCheckListVistoria);
-		IObservableValue valueObserveDetailValueCheckListVistoria = PojoProperties.value(Vistoria.class, "itensCheckList", List.class).observeDetail(valueVistoria);
-		bindingContext.bindValue(observeSingleSelectionTableViewerCheckListVistoria, valueObserveDetailValueCheckListVistoria, null, null);
+		tvCheckListVistoria.setContentProvider(new ObservableListContentProvider());
+		tvCheckListVistoria.setInput(PojoProperties.list(Vistoria.class, "itensCheckList", ItemCheckListDescricao.class).observeDetail(valueVistoria));
 		//
 		return bindingContext;
 	}

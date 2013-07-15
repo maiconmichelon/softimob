@@ -30,12 +30,6 @@ public class CidadeView extends GenericView<Cidade>{
 	}
 	
 	@Override
-	protected void excluir(List<Cidade> objetos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Cidades";
 	}
@@ -66,7 +60,7 @@ public class CidadeView extends GenericView<Cidade>{
 	}
 	
 	@Override
-	protected GenericService<Cidade> getService() {
+	protected GenericService<Cidade> getService(Object obj) {
 		return service;
 	}
 

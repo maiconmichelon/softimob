@@ -31,12 +31,6 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 	}
 	
 	@Override
-	protected void excluir(List<PlanoConta> objetos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Plano de contas";
 	}
@@ -67,7 +61,7 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 	}
 
 	@Override
-	protected GenericService<PlanoConta> getService() {
+	protected GenericService<PlanoConta> getService(Object obj) {
 		return service;
 	}	
 	

@@ -40,11 +40,6 @@ public class ComissaoView extends GenericView<Comissao>{
 	}
 	
 	@Override
-	protected void excluir(List<Comissao> objetos) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Comissão";
 	}
@@ -80,7 +75,7 @@ public class ComissaoView extends GenericView<Comissao>{
 	}
 
 	@Override
-	protected GenericService<Comissao> getService() {
+	protected GenericService<Comissao> getService(Object obj) {
 		return service;
 	}
 	

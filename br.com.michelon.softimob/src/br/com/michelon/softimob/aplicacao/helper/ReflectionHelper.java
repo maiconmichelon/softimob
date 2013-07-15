@@ -1,8 +1,17 @@
 package br.com.michelon.softimob.aplicacao.helper;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Id;
 
 import org.apache.commons.lang.StringUtils;
+
+import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
+
+import com.google.common.collect.Lists;
 
 public class ReflectionHelper {
 
@@ -41,9 +50,42 @@ public class ReflectionHelper {
 			if(((String) dado).toLowerCase().matches(palavra))
 				return true;
 		}
+		
 		return false;
 	}
 	
-	
+	public static String getAtributoID(Object obj){
+		Class<?> clazz = obj.getClass();
+		do{
+			String atributoID = getAtributoID(clazz);
+			if(atributoID != null)
+				return atributoID;
+			clazz = obj.getClass().getSuperclass(); 
+		}while(!clazz.equals(Object.class));
+		
+		return null;
+	}
 
+	private static String getAtributoID(Class<?> clazz){
+		for(Field f : clazz.getDeclaredFields()){
+			for(Annotation a : f.getDeclaredAnnotations()){
+				if(a.annotationType().equals(Id.class))
+					return f.getName();
+			}
+		}
+		
+		return null;
+	}
+	
+	public static List<Field> getAtributoAtivoDesativado(Object obj){
+		List<Field> fields = Lists.newArrayList();
+		
+		for(Field f : obj.getClass().getDeclaredFields()){
+			if(f.getAnnotation(DeactivateOnDelete.class) != null)
+				fields.add(f);
+		}
+		
+		return fields;
+	}
+	
 }

@@ -37,10 +37,6 @@ public class AluguelView extends GenericView<Aluguel>{
 	}
 	
 	@Override
-	protected void excluir(List<Aluguel> objetos) {
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Aluguéis";
 	}
@@ -71,7 +67,7 @@ public class AluguelView extends GenericView<Aluguel>{
 	}
 
 	@Override
-	protected GenericService<Aluguel> getService() {
+	protected GenericService<Aluguel> getService(Object obj) {
 		return service;
 	}
 	

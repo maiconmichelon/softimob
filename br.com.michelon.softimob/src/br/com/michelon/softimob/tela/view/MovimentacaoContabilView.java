@@ -37,11 +37,6 @@ public class MovimentacaoContabilView extends GenericView<MovimentacaoContabil>{
 	}
 	
 	@Override
-	protected void excluir(List<MovimentacaoContabil> objetos) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected ColumnViewer criarTabela(Composite composite) {
 		return MovimentacaoGenericXViewer.createXviewer(composite);
 	}
@@ -77,7 +72,7 @@ public class MovimentacaoContabilView extends GenericView<MovimentacaoContabil>{
 	}
 	
 	@Override
-	protected GenericService<MovimentacaoContabil> getService() {
+	protected GenericService<MovimentacaoContabil> getService(Object obj) {
 		return service;
 	}	
 

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
 import br.com.michelon.softimob.aplicacao.service.RuaService;
 
 @Entity
@@ -30,6 +31,7 @@ public class Bairro implements Serializable{
 	private Cidade cidade;
 
 	@Column(nullable = false)
+	@DeactivateOnDelete
 	private Boolean ativo = true;
 	
 	public Long getId() {

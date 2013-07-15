@@ -48,12 +48,6 @@ public class ImovelView extends GenericView<Imovel>{
 	}
 	
 	@Override
-	protected void excluir(List<Imovel> objetos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Imóveis";
 	}
@@ -84,8 +78,8 @@ public class ImovelView extends GenericView<Imovel>{
 	}
 
 	@Override
-	protected void setMenuItems(Menu menu) {
-		super.setMenuItems(menu);
+	protected void createMenuItens(Menu menu) {
+		super.createMenuItens(menu);
 		
 		MenuItem miFotos = new MenuItem(menu, SWT.BORDER);
 		miFotos.setText("Visualizar Fotos");
@@ -98,6 +92,21 @@ public class ImovelView extends GenericView<Imovel>{
 					showView.setFotos(imovel.getFotos());
 				} catch (PartInitException e1) {
 					e1.printStackTrace();
+				}
+			}
+		});
+		
+		MenuItem miMaps = new MenuItem(menu, SWT.BORDER);
+		miMaps.setText("Visualizar imóvel em mapa");
+		miMaps.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				try {
+					ImovelMapView showView = (ImovelMapView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ImovelMapView.ID);
+					if(getSelecionado().getEndereco() != null)
+						showView.setEnderecoPadrao(getSelecionado().getEndereco());
+				} catch (PartInitException e1) {
+					log.error("Erro ao abrir imóvel na view de Mapa.", e1);
 				}
 			}
 		});
@@ -114,7 +123,7 @@ public class ImovelView extends GenericView<Imovel>{
 	}
 	
 	@Override
-	protected GenericService<Imovel> getService() {
+	protected GenericService<Imovel> getService(Object obj) {
 		return service;
 	}
 

@@ -31,12 +31,6 @@ public class BairroView extends GenericView<Bairro>{
 	}
 	
 	@Override
-	protected void excluir(List<Bairro> objetos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Bairro";
 	}
@@ -67,7 +61,7 @@ public class BairroView extends GenericView<Bairro>{
 	}
 
 	@Override
-	protected GenericService<Bairro> getService() {
+	protected GenericService<Bairro> getService(Object obj) {
 		return service;
 	}
 	

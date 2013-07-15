@@ -10,6 +10,4 @@ public class ContaParcial {
 	
 	private BigDecimal valorParcial;
 	
-	
-	
 }

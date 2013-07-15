@@ -1,7 +1,5 @@
 package br.com.michelon.softimob.aplicacao.service;
 
-import java.util.List;
-
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -25,7 +23,7 @@ public class CheckListService extends GenericService<CheckList>{
 		super(ModeloCheckListDAO.class);
 	}
 
-	public TableViewer criarTabela(Composite composite, List<ItemCheckListDescricao> input) {
+	public TableViewer criarTabela(Composite composite) {
 		final TableViewerBuilder tvbCheckList = new TableViewerBuilder(composite);
 		
 		TableViewerColumn tvcFinalizado = tvbCheckList.createColumn("Finalizado").setPixelWidth(70).setCustomLabelProvider(new ColumnLabelProvider(){
@@ -76,8 +74,8 @@ public class CheckListService extends GenericService<CheckList>{
 		});
 		tvbCheckList.createColumn("Item").bindToProperty("item.nome").setPercentWidth(40).build();
 		tvbCheckList.createColumn("Observações").bindToProperty("descricao").setPercentWidth(50).makeEditable().build();
-		
-		tvbCheckList.setInput(input);
+		//É TUDO NO BINDING SA BIXERA XD NAO PRECISA MAIS DISSO .. s
+//		tvbCheckList.setInput(input);
 		
 		return tvbCheckList.getTableViewer();
 	}

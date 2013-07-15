@@ -31,12 +31,6 @@ public class PlacaView extends GenericView<Placa>{
 	}
 	
 	@Override
-	protected void excluir(List<Placa> objetos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Placas";
 	}
@@ -67,7 +61,7 @@ public class PlacaView extends GenericView<Placa>{
 	}
 
 	@Override
-	protected GenericService<Placa> getService() {
+	protected GenericService<Placa> getService(Object obj) {
 		return service;
 	}	
 	

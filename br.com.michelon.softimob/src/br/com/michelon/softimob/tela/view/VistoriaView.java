@@ -37,11 +37,6 @@ public class VistoriaView extends GenericView<Vistoria>{
 	}
 	
 	@Override
-	protected void excluir(List<Vistoria> objetos) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Vistorias";
 	}
@@ -82,7 +77,7 @@ public class VistoriaView extends GenericView<Vistoria>{
 	}
 	
 	@Override
-	protected GenericService<Vistoria> getService() {
+	protected GenericService<Vistoria> getService(Object obj) {
 		return service;
 	}
 	

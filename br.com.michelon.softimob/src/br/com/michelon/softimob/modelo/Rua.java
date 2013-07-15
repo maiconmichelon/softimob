@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
+
 @Entity
 public class Rua implements Serializable{
 
@@ -27,6 +29,7 @@ public class Rua implements Serializable{
 	private Bairro bairro;
 	
 	@Column(nullable = false)
+	@DeactivateOnDelete
 	private Boolean ativo = true;
 
 	public Long getId() {

@@ -46,11 +46,12 @@ public class WidgetHelper {
 		return tvb;
 	}
 
-	public static void createMenuItemAlterar(Menu menu, SelectionListener listener){
+	public static MenuItem createMenuItemAlterar(Menu menu, SelectionListener listener){
 		MenuItem miAlterar = new MenuItem(menu, SWT.BORDER);
 		miAlterar.setText("Alterar");
 		miAlterar.setImage(ImageRepository.ALTERAR16.getImage());
 		miAlterar.addSelectionListener(listener);
+		return miAlterar;
 	}
 	
 	public static void createMenuItemAlterar(Menu menu, final IObservableValue value, final TableViewer tableViewer){
@@ -75,7 +76,7 @@ public class WidgetHelper {
 					if(!DialogHelper.openConfirmation("Deseja excluir o registro ?"))
 						return;
 					
-					service.delete(obj);
+					service.removerAtivarOuDesativar(obj);
 					
 					DialogHelper.openInformation("Registro excluido com sucesso");
 					
@@ -90,11 +91,12 @@ public class WidgetHelper {
 		});
 	}
 	
-	public static void createMenuItemRemover(Menu menu, SelectionListener listener){
+	public static MenuItem createMenuItemRemover(Menu menu, SelectionListener listener){
 		MenuItem miRemover = new MenuItem(menu, SWT.BORDER);
 		miRemover.setText("Remover");
 		miRemover.setImage(ImageRepository.REMOVE_16.getImage());
 		miRemover.addSelectionListener(listener);
+		return miRemover;
 	}
 	
 	/**

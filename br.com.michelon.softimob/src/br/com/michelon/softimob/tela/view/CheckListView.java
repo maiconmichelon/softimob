@@ -29,11 +29,6 @@ public class CheckListView extends GenericView<CheckList>{
 	}
 
 	@Override
-	protected void excluir(List<CheckList> objetos) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Check List";
 	}
@@ -75,7 +70,7 @@ public class CheckListView extends GenericView<CheckList>{
 	}
 	
 	@Override
-	protected GenericService<CheckList> getService() {
+	protected GenericService<CheckList> getService(Object obj) {
 		return service;
 	}
 	

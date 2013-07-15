@@ -29,11 +29,6 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 	}
 	
 	@Override
-	protected void excluir(List<TipoImovel> objetos) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Tipos de Imóvel";
 	}
@@ -64,8 +59,8 @@ public class TipoImovelView extends GenericView<TipoImovel>{
 	}
 
 	@Override
-	protected GenericService<TipoImovel> getService() {
+	protected GenericService<TipoImovel> getService(Object obj) {
 		return service;
-}	
+	}	
 
 }

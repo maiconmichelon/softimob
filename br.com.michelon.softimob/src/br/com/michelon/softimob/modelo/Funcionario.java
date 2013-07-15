@@ -51,4 +51,6 @@ public class Funcionario extends Comissionado implements Serializable{
 		return getNome();
 	}
 	
+	
+	
 }

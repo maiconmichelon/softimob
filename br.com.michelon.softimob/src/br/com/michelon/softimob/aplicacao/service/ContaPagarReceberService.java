@@ -12,6 +12,7 @@ import br.com.michelon.softimob.modelo.LancamentoContabil;
 import br.com.michelon.softimob.modelo.LancamentoContabil.TipoLancamento;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.ParametrosEmpresa;
+import br.com.michelon.softimob.modelo.Pendencia;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.persistencia.ContaPagarReceberDAO;
 import br.com.michelon.softimob.tela.view.PgtoRecContaView.ModeloPgtoConta;
@@ -24,29 +25,9 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 		super(ContaPagarReceberDAO.class);
 	}
 
-	public void setarMovimentacao(ContaPagarReceber conta, Date dataPagamento) throws Exception{
-//		MovimentacaoContabil mov = new MovimentacaoContabil();
-//		
-//		mov.setData(dataPagamento);
-//		mov = gerarLancamentos(conta, mov);
-//		
-//		BigDecimal totalCred = BigDecimal.ZERO;
-//		BigDecimal totalDeb = BigDecimal.ZERO;
-//		
-//		for(LancamentoContabil lcto : mov.getLancamentos()){
-//			if(lcto.isCredito())
-//				totalCred = totalCred.add(lcto.getValor());
-//			if(lcto.isDebito())
-//				totalDeb = totalDeb.add(lcto.getValor());
-//		}
-//		
-//		if(totalCred.compareTo(totalDeb) != 0)
-//			throw new Exception("O valor total de débito não pode ser diferente do valor total de crédito");
-//		else
-//			mov.setValor(totalCred);
-//
-//		conta.setMovimentacao(mov);
-//		conta.setDataPagamento(dataPagamento);
+	@Override
+	protected ContaPagarReceberDAO getRepository() {
+		return (ContaPagarReceberDAO) super.getRepository();
 	}
 	
 	public MovimentacaoContabil geraMovimentacao(ContaPagarReceber c, ModeloPgtoConta model) throws Exception{
@@ -149,8 +130,33 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 		salvar(contasParaSalvar);
 	}
 	
-	public void salvar(List<ContaPagarReceber> contas){
-		getRepository().save(contas);
+	public void estornarContas(List<ContaPagarReceber> contas) throws Exception{
+		List<ContaPagarReceber> contasToMerge = Lists.newArrayList();
+		List<ContaPagarReceber> contasToDelete = Lists.newArrayList();
+		
+		for(ContaPagarReceber c : contas){
+//			if(c.getContaPai == null){
+			c.setDataPagamento(null);
+			c.setMovimentacao(null);
+			c.setValorPagoParcial(BigDecimal.ZERO);
+			c.setValorJurosDesconto(BigDecimal.ZERO);
+			contasToMerge.add(c);
+//			} else {
+//			contasToDelete.add(c);
+//			ContaPagarReceber contaPai;
+//				
+//			}
+		}
+		
+		salvar(contasToMerge);
+	}
+	
+	public List<Pendencia> findByDataVencimento(Date dataVencimento){
+		return getRepository().findByDataVencimento(dataVencimento);
+	}
+	
+	public List<ContaPagarReceber> buscarContas(Date dataInicio, Date dataFinal){
+		return getRepository().buscarContas(dataInicio, dataFinal);
 	}
 	
 }

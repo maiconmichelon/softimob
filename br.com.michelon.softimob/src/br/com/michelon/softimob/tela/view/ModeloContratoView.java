@@ -29,11 +29,6 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 	}
 	
 	@Override
-	protected void excluir(List<ModeloContrato> objetos) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Modelos de contrato";
 	}
@@ -64,7 +59,7 @@ public class ModeloContratoView extends GenericView<ModeloContrato>{
 	}
 
 	@Override
-	protected GenericService<ModeloContrato> getService() {
+	protected GenericService<ModeloContrato> getService(Object obj) {
 		return service;
 	}	
 	

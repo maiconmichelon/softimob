@@ -36,12 +36,6 @@ public class PropostaView extends GenericView<Proposta>{
 	}
 	
 	@Override
-	protected void excluir(List<Proposta> objetos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Propostas";
 	}
@@ -82,7 +76,7 @@ public class PropostaView extends GenericView<Proposta>{
 	}
 	
 	@Override
-	protected GenericService<Proposta> getService() {
+	protected GenericService<Proposta> getService(Object obj) {
 		return service;
 	}	
 	

@@ -34,10 +34,6 @@ public class VendaView extends GenericView<Venda>{
 	}
 	
 	@Override
-	protected void excluir(List<Venda> objetos) {
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Vendas";
 	}
@@ -68,7 +64,7 @@ public class VendaView extends GenericView<Venda>{
 	}
 
 	@Override
-	protected GenericService<Venda> getService() {
+	protected GenericService<Venda> getService(Object obj) {
 		return service;
 	}
 	

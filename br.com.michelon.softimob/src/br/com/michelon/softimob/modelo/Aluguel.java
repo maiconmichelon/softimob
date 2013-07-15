@@ -25,6 +25,10 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	@Column
 	private Integer duracao;
 	
+//	@NotNull
+//	@Temporal(TemporalType.TIMESTAMP)
+//	private Date dataVencimento;
+	
 	@Column
 	private Integer reajuste;
 	

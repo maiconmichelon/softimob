@@ -23,8 +23,6 @@ public class PlacaEditor extends GenericEditor<Placa>{
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.PlacaEditor"; //$NON-NLS-1$
 	
-	private DataBindingContext m_bindingContext;
-	
 	private PlacaService service= new PlacaService();
 	
 	private Text text;

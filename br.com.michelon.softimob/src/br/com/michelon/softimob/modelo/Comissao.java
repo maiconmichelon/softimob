@@ -49,4 +49,6 @@ public class Comissao extends ContaPagarReceber{
 		this.vendaAluguel = vendaAluguel;
 	}
 
+	
+	
 }

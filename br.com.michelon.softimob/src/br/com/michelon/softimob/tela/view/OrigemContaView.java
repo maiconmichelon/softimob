@@ -32,12 +32,6 @@ public class OrigemContaView extends GenericView<OrigemConta>{
 	}
 	
 	@Override
-	protected void excluir(List<OrigemConta> objetos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Origens das contas";
 	}
@@ -68,7 +62,7 @@ public class OrigemContaView extends GenericView<OrigemConta>{
 	}
 
 	@Override
-	protected GenericService<OrigemConta> getService() {
+	protected GenericService<OrigemConta> getService(Object obj) {
 		return service;
 	}	
 	

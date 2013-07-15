@@ -41,11 +41,6 @@ public class ClientePFView extends GenericView<PessoaFisica>{
 	}
 
 	@Override
-	protected void excluir(List<PessoaFisica> objetos) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Pessoas Físicas";
 	}
@@ -76,7 +71,7 @@ public class ClientePFView extends GenericView<PessoaFisica>{
 	}
 	
 	@Override
-	protected GenericService<PessoaFisica> getService() {
+	protected GenericService<PessoaFisica> getService(Object obj) {
 		return service;
 	}
 	

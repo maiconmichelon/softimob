@@ -69,17 +69,28 @@ public enum ImageRepository{
 	IMOBILIARIA_32("icons/imobiliaria/imobiliaria32.png"),
 	CHECKLIST_16("icons/checkList/checkList16.png"),
 	CHECKLIST_32("icons/checkList/checkList32.png"), 
-	ALTERAR16("icons/alterar/alterar16.png")
+	ALTERAR16("icons/alterar/alteracao16.png")
 	;
 	
 	private String caminho;
-
+	private final String symbolicName;
+	
+	ImageRepository(String symbolicName, String caminho) {
+		this.caminho = caminho;
+		this.symbolicName = symbolicName;
+	}
+	
 	ImageRepository(String caminho) {
 		this.caminho = caminho;
+		this.symbolicName = Activator.PLUGIN_ID;
 	}
 	
 	public String getCaminho() {
 		return caminho;
+	}
+	
+	public String getSymbolicName() {
+		return symbolicName;
 	}
 	
 	@Override
@@ -88,11 +99,11 @@ public enum ImageRepository{
 	}
 	
 	public ImageDescriptor getImageDescriptor(){
-		return ResourceManager.getPluginImageDescriptor(Activator.PLUGIN_ID, getCaminho());
+		return ResourceManager.getPluginImageDescriptor(symbolicName, caminho);
 	}
 	
 	public Image getImage(){
-		return ResourceManager.getPluginImage(Activator.PLUGIN_ID, getCaminho());
+		return ResourceManager.getPluginImage(symbolicName, caminho);
 	}
 	
 }

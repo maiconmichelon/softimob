@@ -40,10 +40,6 @@ public class FuncionarioView extends GenericView<Funcionario>{
 	}
 	
 	@Override
-	protected void excluir(List<Funcionario> objetos) {
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Funcionários";
 	}
@@ -74,7 +70,7 @@ public class FuncionarioView extends GenericView<Funcionario>{
 	}
 
 	@Override
-	protected GenericService<Funcionario> getService() {
+	protected GenericService<Funcionario> getService(Object obj) {
 		return service;
 	}	
 	

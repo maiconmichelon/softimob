@@ -1,9 +1,11 @@
 package br.com.michelon.softimob.aplicacao.service;
 
+import java.util.Date;
 import java.util.List;
 
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.Imovel;
+import br.com.michelon.softimob.modelo.Pendencia;
 import br.com.michelon.softimob.persistencia.AluguelDAO;
 
 public class AluguelService extends GenericService<Aluguel>{
@@ -19,6 +21,10 @@ public class AluguelService extends GenericService<Aluguel>{
 	
 	public List<Aluguel> findByImovel(Imovel imovel){
 		return getRepository().findByImovel(imovel);
+	}
+	
+	public List<Pendencia> findByDataVencimento(Date dataVencimento){
+		return null;
 	}
 	
 }

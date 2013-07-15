@@ -30,11 +30,6 @@ public class IndiceView extends GenericView<Indice>{
 	}
 
 	@Override
-	protected void excluir(List<Indice> objetos) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Indices";
 	}
@@ -76,7 +71,7 @@ public class IndiceView extends GenericView<Indice>{
 	}
 
 	@Override
-	protected GenericService<Indice> getService() {
+	protected GenericService<Indice> getService(Object obj) {
 		return service;
 	}	
 	

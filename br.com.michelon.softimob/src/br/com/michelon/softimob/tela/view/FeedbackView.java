@@ -34,10 +34,6 @@ public class FeedbackView extends GenericView<Feedback>{
 	}
 	
 	@Override
-	protected void excluir(List<Feedback> objetos) {
-	}
-
-	@Override
 	protected String getTitleView() {
 		return "Feedbacks";
 	}
@@ -78,7 +74,7 @@ public class FeedbackView extends GenericView<Feedback>{
 	}
 	
 	@Override
-	protected GenericService<Feedback> getService() {
+	protected GenericService<Feedback> getService(Object obj) {
 		return service;
 	}	
 	

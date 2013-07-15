@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
 import br.com.michelon.softimob.aplicacao.service.CidadeService;
 
 @Entity
@@ -32,6 +33,7 @@ public class Estado implements Serializable{
 	private String uf;
 	
 	@Column(nullable = false)
+	@DeactivateOnDelete
 	private Boolean ativo = true;
 
 	public Long getId() {

@@ -1,10 +1,12 @@
 package br.com.michelon.softimob.aplicacao.service;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
+import br.com.michelon.softimob.aplicacao.helper.ReflectionHelper;
 import br.com.michelon.softimob.persistencia.SpringUtils;
 
 public class GenericService<T> {
@@ -26,7 +28,30 @@ public class GenericService<T> {
 		crudRepository.save(registro);
 	}
 	
-	public void delete(T registro) throws Exception{
+	public void salvar(List<T> registros) throws Exception{
+		crudRepository.save(registros);
+	}
+	
+	public void removerAtivarOuDesativar(T registro) throws Exception{
+		List<Field> fields = ReflectionHelper.getAtributoAtivoDesativado(registro);
+				
+		if(fields.isEmpty()){
+			delete(registro);
+		} else {
+			ativarDesativar(registro, fields);
+		}
+	}
+
+	private void ativarDesativar(T registro, List<Field> fields) throws Exception {
+		for(Field f : fields){
+			Boolean b = (Boolean) ReflectionHelper.getAtribute(registro, f.getName());
+			ReflectionHelper.setAtribute(registro, f.getName(), !b, Boolean.class);
+		}
+
+		salvar(registro);
+	}
+
+	private void delete(T registro) {
 		crudRepository.delete(registro);
 	}
 	

@@ -56,12 +56,26 @@ public class Vistoria implements Serializable{
 	
 	public Vistoria(Venda venda){
 		this.vendaAluguel = venda;
+		addCheckList();
 	}
 	
 	public Vistoria(Aluguel aluguel){
 		this.vendaAluguel = aluguel;
+		addCheckList();
 	}
 	
+	private void addCheckList() {
+		ParametrosEmpresa instance = ParametrosEmpresa.getInstance();
+		if(instance != null){
+			CheckList chkList = instance.getCheckListVistoria();
+			if (chkList != null) {
+				for (ItemCheckList item : chkList.getItens()) {
+					getItensCheckList().add(new ItemCheckListDescricao(item));
+				}
+			}
+		}
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -116,6 +130,31 @@ public class Vistoria implements Serializable{
 	
 	public void setItensCheckList(List<ItemCheckListDescricao> itensCheckList) {
 		this.itensCheckList = itensCheckList;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vistoria other = (Vistoria) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 	
 }
