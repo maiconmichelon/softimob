@@ -101,6 +101,9 @@ public class TipoComodoEditor extends GenericEditor<TipoComodo>{
 					
 					@Override
 					public void ok(Object obj) {
+						if(obj == null)
+							return;
+						
 						TipoImovelTipoComodo tipoImovelTipoComodo = new TipoImovelTipoComodo();
 						tipoImovelTipoComodo.setTipoImovel((TipoImovel) obj);
 						tipoImovelTipoComodo.setPreSelecionado(true);

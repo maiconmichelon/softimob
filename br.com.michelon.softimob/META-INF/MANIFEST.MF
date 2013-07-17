@@ -75,6 +75,10 @@ Bundle-ClassPath: .,
  lib/commons-digester-1.7.jar,
  lib/commons-lang3-3.1.jar,
  lib/jasper/iText-2.1.7.jar,
- lib/jasper/jasperreports-3.7.6.jar
+ lib/jasper/jasperreports-3.7.6.jar,
+ lib/caelum-stella/caelum-stella-bean-validation-2.0.3.jar,
+ lib/caelum-stella/caelum-stella-boleto-2.0.3.jar,
+ lib/caelum-stella/caelum-stella-core-2.0.3.jar,
+ lib/caelum-stella/caelum-stella-hibernate-user-types-2.0.3.jar
 Import-Package: com.google.common.base,
  com.google.common.collect

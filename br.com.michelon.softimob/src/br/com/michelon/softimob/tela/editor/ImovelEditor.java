@@ -874,6 +874,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	}
 	
 	private void addContratoPrestacaoServico() {
+		((ContratoPrestacaoServico)valueContrato.getValue()).setCliente(getCurrentObject().getProprietario());
 		addItens(new ContratoPrestacaoServicoService(), valueContrato, tvContratosPrestacaoServico, getCurrentObject().getContratos());
 	}
 	

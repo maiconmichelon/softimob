@@ -103,6 +103,8 @@ public class ImovelView extends GenericView<Imovel>{
 			public void widgetSelected(SelectionEvent e) {
 				try {
 					ImovelMapView showView = (ImovelMapView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ImovelMapView.ID);
+					if(getSelecionado() == null)
+						return;
 					if(getSelecionado().getEndereco() != null)
 						showView.setEnderecoPadrao(getSelecionado().getEndereco());
 				} catch (PartInitException e1) {

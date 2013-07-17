@@ -2,27 +2,20 @@ package br.com.michelon.softimob.tela.dialog;
 
 import java.util.Map;
 
-import net.sf.jasperreports.engine.JasperPrint;
-
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
+
+import br.com.michelon.softimob.tela.dialog.reports.ReportDialog;
+import br.com.michelon.softimob.tela.widget.DateTextField;
 
 import com.google.common.collect.Maps;
 
-import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
-import br.com.michelon.softimob.aplicacao.others.ReportGen;
-import br.com.michelon.softimob.tela.view.ReportView;
-import br.com.michelon.softimob.tela.widget.DateTextField;
-
-public class BalanceteDialog extends TitleAreaDialog{
+public class BalanceteDialog extends ReportDialog{
 	
 	private Text text;
 	private Text text_1;
@@ -30,17 +23,27 @@ public class BalanceteDialog extends TitleAreaDialog{
 	private DateTextField dateInicial;
 	private DateTextField dateFinal;
 
-	public BalanceteDialog() {
-		super(ShellHelper.getActiveShell());
-	}
-	
 	@Override
-	protected Control createDialogArea(Composite parent) {
-		setTitle("Balancete");
-		setMessage("Informe o periodo");
+	protected Point getInitialSize() {
+		return new Point(410, 215);
+	}
+
+	@Override
+	protected Map<String, Object> getParametros() {
+		Map<String, Object> parameters = Maps.newHashMap();
+		parameters.put("dataInicial", dateInicial.getValue());
+		parameters.put("dataFinal", dateFinal.getValue());
 		
-		Composite area = (Composite) super.createDialogArea(parent);
-		
+		return parameters;
+	}
+
+	@Override
+	protected String getCaminhoRelatorio() {
+		return "reports/Balancete.jasper";
+	}
+
+	@Override
+	protected void criarComponentes(Composite area) {
 		Composite composite = new Composite(area, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
@@ -60,27 +63,14 @@ public class BalanceteDialog extends TitleAreaDialog{
 		dateFinal = new DateTextField(composite);
 		text_1 = dateFinal.getControl();
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		return area;
+	}
+
+	public String getMessage() {
+		return "Informe o periodo";
 	}
 	
-	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected void okPressed() {
-		Map parameters = Maps.newHashMap();
-		parameters.put("dataInicial", dateInicial.getValue());
-		parameters.put("dataFinal", dateFinal.getValue());
-		
-		JasperPrint jprint = ReportGen.generateReport(parameters, "reports/Balancete.jasper");
-		
-		try {
-			ReportView showView = (ReportView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ReportView.ID);
-			showView.getReportViewer().setDocument(jprint);
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
-		
-		super.okPressed();
+	protected String getTitle(){
+		return "Balancete";
 	}
 	
 }

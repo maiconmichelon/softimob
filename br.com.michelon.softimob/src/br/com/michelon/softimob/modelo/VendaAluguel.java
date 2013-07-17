@@ -38,7 +38,7 @@ public class VendaAluguel implements Serializable{
 	@NotNull(message = "O imóvel não pode ser vazio.")
 	@ManyToOne
 	private ContratoPrestacaoServico contrato;
-	
+
 	//Cliente que vai alugar ou comprar a casa
 	@NotNull(message = "O cliente não pode ser vazio.")
 	@ManyToOne
@@ -83,14 +83,6 @@ public class VendaAluguel implements Serializable{
 		return contrato;
 	}
 	
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
 	public Funcionario getFuncionario() {
 		return funcionario;
 	}
@@ -115,6 +107,14 @@ public class VendaAluguel implements Serializable{
 		this.dataAssinaturaContrato = dataAssinaturaContrato;
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	
 //	public List<Comissao> getComissoes() {
 //		return comissoes;
 //	}
@@ -146,7 +146,7 @@ public class VendaAluguel implements Serializable{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -164,4 +164,18 @@ public class VendaAluguel implements Serializable{
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		boolean a = this instanceof Aluguel;
+		
+		sb.append(a ? "Locação de " : "Venda de ");
+		sb.append(getContrato().getImovel().getTipo().getNome() + " de "+ getContrato().getCliente());
+		sb.append(" localizado em " + getContrato().getImovel().getEndereco().toString() + " ");
+		sb.append("para o " + (a ? "inquilino " : "comprador ") + getCliente());
+		
+		return sb.toString();
+	}
+
 }

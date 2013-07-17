@@ -71,6 +71,9 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@SuppressWarnings("unused")
 	private ContratoPrestacaoServico() {}
 	
+	@ManyToOne(optional = false)
+	private Cliente cliente;
+	
 	public ContratoPrestacaoServico(Imovel imovel){
 		this.imovel = imovel;
 	}
@@ -172,6 +175,14 @@ public class ContratoPrestacaoServico implements Pendencia{
 		this.funcionario = funcionario;
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
+	
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	
 	@Override
 	public String toString() {
 		return imovel.toString();

@@ -200,17 +200,17 @@ public class ListElementDialogHelper {
 		
 		public Object[] getElements(){
 			if(equals(FUNCIONARIO)){
-				return new FuncionarioService().findAll().toArray();
+				return new FuncionarioService().findAtivos().toArray();//
 			} else if(equals(CLIENTE)){
-				return new ClienteService().findAll().toArray();
+				return new ClienteService().findAtivos().toArray();
 			} else if(equals(PLANOCONTA)){
-				return new PlanoContaService().findAll().toArray();
+				return new PlanoContaService().findAtivos().toArray();
 			} else if(equals(COMODO)){
-				return new TipoComodoService().findAll().toArray();
+				return new TipoComodoService().findAtivos().toArray();
 			} else if(equals(TIPO_IMOVEL)){
-				return new TipoImovelService().findAll().toArray();
+				return new TipoImovelService().findAtivos().toArray();
 			} else if(equals(MODELO_CONTRATO)){
-				return new ModeloContratoService().findAll().toArray();
+				return new ModeloContratoService().findAtivos().toArray();
 			} else if(equals(CONTRATO_SERVICO)){
 				return new ContratoPrestacaoServicoService().findAll().toArray();
 			} else if(equals(CHECK_LIST)){
@@ -218,11 +218,11 @@ public class ListElementDialogHelper {
 			} else if(equals(INDICE)){
 				return new IndiceService().findAll().toArray();
 			} else if(equals(COMISSIONADO)){
-				return new ComissionadoService().findAll().toArray();
+				return new ComissionadoService().findAtivos().toArray();
 			} else if(equals(PESSOA_FISICA)){
-				return new PessoaFisicaService().findAll().toArray();
+				return new PessoaFisicaService().findAtivos().toArray();
 			} else if(equals(ORIGEM_CONTA)){
-				return new OrigemContaService().findAll().toArray();
+				return new OrigemContaService().findAtivos().toArray();
 			} else{
 				return null;
 			}

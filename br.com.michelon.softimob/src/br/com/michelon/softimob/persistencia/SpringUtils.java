@@ -1,9 +1,16 @@
 package br.com.michelon.softimob.persistencia;
 
+import java.util.Map;
+
 import javax.persistence.EntityManagerFactory;
 
+import org.eclipse.persistence.config.PersistenceUnitProperties;
+import org.eclipse.persistence.jpa.JpaEntityManagerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.orm.jpa.EntityManagerFactoryInfo;
+
+import com.google.common.collect.Maps;
 
 public class SpringUtils {
 

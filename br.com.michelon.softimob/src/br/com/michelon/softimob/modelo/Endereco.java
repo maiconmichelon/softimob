@@ -21,7 +21,7 @@ public class Endereco implements Serializable{
 	@Column(length = 9)
 	private String cep;
 	
-	@NotNull(message="O endereço deve ser informado.")
+	@NotNull(message="O endereço completo deve ser informado.")
 	@ManyToOne(optional=false)
 	private Rua rua;
 	
