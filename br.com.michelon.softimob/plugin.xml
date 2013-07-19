@@ -842,14 +842,18 @@
       </key>
    </extension>
    <extension
-         id="product"
+         id="SoftimobProduct"
          point="org.eclipse.core.runtime.products">
       <product
             application="br.com.michelon.softimob.application"
-            name="producttest">
+            name="Softimob">
          <property
-               name="Softimob"
-               value="producttest">
+               name="appName"
+               value="Softimob">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/imobiliaria/imobiliaria16.png,icons/imobiliaria/imobiliaria32.png">
          </property>
       </product>
    </extension>

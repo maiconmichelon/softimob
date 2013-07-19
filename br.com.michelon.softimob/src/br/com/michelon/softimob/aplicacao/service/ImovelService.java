@@ -1,11 +1,7 @@
 package br.com.michelon.softimob.aplicacao.service;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +12,8 @@ import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.persistencia.ImovelDAO;
+import br.com.michelon.softimob.persistencia.ImovelDAOImpl;
+import br.com.michelon.softimob.persistencia.SpringUtils;
 import br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView.ModeloBusca;
 
 @Repository
@@ -36,12 +34,8 @@ public class ImovelService extends GenericService<Imovel>{
 			TipoImovel tipoImovel, Cidade cidade, Bairro bairro, 
 			String observacoes, Boolean reservado, Boolean naoReservado){
 
-		return getRepository().buscaAvancada(new Date(), codigo, valMin, valMax, metroMin, metroMax, null, null, tipoImovel, cidade, bairro, observacoes, reservado, naoReservado);
-//		return getRepository().buscaAvancada(new Date(), codigo, valMin, valMax, metroMin, metroMax, isVenda, isLocacao, angariador, proprietario, tipoImovel, cidade, bairro, observacoes, reservado, naoReservado);
-//		return getRepository().buscaAvancada(new Date(), null, null, null, null, null, null, null, null, null, null, null, null, null);
-//		return getRepository().buscaAvancada(null, null, null, null, null, null, null, null, null, null, null, null);
-//		return getRepository().buscaAvancada(null, null, null, null, null, null, null, null, null, null, null);
-//		return getRepository().buscaAvancada(new Date(), null, null, null, null, null, null, null, null, null, null, null);
+		
+		return SpringUtils.getContext().getBean(ImovelDAOImpl.class).buscaAvancada(codigo, valMin, valMax, metroMin, metroMax, null, angariador, proprietario, tipoImovel, cidade, bairro, observacoes, reservado, naoReservado);
 	}
 	
 	public Integer sizeImages(Imovel imovel){

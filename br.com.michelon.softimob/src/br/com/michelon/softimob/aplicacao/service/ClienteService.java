@@ -17,7 +17,7 @@ public class ClienteService extends GenericService<Cliente>{
 	}
 	
 	public List<Cliente> findAtivos() {
-		return getRepository().findAtivos(true);
+		return getRepository().findByAtivoTrue();
 	}
 	
 }
