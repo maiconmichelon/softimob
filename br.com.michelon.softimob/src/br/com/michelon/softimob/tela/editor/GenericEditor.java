@@ -140,8 +140,6 @@ public abstract class GenericEditor<T> extends EditorPart {
 			MessageDialog.openError(ShellHelper.getActiveShell(), "Erro", "Erro ao salvar registro\n" + e.getMessage());
 		}
 		
-		
-		
 		return false;
 	}
 	

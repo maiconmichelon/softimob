@@ -48,14 +48,7 @@ public class MovimentacaoGenericXViewer {
 		GenericXViewer<MovimentacaoContabil> viewerMovimentacoes = new GenericXViewer<MovimentacaoContabil>(cp, SWT.BORDER | SWT.FULL_SELECTION, columns, new GenericXViewerContentProvider() {
 			
 			@Override
-			public Object[] getElements(Object inputElement) {
-				if(inputElement instanceof List)
-					return ((List<?>) inputElement).toArray();
-				return null;
-			}
-			
-			@Override
-			public Object[] getChildren(Object parentElement) {
+			public Object[] getChildrenElements(Object parentElement) {
 				if(parentElement instanceof MovimentacaoContabil){
 					return ((MovimentacaoContabil)parentElement).getLancamentos().toArray();
 				}

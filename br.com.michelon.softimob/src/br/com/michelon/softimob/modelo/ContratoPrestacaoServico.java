@@ -155,6 +155,10 @@ public class ContratoPrestacaoServico implements Pendencia{
 		this.divulgar = divulgar;
 	}
 
+	public String getDivulgarExtenso() {
+		return divulgar ? "Sim" : "Não";
+	}
+	
 	public Date getDataInicio() {
 		return dataInicio;
 	}

@@ -77,13 +77,16 @@ public class ReflectionHelper {
 		return null;
 	}
 	
-	public static List<Field> getAtributoAtivoDesativado(Object obj){
+	public static List<Field> getAtributoAtivoDesativado(Class<?> clazz){
 		List<Field> fields = Lists.newArrayList();
 		
-		for(Field f : obj.getClass().getDeclaredFields()){
+		for(Field f : clazz.getDeclaredFields()){
 			if(f.getAnnotation(DeactivateOnDelete.class) != null)
 				fields.add(f);
 		}
+		
+		if(!clazz.getSuperclass().equals(Object.class))
+			fields.addAll(getAtributoAtivoDesativado(clazz.getSuperclass()));
 		
 		return fields;
 	}

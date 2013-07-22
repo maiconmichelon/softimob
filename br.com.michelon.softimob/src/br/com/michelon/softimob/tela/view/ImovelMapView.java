@@ -61,7 +61,7 @@ public class ImovelMapView extends ViewPart {
 //		createZoomControl(controls);
 //		createMapTypeControl(controls);
 		createAddressControl(controls);
-//		createMarkerControl(controls);
+		createMarkerControl(controls);
 		sash.setWeights(new int[] { 8, 1 });
 	}
 
@@ -161,7 +161,7 @@ public class ImovelMapView extends ViewPart {
 				markerDialog.open();
 				String result = markerDialog.getValue();
 				if (result != null && result.length() > 0) {
-					gmap.addMarker(result);
+					gmap.addMarker("teste", "karl guenther");
 				}
 			}
 		});

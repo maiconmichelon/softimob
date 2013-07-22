@@ -46,7 +46,7 @@ public class ImovelDAOImpl {
 		if(tipoContrato != null)
 			query += "AND :tipoContrato = c.tipo ";
 		if(angariador != null)
-			query += "AND :angariador i.angariador ";
+			query += "AND :angariador = i.angariador ";
 		if(proprietario != null)
 			query += "AND i.proprietario = :proprietario ";
 		if(tipoImovel != null)
@@ -57,10 +57,10 @@ public class ImovelDAOImpl {
 			query += "AND i.endereco.rua.bairro.cidade = :cidade ";
 		if(observacoes != null)
 			query += "AND i.observacoes like CONCAT('%', :observacoes, '%') ";
-		if(naoReservado != null)
-			query += "AND ((:naoReservado = true AND c is null) OR (:naoReservado = false AND c is not null AND c.dataVencimento >= :dataHoje)) ";
-		if(reservado != null)
-			query += "AND ((:reservado = false AND c is null) OR (:reservado = true AND c is not null AND c.dataVencimento >= :dataHoje)) ";
+		if(naoReservado != null && reservado != null){
+			query += "AND (((:naoReservado = true AND c is null)) ";
+			query += "OR ((:reservado = true AND c is not null AND c.dataVencimento >= :dataHoje))) ";
+		}
 		
 		query = query.replaceAll("WHERE AND", "WHERE");
 		

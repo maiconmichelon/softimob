@@ -81,7 +81,6 @@ import br.com.michelon.softimob.tela.widget.EnderecoGroup;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.PhotoComposite;
-import de.ralfebert.rcputils.properties.BaseValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 
@@ -741,12 +740,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbContatoPrestacaoServico.createColumn("Valor").setPercentWidth(10).bindToProperty("valor").format(FormatterHelper.getCurrencyFormatter()).build();
 		tvbContatoPrestacaoServico.createColumn("Funcionário").setPercentWidth(20).bindToProperty("funcionario.nome").build();
 		tvbContatoPrestacaoServico.createColumn("Tipo").setPercentWidth(10).bindToProperty("tipo").build();
-		tvbContatoPrestacaoServico.createColumn("Divulgar").bindToValue(new BaseValue<ContratoPrestacaoServico>() {
-			@Override
-			public Object get(ContratoPrestacaoServico element) {
-				return element.getDivulgar() ? "Sim" : "Não";
-			}
-		}).build();
+		tvbContatoPrestacaoServico.createColumn("Divulgar").bindToProperty("divulgarExtenso").build();
 		
 		tvbContatoPrestacaoServico.setInput(getCurrentObject().getContratos());
 		tvContratosPrestacaoServico = tvbContatoPrestacaoServico.getTableViewer();

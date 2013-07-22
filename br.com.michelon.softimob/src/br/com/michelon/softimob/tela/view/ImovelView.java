@@ -3,7 +3,6 @@ package br.com.michelon.softimob.tela.view;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.nebula.widgets.xviewer.XViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -23,7 +22,8 @@ import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
-import br.com.michelon.softimob.tela.widget.imovelXViewer.ImovelXViewer;
+import br.com.michelon.softimob.tela.widget.imovelXViewerGenerico.ImovelGenericXViewer;
+import br.com.michelon.softimob.tela.widget.xViewer.GenericXViewer;
 
 import com.google.common.collect.Lists;
 
@@ -33,7 +33,6 @@ public class ImovelView extends GenericView<Imovel>{
 	
 	private List<ColumnProperties> atributos;
 	private ImovelService service = new ImovelService();
-
 	private List<Imovel> input;
 	
 	public ImovelView() {
@@ -43,8 +42,6 @@ public class ImovelView extends GenericView<Imovel>{
 		
 		atributos.add(new ColumnProperties("Código", "id"));
 //		atributos.add(new ColumnProperties("Endereço", "endereco"));
-		
-		input = service.findAll();
 	}
 	
 	@Override
@@ -74,7 +71,7 @@ public class ImovelView extends GenericView<Imovel>{
 
 	@Override
 	protected List<Imovel> getInput() {
-		return input;
+		return input == null ? service.findAll() : input;
 	}
 
 	@Override
@@ -119,9 +116,11 @@ public class ImovelView extends GenericView<Imovel>{
 		Composite cpTable = new Composite(composite, SWT.NONE);
 		cpTable.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
-		XViewer imovelXViewer = new ImovelXViewer(cpTable, SWT.BORDER | SWT.FULL_SELECTION);
+//		XViewer imovelXViewer = new ImovelXViewer(cpTable, SWT.BORDER | SWT.FULL_SELECTION);
 		
-		return imovelXViewer;
+		GenericXViewer<Imovel> createXviewer = ImovelGenericXViewer.createXviewer(cpTable);
+		
+		return createXviewer;
 	}
 	
 	@Override
@@ -130,8 +129,9 @@ public class ImovelView extends GenericView<Imovel>{
 	}
 
 	public void setInput(List<Imovel> imoveis) {
-		input = imoveis;
+		getActRefresh().setEnabled(false);
+		this.input = imoveis;
 		atualizar();
-	}	
-	
+	}
+
 }

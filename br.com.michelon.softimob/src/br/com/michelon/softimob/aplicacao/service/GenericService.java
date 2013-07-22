@@ -34,7 +34,7 @@ public class GenericService<T> {
 	}
 	
 	public void removerAtivarOuDesativar(T registro) throws Exception{
-		List<Field> fields = ReflectionHelper.getAtributoAtivoDesativado(registro);
+		List<Field> fields = ReflectionHelper.getAtributoAtivoDesativado(registro.getClass());
 				
 		if(fields.isEmpty()){
 			delete(registro);

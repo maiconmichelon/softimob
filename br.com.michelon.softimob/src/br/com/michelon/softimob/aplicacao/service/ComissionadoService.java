@@ -2,7 +2,6 @@ package br.com.michelon.softimob.aplicacao.service;
 
 import java.util.List;
 
-import br.com.michelon.softimob.aplicacao.helper.listElementDialog.OkListElementDialogListener;
 import br.com.michelon.softimob.modelo.Comissionado;
 import br.com.michelon.softimob.persistencia.ComissionadoDAO;
 

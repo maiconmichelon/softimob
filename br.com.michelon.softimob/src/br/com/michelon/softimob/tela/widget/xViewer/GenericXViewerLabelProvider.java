@@ -8,6 +8,7 @@ import org.eclipse.nebula.widgets.xviewer.XViewerStyledTextLabelProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.ReflectionHelper;
@@ -39,6 +40,8 @@ public class GenericXViewerLabelProvider extends XViewerStyledTextLabelProvider{
 
 	@Override
 	public Font getFont(Object arg0, XViewerColumn arg1, int arg2) throws Exception {
+		if(arg0 instanceof CabecalhoXViewer<?>)
+			return SWTResourceManager.getBoldFont(xViewer.getTree().getFont());
 		return xViewer.getTree().getFont();
 	}
 
@@ -49,6 +52,11 @@ public class GenericXViewerLabelProvider extends XViewerStyledTextLabelProvider{
 
 	@Override
 	public StyledString getStyledText(Object arg0, XViewerColumn arg1, int arg2) throws Exception {
+		if(arg0 instanceof CabecalhoXViewer<?>){
+			String[] columns = ((CabecalhoXViewer<?>)arg0).getColumns();
+			return new StyledString(columns.length > arg2 ? columns[arg2] : StringUtils.EMPTY, null);
+		}
+		
 		GenericXViewerColumn col = ((GenericXViewer<?>)xViewer).getGenericXViewerColumn(arg1.getId());
 		
 		XViewerColumnProperties xViewerColumnProperties = col.getProperties().get(arg0.getClass());

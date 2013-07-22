@@ -94,7 +94,7 @@ public abstract class GenericView<T> extends ViewPart{
 			actRefresh = new Action("Atualizar") {
 				@Override
 				public void run() {
-					atualizar();
+					atualizar(getInput());
 				}			};
 			actRefresh.setImageDescriptor(ImageRepository.REFRESH_16.getImageDescriptor());
 			actions.add(actRefresh);
@@ -221,11 +221,15 @@ public abstract class GenericView<T> extends ViewPart{
 		return WidgetHelper.createTable(composite, getColumns()).getTableViewer();
 	}
 
-	protected void atualizar() {
+	protected void atualizar(){
+		atualizar(getInput());
+	}
+	
+	protected void atualizar(List<T> input) {
 		if(viewer.getContentProvider() == null)
 			viewer.setContentProvider(ArrayContentProvider.getInstance());
 		
-		viewer.setInput(getInput());
+		viewer.setInput(input);
 		viewer.refresh();
 	}
 	
@@ -258,7 +262,7 @@ public abstract class GenericView<T> extends ViewPart{
 			public void widgetSelected(SelectionEvent e) {
 				excluirDesativarAtivar(getSelecionado());
 				
-				atualizar();
+				atualizar(getInput());
 			}
 		});
 		miRemover.setText(addGroupAtivadoDesativado ? "Desativar / Reativar" : "Remover");
@@ -371,6 +375,8 @@ public abstract class GenericView<T> extends ViewPart{
 	public void setFocus() {
 		if(txtFiltro != null)
 			txtFiltro.forceFocus();
+		
+		atualizar(getInput());
 	}
 
 	protected void alterar(T element) {
@@ -398,6 +404,14 @@ public abstract class GenericView<T> extends ViewPart{
 	
 	protected Object getModelOfEditorInput(T element) {
 		return element;
+	}
+	
+	public Action getActRefresh() {
+		return actRefresh;
+	}
+	
+	public Action getActAdd() {
+		return actAdd;
 	}
 	
 }

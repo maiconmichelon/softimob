@@ -22,7 +22,6 @@ public class Reserva implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull(message="Informe a data que foi feita a reserva.")
 	@Column(nullable=false)
