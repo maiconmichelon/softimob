@@ -28,7 +28,7 @@ public class Feedback implements Serializable{
 	@Past(message = "A data informada esta incorreta")
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date data;
+	private Date data = new Date();
 	
 	@ManyToOne
 	private Funcionario funcionario;

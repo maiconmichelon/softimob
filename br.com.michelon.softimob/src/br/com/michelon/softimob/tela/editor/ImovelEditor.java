@@ -31,7 +31,6 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -47,7 +46,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
@@ -107,17 +105,6 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	
 	private ImovelService service = new ImovelService();
 	
-	private Text txtProprietario;
-	private Text text_2;
-	private Text text_5;
-	private Text text_11;
-	private Text text_12;
-	private Text text_13;
-	private Text text_14;
-	private Text text_15;
-	private Text text_20;
-	private Text text_9;
-	
 	private ComboViewer cvTipoImovel;
 
 	private TableViewerBuilder tvbChave;
@@ -135,6 +122,16 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private TableViewer tvContratosPrestacaoServico;
 	private Tree propostaTree;
 	
+	private Text txtProprietario;
+	private Text txtAngariador;
+	private Text txtMetragem;
+	private Text text_11;
+	private Text text_12;
+	private Text text_13;
+	private Text text_14;
+	private Text text_15;
+	private Text text_20;
+	private Text text_9;
 	private Text text_32;
 	private Text text_33;
 	private Text text_4;
@@ -146,7 +143,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private Text text_40;
 	private Text text_39;
 	private Text text_41;
-	private Text text_21;
+	private Text txtCodigoImovel;
 	private Text text_29;
 	private Text text_10;
 	private Text text;
@@ -156,7 +153,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private Button btnDivulgar;
 	private RadioGroupViewer radioGroupViewer_1;
 	private EnderecoGroup grpEndereco;
-	private StyledText text_6;
+	private StyledText txtObservacoes;
 
 	private PhotoComposite photoComposite;
 
@@ -183,9 +180,9 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblCdigo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCdigo.setText("Código");
 		
-		text_21 = new Text(composite, SWT.BORDER);
-		text_21.setEditable(false);
-		text_21.setEnabled(false);
+		txtCodigoImovel = new Text(composite, SWT.BORDER);
+		txtCodigoImovel.setEditable(false);
+		txtCodigoImovel.setEnabled(false);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
@@ -216,38 +213,38 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		txtProprietario.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		ListElementDialogHelper.addListElementDialogToText(TipoDialog.CLIENTE, txtProprietario, value, "proprietario");
 		
-		Button btnSelecionar_7 = new Button(composite, SWT.NONE);
-		btnSelecionar_7.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionar_7, value, "proprietario");
+		Button btnSelecionarProprietario = new Button(composite, SWT.NONE);
+		btnSelecionarProprietario.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionarProprietario, value, "proprietario");
 		
 		Label lblAngariad = new Label(composite, SWT.NONE);
 		lblAngariad.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblAngariad.setText("Angariador");
 		
-		text_2 = new Text(composite, SWT.BORDER);
-		text_2.setEditable(false);
-		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtAngariador = new Text(composite, SWT.BORDER);
+		txtAngariador.setEditable(false);
+		txtAngariador.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnNewButton = new Button(composite, SWT.NONE);
-		btnNewButton.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnNewButton, value, "angariador");
+		Button btnSelecAngariador = new Button(composite, SWT.NONE);
+		btnSelecAngariador.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecAngariador, value, "angariador");
 		
 		Label lblMetragem = new Label(composite, SWT.NONE);
 		lblMetragem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblMetragem.setText("Metragem");
 		
-		text_5 = new Text(composite, SWT.BORDER);
-		new FormattedText(text_5).setFormatter(new NumberFormatter("##############"));
+		txtMetragem = new Text(composite, SWT.BORDER);
+		new FormattedText(txtMetragem).setFormatter(new NumberFormatter("##############"));
 		new Label(composite, SWT.NONE);
 		
 		Label lblObservaes_3 = new Label(composite, SWT.NONE);
 		lblObservaes_3.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes_3.setText("Observações");
 		
-		text_6 = new StyledText(composite, SWT.BORDER);
+		txtObservacoes = new StyledText(composite, SWT.BORDER);
 		GridData gd_text_6 = new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1);
 		gd_text_6.heightHint = 34;
-		text_6.setLayoutData(gd_text_6);
+		txtObservacoes.setLayoutData(gd_text_6);
 		new Label(composite, SWT.NONE);
 		
 		CTabFolder tfImovel = new CTabFolder(parent, SWT.BORDER);
@@ -287,8 +284,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblNome.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNome.setText("Nome");
 		
-		text_26 = new Text(grpCmodo, SWT.BORDER);
-		text_26.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text_26 = new Text(grpCmodo, SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
+		text_26.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 		
 		Button btnSelecionarComodo = new Button(grpCmodo, SWT.NONE);
 		btnSelecionarComodo.setText("...");
@@ -351,12 +348,14 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		new Label(grpChave, SWT.NONE);
 		new Label(grpChave, SWT.NONE);
 		
-		createButtonAddItem(grpChave, new SelectionAdapter() {
+		Button createButtonAddItem = createButtonAddItem(grpChave, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addChave();
 			}
 		});
+		new Label(grpChave, SWT.NONE);
+		createButtonAddItem.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false, 1, 1));
 		
 //		GridData gd_btnAddChave = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
 //		gd_btnAddChave.heightHint = 30;
@@ -388,9 +387,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		DateTimeTextField dateTextField = new DateTimeTextField(grpNovoHistrico);
 		text_32 = dateTextField.getControl();
-		GridData gd_text_32 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_32.widthHint = 93;
-		text_32.setLayoutData(gd_text_32);
+		text_32.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpNovoHistrico, SWT.NONE);
 		
 		Label lblFuncionrio_1 = new Label(grpNovoHistrico, SWT.NONE);
@@ -420,7 +417,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblObservaes.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes.setText("Observações");
 		
-		text_13 = new Text(grpNovoHistrico, SWT.BORDER);
+		text_13 = new Text(grpNovoHistrico, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI);
 		GridData gd_text_13 = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
 		gd_text_13.heightHint = 51;
 		text_13.setLayoutData(gd_text_13);
@@ -475,9 +472,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		DateTextField dateTextField_1 = new DateTextField(grpProposta);
 		text_33 = dateTextField_1.getControl();
-		GridData gd_text_33 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_33.widthHint = 55;
-		text_33.setLayoutData(gd_text_33);
+		text_33.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpProposta, SWT.NONE);
 		
 		Label lblCliente = new Label(grpProposta, SWT.NONE);
@@ -509,7 +504,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		MoneyTextField moneyTextField_1 = new MoneyTextField(grpProposta);
 		text_29 = moneyTextField_1.getControl();
-		GridData gd_text_29 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		GridData gd_text_29 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_text_29.widthHint = 114;
 		text_29.setLayoutData(gd_text_29);
 		new Label(grpProposta, SWT.NONE);
@@ -560,9 +555,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		DateTextField dateTextField_5 = new DateTextField(grpReserva);
 		text_30 = dateTextField_5.getControl();
-		GridData gd_text_30 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_30.widthHint = 79;
-		text_30.setLayoutData(gd_text_30);
+		text_30.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpReserva, SWT.NONE);
 		
 		Label lblDataDeVencimento = new Label(grpReserva, SWT.NONE);
@@ -571,9 +564,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		DateTextField dateTextField_6 = new DateTextField(grpReserva);
 		text_37 = dateTextField_6.getControl();
-		GridData gd_text_37 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_37.widthHint = 79;
-		text_37.setLayoutData(gd_text_37);
+		text_37.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpReserva, SWT.NONE);
 		
 		Label lblCliente_2 = new Label(grpReserva, SWT.NONE);
@@ -605,9 +596,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		MoneyTextField moneyTextField_2 = new MoneyTextField(grpReserva);
 		text_39 = moneyTextField_2.getControl();
-		GridData gd_text_39 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_39.widthHint = 79;
-		text_39.setLayoutData(gd_text_39);
+		text_39.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpReserva, SWT.NONE);
 		
 		Label lblDescrio_4 = new Label(grpReserva, SWT.NONE);
@@ -697,9 +686,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		MoneyTextField moneyTextField = new MoneyTextField(grpContratoPrestaoDe);
 		text_4 = moneyTextField.getControl();
-		GridData gd_text_4 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_4.widthHint = 79;
-		text_4.setLayoutData(gd_text_4);
+		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
@@ -725,14 +712,6 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		criarTabelaLocacoes(composite_6);
 	}
 	
-	private Button createButtonAddItem(Composite cp, SelectionListener listener){
-		Button btnAddItem = new Button(cp, SWT.NONE);
-		btnAddItem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnAddItem.setImage(ImageRepository.SAVE_16.getImage());
-		btnAddItem.addSelectionListener(listener);
-		return btnAddItem;
-	}
-
 	@Override
 	protected void afterSetIObservableValue() {
 		Imovel imovel = getCurrentObject();
@@ -949,7 +928,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtAngariador);
 		IObservableValue valueAngariadornomeObserveDetailValue = PojoProperties.value(Imovel.class, "angariador.nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_2ObserveWidget, valueAngariadornomeObserveDetailValue, null, null);
 		//
@@ -957,11 +936,11 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		IObservableValue valueProprietarionomeObserveDetailValue = PojoProperties.value(Imovel.class, "proprietario.nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTxtProprietarioObserveWidget, valueProprietarionomeObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
+		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtMetragem);
 		IObservableValue valueAngariadornomeObserveDetailValue_1 = PojoProperties.value(Imovel.class, "metragem", Integer.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_5ObserveWidget, valueAngariadornomeObserveDetailValue_1, null, null);
 		//
-		IObservableValue observeTextText_21ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_21);
+		IObservableValue observeTextText_21ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtCodigoImovel);
 		IObservableValue valueIdObserveDetailValue = PojoProperties.value(Imovel.class, "id", Long.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_21ObserveWidget, valueIdObserveDetailValue, null, null);
 		//
@@ -969,7 +948,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		IObservableValue valueMetragemObserveDetailValue = PojoProperties.value(Imovel.class, "tipo", TipoImovel.class).observeDetail(value);
 		bindingContext.bindValue(observeSingleSelectionComboViewer_4, valueMetragemObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_6);
+		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtObservacoes);
 		IObservableValue valueObservacoesObserveDetailValue = PojoProperties.value(Imovel.class, "observacoes", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_6ObserveWidget, valueObservacoesObserveDetailValue, null, null);
 		//

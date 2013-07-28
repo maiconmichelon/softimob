@@ -25,12 +25,12 @@ public class Reserva implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull(message="Informe a data que foi feita a reserva.")
 	@Column(nullable=false)
-	private Date dataReserva;
+	private Date dataReserva = new Date();
 
 	@NotNull(message="Informe a data de vencimento da reserva.")
 	@Column(nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataVencimento;
+	private Date dataVencimento = new Date();
 	
 	@NotNull(message="Informe o cliente que fez a reserva.")
 	@ManyToOne(optional=false)

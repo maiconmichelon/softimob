@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
-import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
@@ -195,6 +194,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblDurao.setText("Duração");
 		
 		text_4 = new Text(parent, SWT.BORDER);
+		new FormattedText(text_4).setFormatter(new NumberFormatter("###"));
 		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
 		Label lblNewLabel = new Label(parent, SWT.NONE);
@@ -208,6 +208,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		MoneyTextField moneyTextField = new MoneyTextField(parent);
 		text_2 = moneyTextField.getControl();
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 		
 //		Label lblReajuste = new Label(parent, SWT.NONE);
 //		lblReajuste.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -268,26 +271,21 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		text_9 = new Text(grpComisso, SWT.BORDER);
 		new FormattedText(text_9).setFormatter(new NumberFormatter("###"));
-		text_9.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		text_9.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpComisso, SWT.NONE);
 		
 		Label lblValor_2 = new Label(grpComisso, SWT.NONE);
 		lblValor_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblValor_2.setText("Valor");
 		
-
 		MoneyTextField moneyValorcomissao = new MoneyTextField(grpComisso);
 		text_11 = moneyValorcomissao.getControl();
-		text_11.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		text_11.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpComisso, SWT.NONE);
 		new Label(grpComisso, SWT.NONE);
 		new Label(grpComisso, SWT.NONE);
 		
-		Button btnAdicionar = new Button(grpComisso, SWT.NONE);
-		btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnAdicionar.setText("Registrar");
-		btnAdicionar.setImage(ImageRepository.ADD_16.getImage());
-		btnAdicionar.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(grpComisso, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addComissao(valueComissao);
@@ -324,8 +322,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		DateTextField dateTextField_2 = new DateTextField(cpAddVistoria);
 		text_34 = dateTextField_2.getControl();
-		GridData gd_text_34 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
-		text_34.setLayoutData(gd_text_34);
+		text_34.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(cpAddVistoria, SWT.NONE);
 		
 		Label lblFuncion = new Label(cpAddVistoria, SWT.NONE);
@@ -355,9 +352,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblObservaes_1.setText("Observações");
 		
 		text_19 = new Text(cpAddVistoria, SWT.BORDER);
-		GridData gd_text_19 = new GridData(SWT.FILL, SWT.CENTER, true, true, 2, 1);
 //		gd_text_19.heightHint = 40;
-		text_19.setLayoutData(gd_text_19);
+		text_19.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 2));
 		new Label(cpAddVistoria, SWT.NONE);
 		
 		CTabItem tbtmCheckList = new CTabItem(tabFolder_1, SWT.NONE);
@@ -367,16 +363,14 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		tbtmCheckList.setControl(composite_2);
 		tvCheckListVistoria = criarTabelaCheckList(composite_2);
 		
-		Button button_6 = new Button(composite_8, SWT.NONE);
-		button_6.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		button_6.setText("Registrar");
-		button_6.setImage(ImageRepository.SAVE_16.getImage());
-		button_6.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(composite_8, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addVistoria(valueVistoria);
 			}
 		});
+		
+		tabFolder_1.setSelection(0);
 		
 		CTabItem tbtmChamada = new CTabItem(tabFolder, SWT.NONE);
 		tbtmChamada.setText("Chamados");
@@ -387,9 +381,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Composite composite_7 = new Composite(composite_6, SWT.NONE);
 		composite_7.setLayout(new GridLayout(1, false));
-		GridData gd_composite_7 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 //		gd_composite_7.heightHint = 120;
-		composite_7.setLayoutData(gd_composite_7);
+		composite_7.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		criarTabelaChamadosGerais(composite_7);
 		
@@ -413,7 +406,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblNmero_2.setText("Número");
 		
 		textChamado = new Text(cpAberturaChamado, SWT.BORDER);
-		textChamado.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		textChamado.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textChamado.setEnabled(false);
 		new Label(cpAberturaChamado, SWT.NONE);
 		
@@ -423,7 +416,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		DateTextField dateTextField_3 = new DateTextField(cpAberturaChamado);
 		text_35 = dateTextField_3.getControl();
-		GridData gd_text_35 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		GridData gd_text_35 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_text_35.widthHint = 70;
 		text_35.setLayoutData(gd_text_35);
 		new Label(cpAberturaChamado, SWT.NONE);
@@ -449,11 +442,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		new Label(cpAberturaChamado, SWT.NONE);
 		new Label(cpAberturaChamado, SWT.NONE);
 		
-		Button button_7 = new Button(cpAberturaChamado, SWT.NONE);
-		button_7.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		button_7.setText("Registrar");
-		button_7.setImage(ImageRepository.SAVE_16.getImage());
-		button_7.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(cpAberturaChamado, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addChamadoReforma(valueChamado);
@@ -507,11 +496,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		new Label(composite_12, SWT.NONE);
 		new Label(composite_12, SWT.NONE);
 		
-		Button button_8 = new Button(composite_12, SWT.NONE);
-		button_8.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		button_8.setText("Registrar");
-		button_8.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
-		button_8.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(composite_12, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addAndamentoChamadoReforma(valueAcontecimentoChamado);
@@ -523,7 +508,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Composite composite_13 = new Composite(tfChamado, SWT.NONE);
 		tbtmFinalizar.setControl(composite_13);
-		composite_13.setLayout(new GridLayout(5, false));
+		composite_13.setLayout(new GridLayout(3, false));
 		
 		Label lblData_5 = new Label(composite_13, SWT.NONE);
 		lblData_5.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -531,11 +516,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		DateTextField dateTextField_4 = new DateTextField(composite_13);
 		text_36 = dateTextField_4.getControl();
-		GridData gd_text_36 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		GridData gd_text_36 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_text_36.widthHint = 76;
 		text_36.setLayoutData(gd_text_36);
-		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		
@@ -552,8 +535,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		RadioGroup radioGroup = radioGroupViewer.getRadioGroup();
 		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
 		
 		Label lblFuncionrio_4 = new Label(composite_13, SWT.NONE);
 		lblFuncionrio_4.setText("Funcionário");
@@ -562,17 +543,16 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		text_25.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar_6 = new Button(composite_13, SWT.NONE);
+		btnSelecionar_6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnSelecionar_6.setText("...");
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar_6, valueChamado, "funcionario");
-		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
 		
 		Label lblDescrio_2 = new Label(composite_13, SWT.NONE);
 		lblDescrio_2.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblDescrio_2.setText("Descrição");
 		
 		text_31 = new Text(composite_13, SWT.BORDER);
-		text_31.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+		text_31.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		new Label(composite_13, SWT.NONE);
 		
 		Label lblValor_3 = new Label(composite_13, SWT.NONE);
@@ -580,7 +560,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblValor_3.setText("Contas");
 		
 		org.eclipse.swt.widgets.List list = new org.eclipse.swt.widgets.List(composite_13, SWT.BORDER);
-		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 2, 2));
+		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 		
 		Button btnAdicionar_1 = new Button(composite_13, SWT.NONE);
 		btnAdicionar_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
@@ -593,18 +573,13 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		});
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
 		
-		Button btnFinalizar = new Button(composite_13, SWT.NONE);
-		btnFinalizar.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(composite_13, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addFinalizacaoChamado(valueFinalizacaoChamado);
 			}
 		});
-		btnFinalizar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		btnFinalizar.setText("Finalizar");
-		btnFinalizar.setImage(ImageRepository.FINALIZAR_16.getImage());
 		
 		{
 			tfChamado.setSelection(0);

@@ -14,6 +14,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -27,6 +28,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -198,6 +200,14 @@ public abstract class GenericEditor<T> extends EditorPart {
 //			}
 //		}
 //	}
+	
+	protected Button createButtonAddItem(Composite cp, SelectionListener listener){
+		Button btnAddItem = new Button(cp, SWT.NONE);
+		btnAddItem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		btnAddItem.setImage(ImageRepository.SAVE_16.getImage());
+		btnAddItem.addSelectionListener(listener);
+		return btnAddItem;
+	}
 	
 	protected boolean validarComMensagem(Object obj){
 		return ValidatorHelper.validarComMensagem(obj);

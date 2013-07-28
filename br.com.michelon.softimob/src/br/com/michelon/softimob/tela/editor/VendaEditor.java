@@ -12,6 +12,8 @@ import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.nebula.widgets.formattedtext.FormattedText;
+import org.eclipse.nebula.widgets.formattedtext.NumberFormatter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -24,7 +26,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
@@ -164,6 +165,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_2 = new Button(composite_1, SWT.NONE);
+		button_2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_2.setText("...");
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.COMISSIONADO, button_2, valueComissao, "comissionado");
 		
@@ -182,7 +184,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		
 		MoneyTextField moneyTextField_1 = new MoneyTextField(composite_1);
 		text_6 = moneyTextField_1.getControl();
-		text_6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		text_6.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_1, SWT.NONE);
 		
 		Label lblPorcentagem = new Label(composite_1, SWT.NONE);
@@ -190,15 +192,13 @@ public class VendaEditor extends GenericEditor<Venda>{
 		lblPorcentagem.setText("Porcentagem");
 		
 		text_7 = new Text(composite_1, SWT.BORDER);
-		text_7.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		new FormattedText(text_7).setFormatter(new NumberFormatter("###"));
+		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_1, SWT.NONE);
 		new Label(composite_1, SWT.NONE);
 		new Label(composite_1, SWT.NONE);
 		
-		Button btnAdicionar = new Button(composite_1, SWT.NONE);
-		btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		btnAdicionar.setImage(ImageRepository.ADD_16.getImage());
-		btnAdicionar.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(composite_1, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addComissao(valueComissao);
@@ -235,7 +235,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		
 		DateTextField dateTextField_2 = new DateTextField(cpAddVistoria);
 		text_34 = dateTextField_2.getControl();
-		GridData gd_text_34 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		GridData gd_text_34 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_text_34.widthHint = 50;
 		text_34.setLayoutData(gd_text_34);
 		new Label(cpAddVistoria, SWT.NONE);
@@ -271,6 +271,8 @@ public class VendaEditor extends GenericEditor<Venda>{
 		gd_text_19.heightHint = 40;
 		text_19.setLayoutData(gd_text_19);
 		new Label(cpAddVistoria, SWT.NONE);
+		new Label(cpAddVistoria, SWT.NONE);
+		new Label(cpAddVistoria, SWT.NONE);
 		
 		CTabItem tbtmCheckList = new CTabItem(tabFolder_1, SWT.NONE);
 		tbtmCheckList.setText("Check List");
@@ -279,10 +281,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		tbtmCheckList.setControl(composite_2);
 		tvCheckListVistoria = criarTabelaCheckList(composite_2);
 		
-		Button button_6 = new Button(composite_8, SWT.NONE);
-		button_6.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		button_6.setImage(ImageRepository.ADD_16.getImage());
-		button_6.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(composite_8, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addVistoria(valueVistoria);
