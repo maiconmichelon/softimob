@@ -12,7 +12,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
-import br.com.michelon.softimob.aplicacao.others.ReportGen;
+import br.com.michelon.softimob.aplicacao.reports.ReportGen;
 import br.com.michelon.softimob.tela.view.ReportView;
 
 public abstract class ReportDialog extends TitleAreaDialog{

@@ -14,10 +14,10 @@ public class GenericService<T> {
 	private CrudRepository<T, Serializable> crudRepository;
 	private T model;
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" }) 
-	public GenericService(Class clazz){
+	@SuppressWarnings({ "unchecked" }) 
+	public GenericService(Class<?> clazz){
 		if(SpringUtils.getContext() != null){
-			crudRepository = SpringUtils.getContext().getBean(clazz);
+			crudRepository = (CrudRepository<T, Serializable>) SpringUtils.getContext().getBean(clazz);
 		}
 	}
 	

@@ -37,7 +37,7 @@ public class BairroView extends GenericView<Bairro>{
 
 	@Override
 	protected Image getImage() {
-		return ImageRepository.ENDERECO.getImage();
+		return ImageRepository.ENDERECO32.getImage();
 	}
 
 	@Override

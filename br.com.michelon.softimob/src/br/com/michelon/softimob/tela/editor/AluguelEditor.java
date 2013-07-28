@@ -16,6 +16,8 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
+import org.eclipse.nebula.widgets.formattedtext.FormattedText;
+import org.eclipse.nebula.widgets.formattedtext.NumberFormatter;
 import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -219,7 +221,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 //		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.INDICE, button_1, value, "");
 		
 		CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 6, 1));
+		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 6, 1));
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
 		CTabItem tbtmComisso = new CTabItem(tabFolder, SWT.NONE);
@@ -265,6 +267,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblPorcentagem.setText("Porcentagem");
 		
 		text_9 = new Text(grpComisso, SWT.BORDER);
+		new FormattedText(text_9).setFormatter(new NumberFormatter("###"));
 		text_9.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		new Label(grpComisso, SWT.NONE);
 		
@@ -272,7 +275,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblValor_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblValor_2.setText("Valor");
 		
-		text_11 = new Text(grpComisso, SWT.BORDER);
+
+		MoneyTextField moneyValorcomissao = new MoneyTextField(grpComisso);
+		text_11 = moneyValorcomissao.getControl();
 		text_11.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		new Label(grpComisso, SWT.NONE);
 		new Label(grpComisso, SWT.NONE);
@@ -350,8 +355,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblObservaes_1.setText("Observações");
 		
 		text_19 = new Text(cpAddVistoria, SWT.BORDER);
-		GridData gd_text_19 = new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1);
-		gd_text_19.heightHint = 40;
+		GridData gd_text_19 = new GridData(SWT.FILL, SWT.CENTER, true, true, 2, 1);
+//		gd_text_19.heightHint = 40;
 		text_19.setLayoutData(gd_text_19);
 		new Label(cpAddVistoria, SWT.NONE);
 		
@@ -383,7 +388,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		Composite composite_7 = new Composite(composite_6, SWT.NONE);
 		composite_7.setLayout(new GridLayout(1, false));
 		GridData gd_composite_7 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-		gd_composite_7.heightHint = 120;
+//		gd_composite_7.heightHint = 120;
 		composite_7.setLayoutData(gd_composite_7);
 		
 		criarTabelaChamadosGerais(composite_7);

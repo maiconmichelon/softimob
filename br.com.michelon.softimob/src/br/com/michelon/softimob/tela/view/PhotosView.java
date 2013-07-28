@@ -78,6 +78,8 @@ public class PhotosView extends ViewPart {
 		gallery.setGroupRenderer(new NoGroupRenderer());
 		gallery.setItemRenderer(new DefaultGalleryItemRenderer());
 
+		galleryItem = new GalleryItem(gallery, SWT.NONE);
+		
 		gallery.addSelectionListener(new SelectionAdapter() {
 
 			@Override

@@ -36,7 +36,8 @@ public abstract class GenericXViewerContentProvider implements ITreeContentProvi
 
 	@Override
 	public boolean hasChildren(Object element) {
-		return getChildren(element) != null || (getChildren(element) instanceof Object[] && getChildren(element).length > 0);
+		Object[] children = getChildren(element);
+		return !(children == null || children.length == 0 || (children.length == 1 && children[0] == null));
 	}
 
 }

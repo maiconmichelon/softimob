@@ -17,7 +17,7 @@ public class PlanoContaService extends GenericService<PlanoConta>{
 	}
 	
 	public List<PlanoConta> findAtivos() {
-		return getRepository().findAtivo(true);
+		return getRepository().findByAtivoIsTrue();
 	}
 
 }

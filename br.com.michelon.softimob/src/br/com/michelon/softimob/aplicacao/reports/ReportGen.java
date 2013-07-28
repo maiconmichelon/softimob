@@ -1,4 +1,4 @@
-package br.com.michelon.softimob.aplicacao.others;
+package br.com.michelon.softimob.aplicacao.reports;
 
 import java.sql.Connection;
 import java.sql.SQLException;

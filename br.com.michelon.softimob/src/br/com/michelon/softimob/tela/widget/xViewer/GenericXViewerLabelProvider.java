@@ -30,6 +30,12 @@ public class GenericXViewerLabelProvider extends XViewerStyledTextLabelProvider{
 
 	@Override
 	public Image getColumnImage(Object arg0, XViewerColumn arg1, int arg2) throws Exception {
+		if(arg2 != 0)
+			return null;
+		
+		if(arg0 instanceof CabecalhoXViewer<?>)
+			return ((CabecalhoXViewer<?>)arg0).getImage();
+		
 		GenericXViewerColumn col = ((GenericXViewer<?>)xViewer).getGenericXViewerColumn(arg1.getId());
 		
 		XViewerColumnProperties xViewerColumnProperties = col.getProperties().get(arg0.getClass());

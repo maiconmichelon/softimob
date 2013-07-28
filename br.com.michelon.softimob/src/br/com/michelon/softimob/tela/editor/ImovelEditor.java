@@ -14,6 +14,7 @@ import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -21,6 +22,8 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
+import org.eclipse.nebula.widgets.formattedtext.FormattedText;
+import org.eclipse.nebula.widgets.formattedtext.NumberFormatter;
 import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -28,6 +31,8 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -39,6 +44,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.wb.swt.ImageRepository;
@@ -81,6 +87,8 @@ import br.com.michelon.softimob.tela.widget.EnderecoGroup;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.PhotoComposite;
+import br.com.michelon.softimob.tela.widget.propostaXViewer.PropostaGenericXViewer;
+import br.com.michelon.softimob.tela.widget.xViewer.GenericXViewer;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 
@@ -114,18 +122,18 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 
 	private TableViewerBuilder tvbChave;
 	private TableViewerBuilder tvbFeedbacks;
-	private TableViewerBuilder tvbProposta;
 	private TableViewerBuilder tvbComodo;
 	private TableViewerBuilder tvbReserva;
 	private TableViewerBuilder tvbLocacao;
 	private TableViewerBuilder tvbContatoPrestacaoServico;
+	private GenericXViewer<Proposta> propostaXViewer;
 	
 	private TableViewer tvComodos;
 	private TableViewer tvChaves;
 	private TableViewer tvFeedbacks;
-	private TableViewer tvProposta;
 	private TableViewer tvReservas;
 	private TableViewer tvContratosPrestacaoServico;
+	private Tree propostaTree;
 	
 	private Text text_32;
 	private Text text_33;
@@ -151,7 +159,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private StyledText text_6;
 
 	private PhotoComposite photoComposite;
-	
+
 	public ImovelEditor() {
 		super(Imovel.class);
 	}
@@ -229,6 +237,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblMetragem.setText("Metragem");
 		
 		text_5 = new Text(composite, SWT.BORDER);
+		new FormattedText(text_5).setFormatter(new NumberFormatter("##############"));
 		new Label(composite, SWT.NONE);
 		
 		Label lblObservaes_3 = new Label(composite, SWT.NONE);
@@ -283,6 +292,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		Button btnSelecionarComodo = new Button(grpCmodo, SWT.NONE);
 		btnSelecionarComodo.setText("...");
+		btnSelecionarComodo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.COMODO, btnSelecionarComodo, valueComodo, "tipoComodo");
 
 		Label lblDescrio_3 = new Label(grpCmodo, SWT.NONE);
@@ -295,10 +305,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		new Label(grpCmodo, SWT.NONE);
 		new Label(grpCmodo, SWT.NONE);
 		
-		Button button_9 = new Button(grpCmodo, SWT.NONE);
-		button_9.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		button_9.setImage(ImageRepository.ADD_16.getImage());
-		button_9.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(grpCmodo, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addComodo();
@@ -344,18 +351,17 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		new Label(grpChave, SWT.NONE);
 		new Label(grpChave, SWT.NONE);
 		
-		Button btnAddChave = new Button(grpChave, SWT.NONE);
-		btnAddChave.setImage(ImageRepository.ADD_16.getImage());
-		btnAddChave.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(grpChave, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addChave();
 			}
 		});
-		GridData gd_btnAddChave = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
-		gd_btnAddChave.heightHint = 30;
-		gd_btnAddChave.widthHint = 84;
-		btnAddChave.setLayoutData(gd_btnAddChave);
+		
+//		GridData gd_btnAddChave = new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1);
+//		gd_btnAddChave.heightHint = 30;
+//		gd_btnAddChave.widthHint = 84;
+//		btnAddChave.setLayoutData(gd_btnAddChave);
 		
 		CTabItem tbtmHistricos = new CTabItem(tfImovel, SWT.NONE);
 		tbtmHistricos.setText("Feedbacks");
@@ -396,6 +402,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		Button btnSelecionarFuncionarioFeedback = new Button(grpNovoHistrico, SWT.NONE);
 		btnSelecionarFuncionarioFeedback.setText("...");
+		btnSelecionarFuncionarioFeedback.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioFeedback, valueFeedback, "funcionario");
 		
 		Label lblClienteHistorico = new Label(grpNovoHistrico, SWT.NONE);
@@ -420,15 +427,22 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		new Label(grpNovoHistrico, SWT.NONE);
 		new Label(grpNovoHistrico, SWT.NONE);
 		
-		Button button_5 = new Button(grpNovoHistrico, SWT.NONE);
-		button_5.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(grpNovoHistrico, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addFeedback();
 			}
 		});
-		button_5.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		button_5.setImage(ImageRepository.ADD_16.getImage());
+		
+//		Button button_5 = new Button(grpNovoHistrico, SWT.NONE);
+//		button_5.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				addFeedback();
+//			}
+//		});
+//		button_5.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+//		button_5.setImage(ImageRepository.ADD_16.getImage());
 		
 		CTabItem tbtmFotos = new CTabItem(tfImovel, SWT.NONE);
 		tbtmFotos.setText("Fotos");
@@ -475,6 +489,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		Button btnSelecionarClienteProposta = new Button(grpProposta, SWT.NONE);
 		btnSelecionarClienteProposta.setText("...");
+		btnSelecionarClienteProposta.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionarClienteProposta, valueProposta, "cliente");
 		
 		Label lblFuncionrio = new Label(grpProposta, SWT.NONE);
@@ -510,15 +525,12 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		new Label(grpProposta, SWT.NONE);
 		new Label(grpProposta, SWT.NONE);
 		
-		Button button_3 = new Button(grpProposta, SWT.NONE);
-		button_3.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(grpProposta, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addProposta();
 			}
 		});
-		button_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		button_3.setImage(ImageRepository.ADD_16.getImage());
 		
 		{
 			tfImovel.setSelection(0);
@@ -609,15 +621,12 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		new Label(grpReserva, SWT.NONE);
 		new Label(grpReserva, SWT.NONE);
 		
-		Button button_22 = new Button(grpReserva, SWT.NONE);
-		button_22.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(grpReserva, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addReserva();
 			}
 		});
-		button_22.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		button_22.setImage(ImageRepository.ADD_16.getImage());
 		
 		CTabItem tbtmContratoPrestaoDe = new CTabItem(tfImovel, SWT.NONE);
 		tbtmContratoPrestaoDe.setText("Contrato Prestação de Serviço");
@@ -688,6 +697,9 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		MoneyTextField moneyTextField = new MoneyTextField(grpContratoPrestaoDe);
 		text_4 = moneyTextField.getControl();
+		GridData gd_text_4 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text_4.widthHint = 79;
+		text_4.setLayoutData(gd_text_4);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
@@ -697,10 +709,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
-		Button btnAdicionar_1 = new Button(grpContratoPrestaoDe, SWT.NONE);
-		btnAdicionar_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnAdicionar_1.setImage(ImageRepository.ADD_16.getImage());
-		btnAdicionar_1.addSelectionListener(new SelectionAdapter() {
+		createButtonAddItem(grpContratoPrestaoDe, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addContratoPrestacaoServico();
@@ -714,6 +723,14 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tbtmLocacoes.setControl(composite_6);
 		
 		criarTabelaLocacoes(composite_6);
+	}
+	
+	private Button createButtonAddItem(Composite cp, SelectionListener listener){
+		Button btnAddItem = new Button(cp, SWT.NONE);
+		btnAddItem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		btnAddItem.setImage(ImageRepository.SAVE_16.getImage());
+		btnAddItem.addSelectionListener(listener);
+		return btnAddItem;
 	}
 
 	@Override
@@ -807,34 +824,34 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	}
 	
 	private void criarTabelaProposta(Composite composite){
-		tvbProposta = new TableViewerBuilder(composite);
-			
-		tvbProposta.createColumn("Data da Proposta").setPercentWidth(10).bindToProperty("data").format(new DateStringValueFormatter()).build();
-		tvbProposta.createColumn("Cliente").setPercentWidth(15).bindToProperty("cliente.nome").build();
-		tvbProposta.createColumn("Funcionário").setPercentWidth(15).bindToProperty("funcionario.nome").format(new NullStringValueFormatter()).build();
-		tvbProposta.createColumn("Valor").bindToProperty("valor").format(FormatterHelper.getCurrencyFormatter()).build();
-		tvbProposta.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").format(new NullStringValueFormatter()).build();
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
+
+		Composite cpTable = new Composite(composite, SWT.NONE);
+		cpTable.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
-		tvbProposta.setInput(((Imovel)value.getValue()).getPropostas());
+		propostaXViewer = PropostaGenericXViewer.createXviewer(cpTable);
+		propostaXViewer.setInput(((Imovel)value.getValue()).getPropostas());
+		propostaTree = propostaXViewer.getTree();
 		
-		tvProposta = tvbProposta.getTableViewer();
+		Menu menu = new Menu(propostaTree);
+		propostaTree.setMenu(menu);
 		
-		Menu menu = new Menu(tvbProposta.getTable());
-		tvbProposta.getTable().setMenu(menu);
-		
-		WidgetHelper.createMenuItemAlterar(menu, valueProposta, tvProposta);
+		WidgetHelper.createMenuItemAlterar(menu, valueProposta, propostaXViewer);
 		
 		MenuItem miContraProposta = new MenuItem(menu, SWT.BORDER);
 		miContraProposta.setText("Contra-proposta");
 		miContraProposta.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ContraPropostaDialog dialog = new ContraPropostaDialog(ShellHelper.getActiveShell(), (Proposta) SelectionHelper.getObject(tvProposta));
-				dialog.open();
+				ContraPropostaDialog dialog = new ContraPropostaDialog(ShellHelper.getActiveShell(), (Proposta) SelectionHelper.getObject(propostaXViewer.getSelection()));
+				if(dialog.open() == IDialogConstants.OK_ID){
+					propostaXViewer.refresh();
+				}
 			}
 		});
 		
-		WidgetHelper.createMenuItemRemover(tvbProposta, new PropostaService(), menu);
+		WidgetHelper.createMenuItemRemover(propostaXViewer, new PropostaService(), menu);
 	}
 
 	private void criarTabelaLocacoes(Composite composite) {
@@ -877,7 +894,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	}
 	
 	private void addProposta() {
-		addItens(new PropostaService(), valueProposta, tvProposta, getCurrentObject().getPropostas());
+		addItens(new PropostaService(), valueProposta, propostaXViewer, getCurrentObject().getPropostas());
 	}
 	
 	private void addComodo() {
@@ -918,7 +935,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		IObservableValue valueComissoesObserveDetailValueReserva = PojoProperties.value(Imovel.class, "reservas", List.class).observeDetail(value);
 		bindingContext.bindValue(observeSingleSelectionTableViewerReserva, valueComissoesObserveDetailValueReserva, null, null);
 		//
-		IObservableValue observeSingleSelectionTableViewerProposta = ViewerProperties.input().observe(tvProposta);
+		IObservableValue observeSingleSelectionTableViewerProposta = ViewerProperties.input().observe(propostaXViewer);
 		IObservableValue valueComissoesObserveDetailValueProposta = PojoProperties.value(Imovel.class, "propostas", List.class).observeDetail(value);
 		bindingContext.bindValue(observeSingleSelectionTableViewerProposta, valueComissoesObserveDetailValueProposta, null, null);
 		//

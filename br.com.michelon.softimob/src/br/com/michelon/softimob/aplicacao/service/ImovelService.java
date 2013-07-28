@@ -27,6 +27,10 @@ public class ImovelService extends GenericService<Imovel>{
 	protected ImovelDAO getRepository() {
 		return (ImovelDAO) super.getRepository();
 	}
+
+	private ImovelDAOImpl getDAOImpl() {
+		return SpringUtils.getContext().getBean(ImovelDAOImpl.class);
+	}
 	
 	public List<Imovel> findImoveis(Long codigo, BigDecimal valMin, BigDecimal valMax, 
 			Integer metroMin, Integer metroMax, Boolean isVenda, 
@@ -35,7 +39,7 @@ public class ImovelService extends GenericService<Imovel>{
 			String observacoes, Boolean reservado, Boolean naoReservado){
 
 		
-		return SpringUtils.getContext().getBean(ImovelDAOImpl.class).buscaAvancada(codigo, valMin, valMax, metroMin, metroMax, null, angariador, proprietario, tipoImovel, cidade, bairro, observacoes, reservado, naoReservado);
+		return getDAOImpl().buscaAvancada(codigo, valMin, valMax, metroMin, metroMax, null, angariador, proprietario, tipoImovel, cidade, bairro, observacoes, reservado, naoReservado);
 	}
 	
 	public Integer sizeImages(Imovel imovel){

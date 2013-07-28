@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -62,6 +63,9 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 
 	@Column
 	private String observacoes;
+	
+	@OneToOne
+	private ContaPagarReceber contaPai;
 	
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
@@ -230,6 +234,14 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 		}
 	}
 
+	public ContaPagarReceber getContaPai() {
+		return contaPai;
+	}
+
+	public void setContaPai(ContaPagarReceber contaPai) {
+		this.contaPai = contaPai;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -254,5 +266,5 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 			return false;
 		return true;
 	}
-	
+
 }

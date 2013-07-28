@@ -36,7 +36,7 @@ public class CidadeView extends GenericView<Cidade>{
 
 	@Override
 	protected Image getImage() {
-		return ImageRepository.ENDERECO.getImage();
+		return ImageRepository.ENDERECO32.getImage();
 	}
 
 	@Override

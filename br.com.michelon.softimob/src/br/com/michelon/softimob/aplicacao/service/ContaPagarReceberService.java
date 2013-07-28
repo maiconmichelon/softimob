@@ -15,6 +15,8 @@ import br.com.michelon.softimob.modelo.ParametrosEmpresa;
 import br.com.michelon.softimob.modelo.Pendencia;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.persistencia.ContaPagarReceberDAO;
+import br.com.michelon.softimob.persistencia.ContaPagarReceberDAOImpl;
+import br.com.michelon.softimob.persistencia.SpringUtils;
 import br.com.michelon.softimob.tela.view.PgtoRecContaView.ModeloPgtoConta;
 
 import com.google.common.collect.Lists;
@@ -28,6 +30,10 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 	@Override
 	protected ContaPagarReceberDAO getRepository() {
 		return (ContaPagarReceberDAO) super.getRepository();
+	}
+	
+	private ContaPagarReceberDAOImpl getDAOImpl(){
+		return SpringUtils.getContext().getBean(ContaPagarReceberDAOImpl.class);
 	}
 	
 	public MovimentacaoContabil geraMovimentacao(ContaPagarReceber c, ModeloPgtoConta model) throws Exception{
@@ -110,12 +116,21 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 		for(ContaPagarReceber conta : contas){
 			contasParaSalvar.add(conta);
 			
-			if(conta.getValorPagoParcialTratado().signum() != 0){
+			if(conta.getValorPagoParcialTratado().signum() != 0 && conta.getValorPagoParcialTratado().compareTo(conta.getValor()) < 0){
 				ContaPagarReceber contaFilha = new ContaPagarReceber();
-				// Aqui tem q setar os valores verificar se vai ser criada uma nova classe para as contas filhas ou utilizará a mesma
-			} else {
-				conta.setValorPagoParcial(conta.getValor());
-			}
+				
+				contaFilha.setValor(conta.getValor().subtract(conta.getValorPagoParcialTratado()));
+				contaFilha.setContaPai(conta);
+				contaFilha.setDataConta(conta.getDataConta());
+				contaFilha.setDataVencimento(conta.getDataVencimento());
+				contaFilha.setObservacoes(conta.getObservacoes());
+				contaFilha.setOrigem(conta.getOrigem());
+				contaFilha.setTipo(conta.getTipo());
+				
+				contasParaSalvar.add(contaFilha);
+			} 
+
+			conta.setValorPagoParcial(conta.getValor());
 			
 			if(conta.getDataPagamento() == null)
 				throw new Exception("A conta não possui data de pagamento.");
@@ -135,20 +150,27 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 		List<ContaPagarReceber> contasToDelete = Lists.newArrayList();
 		
 		for(ContaPagarReceber c : contas){
-//			if(c.getContaPai == null){
-			c.setDataPagamento(null);
-			c.setMovimentacao(null);
-			c.setValorPagoParcial(BigDecimal.ZERO);
-			c.setValorJurosDesconto(BigDecimal.ZERO);
-			contasToMerge.add(c);
-//			} else {
-//			contasToDelete.add(c);
-//			ContaPagarReceber contaPai;
-//				
-//			}
+			if(c.getContaPai() == null){
+				zerarConta(c);
+				
+				contasToMerge.add(c);
+			} else {
+				ContaPagarReceber contaPai = c.getContaPai();
+				zerarConta(contaPai);
+
+				contasToDelete.add(c);
+				contasToMerge.add(contaPai);
+			}
 		}
 		
-		salvar(contasToMerge);
+		getDAOImpl().estornar(contasToDelete, contasToMerge);
+	}
+
+	private void zerarConta(ContaPagarReceber c) {
+		c.setDataPagamento(null);
+		c.setMovimentacao(null);
+		c.setValorPagoParcial(BigDecimal.ZERO);
+		c.setValorJurosDesconto(BigDecimal.ZERO);
 	}
 	
 	public List<Pendencia> findByDataVencimento(Date dataVencimento){

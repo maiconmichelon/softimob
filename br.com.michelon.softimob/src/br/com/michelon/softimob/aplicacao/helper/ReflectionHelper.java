@@ -60,7 +60,7 @@ public class ReflectionHelper {
 			String atributoID = getAtributoID(clazz);
 			if(atributoID != null)
 				return atributoID;
-			clazz = obj.getClass().getSuperclass(); 
+			clazz = clazz.getSuperclass(); 
 		}while(!clazz.equals(Object.class));
 		
 		return null;

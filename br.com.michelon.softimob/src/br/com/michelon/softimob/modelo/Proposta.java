@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
 @Entity
-public class Proposta implements Serializable, Cloneable {
+public class Proposta implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class Proposta implements Serializable, Cloneable {
 	@NotNull(message = "Informe a data que foi feita a proposta.")
 	@Past(message="A data informada referente a criação da proposta esta incorreta.")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date data;
+	private Date data = new Date();
 	
 	@Past(message="A data informada para a data de fechamento da proposta esta incorreta.")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -59,7 +59,7 @@ public class Proposta implements Serializable, Cloneable {
 	@Column
 	private Integer status;
 	
-	@OneToOne(cascade = CascadeType.MERGE)
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private Proposta contraProposta;
 	
 	@Column
@@ -75,8 +75,13 @@ public class Proposta implements Serializable, Cloneable {
 	@SuppressWarnings("unused")
 	private Proposta(){}
 	
-	public Proposta(Proposta contraProposta) {
-		this.contraProposta = contraProposta;
+	public Proposta(Proposta proposta) {
+		proposta.setContraProposta(this);
+		proposta.setStatus(Proposta.CONTRAPROPOSTA);
+		
+		setFuncionario(proposta.getFuncionario());
+		setCliente(proposta.getCliente());
+		setImovel(proposta.getImovel());
 	}
 	
 	public BigDecimal getValor() {
@@ -172,6 +177,19 @@ public class Proposta implements Serializable, Cloneable {
 			"Proprietário - " + getImovel().getProprietario().getNome();
 	}
 
+	public String getStatusExtenso(){
+		Integer status = getStatus();
+		if(status == null)
+			return "Em aberto";
+		if(status == CONTRAPROPOSTA)
+			return "Contra-Proposta";
+		if(status == ACEITA)
+			return "Aceito";
+		if(status == RECUSADA)
+			return "Recusada";
+		return null;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -54,11 +54,11 @@ public class WidgetHelper {
 		return miAlterar;
 	}
 	
-	public static void createMenuItemAlterar(Menu menu, final IObservableValue value, final TableViewer tableViewer){
+	public static void createMenuItemAlterar(Menu menu, final IObservableValue value, final ColumnViewer viewer){
 		createMenuItemAlterar(menu, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				value.setValue(SelectionHelper.getObject(tableViewer));
+				value.setValue(SelectionHelper.getObject(viewer));
 			}
 		});
 	}
@@ -66,12 +66,12 @@ public class WidgetHelper {
 	/*
 	 * Menu que excluir o elemento selecionado através do service e retira ele da tabela =)
 	 */
-	public static <Y> void createMenuItemRemover(final TableViewerBuilder tvb, final GenericService<Y> service, Menu menu) {
+	public static <Y> void createMenuItemRemover(final ColumnViewer cv, final GenericService<Y> service, Menu menu) {
 		createMenuItemRemover(menu, new SelectionAdapter() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Y obj = (Y) SelectionHelper.getObject(tvb.getTableViewer().getSelection());
+				Y obj = (Y) SelectionHelper.getObject(cv.getSelection());
 				try {
 					if(!DialogHelper.openConfirmation("Deseja excluir o registro ?"))
 						return;
@@ -80,9 +80,9 @@ public class WidgetHelper {
 					
 					DialogHelper.openInformation("Registro excluido com sucesso");
 					
-					List<Y> elements = (List<Y>) tvb.getTableViewer().getInput();
+					List<Y> elements = (List<Y>) cv.getInput();
 					elements.remove(obj);
-					tvb.getTableViewer().refresh();
+					cv.refresh();
 				} catch (Exception e1) {
 					log.error("Erro ao excluir " + obj.getClass(), e1);
 					DialogHelper.openError("Erro ao excluir registro.\n" + e1.getMessage());
@@ -111,7 +111,7 @@ public class WidgetHelper {
 		
 		createMenuItemAlterar(menu, value, tvb.getTableViewer());
 		
-		createMenuItemRemover(tvb, service, menu);
+		createMenuItemRemover(tvb.getTableViewer(), service, menu);
 		
 		return menu;
 	}

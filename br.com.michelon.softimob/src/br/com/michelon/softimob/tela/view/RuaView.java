@@ -38,7 +38,7 @@ public class RuaView extends GenericView<Rua>{
 
 	@Override
 	protected Image getImage() {
-		return ImageRepository.ENDERECO.getImage();
+		return ImageRepository.ENDERECO32.getImage();
 	}
 
 	@Override

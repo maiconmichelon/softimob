@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/docx/docx4j-2.8.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.pagination_1.0.0.201305050742.jar" sourcepath="C:/Users/Seven/Downloads/repository (3)/home/data/httpd/download.eclipse.org/technology/nebula/incubation/snapshot/plugins/org.eclipse.nebula.widgets.pagination.source_1.0.0.201305050742.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/springData/spring-data-commons-1.5.0.RELEASE.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/springData/spring-data-jpa-1.3.0.RELEASE.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/spring/com.springsource.com.fasterxml.classmate-0.5.4.jar"/>
@@ -55,7 +57,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/jboss-logging-3.1.0.CR2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jboss-transaction-api_1.1_spec-1.0.1.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.16.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.formattedtext_1.0.0.201305050742.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.formattedtext_1.0.0.201305050742.jar" sourcepath="C:/Users/Seven/Downloads/repository (3)/home/data/httpd/download.eclipse.org/technology/nebula/incubation/snapshot/plugins/org.eclipse.nebula.widgets.formattedtext.source_1.0.0.201305050742.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.gallery_0.5.3.201305101602.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.radiogroup_0.1.0.201305050742.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.xviewer_0.9.9.201304181950.jar"/>

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.modelo.Comodo;
@@ -33,15 +34,15 @@ public class ImovelGenericXViewer {
 	public static GenericXViewer<Imovel> createXviewer(Composite cp){
 		
 		Map<Class<?>, XViewerColumnProperties> m1 = Maps.newHashMap();
-		m1.put(Imovel.class, new XViewerColumnProperties("id"));
-		m1.put(Endereco.class, new XViewerColumnProperties("cep"));
+		m1.put(Imovel.class, new XViewerColumnProperties("id", ImageRepository.IMOVEL_16.getImage(), false));
+		m1.put(Endereco.class, new XViewerColumnProperties("cep", ImageRepository.ENDERECO16.getImage(), false));
 		m1.put(Comodo.class, new XViewerColumnProperties("tipoComodo.nome"));
 		m1.put(Chave.class, new XViewerColumnProperties("numero"));
 		m1.put(Feedback.class, new XViewerColumnProperties("data"));
 		m1.put(Proposta.class, new XViewerColumnProperties("data"));
 		m1.put(Reserva.class, new XViewerColumnProperties("dataReserva"));
 		m1.put(ContratoPrestacaoServico.class, new XViewerColumnProperties("dataInicio"));
-		GenericXViewerColumn c1 = new GenericXViewerColumn("Código", 100, m1);
+		GenericXViewerColumn c1 = new GenericXViewerColumn("Código", 200, m1);
 		
 		Map<Class<?>, XViewerColumnProperties> m2 = Maps.newHashMap();
 		m2.put(Imovel.class, new XViewerColumnProperties("metragem"));
@@ -52,7 +53,7 @@ public class ImovelGenericXViewer {
 		m2.put(Proposta.class, new XViewerColumnProperties("cliente.nome"));
 		m2.put(Reserva.class, new XViewerColumnProperties("dataVencimento"));
 		m2.put(ContratoPrestacaoServico.class, new XViewerColumnProperties("dataVencimento"));
-		GenericXViewerColumn c2 = new GenericXViewerColumn("Metragem", 100, m2);
+		GenericXViewerColumn c2 = new GenericXViewerColumn("Metragem", 170, m2);
 		
 		Map<Class<?>, XViewerColumnProperties> m3 = Maps.newHashMap();
 		m3.put(Imovel.class, new XViewerColumnProperties("angariador.nome"));
@@ -61,7 +62,7 @@ public class ImovelGenericXViewer {
 		m3.put(Proposta.class, new XViewerColumnProperties("funcionario.nome"));
 		m3.put(Reserva.class, new XViewerColumnProperties("cliente.nome"));
 		m3.put(ContratoPrestacaoServico.class, new XViewerColumnProperties("valor"));
-		GenericXViewerColumn c3 = new GenericXViewerColumn("Angariador", 100, m3);
+		GenericXViewerColumn c3 = new GenericXViewerColumn("Angariador", 170, m3);
 		
 		Map<Class<?>, XViewerColumnProperties> m4 = Maps.newHashMap();
 		m4.put(Imovel.class, new XViewerColumnProperties("tipo.nome"));
@@ -70,7 +71,7 @@ public class ImovelGenericXViewer {
 		m4.put(Proposta.class, new XViewerColumnProperties("valor"));
 		m4.put(Reserva.class, new XViewerColumnProperties("funcionario.nome"));
 		m4.put(ContratoPrestacaoServico.class, new XViewerColumnProperties("funcionario.nome"));
-		GenericXViewerColumn c4 = new GenericXViewerColumn("Tipo", 400, m4);
+		GenericXViewerColumn c4 = new GenericXViewerColumn("Tipo", 170, m4);
 
 		Map<Class<?>, XViewerColumnProperties> m5 = Maps.newHashMap();
 		m5.put(Imovel.class, new XViewerColumnProperties("proprietario.nome"));
@@ -78,14 +79,14 @@ public class ImovelGenericXViewer {
 		m5.put(Proposta.class, new XViewerColumnProperties("observacoes"));
 		m5.put(Reserva.class, new XViewerColumnProperties("valor"));
 		m5.put(ContratoPrestacaoServico.class, new XViewerColumnProperties("tipo"));
-		GenericXViewerColumn c5 = new GenericXViewerColumn("Cliente", 400, m5);
+		GenericXViewerColumn c5 = new GenericXViewerColumn("Cliente", 170, m5);
 		
 		Map<Class<?>, XViewerColumnProperties> m6 = Maps.newHashMap();
 		m6.put(Imovel.class, new XViewerColumnProperties("Observacoes"));
 		m6.put(Endereco.class, new XViewerColumnProperties("numero"));
 		m6.put(Reserva.class, new XViewerColumnProperties("observacoes"));
 		m6.put(ContratoPrestacaoServico.class, new XViewerColumnProperties("divulgarExtenso"));
-		GenericXViewerColumn c6 = new GenericXViewerColumn("Observações", 400, m6);
+		GenericXViewerColumn c6 = new GenericXViewerColumn("Observações", 250, m6);
 		
 		List<GenericXViewerColumn> columns = Arrays.asList(c1, c2, c3, c4, c5, c6);
 		
@@ -95,11 +96,14 @@ public class ImovelGenericXViewer {
 			public Object[] getChildrenElements(Object parentElement) {
 				if(parentElement instanceof Imovel){
 					Imovel imovel = (Imovel) parentElement;
-					return new Object[]{new CabecalhoComodo(imovel.getComodos()), new CabecalhoChave(imovel.getChaves())
+					return new Object[]{imovel.getEndereco(), new CabecalhoComodo(imovel.getComodos()), new CabecalhoChave(imovel.getChaves())
 						, new CabecalhoContratoPrestacaoServico(imovel.getContratos()), new CabecalhoFeedback(imovel.getFeedbacks())
-						, new CabecalhoProposta(imovel.getPropostas()), new CabecalhoReserva(imovel.getReservas()), imovel.getEndereco()
+						, new CabecalhoProposta(imovel.getPropostas()), new CabecalhoReserva(imovel.getReservas())
 					};
 				}
+				if(parentElement instanceof Proposta)
+					return new Object[]{((Proposta) parentElement).getContraProposta()};
+
 				return null;
 			}
 		});

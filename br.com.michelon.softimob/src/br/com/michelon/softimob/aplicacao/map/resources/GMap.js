@@ -63,22 +63,30 @@ window.setType = function( type ) {
   }
 }
 
-window.addMarker = function( name ) {
-  if( window[ "google" ] ) {
-    var marker = new google.maps.Marker( {
-      position : gmap.getCenter(),
-      title : name,
-      draggable : true
-    } );
-    marker.setMap( gmap );
-    var infowindow = new google.maps.InfoWindow( {
-      content : name,
-      disableAutoPan : true
-    } );
-    google.maps.event.addListener( marker, "click", function() {
-      infowindow.open( gmap, marker );
-    } );
-  }
+window.addMarker = function( address ) {
+  	var geocoder = new google.maps.Geocoder();
+	
+	geocoder.geocode( { 'address': address}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+			var marker = new google.maps.Marker({
+				position: results[0].geometry.location,
+				title: name,
+				draggable: false
+			});
+			marker.setMap( gmap );
+		    var infowindow = new google.maps.InfoWindow( {
+		      content : name,
+		      disableAutoPan : true
+		    } );
+		    google.maps.event.addListener( marker, "click", function() {
+		      infowindow.open( gmap, marker );
+		    } );
+		} else {
+			alert("Geocode was not successful for the following reason: " + status);
+		}
+	});
+  
+  
 }
 
 ////////////

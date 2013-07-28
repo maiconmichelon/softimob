@@ -8,7 +8,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -35,8 +34,14 @@ import br.com.michelon.softimob.aplicacao.exception.ValidationException;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.ValidatorHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
+import org.eclipse.nebula.widgets.pagination.renderers.navigation.graphics.NavigationPageGraphics;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.nebula.widgets.pagination.renderers.navigation.NavigationPageScaleRenderer;
+import org.eclipse.nebula.widgets.pagination.PageableController;
+import org.eclipse.nebula.widgets.pagination.renderers.navigation.ResultAndNavigationPageGraphicsRenderer;
+import org.eclipse.nebula.widgets.pagination.renderers.navigation.ResultAndNavigationPageLinksRenderer;
 
-public abstract class GenericEditor<T> extends EditorPart {
+public abstract class CopyOfGenericEditor<T> extends EditorPart {
 
 	public static final String TITLE_SALVAR = "Registro salvo";
 	public static final String MESSAGE_SALVAR = "Registro salvo com sucesso.";
@@ -49,7 +54,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 	private Composite cpPrincipal;
 	private DataBindingContext initDataBindings;
 	
-	public GenericEditor(Class<T> clazz) {
+	public CopyOfGenericEditor(Class<T> clazz) {
 		mainClass = clazz;
 		value = WritableValue.withValueType(mainClass);
 	}
@@ -68,9 +73,27 @@ public abstract class GenericEditor<T> extends EditorPart {
 		scrolledComposite.setExpandVertical(true);
 		
 		cpPrincipal = new Composite(scrolledComposite, SWT.BORDER);
-		cpPrincipal.setLayout(new GridLayout(2, false));
+		cpPrincipal.setLayout(new GridLayout(1, false));
 		
 		afterCreatePartControl(cpPrincipal);
+		
+		NavigationPageGraphics navigationPageGraphics = new NavigationPageGraphics(cpPrincipal, SWT.NONE);
+		navigationPageGraphics.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		formToolkit.adapt(navigationPageGraphics);
+		formToolkit.paintBordersFor(navigationPageGraphics);
+		
+		NavigationPageScaleRenderer navigationPageScaleRenderer = new NavigationPageScaleRenderer(cpPrincipal, SWT.NONE, (PageableController) null);
+		formToolkit.adapt(navigationPageScaleRenderer);
+		formToolkit.paintBordersFor(navigationPageScaleRenderer);
+		new Label(cpPrincipal, SWT.NONE);
+		
+		ResultAndNavigationPageGraphicsRenderer resultAndNavigationPageGraphicsRenderer = new ResultAndNavigationPageGraphicsRenderer(cpPrincipal, SWT.NONE, (PageableController) null);
+		formToolkit.adapt(resultAndNavigationPageGraphicsRenderer);
+		formToolkit.paintBordersFor(resultAndNavigationPageGraphicsRenderer);
+		
+		ResultAndNavigationPageLinksRenderer resultAndNavigationPageLinksRenderer = new ResultAndNavigationPageLinksRenderer(cpPrincipal, SWT.NONE, (PageableController) null);
+		formToolkit.adapt(resultAndNavigationPageLinksRenderer);
+		formToolkit.paintBordersFor(resultAndNavigationPageLinksRenderer);
 		scrolledComposite.setContent(cpPrincipal);
 		scrolledComposite.setMinSize(cpPrincipal.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
@@ -148,12 +171,12 @@ public abstract class GenericEditor<T> extends EditorPart {
 		addItens(service, value, tv, null);
 	}
 	
-	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, ColumnViewer tv, List<Y> list){
+	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, TableViewer tv, List<Y> list){
 		addItens(service, value, tv, true, getCurrentObject());
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, ColumnViewer tv, boolean resetValue, Object father){
+	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, TableViewer tv, boolean resetValue, Object father){
 		if(!salvar(service, value))
 			return;
 			
@@ -266,5 +289,4 @@ public abstract class GenericEditor<T> extends EditorPart {
 	public boolean isSaveAsAllowed() {
 		return false;
 	}
-
 }

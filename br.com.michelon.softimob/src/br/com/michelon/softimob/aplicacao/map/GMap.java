@@ -127,7 +127,7 @@ public class GMap extends Composite {
 			browser.evaluate("gotoAddress( " + createJsAddress() + " )");
 		}
 	}
-
+	
 	/**
 	 * Resolves address of current location (center). Result will be received
 	 * asynchronously.
@@ -157,9 +157,9 @@ public class GMap extends Composite {
 	 * However, its currently not possible to get the location of the marker
 	 * should the user move it.
 	 */
-	public void addMarker(String name) {
+	public void addMarker(String name, String address) {
 		checkWidget();
-		browser.evaluate("addMarker( \"" + name + "\" )");
+		browser.evaluate("addMarker( \"" + name + "\", \"" + address+ "\" )");
 	}
 
 	public void addMapListener(MapListener listener) {
@@ -180,6 +180,7 @@ public class GMap extends Composite {
 				// Note: Calling execute/eval before the document is loaded wont
 				// work.
 				loaded = true;
+				
 				StringBuffer script = new StringBuffer();
 				script.append("init( ");
 				script.append("[ " + center.toString() + " ], ");
@@ -198,7 +199,7 @@ public class GMap extends Composite {
 					gotoAddress("Toledo - PR");
 				else{
 					gotoAddress(endereco);
-					addMarker("Local");
+					addMarker("Local", endereco);
 				}
 			}
 
