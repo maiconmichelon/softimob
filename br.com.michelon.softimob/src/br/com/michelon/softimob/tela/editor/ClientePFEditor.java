@@ -56,7 +56,7 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 	}
 	
 	@Override
-	protected void afterSetIObservableValue() {
+	protected void afterSetIObservableValue(PessoaFisica obj) {
 		if(grpEndereco != null)
 			grpEndereco.setEndereco(getCurrentObject().getEndereco());
 	}

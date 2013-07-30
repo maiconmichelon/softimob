@@ -241,7 +241,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblObservaes_3.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes_3.setText("Observações");
 		
-		txtObservacoes = new StyledText(composite, SWT.BORDER);
+		txtObservacoes = new StyledText(composite, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		GridData gd_text_6 = new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1);
 		gd_text_6.heightHint = 34;
 		txtObservacoes.setLayoutData(gd_text_6);
@@ -513,7 +513,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblObservaes_2.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes_2.setText("Observações");
 		
-		text_20 = new Text(grpProposta, SWT.BORDER);
+		text_20 = new Text(grpProposta, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		GridData gd_text_20 = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
 		gd_text_20.heightHint = 49;
 		text_20.setLayoutData(gd_text_20);
@@ -603,7 +603,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblDescrio_4.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblDescrio_4.setText("Observações");
 		
-		text_41 = new Text(grpReserva, SWT.BORDER);
+		text_41 = new Text(grpReserva, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		GridData gd_text_41 = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
 		gd_text_41.heightHint = 28;
 		text_41.setLayoutData(gd_text_41);
@@ -713,7 +713,12 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	}
 	
 	@Override
-	protected void afterSetIObservableValue() {
+	protected void beforeSetIObservableValue(Imovel obj) {
+		limparTabelas();
+	}
+	
+	@Override
+	protected void afterSetIObservableValue(Imovel obj) {
 		Imovel imovel = getCurrentObject();
 		
 		valueComodo.setValue(new Comodo(imovel));
@@ -734,7 +739,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbContatoPrestacaoServico.createColumn("Data").setPercentWidth(10).bindToProperty("dataInicio").format(new DateStringValueFormatter()).build();
 		tvbContatoPrestacaoServico.createColumn("Data de Vencimento").setPercentWidth(10).bindToProperty("dataVencimento").format(new DateStringValueFormatter()).build();
 		tvbContatoPrestacaoServico.createColumn("Valor").setPercentWidth(10).bindToProperty("valor").format(FormatterHelper.getCurrencyFormatter()).build();
-		tvbContatoPrestacaoServico.createColumn("Funcionário").setPercentWidth(20).bindToProperty("funcionario.nome").build();
+		tvbContatoPrestacaoServico.createColumn("Funcionário").setPercentWidth(20).format(new NullStringValueFormatter()).bindToProperty("funcionario.nome").build();
 		tvbContatoPrestacaoServico.createColumn("Tipo").setPercentWidth(10).bindToProperty("tipo").build();
 		tvbContatoPrestacaoServico.createColumn("Divulgar").bindToProperty("divulgarExtenso").build();
 		
@@ -896,6 +901,29 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		}
 	}
 	
+	private void limparTabelas(){
+		
+		//ACHO QUE ISSO AQUI NÃO VAI FUNCIONAR, PROVAVELMENTE VAI DA UM NPE
+//		tvbChave.setInput(null);
+//		tvbComodo.setInput(null);
+//		tvbContatoPrestacaoServico.setInput(null);
+//		tvbFeedbacks.setInput(null);
+//		tvbReserva.setInput(null);
+//		propostaXViewer.setInput(null);
+//		tvbLocacao.setInput(null);
+
+		if(tvbChave == null)
+			return;
+		
+		tvbChave.getTable().removeAll();
+		tvbComodo.getTable().removeAll();
+		tvbContatoPrestacaoServico.getTable().removeAll();
+		tvbFeedbacks.getTable().removeAll();
+		tvbReserva.getTable().removeAll();
+		propostaXViewer.getTree().removeAll();
+		tvbLocacao.getTable().removeAll();
+	}
+	
 	protected DataBindingContext bindTables(DataBindingContext bindingContext){
 		//
 		IObservableValue observeSingleSelectionTableViewerComodo = ViewerProperties.input().observe(tvComodos);
@@ -952,7 +980,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		IObservableValue valueObservacoesObserveDetailValue = PojoProperties.value(Imovel.class, "observacoes", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_6ObserveWidget, valueObservacoesObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_26ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_26);
+		IObservableValue observeTextText_26ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_26);
 		IObservableValue valueComodoTipoComodoObserveDetailValue = PojoProperties.value(Comodo.class, "tipoComodo", TipoComodo.class).observeDetail(valueComodo);
 		bindingContext.bindValue(observeTextText_26ObserveWidget, valueComodoTipoComodoObserveDetailValue, null, null);
 		//

@@ -17,6 +17,10 @@ public class ReflectionHelper {
 
 	public static Object getAtribute(Object obj, String atributo) throws Exception{
 		obj = obj.getClass().getMethod("get"+ StringUtils.capitalize(StringUtils.substringBefore(atributo, "."))).invoke(obj);
+		
+		if(obj == null)
+			return null;
+		
 		if(atributo.contains("."))
 			return getAtribute(obj, StringUtils.substringAfter(atributo, "."));
 		return obj;

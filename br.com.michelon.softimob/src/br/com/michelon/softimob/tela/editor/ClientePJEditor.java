@@ -154,7 +154,7 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 	}
 
 	@Override
-	protected void afterSetIObservableValue() {
+	protected void afterSetIObservableValue(PessoaJuridica pj) {
 		if(grpEndereco != null)
 			grpEndereco.setEndereco(getCurrentObject().getEndereco());
 	}

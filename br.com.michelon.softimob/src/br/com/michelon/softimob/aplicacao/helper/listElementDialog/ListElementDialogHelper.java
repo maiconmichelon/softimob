@@ -210,7 +210,7 @@ public class ListElementDialogHelper {
 			} else if(equals(TIPO_IMOVEL)){
 				return new TipoImovelService().findAtivos().toArray();
 			} else if(equals(MODELO_CONTRATO)){
-				return new ModeloContratoService().findAtivos().toArray();
+				return new ModeloContratoService().findAll().toArray();
 			} else if(equals(CONTRATO_SERVICO)){
 				return new ContratoPrestacaoServicoService().findAll().toArray();
 			} else if(equals(CHECK_LIST)){

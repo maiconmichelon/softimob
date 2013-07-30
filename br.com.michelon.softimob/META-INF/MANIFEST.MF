@@ -81,6 +81,7 @@ Bundle-ClassPath: .,
  lib/springData/spring-data-commons-1.5.0.RELEASE.jar,
  lib/springData/spring-data-jpa-1.3.0.RELEASE.jar,
  lib/org.eclipse.nebula.widgets.pagination_1.0.0.201305050742.jar,
- lib/docx/docx4j-2.8.1.jar
+ lib/docx/docx4j-2.8.1.jar,
+ lib/org.eclipse.nebula.widgets.datechooser_1.0.0.201305050742.jar
 Import-Package: com.google.common.base,
  com.google.common.collect

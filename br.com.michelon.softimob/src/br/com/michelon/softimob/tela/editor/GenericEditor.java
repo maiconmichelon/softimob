@@ -111,11 +111,11 @@ public abstract class GenericEditor<T> extends EditorPart {
 	 * Salva o value principal
 	 * @param Service utilizado para salvar o objeto
 	 */
+	@SuppressWarnings("unchecked")
 	public void saveCurrentObject(GenericService<T> service) {
 		if(salvar(getService(), value)){
 			try {
-				value.setValue(value.getValue().getClass().newInstance());
-				afterSetIObservableValue();
+				setValue((T) value.getValue().getClass().newInstance());
 				initDataBindings.updateTargets();
 			} catch (Exception e) {
 				log.error("Erro ao setar novo objeto [ " +value.getValueType()+ " ] ao value.", e);
@@ -248,13 +248,19 @@ public abstract class GenericEditor<T> extends EditorPart {
 		setInput(input);
 		
 		if(input instanceof GenericEditorInput){
-			value.setValue(getValorInicial((GenericEditorInput<T>) input));
+			setValue(getValorInicial((GenericEditorInput<T>) input));
 		}
-		
-		afterSetIObservableValue();
 	}
 	
-	protected void afterSetIObservableValue() {}
+	protected void beforeSetIObservableValue(T obj){}
+	
+	protected void setValue(T obj){
+		beforeSetIObservableValue(obj);
+		value.setValue(obj);
+		afterSetIObservableValue(obj);
+	}
+	
+	protected void afterSetIObservableValue(T obj) {}
 
 	protected T getValorInicial(GenericEditorInput<T> editorInput){
 		if(editorInput.getModelo() != null)
@@ -265,6 +271,14 @@ public abstract class GenericEditor<T> extends EditorPart {
 		}catch(Exception e){
 			return null;
 		}
+	}
+	
+	protected void updateTargets(){
+		initDataBindings.updateTargets();
+	}
+	
+	protected void updateModels(){
+		initDataBindings.updateModels();
 	}
 	
 	@Override

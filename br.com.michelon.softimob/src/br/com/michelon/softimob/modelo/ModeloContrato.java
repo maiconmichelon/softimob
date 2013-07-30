@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
+
 @Entity
 public class ModeloContrato implements Serializable{
 
@@ -28,6 +30,10 @@ public class ModeloContrato implements Serializable{
 	@NotNull(message = "Insira o arquivo referente ao modelo")
 	@OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Arquivo arquivo;
+	
+	@Column
+	@DeactivateOnDelete
+	private Boolean ativo;
 	
 	public Long getId() {
 		return id;
@@ -58,6 +64,14 @@ public class ModeloContrato implements Serializable{
 		return nome;
 	}
 
+	public Boolean getAtivo() {
+		return ativo;
+	}
+	
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

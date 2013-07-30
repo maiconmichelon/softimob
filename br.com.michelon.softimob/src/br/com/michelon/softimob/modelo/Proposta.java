@@ -35,11 +35,11 @@ public class Proposta implements Serializable{
 	@Column(nullable = false)
 	@NotNull(message = "Informe a data que foi feita a proposta.")
 	@Past(message="A data informada referente a criação da proposta esta incorreta.")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date data = new Date();
 	
 	@Past(message="A data informada para a data de fechamento da proposta esta incorreta.")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date dataFechamento;
 	
 	@NotNull(message="Informe o cliente que fez a proposta.")
@@ -51,7 +51,7 @@ public class Proposta implements Serializable{
 	
 	@NotNull(message = "Informe o valor da proposta.")
 	@Column(precision = 14, scale = 2)
-	private BigDecimal valor;
+	private BigDecimal valor = BigDecimal.ZERO;
 
 	@Column
 	private String observacoes;
@@ -59,7 +59,7 @@ public class Proposta implements Serializable{
 	@Column
 	private Integer status;
 	
-	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+	@OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private Proposta contraProposta;
 	
 	@Column

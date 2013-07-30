@@ -595,6 +595,18 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		tvCheckListAluguel = criarTabelaCheckList(composite_3);
 	}
 
+	@Override
+	protected void beforeSetIObservableValue(Aluguel obj) {
+		limparTabelas(obj);
+	}
+	
+	private void limparTabelas(Aluguel obj) {
+		tvAndamentoChamado.getTable().removeAll();
+		tvChamadoGeral.getTable().removeAll();
+		tvComissao.getTable().removeAll();
+		tvVistoria.getTable().removeAll();
+	}
+
 	protected void addChamadoReforma(WritableValue value) {
 		ChamadoReforma chamadoReforma = (ChamadoReforma) value.getValue();
 		
@@ -640,7 +652,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	}
 	
 	@Override
-	protected void afterSetIObservableValue() {
+	protected void afterSetIObservableValue(Aluguel aluguel) {
 		valueComissao.setValue(new Comissao(getCurrentObject()));
 		valueChamado.setValue(new ChamadoReforma(getCurrentObject()));
 		valueVistoria.setValue(new Vistoria(getCurrentObject()));

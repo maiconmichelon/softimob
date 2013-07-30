@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -51,7 +52,7 @@ public class ModeloContratoEditor extends GenericEditor<ModeloContrato> {
 		lblDescrio.setText("Descrição");
 		
 		text = new Text(parent, SWT.BORDER);
-		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		GridData gd_text = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_text.widthHint = 260;
 		text.setLayoutData(gd_text);
 		new Label(parent, SWT.NONE);
@@ -60,7 +61,7 @@ public class ModeloContratoEditor extends GenericEditor<ModeloContrato> {
 		lblModelo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblModelo.setText("Modelo");
 		
-		text_1 = new Text(parent, SWT.BORDER);
+		text_1 = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar = new Button(parent, SWT.NONE);
@@ -73,20 +74,25 @@ public class ModeloContratoEditor extends GenericEditor<ModeloContrato> {
 				if(files != null && files.size() > 0){
 					Arquivo file = files.get(0);
 					getCurrentObject().setArquivo(file);
-					text_1.setText(file.getNome());
+					
+					Object valueCopy = value.getValue();
+					value.setValue(null);
+					value.setValue(valueCopy);
 				}
-				
 			}
 		});
 	}
-
-	@Override
+	
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
 		IObservableValue valueNomeObserveDetailValue = PojoProperties.value(ModeloContrato.class, "nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueNomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
+		IObservableValue valueArquivonomeObserveDetailValue = PojoProperties.value(ModeloContrato.class, "arquivo.nome", String.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_1ObserveWidget, valueArquivonomeObserveDetailValue, null, null);
 		//
 		return bindingContext;
 	}

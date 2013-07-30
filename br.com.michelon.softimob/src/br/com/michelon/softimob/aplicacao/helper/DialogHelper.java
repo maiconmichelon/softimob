@@ -35,7 +35,7 @@ public class DialogHelper {
 	}
 	
 	public static List<Arquivo> openDocDialog(){
-		return openFileDialog(null);
+		return openFileDialog(new String[]{"*.docx"});
 	}
 	
 	public static List<Arquivo> openFileDialog(String[] filters){

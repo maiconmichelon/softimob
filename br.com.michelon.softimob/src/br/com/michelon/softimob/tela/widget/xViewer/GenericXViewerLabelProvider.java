@@ -68,9 +68,14 @@ public class GenericXViewerLabelProvider extends XViewerStyledTextLabelProvider{
 		XViewerColumnProperties xViewerColumnProperties = col.getProperties().get(arg0.getClass());
 		String property = xViewerColumnProperties == null ? null : xViewerColumnProperties.getProperty();
 		
-		Object obj = property == null ? StringUtils.EMPTY : ReflectionHelper.getAtribute(arg0, property);
+		try{
+			Object obj = property == null ? StringUtils.EMPTY : ReflectionHelper.getAtribute(arg0, property);
+			return new StyledString(FormatterHelper.formatObject(obj), null);
+		}catch(NullPointerException npe){
+			npe.printStackTrace();
+		}
+		return null;
 			
-		return new StyledString(FormatterHelper.formatObject(obj), null);
 	}
 	
 }

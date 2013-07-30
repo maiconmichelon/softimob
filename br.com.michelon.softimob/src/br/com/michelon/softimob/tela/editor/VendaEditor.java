@@ -300,7 +300,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 	}
 
 	@Override
-	protected void afterSetIObservableValue() {
+	protected void afterSetIObservableValue(Venda venda) {
 		valueComissao.setValue(new Comissao(getCurrentObject()));
 		valueVistoria.setValue(new Vistoria(getCurrentObject()));
 	}
@@ -313,6 +313,16 @@ public class VendaEditor extends GenericEditor<Venda>{
 		addItens(new VistoriaService(), valueVistoria, tvVistoria, getCurrentObject().getVistorias());
 	}
 	
+	@Override
+	protected void beforeSetIObservableValue(Venda obj) {
+		limparTabelas(obj);
+	}
+	
+	private void limparTabelas(Venda obj) {
+		tvbVistoria.getTable().removeAll();
+		tvComissao.getTable().removeAll();
+	}
+
 	private void criarTabelaComissao(Composite composite){
 		TableViewerBuilder tvbComissao = new TableViewerBuilder(composite);
 		

@@ -17,7 +17,7 @@ public class ModeloContratoService extends GenericService<ModeloContrato>{
 	}
 	
 	public List<ModeloContrato> findAtivos() {
-		return getRepository().findAtivo(true);
+		return getRepository().findByAtivoIsTrue();
 	}
 	
 }

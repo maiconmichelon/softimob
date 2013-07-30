@@ -1,5 +1,12 @@
 package br.com.michelon.softimob.aplicacao.main;
 
+import java.util.concurrent.ExecutionException;
+
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.action.StatusLineContributionItem;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IPartListener;
@@ -10,6 +17,7 @@ import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+import org.eclipse.ui.handlers.IHandlerService;
 
 import br.com.michelon.softimob.persistencia.SpringUtils;
 
@@ -31,6 +39,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowCoolBar(true);
 		configurer.setShowFastViewBars(true);
 		configurer.setTitle("SoftImob");
+		
+		
+		IStatusLineManager lineManager = getWindowConfigurer().getActionBarConfigurer().getStatusLineManager();
+    	StatusLineContributionItem scMsg = new StatusLineContributionItem("avisos", StatusLineContributionItem.CALC_TRUE_WIDTH);
+		lineManager.add(scMsg);
+		lineManager.update(true);
 		
 		SpringUtils.initializeContext();
 	}

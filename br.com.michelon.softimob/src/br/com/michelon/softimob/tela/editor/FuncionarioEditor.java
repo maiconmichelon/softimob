@@ -133,7 +133,7 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 	}
 	
 	@Override
-	protected void afterSetIObservableValue() {
+	protected void afterSetIObservableValue(Funcionario func) {
 		if(grpEndereco != null)
 			grpEndereco.setEndereco(getCurrentObject().getEndereco());
 	}
