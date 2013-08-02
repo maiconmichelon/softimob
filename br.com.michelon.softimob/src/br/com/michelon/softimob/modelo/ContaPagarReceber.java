@@ -42,10 +42,11 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	private BigDecimal valorJurosDesconto = BigDecimal.ZERO;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
 	private Date dataConta;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataVencimento;
+	private Date dataVencimento = new Date();
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataPagamento;

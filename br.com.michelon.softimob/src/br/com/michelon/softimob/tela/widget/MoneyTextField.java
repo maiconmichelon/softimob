@@ -12,6 +12,6 @@ public class MoneyTextField extends FormattedText{
 	public MoneyTextField(Composite parent) {
 		super(parent);
 		
-		this.setFormatter(new NumberFormatter("###,###,##0.00"));
+		this.setFormatter(new NumberFormatter("###,###,###.##"));
 	}
 }

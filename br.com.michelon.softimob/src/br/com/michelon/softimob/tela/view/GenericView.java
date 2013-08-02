@@ -149,13 +149,9 @@ public abstract class GenericView<T> extends ViewPart{
 		if(menu.getItemCount() > 0)
 			viewer.getControl().setMenu(menu);
 		
-		List<T> input = getInput();
-		if(input != null && !input.isEmpty()){
-			if(viewer instanceof TableViewer)
-				viewer.setContentProvider(ArrayContentProvider.getInstance());
-			
-			viewer.setInput(input);
-		}
+		
+		if(viewer instanceof TableViewer)
+			viewer.setContentProvider(ArrayContentProvider.getInstance());
 		
 		viewer.addFilter(getFilter());
 		viewer.addDoubleClickListener(getDoubleClickListener());

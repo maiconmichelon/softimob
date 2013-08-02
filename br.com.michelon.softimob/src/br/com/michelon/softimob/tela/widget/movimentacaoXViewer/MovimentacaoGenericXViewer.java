@@ -54,6 +54,11 @@ public class MovimentacaoGenericXViewer {
 				}
 				return null;
 			}
+			
+			@Override
+			public boolean hasChildren(Object element) {
+				return element instanceof MovimentacaoContabil ? true : super.hasChildren(element);
+			}
 		});
 		
 		return viewerMovimentacoes;

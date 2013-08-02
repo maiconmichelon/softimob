@@ -1,8 +1,6 @@
 package br.com.michelon.softimob.tela.widget;
 
-import java.awt.Desktop;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -25,11 +23,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.FileHelper;
 import br.com.michelon.softimob.aplicacao.service.ArquivoService;
 import br.com.michelon.softimob.modelo.Arquivo;
 
 import com.google.common.collect.Lists;
-import com.google.common.io.Files;
 
 public class PhotoComposite extends Composite {
 
@@ -38,15 +36,14 @@ public class PhotoComposite extends Composite {
 	private List<Arquivo> arquivos;
 	private ArquivoService arquivoService = new ArquivoService();
 	private Logger log = Logger.getLogger(getClass());
-	private File tempFolder;
 	private int size = 0;
+	private File tempFolder;
 	
 	public PhotoComposite(Composite parent, int style, List<Arquivo> arquivos, int size) {
 		super(parent, style);
 		
 		this.arquivos = arquivos;
 		this.size = size;
-		this.tempFolder = Files.createTempDir();
 		
 		createComponents();
 	}
@@ -81,10 +78,11 @@ public class PhotoComposite extends Composite {
 					if(giFotosImovel.getItems().length > 0 && giFotosImovel.getItem(0) == null)
 						giFotosImovel.setItemCount(0);
 					if(isEmpty()){
+						tempFolder = FileHelper.criarDiretorioArquivos(arquivos);
+						
 						for(Arquivo arq : arquivos){
+							FileHelper.insertIntTempFolder(tempFolder, arq);
 							addPhotoToViewComposite(arq);
-							
-							insertIntTempFolder(tempFolder, arq);
 						}
 					}
 				}
@@ -100,12 +98,11 @@ public class PhotoComposite extends Composite {
 				if (gal.getSelectionCount() < 1)
 					return;
 
-				String text = gal.getSelection()[0].getText();
-
 				try {
-					Desktop.getDesktop().open(new File(tempFolder.getAbsoluteFile() + "/" + text));
-				} catch (Exception e1) {
-					e1.printStackTrace();
+					FileHelper.openFile(tempFolder, gal.getSelection()[0].getText());
+				} catch (IOException e1) {
+					log.error("Erro ao abrir as fotos.", e1);
+					DialogHelper.openError("Erro ao abrir as fotos do imóvel.");
 				}
 			}
 		});
@@ -138,7 +135,7 @@ public class PhotoComposite extends Composite {
 					}
 					
 					arquivos.add(photo);
-					insertIntTempFolder(tempFolder, photo);
+					FileHelper.insertIntTempFolder(tempFolder, photo);
 					
 					if(giFotosImovel.isExpanded() || !isEmpty())
 						addPhotoToViewComposite(photo);
@@ -169,18 +166,6 @@ public class PhotoComposite extends Composite {
 				arquivos.removeAll(toRemove);
 			}
 		});
-	}
-
-	public void insertIntTempFolder(File createTempDir, Arquivo arq) {
-        File file = new File(createTempDir.getAbsoluteFile() + "/" + arq.getNome());
- 
-        try {
-		    FileOutputStream fileOuputStream = new FileOutputStream(file); 
-		    fileOuputStream.write(arq.getArquivo().getArquivo());
-		    fileOuputStream.close();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
 	}
 
 	public void removeTempFolder(File createTempDir, Arquivo arq) {

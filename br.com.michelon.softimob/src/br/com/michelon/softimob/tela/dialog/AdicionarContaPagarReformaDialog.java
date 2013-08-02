@@ -15,15 +15,15 @@ import br.com.michelon.softimob.tela.widget.DateTextField;
 
 public class AdicionarContaPagarReformaDialog extends TitleAreaDialog{
 
-	private Label lblTitle;
 	private Text text;
 	private Text text_1;
 	private Text text_2;
 
 	public AdicionarContaPagarReformaDialog(Shell parentShell, Imovel imovel) {
 		super(parentShell);
-		
+		setShellStyle(SWT.TITLE);
 		setTitle("Geração de contrato de promessa de compra e venda.");
+		parentShell.setText("HAUAH");
 	}
 	
 	/**
@@ -35,7 +35,8 @@ public class AdicionarContaPagarReformaDialog extends TitleAreaDialog{
 	
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		
+		setTitle("Adicionar conta referente a reforma.");
+		setMessage("Informe os valores referente a conta.");
 		parent.setLayout(new GridLayout(1, false));
 		
 		Composite composite = new Composite(parent, SWT.NONE);

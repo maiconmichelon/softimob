@@ -106,6 +106,12 @@ public class ImovelGenericXViewer {
 
 				return null;
 			}
+			
+			@Override
+			public boolean hasChildren(Object element) {
+				return element instanceof Imovel ? true : super.hasChildren(element);
+			}
+			
 		});
 		
 		return viewerMovimentacoes;

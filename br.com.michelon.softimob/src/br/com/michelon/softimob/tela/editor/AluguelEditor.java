@@ -141,9 +141,16 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		btnSelecionar.setText("...");
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CONTRATO_SERVICO, btnSelecionar, value, "contrato");
 		
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
+		Label lblFuncionrio = new Label(parent, SWT.NONE);
+		lblFuncionrio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblFuncionrio.setText("Corretor");
+		
+		text_7 = new Text(parent, SWT.BORDER);
+		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_2 = new Button(parent, SWT.NONE);
+		button_2.setText("...");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, button_2, value, "funcionario");
 		
 		Label lblValor = new Label(parent, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -156,17 +163,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		button.setText("...");
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, button, value, "cliente");
 		
-		Label lblFuncionrio = new Label(parent, SWT.NONE);
-		lblFuncionrio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblFuncionrio.setText("Corretor");
-		
-		text_7 = new Text(parent, SWT.BORDER);
-		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_2 = new Button(parent, SWT.NONE);
-		button_2.setText("...");
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, button_2, value, "funcionario");
-		
 		Label lblFiador = new Label(parent, SWT.NONE);
 		lblFiador.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFiador.setText("Fiador");
@@ -177,9 +173,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		Button button_1 = new Button(parent, SWT.NONE);
 		button_1.setText("...");
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, button_1, value, "fiador");
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
 		
 		Label lblData = new Label(parent, SWT.NONE);
 		lblData.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -187,7 +180,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		DateTextField dateTextField = new DateTextField(parent);
 		text_3 = dateTextField.getControl();
-		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		new Label(parent, SWT.NONE);
 		
 		Label lblDurao = new Label(parent, SWT.NONE);
 		lblDurao.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -207,7 +202,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		MoneyTextField moneyTextField = new MoneyTextField(parent);
 		text_2 = moneyTextField.getControl();
-		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
@@ -382,7 +378,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		Composite composite_7 = new Composite(composite_6, SWT.NONE);
 		composite_7.setLayout(new GridLayout(1, false));
 //		gd_composite_7.heightHint = 120;
-		composite_7.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		GridData gd_composite_7 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd_composite_7.heightHint = 95;
+		composite_7.setLayoutData(gd_composite_7);
 		
 		criarTabelaChamadosGerais(composite_7);
 		
@@ -458,7 +456,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Composite composite_14 = new Composite(composite_12, SWT.NONE);
 		composite_14.setLayout(new GridLayout(1, false));
-		composite_14.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 2));
+		composite_14.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 		
 		criarTabelaAndamentoChamado(composite_14);
 		
@@ -601,6 +599,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	}
 	
 	private void limparTabelas(Aluguel obj) {
+		if(tvAndamentoChamado == null)
+			return;
+		
 		tvAndamentoChamado.getTable().removeAll();
 		tvChamadoGeral.getTable().removeAll();
 		tvComissao.getTable().removeAll();

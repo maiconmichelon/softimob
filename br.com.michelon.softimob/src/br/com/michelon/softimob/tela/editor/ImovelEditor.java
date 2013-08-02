@@ -48,6 +48,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
@@ -828,7 +829,14 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		miContraProposta.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ContraPropostaDialog dialog = new ContraPropostaDialog(ShellHelper.getActiveShell(), (Proposta) SelectionHelper.getObject(propostaXViewer.getSelection()));
+				Proposta propostaSelecionada = (Proposta) SelectionHelper.getObject(propostaXViewer.getSelection());
+				
+				if(propostaSelecionada != null && propostaSelecionada.getContraProposta() != null){
+					DialogHelper.openWarning("A proposta selecionada já possui uma contra-proposta.");
+					return;
+				}
+				
+				ContraPropostaDialog dialog = new ContraPropostaDialog(ShellHelper.getActiveShell(), propostaSelecionada);
 				if(dialog.open() == IDialogConstants.OK_ID){
 					propostaXViewer.refresh();
 				}

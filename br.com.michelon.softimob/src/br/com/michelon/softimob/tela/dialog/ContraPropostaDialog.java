@@ -13,6 +13,7 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
+import org.eclipse.nebula.widgets.cdatetime.CDateTime;
 import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -83,6 +84,8 @@ public class ContraPropostaDialog extends TitleAreaDialog {
 		radioGroupViewer = new RadioGroupViewer(composite, SWT.NONE);
 		radioGroup = radioGroupViewer.getRadioGroup();
 		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		
+		new CDateTime(composite, SWT.BORDER);
 
 		radioGroupViewer.setContentProvider(ArrayContentProvider.getInstance());
 		radioGroupViewer.setLabelProvider(new LabelProvider() {

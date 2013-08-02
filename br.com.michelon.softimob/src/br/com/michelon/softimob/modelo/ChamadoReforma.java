@@ -38,7 +38,7 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	
 	@NotNull(message = "A data do chamado não pode ser vazia")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date data;
+	private Date data = new Date();
 	
 	@ManyToOne
 	private Funcionario funcionario;
