@@ -3,6 +3,8 @@ package br.com.michelon.softimob.aplicacao.helper.listElementDialog;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -34,6 +36,7 @@ import br.com.michelon.softimob.modelo.CheckList;
 import br.com.michelon.softimob.modelo.Cliente;
 import br.com.michelon.softimob.modelo.Comissionado;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
+import br.com.michelon.softimob.modelo.ContratoPrestacaoServico.TipoContrato;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.Indice;
@@ -43,6 +46,8 @@ import br.com.michelon.softimob.modelo.TipoComodo;
 import br.com.michelon.softimob.modelo.TipoImovel;
 
 public class ListElementDialogHelper {
+	
+	private static Logger log = Logger.getLogger(ListElementDialogHelper.class);
 	
 	public static void addListElementDialogToText(final TipoDialog tipoDialog, Text text, final WritableValue value, final String property){
 		addListElementDialogToText(tipoDialog, text, value, property, null);
@@ -111,6 +116,23 @@ public class ListElementDialogHelper {
 		
 	}
 
+	public static void addSelectionToRemoveButton(Button btn, final IObservableValue value, final String property, final Class<?> clazz){
+		btn.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				try {
+					ReflectionHelper.setAtribute(value.getValue(), property, null, clazz);
+					
+					Object obj = value.getValue();
+					value.setValue(null);
+					value.setValue(obj);
+				} catch (Exception e1) {
+					log.error("Erro ao remover objeto.", e1);
+				}
+			}
+		});
+	}
+	
 	public enum TipoDialog{
 		
 		FUNCIONARIO("Funcionários", "Selecione um funcionário.", ImageRepository.FUNCIONARIO_16, Funcionario.class),
@@ -121,7 +143,9 @@ public class ListElementDialogHelper {
 		PLANOCONTA("Plano de Contas", "Selecione uma conta.", ImageRepository.PLANO_CONTA_16, PlanoConta.class), 
 		COMISSIONADO("Comissionados", "Selecione um cliente ou funcionário.", ImageRepository.COMISSAO_16, Comissionado.class), 
 		MODELO_CONTRATO("Modelos de Contrato", "Selecione um modelo de contrato.", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
-		CONTRATO_SERVICO("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
+		CONTRATO_SERVICO_TODOS("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
+		CONTRATO_SERVICO_LOCACAO("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
+		CONTRATO_SERVICO_VENDA("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
 		CHECK_LIST("Modelos de check list", "Selecione uma check list", ImageRepository.CHECKLIST_16, CheckList.class),
 		INDICE("Índices", "Selecione um índice", ImageRepository.INDICE_16, Indice.class), 
 		PESSOA_FISICA("Pessoas Físicas", "Selecione uma pessoa física", ImageRepository.CLIENTE_16, Cliente.class),
@@ -168,9 +192,9 @@ public class ListElementDialogHelper {
 			if(dialog.open() == IDialogConstants.OK_ID){
 				for(OkListElementDialogListener listener : listeners)
 					listener.ok(dialog.getFirstResult());
-			} else {
-				for(OkListElementDialogListener listener : listeners)
-					listener.ok(null);
+//			} else {
+//				for(OkListElementDialogListener listener : listeners)
+//					listener.ok(null);
 			}
 		}
 		
@@ -211,8 +235,12 @@ public class ListElementDialogHelper {
 				return new TipoImovelService().findAtivos().toArray();
 			} else if(equals(MODELO_CONTRATO)){
 				return new ModeloContratoService().findAll().toArray();
-			} else if(equals(CONTRATO_SERVICO)){
+			} else if(equals(CONTRATO_SERVICO_TODOS)){
 				return new ContratoPrestacaoServicoService().findAll().toArray();
+			} else if(equals(CONTRATO_SERVICO_LOCACAO)){
+				return new ContratoPrestacaoServicoService().findByTipo(TipoContrato.LOCACAO).toArray();
+			} else if(equals(CONTRATO_SERVICO_VENDA)){
+				return new ContratoPrestacaoServicoService().findByTipo(TipoContrato.VENDA).toArray();
 			} else if(equals(CHECK_LIST)){
 				return new CheckListService().findAll().toArray();
 			} else if(equals(INDICE)){

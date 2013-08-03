@@ -164,8 +164,8 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 		composite_1.setLayout(new GridLayout(1, false));
 
 		grpEndereco = new EnderecoGroup(composite_1, getCurrentObject().getEndereco(), SWT.NONE);
-		grpEndereco.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		grpEndereco.setText("Endereco");
+		grpEndereco.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		grpEndereco.getControl().setText("Endereco");
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 	}
 
 	@Override
-	protected DataBindingContext initDataBindings() {
+	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_3);

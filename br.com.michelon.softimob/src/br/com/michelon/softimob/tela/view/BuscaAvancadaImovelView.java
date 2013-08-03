@@ -161,7 +161,7 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnNewButton = new Button(composite_5, SWT.NONE);
-		btnNewButton.setText("...");
+		btnNewButton.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnNewButton, value, "angariador");
 		
 		Label lblProprietario = new Label(composite_5, SWT.NONE);
@@ -172,7 +172,7 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		
 		Button btnSelecionar_7 = new Button(composite_5, SWT.NONE);
 		btnSelecionar_7.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		btnSelecionar_7.setText("...");
+		btnSelecionar_7.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionar_7, value, "proprietario");
 		
 		Label lblTipoImvel = new Label(composite_5, SWT.NONE);
@@ -255,7 +255,7 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		Button btnRemover = new Button(composite_1, SWT.NONE);
 		btnRemover.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
 		btnRemover.setText("Remover");
-		btnRemover.setImage(ImageRepository.REMOVE_16.getImage());
+		btnRemover.setImage(ImageRepository.DELETE_16.getImage());
 		
 		Button btnNewButton_1 = new Button(parent, SWT.NONE);
 		GridData gd_btnNewButton_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);

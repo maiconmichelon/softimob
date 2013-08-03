@@ -90,7 +90,7 @@ public class BairroEditor extends GenericEditor<Bairro>{
 	}
 	
 	@Override
-	protected DataBindingContext initDataBindings() {
+	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeSingleSelectionComboViewer = ViewerProperties.singleSelection().observe(cvCidade);

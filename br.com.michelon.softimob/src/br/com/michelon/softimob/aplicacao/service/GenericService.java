@@ -72,4 +72,8 @@ public class GenericService<T> {
 		return model;
 	}
 	
+	public <D> D getDaoImpl(Class<D> daoImpl){
+		return SpringUtils.getContext().getBean(daoImpl);
+	}
+	
 }

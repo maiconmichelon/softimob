@@ -13,7 +13,6 @@ import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.persistencia.ImovelDAO;
 import br.com.michelon.softimob.persistencia.ImovelDAOImpl;
-import br.com.michelon.softimob.persistencia.SpringUtils;
 import br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView.ModeloBusca;
 
 @Repository
@@ -29,7 +28,7 @@ public class ImovelService extends GenericService<Imovel>{
 	}
 
 	private ImovelDAOImpl getDAOImpl() {
-		return SpringUtils.getContext().getBean(ImovelDAOImpl.class);
+		return super.getDaoImpl(ImovelDAOImpl.class);
 	}
 	
 	public List<Imovel> findImoveis(Long codigo, BigDecimal valMin, BigDecimal valMax, 

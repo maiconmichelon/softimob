@@ -145,7 +145,7 @@ public class PhotoComposite extends Composite {
 		
 		Button btnNewButton_2 = new Button(this, SWT.NONE);
 		btnNewButton_2.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
-		btnNewButton_2.setImage(ImageRepository.REMOVE_16.getImage());
+		btnNewButton_2.setImage(ImageRepository.DELETE_16.getImage());
 		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

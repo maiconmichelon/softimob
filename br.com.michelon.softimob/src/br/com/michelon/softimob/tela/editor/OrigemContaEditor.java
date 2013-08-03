@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
@@ -38,7 +39,7 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 
 	@Override
 	public void afterCreatePartControl(Composite parent) {
-		GridLayout gl_parent = new GridLayout(3, false);
+		GridLayout gl_parent = new GridLayout(4, false);
 		gl_parent.verticalSpacing = 10;
 		parent.setLayout(gl_parent);
 		
@@ -51,6 +52,7 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 		gd_text.widthHint = 174;
 		text.setLayoutData(gd_text);
 		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 		
 		Label lblConta = new Label(parent, SWT.NONE);
 		lblConta.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -60,9 +62,12 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button = new Button(parent, SWT.NONE);
-		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		button.setText("...");
+		button.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button, value, "conta");
+		
+		Button btnt = new Button(parent, SWT.NONE);
+		btnt.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnt.setImage(ImageRepository.REMOVE_16.getImage());
 		
 		Label lblContrapartida = new Label(parent, SWT.NONE);
 		lblContrapartida.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -72,13 +77,15 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_1 = new Button(parent, SWT.NONE);
-		button_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		button_1.setText("...");
+		button_1.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_1, value, "contaContraPartida");
+		
+		Button btnt_1 = new Button(parent, SWT.NONE);
+		btnt_1.setImage(ImageRepository.REMOVE_16.getImage());
 	}
 	
 	@Override
-	protected DataBindingContext initDataBindings() {
+	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);

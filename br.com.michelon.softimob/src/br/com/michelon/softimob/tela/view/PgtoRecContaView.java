@@ -233,7 +233,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		
 		Button btnSelecionar = new Button(composite_3, SWT.NONE);
 		btnSelecionar.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		btnSelecionar.setText("...");
+		btnSelecionar.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, btnSelecionar, value, "conta");
 		
 		Button btnGerarLanamentos = new Button(composite_3, SWT.NONE);

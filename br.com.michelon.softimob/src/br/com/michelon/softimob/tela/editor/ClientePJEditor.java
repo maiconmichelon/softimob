@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
@@ -130,7 +131,7 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 		text_19.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
 		Button button = new Button(composite_1, SWT.NONE);
-		button.setText("...");
+		button.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PESSOA_FISICA, button, value, "socioProprietario");
 		
 		Composite composite = new Composite(composite_1, SWT.NONE);
@@ -138,8 +139,8 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 		composite.setLayout(new GridLayout(1, false));
 
 		grpEndereco = new EnderecoGroup(composite, getCurrentObject().getEndereco(), SWT.NONE);
-		grpEndereco.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		grpEndereco.setText("Endereco");
+		grpEndereco.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		grpEndereco.getControl().setText("Endereco");
 		grpEndereco.setEndereco(getCurrentObject().getEndereco());
 	}
 
@@ -160,7 +161,7 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 	}
 	
 	@Override
-	protected DataBindingContext initDataBindings() {
+	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextText_12ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_12);

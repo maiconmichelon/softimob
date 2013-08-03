@@ -464,7 +464,7 @@
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/movimentacao/movimentacao16.png"
-                  label="Movimentações"
+                  label="Movimentações Contábeis"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"

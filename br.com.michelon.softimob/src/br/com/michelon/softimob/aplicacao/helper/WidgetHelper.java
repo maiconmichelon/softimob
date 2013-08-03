@@ -94,7 +94,7 @@ public class WidgetHelper {
 	public static MenuItem createMenuItemRemover(Menu menu, SelectionListener listener){
 		MenuItem miRemover = new MenuItem(menu, SWT.BORDER);
 		miRemover.setText("Remover");
-		miRemover.setImage(ImageRepository.REMOVE_16.getImage());
+		miRemover.setImage(ImageRepository.DELETE_16.getImage());
 		miRemover.addSelectionListener(listener);
 		return miRemover;
 	}

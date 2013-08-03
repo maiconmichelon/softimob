@@ -83,7 +83,7 @@ public class PlanoContaEditor extends GenericEditor<PlanoConta> {
 		
 	}
 	@Override
-	protected DataBindingContext initDataBindings() {
+	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);

@@ -46,6 +46,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
@@ -68,10 +69,12 @@ import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.Chave;
 import br.com.michelon.softimob.modelo.Chave.LocalizacaoChave;
+import br.com.michelon.softimob.modelo.Cliente;
 import br.com.michelon.softimob.modelo.Comodo;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico.TipoContrato;
 import br.com.michelon.softimob.modelo.Feedback;
+import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.Proposta;
 import br.com.michelon.softimob.modelo.Reserva;
@@ -173,7 +176,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		GridLayout gl_composite = new GridLayout(6, false);
+		GridLayout gl_composite = new GridLayout(8, false);
 		gl_composite.verticalSpacing = 6;
 		composite.setLayout(gl_composite);
 		
@@ -188,6 +191,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
 		
 		Label lblTipoImvel = new Label(composite, SWT.NONE);
 		lblTipoImvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -195,7 +200,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		cvTipoImovel = new ComboViewer(composite, SWT.READ_ONLY);
 		Combo combo_4 = cvTipoImovel.getCombo();
-		combo_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		combo_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		cvTipoImovel.setLabelProvider(new LabelProvider(){
 			@Override
 			public String getText(Object element) {
@@ -215,8 +220,12 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		ListElementDialogHelper.addListElementDialogToText(TipoDialog.CLIENTE, txtProprietario, value, "proprietario");
 		
 		Button btnSelecionarProprietario = new Button(composite, SWT.NONE);
-		btnSelecionarProprietario.setText("...");
+		btnSelecionarProprietario.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionarProprietario, value, "proprietario");
+		
+		Button button_1 = new Button(composite, SWT.NONE);
+		button_1.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(button_1, value, "proprietario", Cliente.class);
 		
 		Label lblAngariad = new Label(composite, SWT.NONE);
 		lblAngariad.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -227,8 +236,12 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		txtAngariador.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecAngariador = new Button(composite, SWT.NONE);
-		btnSelecAngariador.setText("...");
+		btnSelecAngariador.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecAngariador, value, "angariador");
+		
+		Button btnt = new Button(composite, SWT.NONE);
+		btnt.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnt, value, "angariador", Funcionario.class);
 		
 		Label lblMetragem = new Label(composite, SWT.NONE);
 		lblMetragem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -237,15 +250,17 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		txtMetragem = new Text(composite, SWT.BORDER);
 		new FormattedText(txtMetragem).setFormatter(new NumberFormatter("##############"));
 		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
 		
 		Label lblObservaes_3 = new Label(composite, SWT.NONE);
 		lblObservaes_3.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes_3.setText("Observações");
 		
 		txtObservacoes = new StyledText(composite, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		GridData gd_text_6 = new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1);
+		GridData gd_text_6 = new GridData(SWT.FILL, SWT.FILL, true, false, 5, 1);
 		gd_text_6.heightHint = 34;
 		txtObservacoes.setLayoutData(gd_text_6);
+		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		
 		CTabFolder tfImovel = new CTabFolder(parent, SWT.BORDER);
@@ -260,8 +275,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		composite_1.setLayout(new GridLayout(1, false));
 		
 		grpEndereco = new EnderecoGroup(composite_1, getCurrentObject().getEndereco(), SWT.NONE);
-		grpEndereco.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		grpEndereco.setText("Endereco");
+		grpEndereco.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		CTabItem tbtmDescrio_1 = new CTabItem(tfImovel, SWT.NONE);
 		tbtmDescrio_1.setText("Cômodos");
@@ -277,7 +291,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		criarTabelaComodo(composite_10);
 		
 		Group grpCmodo = new Group(composite_5, SWT.NONE);
-		grpCmodo.setLayout(new GridLayout(3, false));
+		grpCmodo.setLayout(new GridLayout(4, false));
 		grpCmodo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		grpCmodo.setText("Cômodo");
 		
@@ -286,12 +300,17 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblNome.setText("Nome");
 		
 		text_26 = new Text(grpCmodo, SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
+		text_26.setEditable(false);
 		text_26.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 		
 		Button btnSelecionarComodo = new Button(grpCmodo, SWT.NONE);
-		btnSelecionarComodo.setText("...");
-		btnSelecionarComodo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnSelecionarComodo.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.COMODO, btnSelecionarComodo, valueComodo, "tipoComodo");
+		
+		Button btnRemoverComodo = new Button(grpCmodo, SWT.NONE);
+		btnRemoverComodo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnRemoverComodo.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoverComodo, valueComodo, "tipoComodo", TipoComodo.class);
 
 		Label lblDescrio_3 = new Label(grpCmodo, SWT.NONE);
 		lblDescrio_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -299,6 +318,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		txtDescrio = new Text(grpCmodo, SWT.BORDER);
 		txtDescrio.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(grpCmodo, SWT.NONE);
+		new Label(grpCmodo, SWT.NONE);
 		new Label(grpCmodo, SWT.NONE);
 		new Label(grpCmodo, SWT.NONE);
 		new Label(grpCmodo, SWT.NONE);
@@ -377,7 +398,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		criarTabelaFeedback(cpTvbHistorico);
 		
 		Group grpNovoHistrico = new Group(composite_3, SWT.NONE);
-		GridLayout gl_grpNovoHistrico = new GridLayout(3, false);
+		GridLayout gl_grpNovoHistrico = new GridLayout(4, false);
 		grpNovoHistrico.setLayout(gl_grpNovoHistrico);
 		grpNovoHistrico.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		grpNovoHistrico.setText("Feedback");
@@ -390,38 +411,50 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		text_32 = dateTextField.getControl();
 		text_32.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpNovoHistrico, SWT.NONE);
+		new Label(grpNovoHistrico, SWT.NONE);
 		
 		Label lblFuncionrio_1 = new Label(grpNovoHistrico, SWT.NONE);
 		lblFuncionrio_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFuncionrio_1.setText("Funcionário");
 		
 		text_12 = new Text(grpNovoHistrico, SWT.BORDER);
+		text_12.setEditable(false);
 		text_12.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionarFuncionarioFeedback = new Button(grpNovoHistrico, SWT.NONE);
-		btnSelecionarFuncionarioFeedback.setText("...");
-		btnSelecionarFuncionarioFeedback.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnSelecionarFuncionarioFeedback.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioFeedback, valueFeedback, "funcionario");
+		
+		Button button_3 = new Button(grpNovoHistrico, SWT.NONE);
+		button_3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		button_3.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(button_3, valueFeedback, "funcionario", Funcionario.class);
 		
 		Label lblClienteHistorico = new Label(grpNovoHistrico, SWT.NONE);
 		lblClienteHistorico.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblClienteHistorico.setText("Cliente");
 		
 		text_14 = new Text(grpNovoHistrico, SWT.BORDER);
+		text_14.setEditable(false);
 		text_14.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionarClienteFeedback = new Button(grpNovoHistrico, SWT.NONE);
-		btnSelecionarClienteFeedback.setText("...");
+		btnSelecionarClienteFeedback.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionarClienteFeedback, valueFeedback, "cliente");
+		
+		Button button_4 = new Button(grpNovoHistrico, SWT.NONE);
+		button_4.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(button_4, valueFeedback, "cliente", Cliente.class);
 		
 		Label lblObservaes = new Label(grpNovoHistrico, SWT.NONE);
 		lblObservaes.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes.setText("Observações");
 		
 		text_13 = new Text(grpNovoHistrico, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI);
-		GridData gd_text_13 = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		GridData gd_text_13 = new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1);
 		gd_text_13.heightHint = 51;
 		text_13.setLayoutData(gd_text_13);
+		new Label(grpNovoHistrico, SWT.NONE);
 		new Label(grpNovoHistrico, SWT.NONE);
 		new Label(grpNovoHistrico, SWT.NONE);
 		
@@ -464,7 +497,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		Group grpProposta = new Group(composite_4, SWT.NONE);
 		grpProposta.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		grpProposta.setText("Proposta");
-		GridLayout gl_grpProposta = new GridLayout(3, false);
+		GridLayout gl_grpProposta = new GridLayout(4, false);
 		grpProposta.setLayout(gl_grpProposta);
 		
 		Label lblData = new Label(grpProposta, SWT.NONE);
@@ -475,29 +508,40 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		text_33 = dateTextField_1.getControl();
 		text_33.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpProposta, SWT.NONE);
+		new Label(grpProposta, SWT.NONE);
 		
 		Label lblCliente = new Label(grpProposta, SWT.NONE);
 		lblCliente.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCliente.setText("Cliente");
 		
 		text_9 = new Text(grpProposta, SWT.BORDER);
+		text_9.setEditable(false);
 		text_9.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionarClienteProposta = new Button(grpProposta, SWT.NONE);
-		btnSelecionarClienteProposta.setText("...");
-		btnSelecionarClienteProposta.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnSelecionarClienteProposta.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionarClienteProposta, valueProposta, "cliente");
+		
+		Button button_5 = new Button(grpProposta, SWT.NONE);
+		button_5.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(button_5, valueProposta, "cliente", Cliente.class);
 		
 		Label lblFuncionrio = new Label(grpProposta, SWT.NONE);
 		lblFuncionrio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFuncionrio.setText("Funcionário");
 		
 		text_11 = new Text(grpProposta, SWT.BORDER);
+		text_11.setEditable(false);
 		text_11.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
 		Button btnSelecionarFuncionarioProposta = new Button(grpProposta, SWT.NONE);
-		btnSelecionarFuncionarioProposta.setText("...");
+		btnSelecionarFuncionarioProposta.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioProposta, valueProposta, "funcionario");
+		
+		Button button_6 = new Button(grpProposta, SWT.NONE);
+		button_6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		button_6.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(button_6, valueProposta, "funcionario", Funcionario.class);
 		
 		Label lblValor_1 = new Label(grpProposta, SWT.NONE);
 		lblValor_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -509,15 +553,17 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		gd_text_29.widthHint = 114;
 		text_29.setLayoutData(gd_text_29);
 		new Label(grpProposta, SWT.NONE);
+		new Label(grpProposta, SWT.NONE);
 		
 		Label lblObservaes_2 = new Label(grpProposta, SWT.NONE);
 		lblObservaes_2.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes_2.setText("Observações");
 		
 		text_20 = new Text(grpProposta, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		GridData gd_text_20 = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		GridData gd_text_20 = new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1);
 		gd_text_20.heightHint = 49;
 		text_20.setLayoutData(gd_text_20);
+		new Label(grpProposta, SWT.NONE);
 		new Label(grpProposta, SWT.NONE);
 		new Label(grpProposta, SWT.NONE);
 		
@@ -546,7 +592,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		criarTabelaReservas(composite_18);
 		
 		Group grpReserva = new Group(composite_17, SWT.NONE);
-		grpReserva.setLayout(new GridLayout(3, false));
+		grpReserva.setLayout(new GridLayout(4, false));
 		grpReserva.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		grpReserva.setText("Reserva");
 		
@@ -558,6 +604,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		text_30 = dateTextField_5.getControl();
 		text_30.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpReserva, SWT.NONE);
+		new Label(grpReserva, SWT.NONE);
 		
 		Label lblDataDeVencimento = new Label(grpReserva, SWT.NONE);
 		lblDataDeVencimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -567,29 +614,40 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		text_37 = dateTextField_6.getControl();
 		text_37.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpReserva, SWT.NONE);
+		new Label(grpReserva, SWT.NONE);
 		
 		Label lblCliente_2 = new Label(grpReserva, SWT.NONE);
 		lblCliente_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCliente_2.setText("Cliente");
 		
 		text_38 = new Text(grpReserva, SWT.BORDER);
+		text_38.setEditable(false);
 		text_38.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_20 = new Button(grpReserva, SWT.NONE);
-		button_20.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		button_20.setText("...");
+		button_20.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, button_20, valueReserva, "cliente");
+		
+		Button button_7 = new Button(grpReserva, SWT.NONE);
+		button_7.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		button_7.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(button_7, valueReserva, "cliente", Cliente.class);
 		
 		Label lblCorretor = new Label(grpReserva, SWT.NONE);
 		lblCorretor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCorretor.setText("Corretor");
 		
 		text_40 = new Text(grpReserva, SWT.BORDER);
+		text_40.setEditable(false);
 		text_40.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_21 = new Button(grpReserva, SWT.NONE);
-		button_21.setText("...");
+		button_21.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, button_21, valueReserva, "funcionario");
+		
+		Button button_8 = new Button(grpReserva, SWT.NONE);
+		button_8.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(button_8, valueReserva, "funcionario", Funcionario.class);
 		
 		Label lblValor_2 = new Label(grpReserva, SWT.NONE);
 		lblValor_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -599,15 +657,17 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		text_39 = moneyTextField_2.getControl();
 		text_39.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpReserva, SWT.NONE);
+		new Label(grpReserva, SWT.NONE);
 		
 		Label lblDescrio_4 = new Label(grpReserva, SWT.NONE);
 		lblDescrio_4.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblDescrio_4.setText("Observações");
 		
 		text_41 = new Text(grpReserva, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		GridData gd_text_41 = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		GridData gd_text_41 = new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1);
 		gd_text_41.heightHint = 28;
 		text_41.setLayoutData(gd_text_41);
+		new Label(grpReserva, SWT.NONE);
 		new Label(grpReserva, SWT.NONE);
 		new Label(grpReserva, SWT.NONE);
 		
@@ -631,7 +691,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		criarTabelaContratoPrestacaoServico(composite_8);
 		
 		Group grpContratoPrestaoDe = new Group(composite_7, SWT.NONE);
-		grpContratoPrestaoDe.setLayout(new GridLayout(3, false));
+		grpContratoPrestaoDe.setLayout(new GridLayout(4, false));
 		grpContratoPrestaoDe.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1));
 		grpContratoPrestaoDe.setText("Contrato Prestação de Serviço");
 		
@@ -640,12 +700,17 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblFuncionrio_2.setText("Funcionário");
 		
 		text_10 = new Text(grpContratoPrestaoDe, SWT.BORDER);
+		text_10.setEditable(false);
 		text_10.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button = new Button(grpContratoPrestaoDe, SWT.NONE);
-		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		button.setText("...");
+		button.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, button, valueContrato, "funcionario");
+		
+		Button button_9 = new Button(grpContratoPrestaoDe, SWT.NONE);
+		button_9.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		button_9.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(button_9, valueContrato, "funcionario", Funcionario.class);
 		
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
@@ -661,6 +726,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		radioGroupViewer_1.setContentProvider(ArrayContentProvider.getInstance());
 		radioGroupViewer_1.setInput(ContratoPrestacaoServico.TipoContrato.values());
 		new Label(grpContratoPrestaoDe, SWT.NONE);
+		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
 		Label lblData_2 = new Label(grpContratoPrestaoDe, SWT.NONE);
 		lblData_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -669,6 +735,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		DateTextField dateTextField_2 = new DateTextField(grpContratoPrestaoDe);
 		text = dateTextField_2.getControl();
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(grpContratoPrestaoDe, SWT.NONE);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
 		Label lblDataDeVencimento_1 = new Label(grpContratoPrestaoDe, SWT.NONE);
@@ -680,6 +747,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		text_16.setText("");
 		text_16.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpContratoPrestaoDe, SWT.NONE);
+		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
 		Label lblValor = new Label(grpContratoPrestaoDe, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -690,9 +758,12 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
+		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
 		btnDivulgar = new Button(grpContratoPrestaoDe, SWT.CHECK);
 		btnDivulgar.setText("Divulgar");
+		new Label(grpContratoPrestaoDe, SWT.NONE);
+		new Label(grpContratoPrestaoDe, SWT.NONE);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
@@ -961,7 +1032,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		return bindingContext;
 	}
 	@Override
-	protected DataBindingContext initDataBindings() {
+	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtAngariador);

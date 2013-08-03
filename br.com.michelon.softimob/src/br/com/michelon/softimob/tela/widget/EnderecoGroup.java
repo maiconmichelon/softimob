@@ -41,10 +41,11 @@ import br.com.michelon.softimob.modelo.Endereco;
 import br.com.michelon.softimob.modelo.Estado;
 import br.com.michelon.softimob.modelo.Rua;
 
-public class EnderecoGroup extends Group {
+public class EnderecoGroup {
 
 	private Logger log = Logger.getLogger(getClass());
 	
+	private Group control;
 	private ComboViewer cvCidades;
 	private ComboViewer cvBairros;
 	private ComboViewer cvRuas;
@@ -61,23 +62,24 @@ public class EnderecoGroup extends Group {
 	private ComboViewer cvUF;
 
 	public EnderecoGroup(Composite parent, Endereco endereco, int style) {
-		super(parent, style);
-		
-		createComponents();
+		createComponents(parent, style);
 
 		setEndereco(endereco);
 	}
 
-	private void createComponents() {
+	private void createComponents(Composite parent, int style) {
+		control = new Group(parent, style);
+		control.setText("Endereço");
+		
 		GridLayout gridLayout = new GridLayout(3, false);
 		gridLayout.verticalSpacing = 10;
-		setLayout(gridLayout);
+		control.setLayout(gridLayout);
 
-		Label lblCep_1 = new Label(this, SWT.NONE);
+		Label lblCep_1 = new Label(control, SWT.NONE);
 		lblCep_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCep_1.setText("CEP");
 
-		CEPTextField textField = new CEPTextField(this);
+		CEPTextField textField = new CEPTextField(control);
 		txtCep = textField.getControl();
 		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_text_1.widthHint = 124;
@@ -103,13 +105,13 @@ public class EnderecoGroup extends Group {
 				}
 			}
 		});
-		new Label(this, SWT.NONE);
+		new Label(control, SWT.NONE);
 
-		Label lblUf = new Label(this, SWT.NONE);
+		Label lblUf = new Label(control, SWT.NONE);
 		lblUf.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblUf.setText("UF");
 
-		cvUF = new ComboViewer(this, SWT.READ_ONLY);
+		cvUF = new ComboViewer(control, SWT.READ_ONLY);
 		Combo combo = cvUF.getCombo();
 		GridData gd_combo = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_combo.widthHint = 41;
@@ -128,14 +130,14 @@ public class EnderecoGroup extends Group {
 			}
 		});
 
-		Label label = new Label(this, SWT.NONE);
+		Label label = new Label(control, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 
-		Label lblCidade = new Label(this, SWT.NONE);
+		Label lblCidade = new Label(control, SWT.NONE);
 		lblCidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCidade.setText("Cidade");
 
-		cvCidades = new ComboViewer(this, SWT.READ_ONLY);
+		cvCidades = new ComboViewer(control, SWT.READ_ONLY);
 		Combo combo_1 = cvCidades.getCombo();
 		combo_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		cvCidades.addPostSelectionChangedListener(new ISelectionChangedListener() {
@@ -150,13 +152,13 @@ public class EnderecoGroup extends Group {
 			}
 		});
 		cvCidades.setContentProvider(ArrayContentProvider.getInstance());
-		new Label(this, SWT.NONE);
+		new Label(control, SWT.NONE);
 
-		Label lblBairro = new Label(this, SWT.NONE);
+		Label lblBairro = new Label(control, SWT.NONE);
 		lblBairro.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblBairro.setText("Bairro");
 
-		cvBairros = new ComboViewer(this, SWT.READ_ONLY);
+		cvBairros = new ComboViewer(control, SWT.READ_ONLY);
 		Combo combo_2 = cvBairros.getCombo();
 		combo_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		cvBairros.addPostSelectionChangedListener(new ISelectionChangedListener() {
@@ -170,13 +172,13 @@ public class EnderecoGroup extends Group {
 			}
 		});
 		cvBairros.setContentProvider(ArrayContentProvider.getInstance());
-		new Label(this, SWT.NONE);
+		new Label(control, SWT.NONE);
 
-		Label lblRua_1 = new Label(this, SWT.NONE);
+		Label lblRua_1 = new Label(control, SWT.NONE);
 		lblRua_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblRua_1.setText("Rua");
 
-		cvRuas = new ComboViewer(this, SWT.READ_ONLY);
+		cvRuas = new ComboViewer(control, SWT.READ_ONLY);
 		Combo combo_3 = cvRuas.getCombo();
 		combo_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		cvRuas.setLabelProvider(new LabelProvider() {
@@ -186,25 +188,25 @@ public class EnderecoGroup extends Group {
 			}
 		});
 		cvRuas.setContentProvider(ArrayContentProvider.getInstance());
-		new Label(this, SWT.NONE);
+		new Label(control, SWT.NONE);
 
-		Label lblNmero = new Label(this, SWT.NONE);
+		Label lblNmero = new Label(control, SWT.NONE);
 		lblNmero.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNmero.setText("Número");
 
-		txtNumero = new Text(this, SWT.BORDER);
+		txtNumero = new Text(control, SWT.BORDER);
 		GridData gd_text_7 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_text_7.widthHint = 98;
 		txtNumero.setLayoutData(gd_text_7);
-		new Label(this, SWT.NONE);
+		new Label(control, SWT.NONE);
 
-		Label lblComplemento = new Label(this, SWT.NONE);
+		Label lblComplemento = new Label(control, SWT.NONE);
 		lblComplemento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblComplemento.setText("Complemento");
 
-		txtComplemento = new Text(this, SWT.BORDER);
+		txtComplemento = new Text(control, SWT.BORDER);
 		txtComplemento.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(this, SWT.NONE);
+		new Label(control, SWT.NONE);
 
 		initDataBindings();
 	}
@@ -250,10 +252,6 @@ public class EnderecoGroup extends Group {
 		}
 	}
 
-	@Override
-	protected void checkSubclass() {
-	}
-
 	public Endereco getEndereco() {
 		return (Endereco) value.getValue();
 	}
@@ -280,6 +278,10 @@ public class EnderecoGroup extends Group {
 		value.setValue(endereco);
 	}
 
+	public Group getControl() {
+		return control;
+	}
+	
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

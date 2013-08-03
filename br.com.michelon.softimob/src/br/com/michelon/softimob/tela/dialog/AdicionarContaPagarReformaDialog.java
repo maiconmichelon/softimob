@@ -23,7 +23,6 @@ public class AdicionarContaPagarReformaDialog extends TitleAreaDialog{
 		super(parentShell);
 		setShellStyle(SWT.TITLE);
 		setTitle("Geração de contrato de promessa de compra e venda.");
-		parentShell.setText("HAUAH");
 	}
 	
 	/**

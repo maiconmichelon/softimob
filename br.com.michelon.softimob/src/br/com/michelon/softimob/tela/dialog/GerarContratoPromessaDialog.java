@@ -4,15 +4,16 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.tela.widget.DateTextField;
-import org.eclipse.swt.widgets.Button;
 
 public class GerarContratoPromessaDialog extends TitleAreaDialog{
 
@@ -74,7 +75,7 @@ public class GerarContratoPromessaDialog extends TitleAreaDialog{
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button = new Button(composite, SWT.NONE);
-		button.setText("...");
+		button.setImage(ImageRepository.SEARCH_16.getImage());
 		
 		Label lblContrato = new Label(composite, SWT.NONE);
 		lblContrato.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -84,7 +85,7 @@ public class GerarContratoPromessaDialog extends TitleAreaDialog{
 		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_1 = new Button(composite, SWT.NONE);
-		button_1.setText("...");
+		button_1.setImage(ImageRepository.SEARCH_16.getImage());
 	
 		return composite;
 	}

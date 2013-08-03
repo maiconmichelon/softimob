@@ -76,7 +76,12 @@ public abstract class GenericEditor<T> extends EditorPart {
 		scrolledComposite.setContent(cpPrincipal);
 		scrolledComposite.setMinSize(cpPrincipal.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
-		initDataBindings = initDataBindings();
+		//PARA ABRIR NO WINDOW BUILDER
+		if(getEditorInput() instanceof GenericEditorInput)
+			initDataBindings = initBindings();
+//		else{
+//			initDataBindings = this.initDataBindings();
+//		}
 		
 		Composite cpOpcoes = new Composite(composite, SWT.BORDER);
 		cpOpcoes.setLayout(new GridLayout(1, false));
@@ -101,8 +106,10 @@ public abstract class GenericEditor<T> extends EditorPart {
 
 	public abstract void afterCreatePartControl(Composite parent);
 	
-	protected DataBindingContext initDataBindings(){
-		return null;
+	// NÃO PODE SER initDataBindings PORQUE O WINDOW BUILDER NÃO ABRI DAÍ !
+	protected DataBindingContext initBindings(){
+		DataBindingContext bindingContext = new DataBindingContext();
+		return bindingContext;
 	}
 	
 	public abstract GenericService<T> getService();

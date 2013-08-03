@@ -1,23 +1,24 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PlacaService;
-import br.com.michelon.softimob.modelo.Placa;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.core.databinding.beans.PojoProperties;
 import br.com.michelon.softimob.modelo.Imovel;
+import br.com.michelon.softimob.modelo.Placa;
 
 public class PlacaEditor extends GenericEditor<Placa>{
 
@@ -43,7 +44,7 @@ public class PlacaEditor extends GenericEditor<Placa>{
 		parent.setLayout(new GridLayout(1, false));
 		
 		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout gl_composite = new GridLayout(3, false);
+		GridLayout gl_composite = new GridLayout(4, false);
 		gl_composite.verticalSpacing = 10;
 		composite.setLayout(gl_composite);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -57,33 +58,42 @@ public class PlacaEditor extends GenericEditor<Placa>{
 		gd_text.widthHint = 134;
 		text.setLayoutData(gd_text);
 		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
 		
 		org.eclipse.swt.widgets.Label lblImvel = new org.eclipse.swt.widgets.Label(composite, SWT.NONE);
 		lblImvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblImvel.setText("Imóvel");
 		
 		text_1 = new Text(composite, SWT.BORDER);
+		text_1.setEditable(false);
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar = new Button(composite, SWT.NONE);
-		btnSelecionar.setText("...");
+		btnSelecionar.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.IMOVEL, btnSelecionar, value, "imovel");
+		
+		Button button = new Button(composite, SWT.NONE);
+		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		button.setImage(ImageRepository.REMOVE_16.getImage());
 		
 		Label lblNewLabel = new Label(composite, SWT.NONE);
 		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNewLabel.setText("Corretor");
 		
 		text_2 = new Text(composite, SWT.BORDER);
+		text_2.setEditable(false);
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnNewButton = new Button(composite, SWT.NONE);
-		btnNewButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		btnNewButton.setText("...");
+		btnNewButton.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnNewButton, value, "funcionario");
+		
+		Button button_1 = new Button(composite, SWT.NONE);
+		button_1.setImage(ImageRepository.REMOVE_16.getImage());
 	}
 
 	@Override
-	protected DataBindingContext initDataBindings() {
+	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);

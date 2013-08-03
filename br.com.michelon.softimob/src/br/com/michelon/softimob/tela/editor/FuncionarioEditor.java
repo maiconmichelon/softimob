@@ -127,8 +127,8 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 		text_5.setLayoutData(gd_text_5);
 		
 		grpEndereco = new EnderecoGroup(composite, getCurrentObject().getEndereco(), SWT.NONE);
-		grpEndereco.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		grpEndereco.setText("Endereco");
+		grpEndereco.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		grpEndereco.getControl().setText("Endereco");
 		grpEndereco.setEndereco(getCurrentObject().getEndereco());
 	}
 	
@@ -145,7 +145,7 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 	}
 	
 	@Override
-	protected DataBindingContext initDataBindings() {
+	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);

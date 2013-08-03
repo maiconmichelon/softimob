@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -88,7 +89,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 	public void afterCreatePartControl(Composite parent) {
 		GridLayout gridLayout = (GridLayout) parent.getLayout();
 		gridLayout.verticalSpacing = 10;
-		gridLayout.numColumns = 6;
+		gridLayout.numColumns = 8;
 
 		Label lblLote = new Label(parent, SWT.NONE);
 		lblLote.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -97,6 +98,8 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		text = new Text(parent, SWT.BORDER);
 		text.setEditable(false);
 		text.setEnabled(false);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
@@ -115,6 +118,8 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 
 		Label lblValor = new Label(parent, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -129,36 +134,46 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 
 		Label lblDebito = new Label(parent, SWT.NONE);
 		lblDebito.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDebito.setText("Dédito");
 
 		text_2 = new Text(parent, SWT.BORDER);
+		text_2.setEditable(false);
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Button button = new Button(parent, SWT.NONE);
-		button.setText("...");
+		button.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button, valueModeloLcto, "contaDebito");
+		
+		Button btnt = new Button(parent, SWT.NONE);
+		btnt.setImage(ImageRepository.REMOVE_16.getImage());
 
 		Label lblCredito = new Label(parent, SWT.NONE);
 		lblCredito.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCredito.setText("Crédito");
 
 		text_3 = new Text(parent, SWT.BORDER);
+		text_3.setEditable(false);
 		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Button button_1 = new Button(parent, SWT.NONE);
-		button_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		button_1.setText("...");
+		button_1.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_1, valueModeloLcto, "contaCredito");
+		
+		Button btnt_1 = new Button(parent, SWT.NONE);
+		btnt_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnt_1.setImage(ImageRepository.REMOVE_16.getImage());
 
 		Label lblHistrico = new Label(parent, SWT.NONE);
 		lblHistrico.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblHistrico.setText("Histórico");
 
 		text_4 = new Text(parent, SWT.BORDER);
-		GridData gd_text_4 = new GridData(SWT.FILL, SWT.FILL, true, false, 5, 1);
+		GridData gd_text_4 = new GridData(SWT.FILL, SWT.FILL, true, false, 7, 1);
 		gd_text_4.heightHint = 39;
 		text_4.setLayoutData(gd_text_4);
 		new Label(parent, SWT.NONE);
@@ -166,39 +181,41 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+				new Label(parent, SWT.NONE);
+		
+				Button btnAdicionar = new Button(parent, SWT.NONE);
+				btnAdicionar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+				btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+				btnAdicionar.setText("Adicionar");
+				btnAdicionar.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						MovimentacaoContabil mov = getCurrentObject();
+						ModeloLancamentos mod = (ModeloLancamentos) valueModeloLcto.getValue();
 
-		Button btnAdicionar = new Button(parent, SWT.NONE);
-		btnAdicionar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
-		btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		btnAdicionar.setText("Adicionar");
-		btnAdicionar.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				MovimentacaoContabil mov = getCurrentObject();
-				ModeloLancamentos mod = (ModeloLancamentos) valueModeloLcto.getValue();
+						if (mod.getContaCredito() == null && mod.getContaDebito() == null) {
+							DialogHelper.openWarning("Informe pelo menos uma conta");
+							return;
+						}
 
-				if (mod.getContaCredito() == null && mod.getContaDebito() == null) {
-					DialogHelper.openWarning("Informe pelo menos uma conta");
-					return;
-				}
+						if (mod.getValor() == null || mod.getValor().signum() <= 0) {
+							DialogHelper.openWarning("Informe um valor que zero.");
+							return;
+						}
 
-				if (mod.getValor() == null || mod.getValor().signum() <= 0) {
-					DialogHelper.openWarning("Informe um valor que zero.");
-					return;
-				}
+						mov.getLancamentos().addAll(mod.getLancamentos());
 
-				mov.getLancamentos().addAll(mod.getLancamentos());
+						tvLancamentosCredito.refresh();
+						tvLancamentosDebito.refresh();
 
-				tvLancamentosCredito.refresh();
-				tvLancamentosDebito.refresh();
-
-				valueModeloLcto.setValue(new ModeloLancamentos());
-			}
-		});
+						valueModeloLcto.setValue(new ModeloLancamentos());
+					}
+				});
 
 		Group grpDbito = new Group(parent, SWT.NONE);
 		grpDbito.setLayout(new GridLayout(2, false));
-		grpDbito.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 6, 1));
+		grpDbito.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 8, 1));
 		grpDbito.setText("Débito");
 
 		Composite cpLctosCredito = new Composite(grpDbito, SWT.NONE);
@@ -222,7 +239,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 
 		Group grpCrdito = new Group(parent, SWT.NONE);
 		grpCrdito.setLayout(new GridLayout(2, false));
-		grpCrdito.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 6, 1));
+		grpCrdito.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 8, 1));
 		grpCrdito.setText("Crédito");
 
 		Composite cpLctosDebito = new Composite(grpCrdito, SWT.NONE);
@@ -370,7 +387,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 	}
 
 	@Override
-	protected DataBindingContext initDataBindings() {
+	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);

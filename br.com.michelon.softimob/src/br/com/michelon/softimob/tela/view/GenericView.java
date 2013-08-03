@@ -262,7 +262,7 @@ public abstract class GenericView<T> extends ViewPart{
 			}
 		});
 		miRemover.setText(addGroupAtivadoDesativado ? "Desativar / Reativar" : "Remover");
-		miRemover.setImage(addGroupAtivadoDesativado ? null : ImageRepository.REMOVE_16.getImage());
+		miRemover.setImage(addGroupAtivadoDesativado ? null : ImageRepository.DELETE_16.getImage());
 	};
 	
 	/**
