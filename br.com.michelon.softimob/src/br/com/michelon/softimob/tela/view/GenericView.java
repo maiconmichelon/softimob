@@ -256,7 +256,11 @@ public abstract class GenericView<T> extends ViewPart{
 		MenuItem miRemover = WidgetHelper.createMenuItemRemover(menu, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				excluirDesativarAtivar(getSelecionado());
+				T selecionado = getSelecionado();
+				if(selecionado == null)
+					return;
+				
+				excluirDesativarAtivar(selecionado);
 				
 				atualizar(getInput());
 			}

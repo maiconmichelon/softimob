@@ -70,11 +70,11 @@ public class PlacaEditor extends GenericEditor<Placa>{
 		
 		Button btnSelecionar = new Button(composite, SWT.NONE);
 		btnSelecionar.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.IMOVEL, btnSelecionar, value, "imovel");
 		
 		Button button = new Button(composite, SWT.NONE);
 		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.IMOVEL, btnSelecionar, button, value, "imovel");
 		
 		Label lblNewLabel = new Label(composite, SWT.NONE);
 		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -86,10 +86,10 @@ public class PlacaEditor extends GenericEditor<Placa>{
 		
 		Button btnNewButton = new Button(composite, SWT.NONE);
 		btnNewButton.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnNewButton, value, "funcionario");
 		
 		Button button_1 = new Button(composite, SWT.NONE);
 		button_1.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnNewButton, button_1, value, "funcionario");
 	}
 
 	@Override

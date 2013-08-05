@@ -148,9 +148,10 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		Button button = new Button(parent, SWT.NONE);
 		button.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button, valueModeloLcto, "contaDebito");
-		
+
 		Button btnt = new Button(parent, SWT.NONE);
 		btnt.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnt, valueModeloLcto, "contaDebito", PlanoConta.class);
 
 		Label lblCredito = new Label(parent, SWT.NONE);
 		lblCredito.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -163,10 +164,11 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		Button button_1 = new Button(parent, SWT.NONE);
 		button_1.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_1, valueModeloLcto, "contaCredito");
-		
+
 		Button btnt_1 = new Button(parent, SWT.NONE);
 		btnt_1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnt_1.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnt_1, valueModeloLcto, "contaCredito", PlanoConta.class);
 
 		Label lblHistrico = new Label(parent, SWT.NONE);
 		lblHistrico.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -182,36 +184,36 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
-				new Label(parent, SWT.NONE);
-		
-				Button btnAdicionar = new Button(parent, SWT.NONE);
-				btnAdicionar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
-				btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-				btnAdicionar.setText("Adicionar");
-				btnAdicionar.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						MovimentacaoContabil mov = getCurrentObject();
-						ModeloLancamentos mod = (ModeloLancamentos) valueModeloLcto.getValue();
+		new Label(parent, SWT.NONE);
 
-						if (mod.getContaCredito() == null && mod.getContaDebito() == null) {
-							DialogHelper.openWarning("Informe pelo menos uma conta");
-							return;
-						}
+		Button btnAdicionar = new Button(parent, SWT.NONE);
+		btnAdicionar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
+		btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		btnAdicionar.setText("Adicionar");
+		btnAdicionar.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				MovimentacaoContabil mov = getCurrentObject();
+				ModeloLancamentos mod = (ModeloLancamentos) valueModeloLcto.getValue();
 
-						if (mod.getValor() == null || mod.getValor().signum() <= 0) {
-							DialogHelper.openWarning("Informe um valor que zero.");
-							return;
-						}
+				if (mod.getContaCredito() == null && mod.getContaDebito() == null) {
+					DialogHelper.openWarning("Informe pelo menos uma conta");
+					return;
+				}
 
-						mov.getLancamentos().addAll(mod.getLancamentos());
+				if (mod.getValor() == null || mod.getValor().signum() <= 0) {
+					DialogHelper.openWarning("Informe um valor que zero.");
+					return;
+				}
 
-						tvLancamentosCredito.refresh();
-						tvLancamentosDebito.refresh();
+				mov.getLancamentos().addAll(mod.getLancamentos());
 
-						valueModeloLcto.setValue(new ModeloLancamentos());
-					}
-				});
+				tvLancamentosCredito.refresh();
+				tvLancamentosDebito.refresh();
+
+				valueModeloLcto.setValue(new ModeloLancamentos());
+			}
+		});
 
 		Group grpDbito = new Group(parent, SWT.NONE);
 		grpDbito.setLayout(new GridLayout(2, false));

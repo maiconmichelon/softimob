@@ -17,6 +17,7 @@ import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDi
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.OrigemContaService;
 import br.com.michelon.softimob.modelo.OrigemConta;
+import br.com.michelon.softimob.modelo.PlanoConta;
 
 public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 	
@@ -59,6 +60,7 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 		lblConta.setText("Conta");
 		
 		text_1 = new Text(parent, SWT.BORDER);
+		text_1.setEditable(false);
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button = new Button(parent, SWT.NONE);
@@ -68,12 +70,14 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 		Button btnt = new Button(parent, SWT.NONE);
 		btnt.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnt.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnt, value, "conta", PlanoConta.class);
 		
 		Label lblContrapartida = new Label(parent, SWT.NONE);
 		lblContrapartida.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblContrapartida.setText("Contra-Partida");
 		
 		text_2 = new Text(parent, SWT.BORDER);
+		text_2.setEditable(false);
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_1 = new Button(parent, SWT.NONE);
@@ -82,6 +86,7 @@ public class OrigemContaEditor extends GenericEditor<OrigemConta> {
 		
 		Button btnt_1 = new Button(parent, SWT.NONE);
 		btnt_1.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnt_1, value, "contaContraPartida", PlanoConta.class);
 	}
 	
 	@Override

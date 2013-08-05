@@ -210,7 +210,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		
 		Composite composite_3 = new Composite(tfPagamento, SWT.NONE);
 		tbtmLanamentos.setControl(composite_3);
-		composite_3.setLayout(new GridLayout(3, false));
+		composite_3.setLayout(new GridLayout(4, false));
 		
 		Label lblDataPagamento = new Label(composite_3, SWT.NONE);
 		lblDataPagamento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -222,6 +222,7 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		gd_text_11.widthHint = 79;
 		txtDataBaixa.setLayoutData(gd_text_11);
 		new Label(composite_3, SWT.NONE);
+		new Label(composite_3, SWT.NONE);
 		
 		Label lblConta = new Label(composite_3, SWT.NONE);
 		lblConta.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -232,9 +233,14 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		txtConta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar = new Button(composite_3, SWT.NONE);
-		btnSelecionar.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnSelecionar.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		btnSelecionar.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, btnSelecionar, value, "conta");
+		
+		Button btnRemoverConta = new Button(composite_3, SWT.NONE);
+		btnRemoverConta.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnRemoverConta.setImage(ImageRepository.REMOVE_16.getImage());
+		
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, btnSelecionar, btnRemoverConta, value, "conta");
 		
 		Button btnGerarLanamentos = new Button(composite_3, SWT.NONE);
 		btnGerarLanamentos.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
@@ -247,10 +253,11 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 			}
 		});
 		new Label(composite_3, SWT.NONE);
+		new Label(composite_3, SWT.NONE);
 		
 		Composite composite = new Composite(composite_3, SWT.NONE);
 		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
 		formToolkit.adapt(composite);
 		formToolkit.paintBordersFor(composite);
 		

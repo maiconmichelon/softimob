@@ -42,7 +42,7 @@ public class GerarContratoPromessaDialog extends TitleAreaDialog{
 		parent.setLayout(new GridLayout(1, false));
 		
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(3, false));
+		composite.setLayout(new GridLayout(4, false));
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		Label lblDataDeIncio = new Label(composite, SWT.NONE);
@@ -55,6 +55,7 @@ public class GerarContratoPromessaDialog extends TitleAreaDialog{
 		gd_text.widthHint = 79;
 		text.setLayoutData(gd_text);
 		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
 		
 		Label lblDataDeVencimento = new Label(composite, SWT.NONE);
 		lblDataDeVencimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -65,6 +66,7 @@ public class GerarContratoPromessaDialog extends TitleAreaDialog{
 		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_text_1.widthHint = 79;
 		text_1.setLayoutData(gd_text_1);
+		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		
 		Label lblImvel = new Label(composite, SWT.NONE);
@@ -77,6 +79,9 @@ public class GerarContratoPromessaDialog extends TitleAreaDialog{
 		Button button = new Button(composite, SWT.NONE);
 		button.setImage(ImageRepository.SEARCH_16.getImage());
 		
+		Button btnt = new Button(composite, SWT.NONE);
+		btnt.setImage(ImageRepository.REMOVE_16.getImage());
+		
 		Label lblContrato = new Label(composite, SWT.NONE);
 		lblContrato.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblContrato.setText("Contrato");
@@ -86,6 +91,9 @@ public class GerarContratoPromessaDialog extends TitleAreaDialog{
 		
 		Button button_1 = new Button(composite, SWT.NONE);
 		button_1.setImage(ImageRepository.SEARCH_16.getImage());
+		
+		Button button_2 = new Button(composite, SWT.NONE);
+		button_2.setImage(ImageRepository.REMOVE_16.getImage());
 	
 		return composite;
 	}

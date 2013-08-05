@@ -39,6 +39,10 @@ public class VendaAluguel implements Serializable{
 	@ManyToOne
 	private ContratoPrestacaoServico contrato;
 
+	@NotNull(message = "O modelo de contrato não pode ser vazio.")
+	@ManyToOne
+	private ModeloContrato modeloContrato;
+	
 	//Cliente que vai alugar ou comprar a casa
 	@NotNull(message = "O cliente não pode ser vazio.")
 	@ManyToOne
@@ -75,6 +79,14 @@ public class VendaAluguel implements Serializable{
 		this.id = id;
 	}
 
+	public ModeloContrato getModeloContrato() {
+		return modeloContrato;
+	}
+	
+	public void setModeloContrato(ModeloContrato modeloContrato) {
+		this.modeloContrato = modeloContrato;
+	}
+	
 	public void setContrato(ContratoPrestacaoServico contrato) {
 		this.contrato = contrato;
 	}

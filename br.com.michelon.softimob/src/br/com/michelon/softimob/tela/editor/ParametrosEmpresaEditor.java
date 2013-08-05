@@ -121,11 +121,11 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button = new Button(composite, SWT.NONE);
 		button.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.MODELO_CONTRATO, button, value, "contratoVenda");
 		
 		Button btnt = new Button(composite, SWT.NONE);
 		btnt.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnt.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.MODELO_CONTRATO, button, btnt, value, "contratoVenda");
 		
 		Label lblChecklist = new Label(composite, SWT.NONE);
 		lblChecklist.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -137,10 +137,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_11 = new Button(composite, SWT.NONE);
 		button_11.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CHECK_LIST, button_11, value, "checkListVenda");
 		
 		Button button_17 = new Button(composite, SWT.NONE);
 		button_17.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CHECK_LIST, button_11, button_17, value, "checkListVenda");
 		
 		Label lblConta = new Label(composite, SWT.NONE);
 		lblConta.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -152,10 +152,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_6 = new Button(composite, SWT.NONE);
 		button_6.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_6, value, "contaVenda");
 		
 		Button button_18 = new Button(composite, SWT.NONE);
 		button_18.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_6, button_18, value, "contaVenda");
 		
 		Label lblContraPartida = new Label(composite, SWT.NONE);
 		lblContraPartida.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -167,10 +167,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_7 = new Button(composite, SWT.NONE);
 		button_7.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_7, value, "contraPartidaVenda");
 		
 		Button button_19 = new Button(composite, SWT.NONE);
 		button_19.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_7, button_19, value, "contraPartidaVenda");
 		
 		CTabItem tbtmAlguel = new CTabItem(tabFolder, SWT.NONE);
 		tbtmAlguel.setText("Aluguel");
@@ -209,11 +209,11 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button btnContratoAluguel = new Button(composite_1, SWT.NONE);
 		btnContratoAluguel.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.MODELO_CONTRATO, btnContratoAluguel, value, "contratoAluguel");
 		
 		Button button_20 = new Button(composite_1, SWT.NONE);
 		button_20.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_20.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.MODELO_CONTRATO, btnContratoAluguel, button_20, value, "contratoAluguel");
 		
 		Label lblChecklist_1 = new Label(composite_1, SWT.NONE);
 		lblChecklist_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -225,10 +225,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_1 = new Button(composite_1, SWT.NONE);
 		button_1.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CHECK_LIST, button_1, value, "checkListAluguel");
 		
 		Button button_21 = new Button(composite_1, SWT.NONE);
 		button_21.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CHECK_LIST, button_1, button_21, value, "checkListAluguel");
 		
 		Label lblConta_1 = new Label(composite_1, SWT.NONE);
 		lblConta_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -240,10 +240,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_8 = new Button(composite_1, SWT.NONE);
 		button_8.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_8, value, "contaAluguel");
 		
 		Button button_22 = new Button(composite_1, SWT.NONE);
 		button_22.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_8, button_22, value, "contaAluguel");
 		
 		Label lblContraPartida_1 = new Label(composite_1, SWT.NONE);
 		lblContraPartida_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -255,10 +255,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_9 = new Button(composite_1, SWT.NONE);
 		button_9.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_9, value, "contraPartidaAluguel");
 		
 		Button button_23 = new Button(composite_1, SWT.NONE);
 		button_23.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_9, button_23, value, "contraPartidaAluguel");
 		
 		CTabItem tbtmPrestaoDeServio = new CTabItem(tabFolder, SWT.NONE);
 		tbtmPrestaoDeServio.setText("Prestação de Serviço");
@@ -277,10 +277,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_3 = new Button(composite_6, SWT.NONE);
 		button_3.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.MODELO_CONTRATO, button_3, value, "contratoPrestacaoServico");
 		
 		Button button_24 = new Button(composite_6, SWT.NONE);
 		button_24.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.MODELO_CONTRATO, button_3, button_24, value, "contratoPrestacaoServico");
 		
 		Label lblTipoDeConta_1 = new Label(composite_6, SWT.NONE);
 		lblTipoDeConta_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -292,11 +292,11 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_4 = new Button(composite_6, SWT.NONE);
 		button_4.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.ORIGEM_CONTA, button_4, value, "tipoContaPrestacaoServico");
 		
 		Button button_25 = new Button(composite_6, SWT.NONE);
 		button_25.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_25.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.ORIGEM_CONTA, button_4, button_25, value, "tipoContaPrestacaoServico");
 		
 		CTabItem tbtmVistoria = new CTabItem(tabFolder, SWT.NONE);
 		tbtmVistoria.setText("Vistoria");
@@ -315,11 +315,11 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_2 = new Button(composite_5, SWT.NONE);
 		button_2.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CHECK_LIST, button_2, value, "checkListVistoria");
 		
 		Button button_26 = new Button(composite_5, SWT.NONE);
 		button_26.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_26.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CHECK_LIST, button_2, button_26, value, "checkListVistoria");
 		
 		CTabItem tbtmReformas = new CTabItem(tabFolder, SWT.NONE);
 		tbtmReformas.setText("Reformas");
@@ -350,11 +350,11 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_10 = new Button(composite_3, SWT.NONE);
 		button_10.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, button_10, value, "funcionarioResponsavelReforma");
 		
 		Button button_27 = new Button(composite_3, SWT.NONE);
 		button_27.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_27.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, button_10, button_27, value, "funcionarioResponsavelReforma");
 		
 		Label lblTipoDaConta = new Label(composite_3, SWT.NONE);
 		lblTipoDaConta.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -366,10 +366,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_5 = new Button(composite_3, SWT.NONE);
 		button_5.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.ORIGEM_CONTA, button_5, value, "tipoContaReforma");
 		
 		Button button_28 = new Button(composite_3, SWT.NONE);
 		button_28.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.ORIGEM_CONTA, button_5, button_28, value, "tipoContaReforma");
 		
 		CTabItem tabItem = new CTabItem(tabFolder, SWT.NONE);
 		tabItem.setText("Comissão");
@@ -387,11 +387,11 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_12 = new Button(composite_4, SWT.NONE);
 		button_12.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.ORIGEM_CONTA, button_12, value, "tipoContaComissao");
 		
 		Button button_29 = new Button(composite_4, SWT.NONE);
 		button_29.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_29.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.ORIGEM_CONTA, button_12, button_29, value, "tipoContaComissao");
 		
 		tabFolder.setSelection(0);
 		
@@ -412,11 +412,11 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_13 = new Button(composite_2, SWT.NONE);
 		button_13.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_13, value, "contaDescontoRecebido");
 		
 		Button button_30 = new Button(composite_2, SWT.NONE);
 		button_30.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		button_30.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_13, button_30, value, "contaDescontoRecebido");
 		
 		Label lblJurosPago = new Label(composite_2, SWT.NONE);
 		lblJurosPago.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -428,10 +428,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_14 = new Button(composite_2, SWT.NONE);
 		button_14.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_14, value, "contaJurosPagos");
 		
 		Button button_31 = new Button(composite_2, SWT.NONE);
 		button_31.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_14, button_31, value, "contaJurosPagos");
 		
 		Label lblDescontoConcedido = new Label(composite_2, SWT.NONE);
 		lblDescontoConcedido.setText("Desconto Concedido");
@@ -442,10 +442,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_15 = new Button(composite_2, SWT.NONE);
 		button_15.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_15, value, "contaDescontoConcedido");
 		
 		Button button_32 = new Button(composite_2, SWT.NONE);
 		button_32.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_15, button_32, value, "contaDescontoConcedido");
 		
 		Label lblJurosRecebido = new Label(composite_2, SWT.NONE);
 		lblJurosRecebido.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -457,10 +457,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Button button_16 = new Button(composite_2, SWT.NONE);
 		button_16.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_16, value, "contaJurosRecebido");
 		
 		Button button_33 = new Button(composite_2, SWT.NONE);
 		button_33.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_16, button_33, value, "contaJurosRecebido");
 	}
 	
 	@Override

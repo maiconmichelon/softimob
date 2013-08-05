@@ -3,6 +3,9 @@ package br.com.michelon.softimob.tela.dialog;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -22,6 +25,8 @@ import br.com.michelon.softimob.tela.widget.DateTextField;
 import com.google.common.collect.Maps;
 
 public class RazaoDialog extends ReportDialog{
+	public RazaoDialog() {
+	}
 	
 	private Text text;
 	private Text text_1;
@@ -37,7 +42,7 @@ public class RazaoDialog extends ReportDialog{
 	@Override
 	protected void criarComponentes(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(3, false));
+		composite.setLayout(new GridLayout(4, false));
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 		
 		Label lblDataInicial = new Label(composite, SWT.NONE);
@@ -48,6 +53,7 @@ public class RazaoDialog extends ReportDialog{
 		text = dtInicial.getControl();
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
 		
 		Label lblDataFinal = new Label(composite, SWT.NONE);
 		lblDataFinal.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -57,12 +63,14 @@ public class RazaoDialog extends ReportDialog{
 		text_1 = dtFinal.getControl();
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
 		
 		Label lblPlanoDeConta = new Label(composite, SWT.NONE);
 		lblPlanoDeConta.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblPlanoDeConta.setText("Plano de Conta");
 		
 		text_2 = new Text(composite, SWT.BORDER);
+		text_2.setEditable(false);
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button = new Button(composite, SWT.NONE);
@@ -72,6 +80,16 @@ public class RazaoDialog extends ReportDialog{
 			public void ok(Object obj) {
 				setPlanoConta((PlanoConta) obj);
 				text_2.setText(obj.toString());
+			}
+		});
+		
+		Button button_1 = new Button(composite, SWT.NONE);
+		button_1.setImage(ImageRepository.REMOVE_16.getImage());
+		button_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				setPlanoConta(null);
+				text_2.setText("");
 			}
 		});
 	}

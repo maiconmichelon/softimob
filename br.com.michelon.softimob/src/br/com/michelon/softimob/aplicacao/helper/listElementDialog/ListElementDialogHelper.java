@@ -25,6 +25,7 @@ import br.com.michelon.softimob.aplicacao.service.ClienteService;
 import br.com.michelon.softimob.aplicacao.service.ComissionadoService;
 import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
 import br.com.michelon.softimob.aplicacao.service.FuncionarioService;
+import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.aplicacao.service.IndiceService;
 import br.com.michelon.softimob.aplicacao.service.ModeloContratoService;
 import br.com.michelon.softimob.aplicacao.service.OrigemContaService;
@@ -40,7 +41,9 @@ import br.com.michelon.softimob.modelo.ContratoPrestacaoServico.TipoContrato;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.Indice;
+import br.com.michelon.softimob.modelo.ModeloContrato;
 import br.com.michelon.softimob.modelo.OrigemConta;
+import br.com.michelon.softimob.modelo.PessoaFisica;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.modelo.TipoComodo;
 import br.com.michelon.softimob.modelo.TipoImovel;
@@ -116,6 +119,11 @@ public class ListElementDialogHelper {
 		
 	}
 
+	public static void addSelectionListDialogToButton(TipoDialog dialog, Button btnFind, Button btnRemove, WritableValue value, String atributo) {
+		addSelectionListDialogToButton(dialog, btnFind, value, atributo);
+		addSelectionToRemoveButton(btnRemove, value, atributo, dialog.getClazz());
+	}
+	
 	public static void addSelectionToRemoveButton(Button btn, final IObservableValue value, final String property, final Class<?> clazz){
 		btn.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -142,13 +150,13 @@ public class ListElementDialogHelper {
 		IMOVEL("Imóveis", "Selecione um imóvel.", ImageRepository.IMOVEL_16, Imovel.class), 
 		PLANOCONTA("Plano de Contas", "Selecione uma conta.", ImageRepository.PLANO_CONTA_16, PlanoConta.class), 
 		COMISSIONADO("Comissionados", "Selecione um cliente ou funcionário.", ImageRepository.COMISSAO_16, Comissionado.class), 
-		MODELO_CONTRATO("Modelos de Contrato", "Selecione um modelo de contrato.", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
+		MODELO_CONTRATO("Modelos de Contrato", "Selecione um modelo de contrato.", ImageRepository.CONTRATO_16, ModeloContrato.class),
 		CONTRATO_SERVICO_TODOS("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
 		CONTRATO_SERVICO_LOCACAO("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
 		CONTRATO_SERVICO_VENDA("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
 		CHECK_LIST("Modelos de check list", "Selecione uma check list", ImageRepository.CHECKLIST_16, CheckList.class),
 		INDICE("Índices", "Selecione um índice", ImageRepository.INDICE_16, Indice.class), 
-		PESSOA_FISICA("Pessoas Físicas", "Selecione uma pessoa física", ImageRepository.CLIENTE_16, Cliente.class),
+		PESSOA_FISICA("Pessoas Físicas", "Selecione uma pessoa física", ImageRepository.CLIENTE_16, PessoaFisica.class),
 		ORIGEM_CONTA("Origens de Contas", "Selecione uma origem para sua conta", ImageRepository.ORIGEM_CONTA_16, OrigemConta.class)
 		;
 		
@@ -251,10 +259,12 @@ public class ListElementDialogHelper {
 				return new PessoaFisicaService().findAtivos().toArray();
 			} else if(equals(ORIGEM_CONTA)){
 				return new OrigemContaService().findAtivos().toArray();
+			} else if(equals(IMOVEL)){
+				return new ImovelService().findAll().toArray();
 			} else{
-				return null;
+				throw new UnsupportedOperationException("Não nenhuma busca especificada.");
 			}
 		}
 	}
-	
+
 }
