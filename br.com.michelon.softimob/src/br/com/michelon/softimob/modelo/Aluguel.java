@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import org.eclipse.ui.IEditorInput;
 
 import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
+import br.com.michelon.softimob.aplicacao.service.CheckListService;
 
 @Entity
 public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
@@ -35,12 +36,7 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	public Aluguel(){
 		ParametrosEmpresa instance = ParametrosEmpresa.getInstance();
 		if(instance != null){
-			CheckList chkList = instance.getCheckListAluguel();
-			if (chkList != null) {
-				for (ItemCheckList item : chkList.getItens()) {
-					getItensCheckList().add(new ItemCheckListDescricao(item));
-				}
-			}
+			getItensCheckList().addAll(new CheckListService().getNewItens(instance.getCheckListAluguel()));
 		}
 	}
 	

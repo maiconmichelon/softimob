@@ -3,10 +3,11 @@ package br.com.michelon.softimob.tela.dialog;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -20,6 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
@@ -29,17 +31,15 @@ import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.ValidatorHelper;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.modelo.CheckList;
-import br.com.michelon.softimob.modelo.ItemCheckList;
-import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class CheckListEditorDialog extends TitleAreaDialog{
 	private Text txtCheckList;
 	private Text txtNome;
-	private ItemCheckList current;
+	private String current;
 	private CheckList checkList;
-	private TableViewer tvItens;
 	
 	private Logger log = Logger.getLogger(getClass());
+	private ListViewer lstItens;
 	
 	public CheckListEditorDialog(Shell parentShell, CheckList checkList) {
 		super(parentShell);
@@ -77,7 +77,13 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		Composite cpTabela = new Composite(composite, SWT.NONE);
 		cpTabela.setLayout(new GridLayout(1, false));
 		cpTabela.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		tvItens = criarTabelaIndices(cpTabela).getTableViewer();
+		
+		lstItens = new ListViewer(cpTabela, SWT.BORDER | SWT.V_SCROLL);
+		List list = lstItens.getList();
+		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		lstItens.setContentProvider(ArrayContentProvider.getInstance());
+		prepararList(lstItens);
+//		tvItens = criarTabelaIndices(cpTabela).getTableViewer();
 		
 		Group grpItem = new Group(composite, SWT.NONE);
 		grpItem.setLayout(new GridLayout(2, false));
@@ -94,9 +100,9 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		return composite;
 	}
 	
-	private void setItens(ItemCheckList item){
+	private void setItens(String item){
 		current = item;
-		txtNome.setText(item.getNome());
+		txtNome.setText(item);
 	}
 	
 	private void limpar(){
@@ -104,32 +110,26 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		current = null;
 	}
 	
-	private ItemCheckList getItemCheckList(){
+	private String getItens(){
 		if(current == null)
-			current = new ItemCheckList();
+			current = new String();
 		
-		current.setNome(txtNome.getText());
+		current = txtNome.getText();
 		
 		return current;
 	}
 	
-	private TableViewerBuilder criarTabelaIndices(Composite cp){
-		TableViewerBuilder tvb = new TableViewerBuilder(cp);
-		
-		tvb.createColumn("Nome").bindToProperty("nome").build();
-		
+	private void prepararList(ListViewer listViewer) {
 		if(checkList != null)
-			tvb.setInput(checkList.getItens());
+			listViewer.setInput(checkList.getItens());
 		
-		tvb.getTableViewer().addDoubleClickListener(new IDoubleClickListener() {
+		listViewer.addDoubleClickListener(new IDoubleClickListener() {
 			
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
-				setItens((ItemCheckList) ((IStructuredSelection)event.getSelection()).getFirstElement());
+				setItens((String) ((IStructuredSelection)event.getSelection()).getFirstElement());
 			}
 		});
-		
-		return tvb;
 	}
 	
 	private boolean isNovo(){
@@ -147,7 +147,7 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				if(isNovo()){
-					ItemCheckList item = getItemCheckList();
+					String item = getItens();
 					
 					if(ValidatorHelper.validarComMensagem(item))
 						checkList.getItens().add(item);
@@ -156,10 +156,11 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 						return;
 					}
 				}else{
-					getItemCheckList();
+					checkList.getItens().remove(current);
+					checkList.getItens().add(getItens());
 				}
 				
-				tvItens.refresh();
+				lstItens.refresh();
 				
 				limpar();
 			}

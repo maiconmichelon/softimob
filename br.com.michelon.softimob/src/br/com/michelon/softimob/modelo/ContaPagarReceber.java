@@ -19,6 +19,8 @@ import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
 
+import br.com.michelon.softimob.aplicacao.exception.ParametroNaoInformadoException;
+
 @Entity
 @MappedSuperclass
 public class ContaPagarReceber implements Serializable, Pendencia{
@@ -41,14 +43,14 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	@Column(precision = 14, scale = 2)
 	private BigDecimal valorJurosDesconto = BigDecimal.ZERO;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
-	private Date dataConta;
+	private Date dataConta = new Date();
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date dataVencimento = new Date();
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date dataPagamento;
 
 	@NotNull(message = "O tipo da conta não pode ser vazia.")
@@ -67,6 +69,18 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	
 	@OneToOne
 	private ContaPagarReceber contaPai;
+	
+	public ContaPagarReceber(FinalizacaoChamadoReforma fin) throws ParametroNaoInformadoException{
+		OrigemConta tipoContaPrestacaoServico = ParametrosEmpresa.getInstance().getTipoContaReforma();
+		if(tipoContaPrestacaoServico == null)
+			throw new ParametroNaoInformadoException("A origem da conta referente ao chamado de reforma deve ser informado em Parâmetros da Empresa");
+		
+		setOrigem(tipoContaPrestacaoServico);
+		setTipo(ContaPagarReceber.PAGAR);
+	}
+	
+	public ContaPagarReceber(){
+	}
 	
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
@@ -241,6 +255,11 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 
 	public void setContaPai(ContaPagarReceber contaPai) {
 		this.contaPai = contaPai;
+	}
+	
+	@Override
+	public String toString() {
+		return "adasd";
 	}
 	
 	@Override

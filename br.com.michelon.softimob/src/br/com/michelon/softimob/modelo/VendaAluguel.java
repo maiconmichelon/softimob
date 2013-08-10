@@ -63,7 +63,7 @@ public class VendaAluguel implements Serializable{
 
 	@NotNull()
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ItemCheckListDescricao> itensCheckList = Lists.newArrayList();
+	private List<ItemCheckList> itensCheckList = Lists.newArrayList();
 	
 //	@OneToMany(cascade=CascadeType.ALL)
 //	private List<Comissao> comissoes = Lists.newArrayList();
@@ -143,11 +143,11 @@ public class VendaAluguel implements Serializable{
 		return new VistoriaService().findByVendaAluguel(this);
 	}
 	
-	public List<ItemCheckListDescricao> getItensCheckList() {
+	public List<ItemCheckList> getItensCheckList() {
 		return itensCheckList;
 	}
 
-	public void setItensCheckList(List<ItemCheckListDescricao> itensCheckList) {
+	public void setItensCheckList(List<ItemCheckList> itensCheckList) {
 		this.itensCheckList = itensCheckList;
 	}
 

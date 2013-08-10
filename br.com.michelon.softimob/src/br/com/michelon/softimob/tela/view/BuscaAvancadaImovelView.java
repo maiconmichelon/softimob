@@ -7,12 +7,12 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,6 +30,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.BairroService;
@@ -67,8 +68,11 @@ public class BuscaAvancadaImovelView extends ViewPart {
 	private ComboViewer cvTipoImovel;
 	private ComboViewer cvCidade;
 	private ComboViewer cvBairro;
+	private Button btnNaoReservado;
 	private Button btnReservado;
-	private Button btnReservado_1;
+	private Button btnTodos;
+
+	private Button btnLocaovenda;
 
 	public BuscaAvancadaImovelView() {
 	}
@@ -136,53 +140,67 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		new Label(composite, SWT.NONE);
 		
 		Composite composite_15 = new Composite(composite, SWT.NONE);
-		composite_15.setLayout(new GridLayout(2, false));
+		composite_15.setLayout(new GridLayout(4, false));
 		composite_15.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		
-		btnVenda = new Button(composite_15, SWT.CHECK);
-		btnVenda.setSelection(true);
+		btnAluguel = new Button(composite_15, SWT.RADIO);
+		btnAluguel.setText("Locação");
+		
+		btnVenda = new Button(composite_15, SWT.RADIO);
 		btnVenda.setText("Venda");
 		
-		btnAluguel = new Button(composite_15, SWT.CHECK);
-		btnAluguel.setSelection(true);
-		btnAluguel.setText("Locação");
+		btnLocaovenda = new Button(composite_15, SWT.RADIO);
+		btnLocaovenda.setText("Locação/Venda");
+		
+		btnTodos = new Button(composite_15, SWT.RADIO);
+		btnTodos.setText("Todos");
+		
+		new Label(composite_15, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		
 		Composite composite_5 = new Composite(composite, SWT.NONE);
 		composite_5.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 5, 1));
-		composite_5.setLayout(new GridLayout(6, false));
+		composite_5.setLayout(new GridLayout(8, false));
 		
 		Label lblAngariad = new Label(composite_5, SWT.NONE);
 		lblAngariad.setText("Angariador");
 		
 		text_4 = new Text(composite_5, SWT.BORDER);
+		text_4.setEditable(false);
 		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnNewButton = new Button(composite_5, SWT.NONE);
 		btnNewButton.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnNewButton, value, "angariador");
+		
+		Button button = new Button(composite_5, SWT.NONE);
+		button.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnNewButton, button, value, "angariador");
 		
 		Label lblProprietario = new Label(composite_5, SWT.NONE);
 		lblProprietario.setText("Proprietário");
 		
 		text_5 = new Text(composite_5, SWT.BORDER);
+		text_5.setEditable(false);
 		text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar_7 = new Button(composite_5, SWT.NONE);
-		btnSelecionar_7.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnSelecionar_7.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionar_7, value, "proprietario");
+		
+		Button button_1 = new Button(composite_5, SWT.NONE);
+		button_1.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionar_7, button_1, value, "proprietario");
 		
 		Label lblTipoImvel = new Label(composite_5, SWT.NONE);
 		lblTipoImvel.setText("Tipo Imóvel");
 		
 		cvTipoImovel = new ComboViewer(composite_5, SWT.READ_ONLY);
 		Combo combo = cvTipoImovel.getCombo();
-		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
 		cvTipoImovel.setContentProvider(ArrayContentProvider.getInstance());
 		cvTipoImovel.setInput(new TipoImovelService().findAll());
+		new Label(composite_5, SWT.NONE);
 		new Label(composite_5, SWT.NONE);
 		new Label(composite_5, SWT.NONE);
 		new Label(composite_5, SWT.NONE);
@@ -195,7 +213,18 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		Combo combo_2 = cvCidade.getCombo();
 		cvCidade.setContentProvider(ArrayContentProvider.getInstance());
 		cvCidade.setInput(new CidadeService().findAll());
-		combo_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		cvCidade.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				Cidade cidade = SelectionHelper.getObject(cvCidade);
+				if(cvBairro == null || cidade == null)
+					return;
+				
+				cvBairro.setInput(cidade.getBairros());
+				cvBairro.setSelection(null);
+			}
+		});
+		combo_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		
 		Label lblBairro = new Label(composite_5, SWT.NONE);
 		lblBairro.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -205,8 +234,7 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		Combo combo_1 = cvBairro.getCombo();
 		cvBairro.setContentProvider(ArrayContentProvider.getInstance());
 		cvBairro.setInput(new BairroService().findAll());
-		combo_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		new Label(composite_5, SWT.NONE);
+		combo_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
 		
 		Label lblObservaes_3 = new Label(composite, SWT.NONE);
 		lblObservaes_3.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -222,12 +250,12 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		Composite composite_3 = new Composite(composite, SWT.NONE);
 		composite_3.setLayout(new GridLayout(2, false));
 		
-		btnReservado = new Button(composite_3, SWT.CHECK);
-		btnReservado.setSelection(true);
-		btnReservado.setText("Não Reservado");
+		btnNaoReservado = new Button(composite_3, SWT.CHECK);
+		btnNaoReservado.setSelection(true);
+		btnNaoReservado.setText("Não Reservado");
 		
-		btnReservado_1 = new Button(composite_3, SWT.CHECK);
-		btnReservado_1.setText("Reservado");
+		btnReservado = new Button(composite_3, SWT.CHECK);
+		btnReservado.setText("Reservado");
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
@@ -290,14 +318,12 @@ public class BuscaAvancadaImovelView extends ViewPart {
 	 * Initialize the toolbar.
 	 */
 	private void initializeToolBar() {
-		IToolBarManager toolbarManager = getViewSite().getActionBars().getToolBarManager();
 	}
 
 	/**
 	 * Initialize the menu.
 	 */
 	private void initializeMenu() {
-		IMenuManager menuManager = getViewSite().getActionBars().getMenuManager();
 	}
 
 	@Override
@@ -335,9 +361,13 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		
 		private Integer metroMax;
 		
-		private boolean isVenda = true;
+		private boolean isVenda = false;
 		
-		private boolean isLocacao = true;
+		private boolean isLocacao = false;
+
+		private boolean isVendaLocacao = false;
+		
+		private boolean todos = true;
 		
 		private Funcionario angariador;
 		
@@ -354,7 +384,7 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		private boolean reservado = true;
 		
 		private boolean naoReservado = true;
-
+		
 		private List<Comodo> comodos;
 		
 		public Long getCodigo() {
@@ -485,6 +515,22 @@ public class BuscaAvancadaImovelView extends ViewPart {
 			this.comodos = comodos;
 		}
 		
+		public boolean isTodos() {
+			return todos;
+		}
+		
+		public void setTodos(boolean todos) {
+			this.todos = todos;
+		}
+
+		public boolean isVendaLocacao() {
+			return isVendaLocacao;
+		}
+
+		public void setVendaLocacao(boolean isVendaLocacao) {
+			this.isVendaLocacao = isVendaLocacao;
+		}
+		
 	}
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
@@ -517,6 +563,18 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		IObservableValue valueLocacaoObserveDetailValue = PojoProperties.value(ModeloBusca.class, "locacao", boolean.class).observeDetail(value);
 		bindingContext.bindValue(observeSelectionBtnAluguelObserveWidget, valueLocacaoObserveDetailValue, null, null);
 		//
+		IObservableValue observeSelectionBtnVendaAluguelObserveWidget = WidgetProperties.selection().observe(btnLocaovenda);
+		IObservableValue valueVendaLocacaoObserveDetailValue = PojoProperties.value(ModeloBusca.class, "vendaLocacao", boolean.class).observeDetail(value);
+		bindingContext.bindValue(observeSelectionBtnVendaAluguelObserveWidget, valueVendaLocacaoObserveDetailValue, null, null);
+		//
+		IObservableValue observeSelectionBtnTodosObserveWidget = WidgetProperties.selection().observe(btnTodos);
+		IObservableValue valueTodosObserveDetailValue = PojoProperties.value(ModeloBusca.class, "todos", boolean.class).observeDetail(value);
+		bindingContext.bindValue(observeSelectionBtnTodosObserveWidget, valueTodosObserveDetailValue, null, null);
+		//
+		IObservableValue observeSelectionBtnSemContratoObserveWidget = WidgetProperties.selection().observe(btnReservado);
+		IObservableValue valueSemContratoObserveDetailValue = PojoProperties.value(ModeloBusca.class, "reservado", boolean.class).observeDetail(value);
+		bindingContext.bindValue(observeSelectionBtnSemContratoObserveWidget, valueSemContratoObserveDetailValue, null, null);
+		//
 		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_4);
 		IObservableValue valueAngariadorObserveDetailValue = PojoProperties.value(ModeloBusca.class, "angariador", Funcionario.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_4ObserveWidget, valueAngariadorObserveDetailValue, null, null);
@@ -541,11 +599,11 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		IObservableValue valueObservacoesObserveDetailValue = PojoProperties.value(ModeloBusca.class, "observacoes", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_6ObserveWidget, valueObservacoesObserveDetailValue, null, null);
 		//
-		IObservableValue observeSelectionBtnReservadoObserveWidget = WidgetProperties.selection().observe(btnReservado);
+		IObservableValue observeSelectionBtnReservadoObserveWidget = WidgetProperties.selection().observe(btnNaoReservado);
 		IObservableValue valueNaoReservadoObserveDetailValue = PojoProperties.value(ModeloBusca.class, "naoReservado", boolean.class).observeDetail(value);
 		bindingContext.bindValue(observeSelectionBtnReservadoObserveWidget, valueNaoReservadoObserveDetailValue, null, null);
 		//
-		IObservableValue observeSelectionBtnReservado_1ObserveWidget = WidgetProperties.selection().observe(btnReservado_1);
+		IObservableValue observeSelectionBtnReservado_1ObserveWidget = WidgetProperties.selection().observe(btnReservado);
 		IObservableValue valueReservadoObserveDetailValue = PojoProperties.value(ModeloBusca.class, "reservado", boolean.class).observeDetail(value);
 		bindingContext.bindValue(observeSelectionBtnReservado_1ObserveWidget, valueReservadoObserveDetailValue, null, null);
 		//

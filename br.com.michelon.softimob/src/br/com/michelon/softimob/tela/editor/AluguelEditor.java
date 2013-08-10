@@ -6,13 +6,16 @@ import java.util.Date;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
@@ -27,16 +30,19 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import br.com.michelon.softimob.aplicacao.exception.ParametroNaoInformadoException;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
@@ -59,7 +65,7 @@ import br.com.michelon.softimob.modelo.Comissionado;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.FinalizacaoChamadoReforma;
 import br.com.michelon.softimob.modelo.Funcionario;
-import br.com.michelon.softimob.modelo.ItemCheckListDescricao;
+import br.com.michelon.softimob.modelo.ItemCheckList;
 import br.com.michelon.softimob.modelo.ModeloContrato;
 import br.com.michelon.softimob.modelo.ParametrosEmpresa;
 import br.com.michelon.softimob.modelo.VendaAluguel;
@@ -72,8 +78,6 @@ import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.jface.viewers.ComboViewer;
 
 public class AluguelEditor extends GenericEditor<Aluguel>{
 	public static final String ID = "br.com.michelon.softimob.tela.editor.AluguelEditor";
@@ -124,6 +128,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private TableViewer tvCheckListVistoria;
 
 	private RadioGroupViewer radioGroupViewer;
+	private List list;
+
+	private CTabFolder tabFolder;
 
 	public AluguelEditor() {
 		super(Aluguel.class);
@@ -262,7 +269,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		new Label(parent, SWT.NONE);
 		
-		CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER);
+		tabFolder = new CTabFolder(parent, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
@@ -438,10 +445,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		Composite composite_7 = new Composite(composite_6, SWT.NONE);
 		composite_7.setLayout(new GridLayout(1, false));
-//		gd_composite_7.heightHint = 120;
-		GridData gd_composite_7 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-		gd_composite_7.heightHint = 95;
-		composite_7.setLayoutData(gd_composite_7);
+//		gd_composite_7.heightHint = 95;
+		composite_7.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		criarTabelaChamadosGerais(composite_7);
 		
@@ -450,7 +455,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		composite_9.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		CTabFolder tfChamado = new CTabFolder(composite_9, SWT.BORDER);
-		tfChamado.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		GridData gd_tfChamado = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd_tfChamado.heightHint = 149;
+		tfChamado.setLayoutData(gd_tfChamado);
 		tfChamado.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
 		CTabItem tbtmAbertura = new CTabItem(tfChamado, SWT.NONE);
@@ -638,7 +645,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblValor_3.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblValor_3.setText("Contas");
 		
-		org.eclipse.swt.widgets.List list = new org.eclipse.swt.widgets.List(composite_13, SWT.BORDER);
+		list = new org.eclipse.swt.widgets.List(composite_13, SWT.BORDER);
 		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 		
 		Button btnAdicionar_1 = new Button(composite_13, SWT.NONE);
@@ -647,7 +654,16 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		btnAdicionar_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				new AdicionarContaPagarReformaDialog(ShellHelper.getActiveShell()).open();
+				try {
+					AdicionarContaPagarReformaDialog dialog = new AdicionarContaPagarReformaDialog(ShellHelper.getActiveShell());
+					if(dialog.open() == IDialogConstants.OK_ID){
+						FinalizacaoChamadoReforma fin = (FinalizacaoChamadoReforma) valueFinalizacaoChamado.getValue();
+						fin.getContas().add(dialog.getConta());
+						list.redraw();
+					}
+				} catch (ParametroNaoInformadoException e1) {
+					DialogHelper.openWarning(e1.getMessage());
+				}
 			}
 		});
 		new Label(composite_13, SWT.NONE);
@@ -833,10 +849,10 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private DataBindingContext initBindTables(DataBindingContext bindingContext) {
 		//
 		tvCheckListAluguel.setContentProvider(new ObservableListContentProvider());
-		tvCheckListAluguel.setInput(PojoProperties.list(VendaAluguel.class, "itensCheckList", ItemCheckListDescricao.class).observeDetail(value));
+		tvCheckListAluguel.setInput(PojoProperties.list(VendaAluguel.class, "itensCheckList", ItemCheckList.class).observeDetail(value));
 		//
 		tvCheckListVistoria.setContentProvider(new ObservableListContentProvider());
-		tvCheckListVistoria.setInput(PojoProperties.list(Vistoria.class, "itensCheckList", ItemCheckListDescricao.class).observeDetail(valueVistoria));
+		tvCheckListVistoria.setInput(PojoProperties.list(Vistoria.class, "itensCheckList", ItemCheckList.class).observeDetail(valueVistoria));
 		//
 		return bindingContext;
 	}
@@ -950,6 +966,14 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		IObservableValue observeTextText_31ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_31);
 		IObservableValue valueChamadoDescricaoConclusaoObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "descricaoConclusao", String.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindValue(observeTextText_31ObserveWidget, valueChamadoDescricaoConclusaoObserveDetailValue, null, null);
+		//
+		IObservableList itemsListObserveWidget = WidgetProperties.items().observe(list);
+		IObservableList valueFinalizacaoChamadoContasObserveDetailList = PojoProperties.list(FinalizacaoChamadoReforma.class, "contas", java.util.List.class).observeDetail(valueFinalizacaoChamado);
+		bindingContext.bindList(itemsListObserveWidget, valueFinalizacaoChamadoContasObserveDetailList, null, null);
+		//
+		IObservableValue observeEnabledTfImovelObserveWidget = WidgetProperties.enabled().observe(tabFolder);
+		IObservableValue valuePropostaIdObserveDetailValue = PojoProperties.value(Aluguel.class, "id", Long.class).observeDetail(value);
+		bindingContext.bindValue(observeEnabledTfImovelObserveWidget, valuePropostaIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
 		//
 		initBindTables(bindingContext);
 		//

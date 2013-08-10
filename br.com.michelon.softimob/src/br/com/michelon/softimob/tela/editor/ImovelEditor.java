@@ -28,7 +28,6 @@ import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -157,9 +156,10 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private Button btnDivulgar;
 	private RadioGroupViewer radioGroupViewer_1;
 	private EnderecoGroup grpEndereco;
-	private StyledText txtObservacoes;
+	private Text txtObservacoes;
 
 	private PhotoComposite photoComposite;
+	private CTabFolder tfImovel;
 
 	public ImovelEditor() {
 		super(Imovel.class);
@@ -256,14 +256,14 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblObservaes_3.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes_3.setText("Observações");
 		
-		txtObservacoes = new StyledText(composite, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		txtObservacoes = new Text(composite, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 		GridData gd_text_6 = new GridData(SWT.FILL, SWT.FILL, true, false, 5, 1);
 		gd_text_6.heightHint = 34;
 		txtObservacoes.setLayoutData(gd_text_6);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		
-		CTabFolder tfImovel = new CTabFolder(parent, SWT.BORDER);
+		tfImovel = new CTabFolder(parent, SWT.BORDER);
 		tfImovel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		tfImovel.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
@@ -981,16 +981,6 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	}
 	
 	private void limparTabelas(){
-		
-		//ACHO QUE ISSO AQUI NÃO VAI FUNCIONAR, PROVAVELMENTE VAI DA UM NPE
-//		tvbChave.setInput(null);
-//		tvbComodo.setInput(null);
-//		tvbContatoPrestacaoServico.setInput(null);
-//		tvbFeedbacks.setInput(null);
-//		tvbReserva.setInput(null);
-//		propostaXViewer.setInput(null);
-//		tvbLocacao.setInput(null);
-
 		if(tvbChave == null)
 			return;
 		
@@ -1160,6 +1150,10 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		IObservableValue observeSelectionBtnDivulgarObserveWidget = WidgetProperties.selection().observe(btnDivulgar);
 		IObservableValue valueContratoDivulgarObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "divulgar", Boolean.class).observeDetail(valueContrato);
 		bindingContext.bindValue(observeSelectionBtnDivulgarObserveWidget, valueContratoDivulgarObserveDetailValue, null, null);
+		//
+		IObservableValue observeEnabledTfImovelObserveWidget = WidgetProperties.enabled().observe(tfImovel);
+		IObservableValue valuePropostaIdObserveDetailValue = PojoProperties.value(Imovel.class, "id", Long.class).observeDetail(value);
+		bindingContext.bindValue(observeEnabledTfImovelObserveWidget, valuePropostaIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
 		//
 		return bindingContext;
 	}

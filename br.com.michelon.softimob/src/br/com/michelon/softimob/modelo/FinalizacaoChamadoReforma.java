@@ -2,6 +2,7 @@ package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.google.common.collect.Lists;
 
 @Entity
 public class FinalizacaoChamadoReforma implements Serializable{
@@ -37,7 +40,7 @@ public class FinalizacaoChamadoReforma implements Serializable{
 	private String descricaoConclusao;
 
 	@OneToOne
-	private ContaPagarReceber conta;
+	private List<ContaPagarReceber> contas = Lists.newArrayList();
 
 	@NotNull(message = "Informe se o chamado foi aceito ou recusado.")
 	@Column(nullable = false)
@@ -59,12 +62,12 @@ public class FinalizacaoChamadoReforma implements Serializable{
 		this.descricaoConclusao = descricaoConclusao;
 	}
 
-	public ContaPagarReceber getConta() {
-		return conta;
+	public List<ContaPagarReceber> getContas() {
+		return contas;
 	}
 
-	public void setConta(ContaPagarReceber conta) {
-		this.conta = conta;
+	public void setContas(List<ContaPagarReceber> conta) {
+		this.contas = conta;
 	}
 
 	public Date getData() {

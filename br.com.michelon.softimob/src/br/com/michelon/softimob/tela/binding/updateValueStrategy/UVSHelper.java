@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.tela.binding.updateValueStrategy;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.internal.databinding.conversion.StringToDateConverter;
@@ -99,6 +100,31 @@ public class UVSHelper {
 		updateValueStrategy.setConverter(new ExtractNumbersConverter());
 
 		return updateValueStrategy;
+	}
+	
+	public static UpdateValueStrategy uvsLongIsNull(){
+		return new UpdateValueStrategy(){
+			@Override
+			protected IConverter createConverter(Object fromType, Object toType) {
+				return new IConverter() {
+					
+					@Override
+					public Object getToType() {
+						return Boolean.class;
+					}
+					
+					@Override
+					public Object getFromType() {
+						return Long.class;
+					}
+					
+					@Override
+					public Object convert(Object fromObject) {
+						return fromObject != null ;
+					}
+				};
+			}
+		};
 	}
 	
 }

@@ -1,5 +1,7 @@
 package br.com.michelon.softimob.aplicacao.service;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -12,8 +14,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.modelo.CheckList;
-import br.com.michelon.softimob.modelo.ItemCheckListDescricao;
+import br.com.michelon.softimob.modelo.ItemCheckList;
 import br.com.michelon.softimob.persistencia.ModeloCheckListDAO;
+
+import com.google.common.collect.Lists;
+
 import de.ralfebert.rcputils.properties.IValue;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
@@ -34,32 +39,32 @@ public class CheckListService extends GenericService<CheckList>{
 			
 			@Override
 			public Image getImage(Object element) {
-				return ((ItemCheckListDescricao)element).getFinalizado() ? ImageRepository.CHECKED.getImage() : ImageRepository.UNCHECKED.getImage();
+				return ((ItemCheckList)element).getFinalizado() ? ImageRepository.CHECKED.getImage() : ImageRepository.UNCHECKED.getImage();
 			}
 		}).bindToValue(new IValue() {
 			
 			@Override
 			public void setValue(Object element, Object value) {
-				((ItemCheckListDescricao)element).setFinalizado((Boolean)value);
+				((ItemCheckList)element).setFinalizado((Boolean)value);
 				tvbCheckList.getTableViewer().refresh();
 			}
 			
 			@Override
 			public Object getValue(Object element) {
-				return ((ItemCheckListDescricao)element).getFinalizado();
+				return ((ItemCheckList)element).getFinalizado();
 			}
 		}).build();
 		tvcFinalizado.setEditingSupport(new EditingSupport(tvbCheckList.getTableViewer()) {
 			
 			@Override
 			protected void setValue(Object element, Object value) {
-				((ItemCheckListDescricao)element).setFinalizado((Boolean)value);
+				((ItemCheckList)element).setFinalizado((Boolean)value);
 				getViewer().refresh();
 			}
 			
 			@Override
 			protected Object getValue(Object element) {
-				return ((ItemCheckListDescricao)element).getFinalizado();
+				return ((ItemCheckList)element).getFinalizado();
 			}
 			
 			@Override
@@ -72,12 +77,24 @@ public class CheckListService extends GenericService<CheckList>{
 				return true;
 			}
 		});
-		tvbCheckList.createColumn("Item").bindToProperty("item.nome").setPercentWidth(40).build();
-		tvbCheckList.createColumn("Observações").bindToProperty("descricao").setPercentWidth(50).makeEditable().build();
+		tvbCheckList.createColumn("Item").bindToProperty("nome").setPercentWidth(40).build();
+		tvbCheckList.createColumn("Observações").bindToProperty("valor").setPercentWidth(50).makeEditable().build();
 		//É TUDO NO BINDING SA BIXERA XD NAO PRECISA MAIS DISSO .. s
 //		tvbCheckList.setInput(input);
 		
 		return tvbCheckList.getTableViewer();
+	}
+	
+	public List<ItemCheckList> getNewItens(CheckList chk){
+		List<ItemCheckList> itens = Lists.newArrayList();
+		if(chk == null)
+			return itens;
+		
+		for (String item : chk.getItens()) {
+			itens.add(new ItemCheckList(item));
+		}
+		
+		return itens;
 	}
 	
 }

@@ -40,7 +40,7 @@ import br.com.michelon.softimob.modelo.Comissao;
 import br.com.michelon.softimob.modelo.Comissionado;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.Funcionario;
-import br.com.michelon.softimob.modelo.ItemCheckListDescricao;
+import br.com.michelon.softimob.modelo.ItemCheckList;
 import br.com.michelon.softimob.modelo.ModeloContrato;
 import br.com.michelon.softimob.modelo.Venda;
 import br.com.michelon.softimob.modelo.VendaAluguel;
@@ -80,6 +80,8 @@ public class VendaEditor extends GenericEditor<Venda>{
 	private TableViewer tvVistoria;
 	private TableViewer tvCheckListVenda;
 	private TableViewer tvCheckListVistoria;
+
+	private CTabFolder tabFolder;
 	
 	public VendaEditor() {
 		super(Venda.class);
@@ -173,7 +175,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		text_3 = dateTextField.getControl();
 		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER);
+		tabFolder = new CTabFolder(parent, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 8, 1));
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
@@ -427,10 +429,10 @@ public class VendaEditor extends GenericEditor<Venda>{
 	private DataBindingContext bindTables(DataBindingContext bindingContext){
 		//
 		tvCheckListVenda.setContentProvider(new ObservableListContentProvider());
-		tvCheckListVenda.setInput(PojoProperties.list(VendaAluguel.class, "itensCheckList", ItemCheckListDescricao.class).observeDetail(value));
+		tvCheckListVenda.setInput(PojoProperties.list(VendaAluguel.class, "itensCheckList", ItemCheckList.class).observeDetail(value));
 		//
 		tvCheckListVistoria.setContentProvider(new ObservableListContentProvider());
-		tvCheckListVistoria.setInput(PojoProperties.list(Vistoria.class, "itensCheckList", ItemCheckListDescricao.class).observeDetail(valueVistoria));
+		tvCheckListVistoria.setInput(PojoProperties.list(Vistoria.class, "itensCheckList", ItemCheckList.class).observeDetail(valueVistoria));
 		//
 		return bindingContext;
 	}
@@ -488,6 +490,10 @@ public class VendaEditor extends GenericEditor<Venda>{
 		IObservableValue observeTextText_19ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_19);
 		IObservableValue valueVistoriaObservacoesObserveDetailValue = PojoProperties.value(Vistoria.class, "observacoes", String.class).observeDetail(valueVistoria);
 		bindingContext.bindValue(observeTextText_19ObserveWidget, valueVistoriaObservacoesObserveDetailValue, null, null);
+		//
+		IObservableValue observeEnabledTfImovelObserveWidget = WidgetProperties.enabled().observe(tabFolder);
+		IObservableValue valuePropostaIdObserveDetailValue = PojoProperties.value(Venda.class, "id", Long.class).observeDetail(value);
+		bindingContext.bindValue(observeEnabledTfImovelObserveWidget, valuePropostaIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
 		//
 		bindTables(bindingContext);
 		//

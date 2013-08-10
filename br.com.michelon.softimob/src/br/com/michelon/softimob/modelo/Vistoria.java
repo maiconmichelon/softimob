@@ -49,7 +49,7 @@ public class Vistoria implements Serializable{
 	
 	@NotNull()
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ItemCheckListDescricao> itensCheckList = Lists.newArrayList();
+	private List<ItemCheckList> itensCheckList = Lists.newArrayList();
 	
 	@SuppressWarnings("unused")
 	private Vistoria(){}
@@ -69,8 +69,8 @@ public class Vistoria implements Serializable{
 		if(instance != null){
 			CheckList chkList = instance.getCheckListVistoria();
 			if (chkList != null) {
-				for (ItemCheckList item : chkList.getItens()) {
-					getItensCheckList().add(new ItemCheckListDescricao(item));
+				for (String item : chkList.getItens()) {
+					getItensCheckList().add(new ItemCheckList(item));
 				}
 			}
 		}
@@ -124,11 +124,11 @@ public class Vistoria implements Serializable{
 		this.vendaAluguel = vendaAluguel;
 	}
 	
-	public List<ItemCheckListDescricao> getItensCheckList() {
+	public List<ItemCheckList> getItensCheckList() {
 		return itensCheckList;
 	}
 	
-	public void setItensCheckList(List<ItemCheckListDescricao> itensCheckList) {
+	public void setItensCheckList(List<ItemCheckList> itensCheckList) {
 		this.itensCheckList = itensCheckList;
 	}
 

@@ -26,8 +26,8 @@ public class CheckList {
 	@Column(nullable = false)
 	private String nome;
 	
-	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-	private List<ItemCheckList> itens = Lists.newArrayList();
+	@Column
+	private List<String> itens = Lists.newArrayList();
 
 	@Column(nullable = false)
 	@DeactivateOnDelete
@@ -49,11 +49,11 @@ public class CheckList {
 		this.nome = nome;
 	}
 
-	public List<ItemCheckList> getItens() {
+	public List<String> getItens() {
 		return this.itens;
 	}
 
-	public void setItens(List<ItemCheckList> itens) {
+	public void setItens(List<String> itens) {
 		this.itens = itens;
 	}
 

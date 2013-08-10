@@ -3,6 +3,8 @@ package br.com.michelon.softimob.modelo;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 
+import br.com.michelon.softimob.aplicacao.service.CheckListService;
+
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 public class Venda extends VendaAluguel {
@@ -12,12 +14,7 @@ public class Venda extends VendaAluguel {
 	public Venda() {
 		ParametrosEmpresa instance = ParametrosEmpresa.getInstance();
 		if(instance != null){
-			CheckList chkList = instance.getCheckListVenda();
-			if (chkList != null) {
-				for (ItemCheckList item : chkList.getItens()) {
-					getItensCheckList().add(new ItemCheckListDescricao(item));
-				}
-			}
+			getItensCheckList().addAll(new CheckListService().getNewItens(instance.getCheckListVenda()));
 		}
 	}
 
