@@ -20,5 +20,9 @@ public class VistoriaService extends GenericService<Vistoria>{
 	public List<Vistoria> findByVendaAluguel(VendaAluguel vendaAluguel) {
 		return getRepository().findByVendaAluguel(vendaAluguel);
 	}
+
+	public Integer sizeImages(Vistoria vistoria) {
+		return getRepository().sizeImages(vistoria);
+	}
 	
 }

@@ -1,16 +1,10 @@
 package br.com.michelon.softimob.aplicacao.service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import br.com.michelon.softimob.modelo.Bairro;
-import br.com.michelon.softimob.modelo.Cidade;
-import br.com.michelon.softimob.modelo.Cliente;
-import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Imovel;
-import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.persistencia.ImovelDAO;
 import br.com.michelon.softimob.persistencia.ImovelDAOImpl;
 import br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView.ModeloBusca;

@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -19,10 +18,12 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.StringUtils;
 
+import br.com.michelon.softimob.aplicacao.service.VistoriaService;
+
 import com.google.common.collect.Lists;
 
 @Entity
-public class Vistoria implements Serializable{
+public class Vistoria implements Serializable, ContainsPhotos{
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,8 +39,8 @@ public class Vistoria implements Serializable{
 	@ManyToOne(optional=false)
 	private Funcionario funcionario;
 	
-	@Lob
-	private Byte[] arquivo;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Arquivo> fotos = Lists.newArrayList();
 	
 	@Column
 	private String observacoes = StringUtils.EMPTY;
@@ -108,14 +109,14 @@ public class Vistoria implements Serializable{
 		this.observacoes = observacoes;
 	}
 
-	public Byte[] getArquivo() {
-		return arquivo;
+	public List<Arquivo> getFotos() {
+		return fotos;
 	}
-
-	public void setArquivo(Byte[] arquivo) {
-		this.arquivo = arquivo;
+	
+	public void setFotos(List<Arquivo> fotos) {
+		this.fotos = fotos;
 	}
-
+	
 	public VendaAluguel getVendaAluguel() {
 		return vendaAluguel;
 	}
@@ -132,6 +133,15 @@ public class Vistoria implements Serializable{
 		this.itensCheckList = itensCheckList;
 	}
 
+	private transient static VistoriaService service;
+	
+	@Override
+	public Integer getNumeroFotos() {
+		if(service == null)
+			service = new VistoriaService();
+		return service.sizeImages(this);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

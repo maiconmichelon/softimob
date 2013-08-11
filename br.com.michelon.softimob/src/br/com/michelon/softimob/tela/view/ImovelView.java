@@ -87,25 +87,17 @@ public class ImovelView extends GenericView<Imovel>{
 		miFotos.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-//				try {
-//					List<Arquivo> arquivos = getSelecionado().getFotos();
-//					if(arquivos.isEmpty()){
-//						DialogHelper.openWarning("Este imóvel não possui nenhuma foto.");
-//						return;
-//					}
-//					
-//					FileHelper.openFile(FileHelper.criarDiretorioArquivos(arquivos), arquivos.get(0).getNome());
-//				} catch (IOException e2) {
-//					log.error("Erro ao abrir fotos.", e2);
-//					DialogHelper.openError("Erro ao abrir as fotos do imóvel.\n" + e2.getMessage());
-//				}
-				
-				Imovel imovel = getSelecionado();
 				try {
-					PhotosView showView = (PhotosView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PhotosView.ID);
-					showView.setFotos(imovel.getFotos());
-				} catch (PartInitException e1) {
-					e1.printStackTrace();
+					List<Arquivo> arquivos = getSelecionado().getFotos();
+					if(arquivos.isEmpty()){
+						DialogHelper.openWarning("Este imóvel não possui nenhuma foto.");
+						return;
+					}
+					
+					FileHelper.openFile(FileHelper.criarDiretorioArquivos(arquivos), arquivos.get(0).getNome());
+				} catch (IOException e2) {
+					log.error("Erro ao abrir fotos.", e2);
+					DialogHelper.openError("Erro ao abrir as fotos do imóvel.\n" + e2.getMessage());
 				}
 			}
 		});

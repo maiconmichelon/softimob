@@ -17,6 +17,10 @@ import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
 
+import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
+import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+
 @Entity
 public class ContratoPrestacaoServico implements Pendencia{
 
@@ -185,6 +189,15 @@ public class ContratoPrestacaoServico implements Pendencia{
 	
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+	
+	private transient static ContratoPrestacaoServicoService c;
+	
+	@Override
+	public GenericService<?> getService() {
+		if(c == null)
+			c = new ContratoPrestacaoServicoService();
+		return c;
 	}
 	
 	@Override

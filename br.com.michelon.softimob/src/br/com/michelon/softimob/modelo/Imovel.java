@@ -21,13 +21,14 @@ import br.com.michelon.softimob.aplicacao.service.ChaveService;
 import br.com.michelon.softimob.aplicacao.service.ComodoService;
 import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
 import br.com.michelon.softimob.aplicacao.service.FeedbackService;
+import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.aplicacao.service.PropostaService;
 import br.com.michelon.softimob.aplicacao.service.ReservaService;
 
 import com.google.common.collect.Lists;
 
 @Entity
-public class Imovel implements Serializable{
+public class Imovel implements Serializable, ContainsPhotos{
 	
 	private static final long serialVersionUID = 1L;
 
@@ -197,6 +198,15 @@ public class Imovel implements Serializable{
 	
 	public void setFotos(List<Arquivo> fotos) {
 		this.fotos = fotos;
+	}
+	
+	private transient static ImovelService service;
+	
+	@Override
+	public Integer getNumeroFotos() {
+		if(service == null)
+			service = new ImovelService();
+		return service.sizeImages(this);
 	}
 	
 	@Override

@@ -77,6 +77,7 @@ import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
+import br.com.michelon.softimob.tela.widget.PhotoComposite;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class AluguelEditor extends GenericEditor<Aluguel>{
@@ -222,10 +223,13 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		btnRemoverContrato.setImage(ImageRepository.REMOVE_16.getImage());
 		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoverContrato, value, "modeloContrato", ModeloContrato.class);
 		
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
+		Label lblReajuste = new Label(parent, SWT.NONE);
+		lblReajuste.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblReajuste.setText("Reajuste");
+		
+		ComboViewer comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
+		Combo combo = comboViewer.getCombo();
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		
 		Label lblData = new Label(parent, SWT.NONE);
 		lblData.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -259,14 +263,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
-		
-		Label lblReajuste = new Label(parent, SWT.NONE);
-		lblReajuste.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblReajuste.setText("Reajuste");
-		
-		ComboViewer comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
-		Combo combo = comboViewer.getCombo();
-		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		
 		tabFolder = new CTabFolder(parent, SWT.BORDER);
@@ -419,6 +418,11 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 //		gd_text_19.heightHint = 40;
 		text_19.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 2));
 		new Label(cpAddVistoria, SWT.NONE);
+		
+		CTabItem tbtmFotos = new CTabItem(tabFolder_1, SWT.NONE);
+		tbtmFotos.setText("Fotos");
+		
+		createPhotoComposite(tbtmFotos);
 		
 		CTabItem tbtmCheckList = new CTabItem(tabFolder_1, SWT.NONE);
 		tbtmCheckList.setText("Check List");
@@ -690,6 +694,11 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
 		tbtmCheckList_1.setControl(composite_3);
 		tvCheckListAluguel = criarTabelaCheckList(composite_3);
+	}
+
+	private void createPhotoComposite(CTabItem tbtmFotos) {
+		PhotoComposite photoComposite = new PhotoComposite(tbtmFotos.getParent(), SWT.NONE, valueVistoria);
+		tbtmFotos.setControl(photoComposite);
 	}
 
 	@Override

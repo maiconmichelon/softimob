@@ -69,6 +69,8 @@ import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 
+	public static final String ID = "br.com.michelon.softimob.tela.view.PgtoRecContaView";
+
 	private static final String PAGAR = "A pagar";
 	private static final String RECEBER = "A receber";
 	private static final String TODAS = "Todas";

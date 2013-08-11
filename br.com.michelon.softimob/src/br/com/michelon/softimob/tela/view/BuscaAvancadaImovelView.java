@@ -5,10 +5,13 @@ import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -30,7 +33,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.ImageRepository;
 
+import com.google.common.collect.Lists;
+
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
+import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.BairroService;
@@ -45,6 +51,7 @@ import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
+import br.com.michelon.softimob.tela.dialog.ComodoDialog;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
@@ -154,8 +161,6 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		
 		btnTodos = new Button(composite_15, SWT.RADIO);
 		btnTodos.setText("Todos");
-		
-		new Label(composite_15, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
@@ -279,11 +284,28 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		btnAdicionar.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
 		btnAdicionar.setText("Adicionar");
 		btnAdicionar.setImage(ImageRepository.ADD_16.getImage());
+		btnAdicionar.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ComodoDialog dialog = new ComodoDialog(ShellHelper.getActiveShell());
+				if(dialog.open() == IDialogConstants.OK_ID){
+					((ModeloBusca)value.getValue()).getComodos().add(dialog.getComodo());
+					tvbComodo.getTableViewer().refresh();
+				}
+			}
+		});
 		
 		Button btnRemover = new Button(composite_1, SWT.NONE);
 		btnRemover.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
 		btnRemover.setText("Remover");
 		btnRemover.setImage(ImageRepository.DELETE_16.getImage());
+		btnRemover.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Comodo comodo = SelectionHelper.getObject(tvbComodo.getTableViewer());
+				((ModeloBusca)value.getValue()).getComodos().remove(comodo);
+			}
+		});
 		
 		Button btnNewButton_1 = new Button(parent, SWT.NONE);
 		GridData gd_btnNewButton_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -385,7 +407,7 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		
 		private boolean naoReservado = true;
 		
-		private List<Comodo> comodos;
+		private List<Comodo> comodos = Lists.newArrayList();
 		
 		public Long getCodigo() {
 			return codigo;
@@ -606,6 +628,11 @@ public class BuscaAvancadaImovelView extends ViewPart {
 		IObservableValue observeSelectionBtnReservado_1ObserveWidget = WidgetProperties.selection().observe(btnReservado);
 		IObservableValue valueReservadoObserveDetailValue = PojoProperties.value(ModeloBusca.class, "reservado", boolean.class).observeDetail(value);
 		bindingContext.bindValue(observeSelectionBtnReservado_1ObserveWidget, valueReservadoObserveDetailValue, null, null);
+		//
+		ObservableListContentProvider listContentProvider = new ObservableListContentProvider();
+		tvbComodo.getTableViewer().setContentProvider(listContentProvider);
+		IObservableList valueComodosObserveDetailList = PojoProperties.list(ModeloBusca.class, "comodos", Comodo.class).observeDetail(value);
+		tvbComodo.getTableViewer().setInput(valueComodosObserveDetailList);
 		//
 		return bindingContext;
 	}

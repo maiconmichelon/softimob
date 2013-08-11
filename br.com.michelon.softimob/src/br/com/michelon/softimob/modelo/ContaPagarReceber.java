@@ -20,6 +20,9 @@ import javax.validation.constraints.NotNull;
 import org.eclipse.ui.IEditorInput;
 
 import br.com.michelon.softimob.aplicacao.exception.ParametroNaoInformadoException;
+import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.tela.view.PgtoRecContaView;
 
 @Entity
 @MappedSuperclass
@@ -193,13 +196,11 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 
 	@Override
 	public String getIdEditor() {
-		// TODO Auto-generated method stub
-		return null;
+		return PgtoRecContaView.ID;
 	}
 
 	@Override
 	public IEditorInput getEditorInput() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -257,9 +258,13 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 		this.contaPai = contaPai;
 	}
 	
+	private transient static ContaPagarReceberService c;
+	
 	@Override
-	public String toString() {
-		return "adasd";
+	public GenericService<?> getService() {
+		if(c == null)
+			c = new ContaPagarReceberService();
+		return c;
 	}
 	
 	@Override

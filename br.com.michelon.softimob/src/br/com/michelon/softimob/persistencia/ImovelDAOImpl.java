@@ -54,6 +54,13 @@ public class ImovelDAOImpl {
 			query += "AND (((:naoReservado = true AND c is null)) ";
 			query += "OR ((:reservado = true AND c is not null AND c.dataVencimento >= :dataHoje))) ";
 		}
+//		if(!m.getComodos().isEmpty()){
+//			for(int i = 0; i < m.getComodos().size(); i++){
+//				query.setParameter("tipoComodo1", m.getComodos().get(i).getTipoComodo());
+//				query.setParameter("comodoDesc1", m.getComodos().get(i).getDescricao());
+//			}
+//		}
+		
 		
 		query+="AND ((:isTodos = true) " +
 				"OR c.dataVencimento >= :dataHoje " +
@@ -95,6 +102,12 @@ public class ImovelDAOImpl {
 			typedQuery.setParameter("naoReservado", m.isNaoReservado());
 			typedQuery.setParameter("reservado", m.isReservado());
 		}
+//		if(!m.getComodos().isEmpty()){
+//			for(int i = 0; i < m.getComodos().size(); i++){
+//				typedQuery.setParameter("tipoComodo1", m.getComodos().get(i).getTipoComodo());
+//				typedQuery.setParameter("comodoDesc1", m.getComodos().get(i).getDescricao());
+//			}
+//		}
 		
 		typedQuery.setParameter("dataHoje", dataHoje);
 		typedQuery.setParameter("isAluguel", m.isLocacao());

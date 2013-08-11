@@ -21,6 +21,8 @@ import org.eclipse.ui.IEditorInput;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.michelon.softimob.aplicacao.service.AcontecimentoChamadoService;
+import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 
 @Entity
 public class ChamadoReforma implements Serializable, Pendencia{
@@ -150,6 +152,15 @@ public class ChamadoReforma implements Serializable, Pendencia{
 
 	public void setFinalizacao(FinalizacaoChamadoReforma finalizacao) {
 		this.finalizacao = finalizacao;
+	}
+	
+	private transient static ChamadoReformaService c;
+	
+	@Override
+	public GenericService<?> getService() {
+		if(c == null)
+			c = new ChamadoReformaService();
+		return c;
 	}
 
 	@Override

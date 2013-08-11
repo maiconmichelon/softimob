@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.eclipse.ui.IEditorInput;
 
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+
 public interface Pendencia {
 
 	public static String CONTA_PAGAR = "Conta a pagar";
@@ -23,5 +25,7 @@ public interface Pendencia {
 	IEditorInput getEditorInput();
 	
 	BigDecimal getValor();
+	
+	GenericService<?> getService();
 	
 }

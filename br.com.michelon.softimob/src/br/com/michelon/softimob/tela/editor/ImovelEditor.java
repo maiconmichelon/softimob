@@ -158,7 +158,6 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private EnderecoGroup grpEndereco;
 	private Text txtObservacoes;
 
-	private PhotoComposite photoComposite;
 	private CTabFolder tfImovel;
 
 	public ImovelEditor() {
@@ -478,8 +477,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		CTabItem tbtmFotos = new CTabItem(tfImovel, SWT.NONE);
 		tbtmFotos.setText("Fotos");
 		
-		Integer sizeImages = service.sizeImages(getCurrentObject());
-		photoComposite = new PhotoComposite(tfImovel, SWT.NONE, getCurrentObject().getFotos(), sizeImages == null ? 0 : sizeImages);
+		PhotoComposite photoComposite = new PhotoComposite(tfImovel, SWT.NONE, value);
 		tbtmFotos.setControl(photoComposite);
 		
 		CTabItem tbtmPropostas = new CTabItem(tfImovel, SWT.NONE);
@@ -976,7 +974,6 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	public void saveCurrentObject(GenericService<Imovel> service) {
 		if(validarComMensagem(getCurrentObject().getEndereco())){
 			super.saveCurrentObject(service);
-			photoComposite.clear();
 		}
 	}
 	

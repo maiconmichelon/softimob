@@ -157,20 +157,19 @@ public abstract class GenericEditor<T> extends EditorPart {
 		addItens(service, value, tv, null);
 	}
 	
-	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, ColumnViewer tv, List<Y> list){
-		addItens(service, value, tv, true, getCurrentObject());
+	protected <Y> boolean addItens(GenericService<Y> service, IObservableValue value, ColumnViewer tv, List<Y> list){
+		return addItens(service, value, tv, true, getCurrentObject());
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, ColumnViewer tv, boolean resetValue, Object father){
+	protected <Y> boolean addItens(GenericService<Y> service, IObservableValue value, ColumnViewer tv, boolean resetValue, Object father){
 		if(!salvar(service, value))
-			return;
+			return false;
 			
 		List<Y> elementos = (List<Y>) tv.getInput();
 		if(!elementos.contains(value.getValue()))
 			elementos.add((Y) value.getValue());
 
-		
 		//Aqui ele tenta resetar o value
 		if(resetValue){
 			try {
@@ -183,6 +182,8 @@ public abstract class GenericEditor<T> extends EditorPart {
 		}
 		
 		tv.refresh();
+		
+		return true;
 	}
 
 //	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, TableViewer tv, List<Y> list){

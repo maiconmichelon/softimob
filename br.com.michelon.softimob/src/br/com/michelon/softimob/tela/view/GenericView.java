@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.Form;
@@ -75,7 +76,7 @@ public abstract class GenericView<T> extends ViewPart{
 	private AtivadoDesativadoFilter ativadoDesativadoFilter;
 	private RadioGroup radioGroup;
 	private RadioGroupViewer radioGroupViewer;
-	
+
 	public GenericView(boolean addGroupAtivadoDesativado) {
 		this.addGroupAtivadoDesativado = addGroupAtivadoDesativado;
 	}
@@ -124,16 +125,22 @@ public abstract class GenericView<T> extends ViewPart{
 		frmNewForm.setImage(getImage());
 		formToolkit.paintBordersFor(frmNewForm);
 		frmNewForm.setText(getTitleView());
-		frmNewForm.getBody().setLayout(new GridLayout(2, false));
+		frmNewForm.getBody().setLayout(new GridLayout(3, false));
 		
 		addTextFilter(frmNewForm);
 		
+		createComponentsCpTop(frmNewForm.getBody(), formToolkit);
+		
 		cpBody = formToolkit.createComposite(frmNewForm.getBody(), SWT.NONE);
 		cpBody.setLayout(new FillLayout(SWT.HORIZONTAL));
-		cpBody.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		cpBody.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 		formToolkit.paintBordersFor(cpBody);
 		
 		viewer = criarTabela(cpBody);
+		
+		createComponentsCpBotton(frmNewForm.getBody(), formToolkit);
+		
+		new Label(frmNewForm.getBody(), SWT.NONE);
 		new Label(frmNewForm.getBody(), SWT.NONE);
 		
 		if(addGroupAtivadoDesativado){
@@ -162,6 +169,8 @@ public abstract class GenericView<T> extends ViewPart{
 		
 		frmNewForm.updateToolBar();
 		frmNewForm.update();
+		
+		afterAddComponents();
 	}
 
 	private void addGroupAtivadoDesativado(Form frmNewForm) {
@@ -199,7 +208,7 @@ public abstract class GenericView<T> extends ViewPart{
 		
 		txtFiltro = new Text(frmNewForm.getBody(), SWT.BORDER);
 		txtFiltro.setMessage("Filtro...");
-		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_text.widthHint = 524;
 		txtFiltro.setLayoutData(gd_text);
 		txtFiltro.addKeyListener(new KeyAdapter() {
@@ -371,6 +380,12 @@ public abstract class GenericView<T> extends ViewPart{
 	
 	protected abstract GenericService<T> getService(Object obj);
 	
+	protected void afterAddComponents(){}
+	
+	protected ColumnViewer getColumnViewer(){
+		return viewer;
+	}
+	
 	@Override
 	public void setFocus() {
 		if(txtFiltro != null)
@@ -382,7 +397,12 @@ public abstract class GenericView<T> extends ViewPart{
 	protected void alterar(T element) {
 		try {
 			refresh(element);
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getEditorInputWithModel(element), getEditorId(element));
+			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			GenericEditorInput<?> editorInputWithModel = getEditorInputWithModel(element);
+			if(editorInputWithModel == null)
+				activePage.showView(getEditorId(element));
+			else
+				activePage.openEditor(getEditorInputWithModel(element), getEditorId(element));
 		} catch (PartInitException e1) {
 			log.error("Erro ao abrir tela de alteração.", e1);
 		} catch (Exception e) {
@@ -398,6 +418,10 @@ public abstract class GenericView<T> extends ViewPart{
 	
 	protected GenericEditorInput<?> getEditorInputWithModel(T element){
 		GenericEditorInput<?> iEditorInput = getIEditorInput(element);
+		
+		if(iEditorInput == null)
+			return null;
+		
 		iEditorInput.setModelo(getModelOfEditorInput(element));
 		return iEditorInput;
 	}
@@ -413,5 +437,9 @@ public abstract class GenericView<T> extends ViewPart{
 	public Action getActAdd() {
 		return actAdd;
 	}
+	
+	public void createComponentsCpTop(Composite parent, FormToolkit formToolkit2) {}
+	
+	public void createComponentsCpBotton(Composite parent, FormToolkit formToolkit2){}
 	
 }

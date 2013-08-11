@@ -174,7 +174,7 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 	}
 	
 	public List<Pendencia> findByDataVencimento(Date dataVencimento){
-		return getRepository().findByDataVencimento(dataVencimento);
+		return getRepository().findByDataVencimentoBeforeAndDataPagamentoIsNull(dataVencimento);
 	}
 	
 	public List<ContaPagarReceber> buscarContas(Date dataInicio, Date dataFinal){

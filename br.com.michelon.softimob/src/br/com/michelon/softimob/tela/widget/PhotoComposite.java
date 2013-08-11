@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryGroupRenderer;
 import org.eclipse.nebula.widgets.gallery.DefaultGalleryItemRenderer;
 import org.eclipse.nebula.widgets.gallery.Gallery;
@@ -26,6 +29,7 @@ import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FileHelper;
 import br.com.michelon.softimob.aplicacao.service.ArquivoService;
 import br.com.michelon.softimob.modelo.Arquivo;
+import br.com.michelon.softimob.modelo.ContainsPhotos;
 
 import com.google.common.collect.Lists;
 
@@ -33,17 +37,22 @@ public class PhotoComposite extends Composite {
 
 	private Gallery gallery;
 	private GalleryItem giFotosImovel;
-	private List<Arquivo> arquivos;
 	private ArquivoService arquivoService = new ArquivoService();
 	private Logger log = Logger.getLogger(getClass());
-	private int size = 0;
 	private File tempFolder;
+	private IObservableValue value;
 	
-	public PhotoComposite(Composite parent, int style, List<Arquivo> arquivos, int size) {
+	public PhotoComposite(Composite parent, int style, IObservableValue value) {
 		super(parent, style);
 		
-		this.arquivos = arquivos;
-		this.size = size;
+		value.addValueChangeListener(new IValueChangeListener() {
+			@Override
+			public void handleValueChange(ValueChangeEvent event) {
+				carregar();
+			}
+		});
+		
+		this.value = value;
 		
 		createComponents();
 	}
@@ -75,16 +84,7 @@ public class PhotoComposite extends Composite {
 			@Override
 			public void treeExpanded(TreeEvent e) {
 				if(e.item.equals(giFotosImovel)){
-					if(giFotosImovel.getItems().length > 0 && giFotosImovel.getItem(0) == null)
-						giFotosImovel.setItemCount(0);
-					if(isEmpty()){
-						tempFolder = FileHelper.criarDiretorioArquivos(arquivos);
-						
-						for(Arquivo arq : arquivos){
-							FileHelper.insertIntTempFolder(tempFolder, arq);
-							addPhotoToViewComposite(arq);
-						}
-					}
+					carregar();
 				}
 			}
 			
@@ -127,14 +127,14 @@ public class PhotoComposite extends Composite {
 					String nome = nomeCompleto.substring(0, indexOf);
 					String ext = nomeCompleto.substring(indexOf, nomeCompleto.length());
 					
-					if(arquivos.contains(photo)){
+					if(getFotos().contains(photo)){
 						do{
 							photo.setNome(String.format("%s (%s)%s", nome, i, ext));
 							i++;
-						}while(arquivos.contains(photo));
+						}while(getFotos().contains(photo));
 					}
 					
-					arquivos.add(photo);
+					getFotos().add(photo);
 					FileHelper.insertIntTempFolder(tempFolder, photo);
 					
 					if(giFotosImovel.isExpanded() || !isEmpty())
@@ -152,7 +152,7 @@ public class PhotoComposite extends Composite {
 				GalleryItem[] selection = gallery.getSelection();
 				List<Arquivo> toRemove = Lists.newArrayList();
 				
-				for(Arquivo arq : arquivos){
+				for(Arquivo arq : getFotos()){
 					for(GalleryItem gal : selection){
 						if(arq.getNome().equals(gal.getText())){
 							toRemove.add(arq);
@@ -163,7 +163,7 @@ public class PhotoComposite extends Composite {
 						}
 					}
 				}
-				arquivos.removeAll(toRemove);
+				getFotos().removeAll(toRemove);
 			}
 		});
 	}
@@ -181,7 +181,7 @@ public class PhotoComposite extends Composite {
 	private void createGalleryImovel() {
 		giFotosImovel = new GalleryItem(gallery, SWT.NONE);
 		giFotosImovel.setText("Fotos");
-		giFotosImovel.setItemCount(size);
+		giFotosImovel.setItemCount(getNumeroFotos());
 	}
 	
 	private void addPhotoToViewComposite(Arquivo photo) {
@@ -196,18 +196,41 @@ public class PhotoComposite extends Composite {
 		}
 	}
 
-	public void clear(){
-		arquivos.clear();
-		size = 0;
-		gallery.removeAll();
-		createGalleryImovel();
-	}
-	
 	private boolean isEmpty(){
 		return giFotosImovel.getItems().length == 0 || giFotosImovel.getItem(0) == null;
 	}
 	
 	@Override
 	protected void checkSubclass() {
+	}
+	
+	private List<Arquivo> getFotos(){
+		ContainsPhotos c = (ContainsPhotos) value.getValue();
+		return c.getFotos();
+	}
+	
+	private Integer getNumeroFotos(){
+		ContainsPhotos c = (ContainsPhotos) value.getValue();
+		Integer numeroFotos = c.getNumeroFotos();
+		return numeroFotos == null ? 0 : numeroFotos ;
+	}
+	
+	private void carregar() {
+		giFotosImovel.clearAll();
+		giFotosImovel.setText("Fotos");
+		giFotosImovel.setItemCount(0);
+		
+		if(isEmpty() && giFotosImovel.isExpanded()){
+			tempFolder = FileHelper.criarDiretorioArquivos(getFotos());
+			
+			for(Arquivo arq : getFotos()){
+				FileHelper.insertIntTempFolder(tempFolder, arq);
+				addPhotoToViewComposite(arq);
+			}
+		}
+		
+		if(!giFotosImovel.isExpanded()){
+			giFotosImovel.setItemCount(getNumeroFotos());
+		}
 	}
 }

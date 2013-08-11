@@ -11,8 +11,10 @@ import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
 
+import br.com.michelon.softimob.aplicacao.service.AluguelService;
 import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
 
 @Entity
 public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
@@ -68,6 +70,15 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 		return new ChamadoReformaService().findByAluguel(this);
 	}
 
+	private transient static AluguelService service;
+	
+	@Override
+	public GenericService<?> getService() {
+		if(service == null)
+			service = new AluguelService();
+		return service;
+	}
+	
 	@Override
 	public Date getDataGeracao() {
 		// TODO Auto-generated method stub
