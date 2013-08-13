@@ -359,7 +359,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		criarTabelaVistoria(cpVistoria);
 		
 		CTabFolder tabFolder_1 = new CTabFolder(composite_8, SWT.BORDER);
-		tabFolder_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		tabFolder_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 		tabFolder_1.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
 		CTabItem tbtmVistoria_1 = new CTabItem(tabFolder_1, SWT.NONE);

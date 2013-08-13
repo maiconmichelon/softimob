@@ -44,7 +44,7 @@ public class PhotoComposite extends Composite {
 	
 	public PhotoComposite(Composite parent, int style, IObservableValue value) {
 		super(parent, style);
-		
+
 		value.addValueChangeListener(new IValueChangeListener() {
 			@Override
 			public void handleValueChange(ValueChangeEvent event) {
@@ -211,8 +211,11 @@ public class PhotoComposite extends Composite {
 	
 	private Integer getNumeroFotos(){
 		ContainsPhotos c = (ContainsPhotos) value.getValue();
+		if(c == null)
+			return 0;
+		
 		Integer numeroFotos = c.getNumeroFotos();
-		return numeroFotos == null ? 0 : numeroFotos ;
+		return numeroFotos == null ? 0 : numeroFotos;
 	}
 	
 	private void carregar() {

@@ -49,6 +49,7 @@ import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
+import br.com.michelon.softimob.tela.widget.PhotoComposite;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class VendaEditor extends GenericEditor<Venda>{
@@ -69,7 +70,6 @@ public class VendaEditor extends GenericEditor<Venda>{
 	private Text text_6;
 	private Text text_34;
 	private Text text_16;
-	private Text text_18;
 	private Text text_19;
 	private Text text_8;
 	private Text txtContrato;
@@ -174,6 +174,8 @@ public class VendaEditor extends GenericEditor<Venda>{
 		DateTextField dateTextField = new DateTextField(parent);
 		text_3 = dateTextField.getControl();
 		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 
 		tabFolder = new CTabFolder(parent, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 8, 1));
@@ -265,7 +267,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		criarTabelaVistoria(cpVistoria);
 		
 		CTabFolder tabFolder_1 = new CTabFolder(composite_8, SWT.BORDER);
-		tabFolder_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		tabFolder_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 		tabFolder_1.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
 		CTabItem tbtmVistoria_1 = new CTabItem(tabFolder_1, SWT.NONE);
@@ -305,28 +307,19 @@ public class VendaEditor extends GenericEditor<Venda>{
 		button_7.setImage(ImageRepository.REMOVE_16.getImage());
 		ListElementDialogHelper.addSelectionToRemoveButton(button_7, valueVistoria, "funcionario", Funcionario.class);
 		
-		Label lblArquivo = new Label(cpAddVistoria, SWT.NONE);
-		lblArquivo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblArquivo.setText("Arquivo");
-		
-		text_18 = new Text(cpAddVistoria, SWT.BORDER);
-		text_18.setEditable(false);
-		text_18.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_123 = new Button(cpAddVistoria, SWT.NONE);
-		button_123.setImage(ImageRepository.SEARCH_16.getImage());
-		
-		Button button_8 = new Button(cpAddVistoria, SWT.NONE);
-		button_8.setImage(ImageRepository.REMOVE_16.getImage());
-		
 		Label lblObservaes_1 = new Label(cpAddVistoria, SWT.NONE);
 		lblObservaes_1.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes_1.setText("Observações");
 		
 		text_19 = new Text(cpAddVistoria, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		GridData gd_text_19 = new GridData(SWT.FILL, SWT.CENTER, true, true, 3, 1);
+		GridData gd_text_19 = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
 		gd_text_19.heightHint = 40;
 		text_19.setLayoutData(gd_text_19);
+		
+		CTabItem tbtmFotos = new CTabItem(tabFolder_1, SWT.NONE);
+		tbtmFotos.setText("Fotos");
+		
+		createPhotoComposite(tbtmFotos);
 		
 		CTabItem tbtmCheckList = new CTabItem(tabFolder_1, SWT.NONE);
 		tbtmCheckList.setText("Check List");
@@ -351,6 +344,11 @@ public class VendaEditor extends GenericEditor<Venda>{
 		
 		tabFolder.setSelection(0);
 		tabFolder_1.setSelection(0);
+	}
+
+	private void createPhotoComposite(CTabItem tbtmFotos) {
+		PhotoComposite photoComposite = new PhotoComposite(tbtmFotos.getParent(), SWT.NONE, valueVistoria);
+		tbtmFotos.setControl(photoComposite);
 	}
 
 	@Override

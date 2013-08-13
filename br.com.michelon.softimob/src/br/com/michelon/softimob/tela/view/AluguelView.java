@@ -1,15 +1,29 @@
 package br.com.michelon.softimob.tela.view;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.DocxHelper;
+import br.com.michelon.softimob.aplicacao.helper.FileHelper;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Aluguel;
+import br.com.michelon.softimob.modelo.Arquivo;
+import br.com.michelon.softimob.modelo.ArquivoBytes;
 import br.com.michelon.softimob.tela.editor.AluguelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
@@ -69,6 +83,28 @@ public class AluguelView extends GenericView<Aluguel>{
 	@Override
 	protected GenericService<Aluguel> getService(Object obj) {
 		return service;
+	}
+	
+	@Override
+	protected void createMenuItens(Menu menu) {
+		super.createMenuItens(menu);
+		
+		MenuItem miFotos = new MenuItem(menu, SWT.BORDER);
+		miFotos.setText("Gerar contrato");
+		miFotos.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Arquivo arquivo = getSelecionado().getModeloContrato().getArquivo();
+				File criarDiretorioArquivos = FileHelper.criarDiretorioArquivos(Arrays.asList(arquivo));
+				File arq = new File(criarDiretorioArquivos, arquivo.getNome());
+				new DocxHelper().createPartControl(arq, getSelecionado());
+				try {
+					FileHelper.openFile(criarDiretorioArquivos, arquivo.getNome());
+				} catch (IOException e1) {
+					log.error("Erro ao abrir contrato.", e1);
+				}
+			}
+		});
 	}
 	
 }
