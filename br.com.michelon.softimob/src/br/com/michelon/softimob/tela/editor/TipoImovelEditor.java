@@ -19,7 +19,6 @@ public class TipoImovelEditor extends GenericEditor<TipoImovel>{
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.TipoImovelEditor"; //$NON-NLS-1$
 	
-	private DataBindingContext m_bindingContext;
 	private TipoImovelService service = new TipoImovelService();
 	
 	private Text text;

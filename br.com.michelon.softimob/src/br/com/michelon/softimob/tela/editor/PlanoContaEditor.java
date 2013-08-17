@@ -20,8 +20,6 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 
 public class PlanoContaEditor extends GenericEditor<PlanoConta> {
-	private DataBindingContext m_bindingContext;
-	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.PlanoContaEditor";
 	
 	private PlanoContaService service = new PlanoContaService();

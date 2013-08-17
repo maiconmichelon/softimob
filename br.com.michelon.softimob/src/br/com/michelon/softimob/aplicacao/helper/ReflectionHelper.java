@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.Id;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
 
@@ -15,8 +16,14 @@ import com.google.common.collect.Lists;
 
 public class ReflectionHelper {
 
-	public static Object getAtribute(Object obj, String atributo) throws Exception{
-		obj = obj.getClass().getMethod("get"+ StringUtils.capitalize(StringUtils.substringBefore(atributo, "."))).invoke(obj);
+	private static Logger log = Logger.getLogger(ReflectionHelper.class);
+	
+	public static Object getAtribute(Object obj, String atributo) {
+		try {
+			obj = obj.getClass().getMethod("get"+ StringUtils.capitalize(StringUtils.substringBefore(atributo, "."))).invoke(obj);
+		} catch (Exception e) {
+			log.error(String.format("Erro ao usar pegar atributo %s da classe %s", atributo, obj.getClass().getName()), e);
+		}
 		
 		if(obj == null)
 			return null;

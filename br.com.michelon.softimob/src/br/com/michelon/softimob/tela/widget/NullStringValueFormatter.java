@@ -5,7 +5,6 @@ import java.text.Format;
 import java.text.ParsePosition;
 
 import org.apache.commons.lang.StringUtils;
-import org.jsoup.helper.StringUtil;
 
 import de.ralfebert.rcputils.tables.format.StringValueFormatter;
 

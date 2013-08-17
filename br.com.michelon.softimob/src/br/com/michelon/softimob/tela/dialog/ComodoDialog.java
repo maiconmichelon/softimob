@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Text;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.service.TipoComodoService;
 import br.com.michelon.softimob.modelo.Comodo;
-import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.modelo.TipoComodo;
 
 public class ComodoDialog extends TitleAreaDialog{
@@ -25,17 +24,10 @@ public class ComodoDialog extends TitleAreaDialog{
 		super(shell);
 	}
 	
-	private Text text;
-	private Text text_1;
-	private PlanoConta planoConta;
 	private Text text_2;
 	
 	private Comodo comodo;
 	private ComboViewer comboViewer;
-	
-	public void setPlanoConta(PlanoConta planoConta) {
-		this.planoConta = planoConta;
-	}
 	
 	@Override
 	protected Control createDialogArea(Composite parent) {

@@ -7,7 +7,6 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 public class PessoaFisica extends Cliente{

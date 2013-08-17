@@ -19,7 +19,6 @@ import org.eclipse.core.databinding.beans.PojoProperties;
 
 public class EstadoEditor extends GenericEditor<Estado> {
 	
-	private DataBindingContext m_bindingContext;
 	public static final String ID = "br.com.michelon.softimob.tela.editor.EstadoEditor";
 	private Text text_1;
 	private Text text;

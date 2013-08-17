@@ -2,9 +2,6 @@ package br.com.michelon.softimob.aplicacao.service;
 
 import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
-
-import br.com.michelon.softimob.aplicacao.helper.listElementDialog.OkListElementDialogListener;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.persistencia.TipoImovelDAO;
 

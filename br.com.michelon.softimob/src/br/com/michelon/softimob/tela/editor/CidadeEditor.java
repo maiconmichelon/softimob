@@ -25,7 +25,6 @@ public class CidadeEditor extends GenericEditor<Cidade> {
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.CidadeEditor";
 	
-	private DataBindingContext m_bindingContext;
 	private CidadeService service = new CidadeService();
 
 	private Text text;

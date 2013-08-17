@@ -31,8 +31,6 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.FuncionarioEditor"; //$NON-NLS-1$
 	
-	private DataBindingContext m_bindingContext;
-	
 	private FuncionarioService service = new FuncionarioService();
 	
 	private Text text;

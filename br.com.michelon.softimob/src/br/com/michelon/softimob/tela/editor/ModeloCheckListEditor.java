@@ -22,7 +22,6 @@ import br.com.michelon.softimob.modelo.CheckList;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class ModeloCheckListEditor extends GenericEditor<CheckList>{
-	private DataBindingContext m_bindingContext;
 	
 	private WritableValue valueItem = WritableValue.withValueType(ItemCheckList.class);
 	

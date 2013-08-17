@@ -19,7 +19,6 @@ public class DepartamentoEditor extends GenericEditor<Departamento> {
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.DepartamentoEditor";
 
-	private DataBindingContext m_bindingContext;
 	private Text text;
 	private DepartamentoService service = new DepartamentoService();
 	

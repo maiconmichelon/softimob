@@ -29,8 +29,6 @@ public class BairroEditor extends GenericEditor<Bairro>{
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.BairroEditor";
 	
-	private DataBindingContext m_bindingContext;
-
 	private BairroService service = new BairroService();
 	
 	private ComboViewer cvCidade;

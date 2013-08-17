@@ -73,6 +73,7 @@ public class ImovelMapView extends ViewPart {
 		gmap.setType(INIT_TYPE);
 	}
 
+	@SuppressWarnings("unused")
 	private void createCenterControl(Composite parent) {
 		new Label(parent, SWT.None).setText("Localização:");
 		location = new Text(parent, SWT.BORDER);
@@ -92,6 +93,7 @@ public class ImovelMapView extends ViewPart {
 		});
 	}
 
+	@SuppressWarnings("unused")
 	private void createZoomControl(Composite parent) {
 		new Label(parent, SWT.None).setText("Zoom:");
 		zoom = new Spinner(parent, SWT.NORMAL);
@@ -108,9 +110,6 @@ public class ImovelMapView extends ViewPart {
 				zoom.setSelection(gmap.getZoom());
 			}
 		});
-	}
-
-	private void createMapTypeControl(Composite parent) {
 	}
 
 	private void createAddressControl(Composite parent) {

@@ -17,7 +17,6 @@ import br.com.michelon.softimob.tela.widget.DateTextField;
 
 public class GerarContratoPromessaDialog extends TitleAreaDialog{
 
-	private Label lblTitle;
 	private Text text;
 	private Text text_1;
 	private Text text_2;

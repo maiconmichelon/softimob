@@ -13,7 +13,6 @@ import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.Comissao;
-import br.com.michelon.softimob.modelo.Vistoria;
 import br.com.michelon.softimob.tela.editor.AluguelEditor;
 import br.com.michelon.softimob.tela.editor.VendaEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
