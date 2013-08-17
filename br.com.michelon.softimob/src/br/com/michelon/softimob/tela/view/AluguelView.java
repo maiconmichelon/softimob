@@ -1,6 +1,5 @@
 package br.com.michelon.softimob.tela.view;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -16,14 +15,12 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
-import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.DocxHelper;
 import br.com.michelon.softimob.aplicacao.helper.FileHelper;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.Arquivo;
-import br.com.michelon.softimob.modelo.ArquivoBytes;
 import br.com.michelon.softimob.tela.editor.AluguelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
