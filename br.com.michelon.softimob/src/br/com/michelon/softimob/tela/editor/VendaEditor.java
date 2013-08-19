@@ -436,6 +436,13 @@ public class VendaEditor extends GenericEditor<Venda>{
 	}
 	
 	@Override
+	protected Venda getNewValue() {
+		Venda venda = new Venda();
+		venda.carregarCheckList();
+		return venda;
+	}
+	
+	@Override
 	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

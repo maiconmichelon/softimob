@@ -71,7 +71,8 @@ public enum ImageRepository{
 	IMOBILIARIA_32("icons/imobiliaria/imobiliaria32.png"),
 	CHECKLIST_16("icons/checkList/checkList16.png"),
 	CHECKLIST_32("icons/checkList/checkList32.png"), 
-	ALTERAR16("icons/alterar/alteracao16.png")
+	ALTERAR16("icons/alterar/alteracao16.png"), 
+	BOLETO_16("icons/boleto/boleto16.png")
 	;
 	
 	private String caminho;

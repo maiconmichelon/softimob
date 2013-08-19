@@ -27,7 +27,7 @@ public class FileHelper {
 		
 		return sendBuf;
 	}
-
+	
 	public static File criarDiretorioArquivos(List<Arquivo> arquivos){
 		File tempFolder = Files.createTempDir();
 		for(Arquivo arq : arquivos){
@@ -51,5 +51,5 @@ public class FileHelper {
 	public static void openFile(File tempFolder, String arq) throws IOException{
 		Desktop.getDesktop().open(new File(tempFolder.getAbsoluteFile() + "/" + arq));
 	}
-	
+
 }

@@ -536,16 +536,6 @@
             </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
-                  icon="icons/contrato/contrato16.png"
-                  label="Contrato"
-                  style="push">
-               <parameter
-                     name="org.eclipse.ui.views.showView.viewId"
-                     value="br.com.michelon.softimob.tela.view.ContratoView">
-               </parameter>
-            </command>
-            <command
-                  commandId="org.eclipse.ui.views.showView"
                   icon="icons/reforma/reforma16.png"
                   label="Chamados de reforma"
                   style="push">

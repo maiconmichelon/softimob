@@ -35,6 +35,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -43,6 +45,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.filter.PropertyFilter;
+import br.com.michelon.softimob.aplicacao.helper.BoletoHelper;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
@@ -460,6 +463,22 @@ public class PgtoRecContaView extends GenericView<ContaPagarReceber> {
 		return service.findAll();
 	}
 
+	@Override
+	protected void createMenuItens(Menu menu) {
+		super.createMenuItens(menu);
+		
+		MenuItem miGerarBoleto = new MenuItem(menu, SWT.BORDER);
+		
+		miGerarBoleto.setText("Gerar Boleto");
+		miGerarBoleto.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				BoletoHelper.gerarBoleto(getSelecionado());
+			}
+		});
+		miGerarBoleto.setImage(ImageRepository.BOLETO_16.getImage());
+	}
+	
 	@Override
 	protected GenericService<ContaPagarReceber> getService(Object obj) {
 		return service;

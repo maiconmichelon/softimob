@@ -159,6 +159,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private Text txtObservacoes;
 
 	private CTabFolder tfImovel;
+	private CTabItem tbtmEndereo;
 
 	public ImovelEditor() {
 		super(Imovel.class);
@@ -266,7 +267,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tfImovel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		tfImovel.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
-		CTabItem tbtmEndereo = new CTabItem(tfImovel, SWT.NONE);
+		tbtmEndereo = new CTabItem(tfImovel, SWT.NONE);
 		tbtmEndereo.setText("Endereço");
 		
 		Composite composite_1 = new Composite(tfImovel, SWT.NONE);
@@ -1148,9 +1149,11 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		IObservableValue valueContratoDivulgarObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "divulgar", Boolean.class).observeDetail(valueContrato);
 		bindingContext.bindValue(observeSelectionBtnDivulgarObserveWidget, valueContratoDivulgarObserveDetailValue, null, null);
 		//
-		IObservableValue observeEnabledTfImovelObserveWidget = WidgetProperties.enabled().observe(tfImovel);
-		IObservableValue valuePropostaIdObserveDetailValue = PojoProperties.value(Imovel.class, "id", Long.class).observeDetail(value);
-		bindingContext.bindValue(observeEnabledTfImovelObserveWidget, valuePropostaIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
+		for(CTabItem c : tfImovel.getItems()){
+			if(c.equals(tbtmEndereo))
+				continue;
+			bindingContext.bindValue(WidgetProperties.enabled().observe(c.getControl()), PojoProperties.value(Imovel.class, "id", Long.class).observeDetail(value));
+		}
 		//
 		return bindingContext;
 	}

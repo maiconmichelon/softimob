@@ -6,11 +6,11 @@ import br.com.caelum.stella.inwords.FormatoDeReal;
 import br.com.caelum.stella.inwords.NumericToWordsConverter;
 import br.com.michelon.softimob.aplicacao.helper.ReflectionHelper;
 
-public class RTagDocx implements TagDocx{
+public class ETagDocx implements TagDocx{
 
 	@Override
 	public String getTagWord() {
-		return "r";
+		return "e";
 	}
 
 	@Override

@@ -20,6 +20,8 @@ public class PendenciaService {
 		
 		pendencias.addAll(new ContaPagarReceberService().findByDataVencimento(dataVencimento));
 		pendencias.addAll(new ContratoPrestacaoServicoService().findByDataVencimento(dataVencimento));
+		pendencias.addAll(new AluguelService().findByDataVencimento(dataVencimento));
+		pendencias.addAll(new ChamadoReformaService().findByDataVencimento(dataVencimento));
 		
 		return pendencias;
 	}

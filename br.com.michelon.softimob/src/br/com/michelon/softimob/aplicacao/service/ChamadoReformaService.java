@@ -1,5 +1,7 @@
 package br.com.michelon.softimob.aplicacao.service;
 
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import br.com.michelon.softimob.modelo.Aluguel;
@@ -19,6 +21,10 @@ public class ChamadoReformaService extends GenericService<ChamadoReforma>{
 	
 	public List<ChamadoReforma> findByAluguel(Aluguel aluguel) {
 		return getRepository().findByAluguel(aluguel);
+	}
+
+	public Collection<ChamadoReforma> findByDataVencimento(Date dataVencimento) {
+		return getRepository().findByDataBeforeAndFinalizacaoIsNull(dataVencimento);
 	}
 
 }

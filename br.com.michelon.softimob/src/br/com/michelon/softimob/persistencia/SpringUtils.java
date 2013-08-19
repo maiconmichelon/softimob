@@ -37,6 +37,7 @@ public class SpringUtils {
 		properties.put(PersistenceUnitProperties.DDL_GENERATION, PersistenceUnitProperties.CREATE_OR_EXTEND);
 		properties.put(PersistenceUnitProperties.DDL_GENERATION_MODE, PersistenceUnitProperties.DDL_DATABASE_GENERATION);
 		properties.put(PersistenceUnitProperties.DEPLOY_ON_STARTUP, "true");
+		
 		((JpaEntityManagerFactory)emf).refreshMetadata(properties);
 	}
 	

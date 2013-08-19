@@ -867,6 +867,13 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	}
 	
 	@Override
+	protected Aluguel getNewValue() {
+		Aluguel aluguel = new Aluguel();
+		aluguel.carregarCheckList();
+		return aluguel;
+	}
+	
+	@Override
 	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -900,8 +907,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		//
 		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_2);
 		IObservableValue valueValorObserveDetailValue = PojoProperties.value(Aluguel.class, "valor", BigDecimal.class).observeDetail(value);
-		Binding bindValor = bindingContext.bindValue(observeTextText_2ObserveWidget, valueValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
-		ControlDecorationSupport.create(bindValor, SWT.LEFT | SWT.TOP);
+		bindingContext.bindValue(observeTextText_2ObserveWidget, valueValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
 		//
 //		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
 //		IObservableValue valueReajusteObserveDetailValue = PojoProperties.value(Aluguel.class, "reajuste", Integer.class).observeDetail(value);

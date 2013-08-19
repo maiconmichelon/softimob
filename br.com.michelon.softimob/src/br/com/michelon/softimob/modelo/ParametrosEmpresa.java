@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import br.com.caelum.stella.boleto.bancos.Bancos;
 import br.com.michelon.softimob.aplicacao.service.ParametrosEmpresaService;
 
 @Entity
@@ -94,16 +97,42 @@ public class ParametrosEmpresa implements Serializable{
 	@OneToOne
 	private PlanoConta contaJurosRecebido;
 	
+	@Enumerated(EnumType.ORDINAL)
+	@Column
+	private Bancos banco;
+	
+	@Column
+	private String cedente;
+	
+	@Column
+	private Integer agencia;
+	
+	@Column
+	private Character digitoAgencia;
+	
+	@Column
+	private Integer contaCorrente;
+	
+	@Column
+	private Character digitoContaCorrente;
+	
+	@Column
+	private Integer carteira;
+	
+	@Column
+	private Long numeroConvenio;
+	
+	@Column
+	private Long nossoNumero;
+	
 	private ParametrosEmpresa(){}
 	
-	private static transient ParametrosEmpresaService service;
+	private static transient ParametrosEmpresa params;
 	
 	public static ParametrosEmpresa getInstance(){
 		try{
-			if(service == null)
-				service = new ParametrosEmpresaService();
-			
-			ParametrosEmpresa params = service.findParametrosEmpresa();
+			if(params == null)
+				params = new ParametrosEmpresaService().findParametrosEmpresa();
 			return params == null ? new ParametrosEmpresa() : params;
 		
 		}catch(Exception e){
@@ -310,7 +339,79 @@ public class ParametrosEmpresa implements Serializable{
 	public void setContaJurosRecebido(PlanoConta contaJurosRecebido) {
 		this.contaJurosRecebido = contaJurosRecebido;
 	}
+	
+	public Bancos getBanco() {
+		return banco;
+	}
+	
+	public void setBanco(Bancos banco) {
+		this.banco = banco;
+	}
+	
+	public String getCedente() {
+		return cedente;
+	}
 
+	public void setCedente(String cedente) {
+		this.cedente = cedente;
+	}
+
+	public Integer getAgencia() {
+		return agencia;
+	}
+
+	public void setAgencia(Integer agencia) {
+		this.agencia = agencia;
+	}
+
+	public Integer getContaCorrente() {
+		return contaCorrente;
+	}
+
+	public void setContaCorrente(Integer contaCorrente) {
+		this.contaCorrente = contaCorrente;
+	}
+
+	public Character getDigitoAgencia() {
+		return digitoAgencia;
+	}
+	
+	public Character getDigitoContaCorrente() {
+		return digitoContaCorrente;
+	}
+	
+	public void setDigitoAgencia(Character digitoAgencia) {
+		this.digitoAgencia = digitoAgencia;
+	}
+	
+	public void setDigitoContaCorrente(Character digitoContaCorrente) {
+		this.digitoContaCorrente = digitoContaCorrente;
+	}
+	
+	public Integer getCarteira() {
+		return carteira;
+	}
+
+	public void setCarteira(Integer carteira) {
+		this.carteira = carteira;
+	}
+
+	public Long getNumeroConvenio() {
+		return numeroConvenio;
+	}
+	
+	public void setNumeroConvenio(Long numeroConvenio) {
+		this.numeroConvenio = numeroConvenio;
+	}
+	
+	public Long getNossoNumero() {
+		return nossoNumero;
+	}
+	
+	public void setNossoNumero(Long nossoNumero) {
+		this.nossoNumero = nossoNumero;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

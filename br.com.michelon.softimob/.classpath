@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/caelum-stella/caelum-stella-boleto-2.0.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.cdatetime_0.14.0.201305101602.jar" sourcepath="C:/Users/Seven/Downloads/repository (1)/home/data/httpd/download.eclipse.org/technology/nebula/snapshot/plugins/org.eclipse.nebula.widgets.cdatetime.source_0.14.0.201305101602.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.nebula.widgets.datechooser_1.0.0.201305050742.jar" sourcepath="C:/Users/Seven/Downloads/repository (1)/home/data/httpd/download.eclipse.org/technology/nebula/snapshot/plugins/org.eclipse.nebula.widgets.cdatetime.source_0.14.0.201305101602.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/docx/docx4j-2.8.1.jar"/>
@@ -39,7 +40,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/eclipselink/eclipselink.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/eclipselink/org.eclipse.persistence.jpa.jpql_1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/caelum-stella/caelum-stella-bean-validation-2.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/caelum-stella/caelum-stella-boleto-2.0.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/caelum-stella/caelum-stella-core-2.0.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/caelum-stella/caelum-stella-hibernate-user-types-2.0.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/antlr-2.7.7.jar"/>

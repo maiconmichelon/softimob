@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +12,11 @@ import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
 
+import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
 import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
-import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.tela.editor.AluguelEditor;
 
 @Entity
 public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
@@ -36,10 +38,6 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	private Integer reajuste;
 	
 	public Aluguel(){
-		ParametrosEmpresa instance = ParametrosEmpresa.getInstance();
-		if(instance != null){
-			getItensCheckList().addAll(new CheckListService().getNewItens(instance.getCheckListAluguel()));
-		}
 	}
 	
 	public Cliente getFiador() {
@@ -81,14 +79,15 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	
 	@Override
 	public Date getDataGeracao() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDataAssinaturaContrato();
 	}
 
 	@Override
 	public Date getDataVencimento() {
-		// TODO Auto-generated method stub
-		return null;
+		Calendar c = Calendar.getInstance();
+		c.setTime(getDataAssinaturaContrato());
+		c.set(Calendar.MONTH, c.get(Calendar.MONTH) + duracao);
+		return c.getTime();
 	}
 
 	@Override
@@ -99,20 +98,19 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 
 	@Override
 	public String getDescricao() {
-		// TODO Auto-generated method stub
-		return null;
+		return toString();
 	}
 
 	@Override
 	public String getIdEditor() {
-		// TODO Auto-generated method stub
-		return null;
+		return AluguelEditor.ID;
 	}
 
 	@Override
 	public IEditorInput getEditorInput() {
-		// TODO Auto-generated method stub
-		return null;
+		AluguelEditorInput aluguelEditorInput = new AluguelEditorInput();
+		aluguelEditorInput.setModelo(this);
+		return aluguelEditorInput;
 	}
 
 }

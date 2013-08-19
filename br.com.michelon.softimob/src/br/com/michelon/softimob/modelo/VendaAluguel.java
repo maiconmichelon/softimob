@@ -20,10 +20,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.collect.Lists;
-
+import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.VistoriaService;
+
+import com.google.common.collect.Lists;
 
 @Inheritance(strategy=InheritanceType.JOINED)
 @MappedSuperclass
@@ -59,17 +60,11 @@ public class VendaAluguel implements Serializable{
 	
 	@NotNull(message = "A data não pode ser vazia.")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataAssinaturaContrato;
+	private Date dataAssinaturaContrato = new Date();
 
 	@NotNull()
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemCheckList> itensCheckList = Lists.newArrayList();
-	
-//	@OneToMany(cascade=CascadeType.ALL)
-//	private List<Comissao> comissoes = Lists.newArrayList();
-//	
-//	@OneToMany(cascade=CascadeType.ALL)
-//	private List<Vistoria> vistorias = Lists.newArrayList();
 	
 	public Long getId() {
 		return id;
@@ -127,14 +122,6 @@ public class VendaAluguel implements Serializable{
 		this.cliente = cliente;
 	}
 	
-//	public List<Comissao> getComissoes() {
-//		return comissoes;
-//	}
-//	
-//	public List<Vistoria> getVistorias() {
-//		return vistorias;
-//	}
-	
 	public List<Comissao> getComissoes() {
 		return new ComissaoService().findByVendaAluguel(this);
 	}
@@ -151,6 +138,10 @@ public class VendaAluguel implements Serializable{
 		this.itensCheckList = itensCheckList;
 	}
 
+	public void carregarCheckList() {
+		getItensCheckList().addAll(new CheckListService().getNewItens(ParametrosEmpresa.getInstance().getCheckListAluguel()));
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

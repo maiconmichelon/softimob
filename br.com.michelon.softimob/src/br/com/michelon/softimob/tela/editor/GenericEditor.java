@@ -84,26 +84,49 @@ public abstract class GenericEditor<T> extends EditorPart {
 //		}
 		
 		Composite cpOpcoes = new Composite(composite, SWT.BORDER);
-		cpOpcoes.setLayout(new GridLayout(1, false));
+		cpOpcoes.setLayout(new GridLayout(2, false));
 		cpOpcoes.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSalvar = new Button(cpOpcoes, SWT.NONE);
 		btnSalvar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/save/save32.png"));
 		GridData gd_btnSalvar = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnSalvar.heightHint = 50;
-		gd_btnSalvar.widthHint = 91;
+		gd_btnSalvar.widthHint = 80;
 		btnSalvar.setLayoutData(gd_btnSalvar);
 		btnSalvar.setText("Salvar");
 		btnSalvar.addSelectionListener(new SelectionAdapter() {
-			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				saveCurrentObject(getService());
 			}
-
+		});
+		
+		Button btnNovo = new Button(cpOpcoes, SWT.NONE);
+		btnNovo.setImage(ImageRepository.NOVO_32.getImage());
+		GridData gd_btnNovo = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
+		gd_btnNovo.widthHint = 80;
+		btnNovo.setLayoutData(gd_btnNovo);
+		formToolkit.adapt(btnNovo, true, true);
+		btnNovo.setText("Novo");
+		btnNovo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				resetValue();
+			}
 		});
 	}
 
+	protected void resetValue() {
+		resetValue(getCurrentObject());
+	}
+
+	protected void resetValue(Object obj) {
+		try {
+			setValue(getNewValue());
+		} catch (Exception e) {
+			log.error("Erro ao criar novo registro.", e);
+		}
+	}
+	
 	public abstract void afterCreatePartControl(Composite parent);
 	
 	// NÃO PODE SER initDataBindings PORQUE O WINDOW BUILDER NÃO ABRI DAÍ !
@@ -118,16 +141,9 @@ public abstract class GenericEditor<T> extends EditorPart {
 	 * Salva o value principal
 	 * @param Service utilizado para salvar o objeto
 	 */
-	@SuppressWarnings("unchecked")
 	public void saveCurrentObject(GenericService<T> service) {
-		if(salvar(getService(), value)){
-			try {
-				setValue((T) value.getValue().getClass().newInstance());
-				initDataBindings.updateTargets();
-			} catch (Exception e) {
-				log.error("Erro ao setar novo objeto [ " +value.getValueType()+ " ] ao value.", e);
-			}
-		}
+		salvar(getService(), value);
+		updateTargets();
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -186,29 +202,6 @@ public abstract class GenericEditor<T> extends EditorPart {
 		return true;
 	}
 
-//	protected <Y> void addItens(GenericService<Y> service, IObservableValue value, TableViewer tv, List<Y> list){
-//		addItens(value, tv, list, getCurrentObject());
-//	}
-//	
-//	@SuppressWarnings("unchecked")
-//	protected <Y> void addItens(IObservableValue value, TableViewer tv, List<Y> list, Object father){
-//		Y obj = (Y) value.getValue();
-//		if(validarComMensagem(obj)){
-//
-//			if(!list.contains(obj)){
-//				list.add(obj);
-//			}
-//			
-//			tv.refresh();
-//			
-//			try {
-//				value.setValue(obj.getClass().getConstructor(getCurrentObject().getClass()).newInstance(father));
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-	
 	protected Button createButtonAddItem(Composite cp, SelectionListener listener){
 		Button btnAddItem = new Button(cp, SWT.NONE);
 		btnAddItem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -273,10 +266,14 @@ public abstract class GenericEditor<T> extends EditorPart {
 	protected T getValorInicial(GenericEditorInput<T> editorInput){
 		if(editorInput.getModelo() != null)
 			return editorInput.getModelo();
-		
-		try{
+		return getNewValue();
+	}
+	
+	protected T getNewValue() {
+		try {
 			return mainClass.newInstance();
-		}catch(Exception e){
+		} catch (Exception e) {
+			log.error("Erro ao criar nova instancia do value.", e);
 			return null;
 		}
 	}

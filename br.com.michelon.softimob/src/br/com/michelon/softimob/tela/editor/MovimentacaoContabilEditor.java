@@ -2,17 +2,14 @@ package br.com.michelon.softimob.tela.editor;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoProperties;
-import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -34,6 +31,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.filter.LancamentoCreditoFilter;
 import br.com.michelon.softimob.aplicacao.filter.LancamentoDebitoFilter;
+import br.com.michelon.softimob.aplicacao.filter.TotalizadorFilter;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
@@ -51,6 +49,7 @@ import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
@@ -70,9 +69,9 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 	private TableViewer tvLancamentosDebito;
 	private TableViewer tvLancamentosCredito;
 
-	private Text lblTotalCredito;
+	private Label lblTotalCredito;
 
-	private Text lblTotalDebito;
+	private Label lblTotalDebito;
 
 	public MovimentacaoContabilEditor() {
 		super(MovimentacaoContabil.class);
@@ -96,30 +95,20 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		lblLote.setText("Lote");
 
 		text = new Text(parent, SWT.BORDER);
+		text.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 7, 1));
 		text.setEditable(false);
 		text.setEnabled(false);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
 
 		Label lblDataDeLanamento = new Label(parent, SWT.NONE);
 		lblDataDeLanamento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDataDeLanamento.setText("Data de Lançamento");
 
 		DateTextField dateTextField = new DateTextField(parent);
+		dateTextField.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 7, 1));
 		text_5 = dateTextField.getControl();
 		GridData gd_text_5 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_text_5.widthHint = 90;
 		text_5.setLayoutData(gd_text_5);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
 
 		Label lblValor = new Label(parent, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -127,15 +116,9 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 
 		MoneyTextField moneyTextField = new MoneyTextField(parent);
 		text_1 = moneyTextField.getControl();
-		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 7, 1);
 		gd_text_1.widthHint = 90;
 		text_1.setLayoutData(gd_text_1);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
 
 		Label lblDebito = new Label(parent, SWT.NONE);
 		lblDebito.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -178,17 +161,10 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		GridData gd_text_4 = new GridData(SWT.FILL, SWT.FILL, true, false, 7, 1);
 		gd_text_4.heightHint = 39;
 		text_4.setLayoutData(gd_text_4);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-
+		
 		Button btnAdicionar = new Button(parent, SWT.NONE);
 		btnAdicionar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/add/add16.png"));
-		btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		btnAdicionar.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 8, 1));
 		btnAdicionar.setText("Adicionar");
 		btnAdicionar.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -231,7 +207,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		lblTotal.setBounds(0, 0, 55, 15);
 		lblTotal.setText("Total");
 
-		lblTotalDebito = new Text(grpDbito, SWT.NONE | SWT.READ_ONLY);
+		lblTotalDebito = new Label(grpDbito, SWT.NONE | SWT.READ_ONLY);
 		lblTotalDebito.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblTotalDebito.setText("R$0,00");
 		GridData gd_lblR = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
@@ -255,13 +231,21 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		lblTotalCredrito.setText("Total");
 		lblTotalCredrito.setBounds(0, 0, 55, 15);
 
-		lblTotalCredito = new Text(grpCrdito, SWT.NONE | SWT.READ_ONLY);
+		lblTotalCredito = new Label(grpCrdito, SWT.NONE | SWT.READ_ONLY);
 		GridData gd_label_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_label_1.widthHint = 89;
 		lblTotalCredito.setLayoutData(gd_label_1);
 		lblTotalCredito.setText("R$0,00");
 		lblTotalCredito.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblTotalCredito.setBounds(0, 0, 55, 15);
+		
+		Map<String, Label> mapCredito = Maps.newHashMap();
+		mapCredito.put("valor", lblTotalCredito);
+		tvLancamentosCredito.addFilter(new TotalizadorFilter(mapCredito));
+		
+		Map<String, Label> mapDebito = Maps.newHashMap();
+		mapDebito.put("valor", lblTotalDebito);
+		tvLancamentosDebito.addFilter(new TotalizadorFilter(mapDebito));
 	}
 
 	private void criarTabelaLancamentosDebito(Composite cpLctosDebito) {
@@ -425,36 +409,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		IObservableValue valueLancamentosCreditoObserveDetailValue = PojoProperties.value(MovimentacaoContabil.class, "lancamentos", List.class).observeDetail(value);
 		bindingContext.bindValue(observeSingleSelectionTableViewerCredito, valueLancamentosCreditoObserveDetailValue, null, null);
 		//
-		SumValue sumDebito = new SumValue(value, TipoLancamento.DEBITO);
-		bindingContext.bindValue(SWTObservables.observeText(lblTotalDebito, SWT.None), sumDebito, new UpdateValueStrategy(false, UpdateValueStrategy.POLICY_NEVER), null);
-		//
-		SumValue sumCredito = new SumValue(value, TipoLancamento.CREDITO);
-		bindingContext.bindValue(SWTObservables.observeText(lblTotalCredito, SWT.None), sumCredito, new UpdateValueStrategy(false, UpdateValueStrategy.POLICY_NEVER), null);
-		//
 		return bindingContext;
-	}
-
-	static class SumValue extends ComputedValue {
-		private WritableValue task;
-		private final TipoLancamento tipo;
-
-		SumValue(WritableValue tasks, TipoLancamento tipo) {
-			this.task = tasks;
-			this.tipo = tipo;
-		}
-
-		protected String calculate() {
-			MovimentacaoContabil movimentacaoContabil = (MovimentacaoContabil) task.getValue();
-			List<LancamentoContabil> lctos = tipo.equals(TipoLancamento.CREDITO) ? movimentacaoContabil.getLancamentosCredito() : movimentacaoContabil.getLancamentosDebito();
-
-			BigDecimal sum = BigDecimal.ZERO;
-			Iterator<LancamentoContabil> iterator = lctos.iterator();
-			while (iterator.hasNext()) {
-				LancamentoContabil task = iterator.next();
-				sum = sum.add(task.getValor());
-			}
-			return String.valueOf(sum);
-		}
 	}
 
 }
