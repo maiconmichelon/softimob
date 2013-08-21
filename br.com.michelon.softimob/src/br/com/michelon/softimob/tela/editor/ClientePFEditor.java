@@ -204,11 +204,11 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 		//
 		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
 		IObservableValue valueTelefoneObserveDetailValue = PojoProperties.value(PessoaFisica.class, "telefone", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_4ObserveWidget, valueTelefoneObserveDetailValue, null, null);
+		bindingContext.bindValue(observeTextText_4ObserveWidget, valueTelefoneObserveDetailValue, UVSHelper.uvsStringToFormatTextField(), null);
 		//
 		IObservableValue observeTextText_7ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_7);
 		IObservableValue valueCelularObserveDetailValue = PojoProperties.value(PessoaFisica.class, "celular", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_7ObserveWidget, valueCelularObserveDetailValue, null, null);
+		bindingContext.bindValue(observeTextText_7ObserveWidget, valueCelularObserveDetailValue, UVSHelper.uvsStringToFormatTextField(), null);
 		//
 		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_6);
 		IObservableValue valueEmailObserveDetailValue = PojoProperties.value(PessoaFisica.class, "email", String.class).observeDetail(value);

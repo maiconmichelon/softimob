@@ -126,5 +126,30 @@ public class UVSHelper {
 			}
 		};
 	}
+
+	public static UpdateValueStrategy uvsStringToFormatTextField() {
+		return new UpdateValueStrategy(){
+			@Override
+			protected IConverter createConverter(Object fromType, Object toType) {
+				return new IConverter() {
+					
+					@Override
+					public Object getToType() {
+						return String.class;
+					}
+					
+					@Override
+					public Object getFromType() {
+						return String.class;
+					}
+					
+					@Override
+					public Object convert(Object fromObject) {
+						return fromObject.toString().trim();
+					}
+				};
+			}
+		};
+	}
 	
 }

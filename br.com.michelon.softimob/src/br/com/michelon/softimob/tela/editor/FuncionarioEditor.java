@@ -160,7 +160,7 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 		//
 		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_2);
 		IObservableValue valueCelularObserveDetailValue = PojoProperties.value(Funcionario.class, "celular", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_2ObserveWidget, valueCelularObserveDetailValue, null, null);
+		bindingContext.bindValue(observeTextText_2ObserveWidget, valueCelularObserveDetailValue, UVSHelper.uvsStringToFormatTextField(), null);
 		//
 		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_3);
 		IObservableValue valueEmailObserveDetailValue = PojoProperties.value(Funcionario.class, "email", String.class).observeDetail(value);
@@ -172,7 +172,7 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 		//
 		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
 		IObservableValue valueTelefoneObserveDetailValue = PojoProperties.value(Funcionario.class, "telefone", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_1ObserveWidget, valueTelefoneObserveDetailValue, null, null);
+		bindingContext.bindValue(observeTextText_1ObserveWidget, valueTelefoneObserveDetailValue, UVSHelper.uvsStringToFormatTextField(), null);
 		//
 		return bindingContext;
 	}
