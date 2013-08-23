@@ -1,4 +1,4 @@
-package br.com.michelon.softimob.aplicacao.utils;
+package br.com.michelon.softimob.aplicacao.utils.tag;
 
 import java.math.BigDecimal;
 
@@ -14,7 +14,7 @@ public class ETagDocx implements TagDocx{
 	}
 
 	@Override
-	public String format(String property, Object obj) {
+	public String format(String property, Object obj) throws Exception {
 		Object atribute = ReflectionHelper.getAtribute(obj, property);
 		if(atribute instanceof BigDecimal){
 			BigDecimal valor = (BigDecimal) atribute;

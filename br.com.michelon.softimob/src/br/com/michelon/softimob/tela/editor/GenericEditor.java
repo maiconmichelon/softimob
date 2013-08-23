@@ -34,6 +34,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.exception.ValidationException;
+import br.com.michelon.softimob.aplicacao.helper.SWTHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.ValidatorHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
@@ -91,6 +92,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 		btnSalvar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/save/save32.png"));
 		GridData gd_btnSalvar = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnSalvar.widthHint = 80;
+		gd_btnSalvar.heightHint = 50;
 		btnSalvar.setLayoutData(gd_btnSalvar);
 		btnSalvar.setText("Salvar");
 		btnSalvar.addSelectionListener(new SelectionAdapter() {
@@ -104,6 +106,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 		btnNovo.setImage(ImageRepository.NOVO_32.getImage());
 		GridData gd_btnNovo = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 		gd_btnNovo.widthHint = 80;
+		gd_btnNovo.heightHint = 50;
 		btnNovo.setLayoutData(gd_btnNovo);
 		formToolkit.adapt(btnNovo, true, true);
 		btnNovo.setText("Novo");
@@ -142,18 +145,19 @@ public abstract class GenericEditor<T> extends EditorPart {
 	 * @param Service utilizado para salvar o objeto
 	 */
 	public void saveCurrentObject(GenericService<T> service) {
-		salvar(getService(), value);
+		salvar(getService(), value, true);
 		updateTargets();
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public boolean salvar(GenericService service, IObservableValue value){
+	public boolean salvar(GenericService service, IObservableValue value, boolean mostrarMensagem){
 		try {
 			if(!validarComMensagem(value.getValue()))
 				return false;
 				
 			service.salvar(value.getValue());
-			MessageDialog.openInformation(ShellHelper.getActiveShell(), TITLE_SALVAR, MESSAGE_SALVAR);
+			if(mostrarMensagem)
+				MessageDialog.openInformation(ShellHelper.getActiveShell(), TITLE_SALVAR, MESSAGE_SALVAR);
 			
 			setFocus();
 			
@@ -179,9 +183,11 @@ public abstract class GenericEditor<T> extends EditorPart {
 	
 	@SuppressWarnings("unchecked")
 	protected <Y> boolean addItens(GenericService<Y> service, IObservableValue value, ColumnViewer tv, boolean resetValue, Object father){
-		if(!salvar(service, value))
+		if(!salvar(service, value, false))
 			return false;
 			
+		SWTHelper.setSuccesfulMessageInBottomScreen("Item salvo com sucesso !", getEditorSite().getActionBars().getStatusLineManager());
+		
 		List<Y> elementos = (List<Y>) tv.getInput();
 		if(!elementos.contains(value.getValue()))
 			elementos.add((Y) value.getValue());
@@ -193,7 +199,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 				value.setValue(clazz.getConstructor(father.getClass()).newInstance(father));
 				initDataBindings.updateTargets();
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("Erro ao criar nova instancia do item.", e);
 			}
 		}
 		

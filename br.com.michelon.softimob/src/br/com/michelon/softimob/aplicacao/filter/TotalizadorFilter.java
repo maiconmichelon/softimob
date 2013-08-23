@@ -57,7 +57,14 @@ public class TotalizadorFilter extends GenericFilter {
 
 	private void totalizar(Object element, Map<String, BigDecimal> totais) {
 		for (String att : labels.keySet()) {
-			BigDecimal valor = (BigDecimal) ReflectionHelper.getAtribute(element, att);
+			BigDecimal valor;
+			
+			try {
+				valor = (BigDecimal) ReflectionHelper.getAtribute(element, att);
+			} catch (Exception e) {
+				valor = BigDecimal.ZERO;
+			}
+			
 			totais.put(att, totais.get(att).add(valor));
 		}
 	}

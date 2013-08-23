@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.Text;
 
-import br.com.michelon.softimob.aplicacao.utils.ETagDocx;
-import br.com.michelon.softimob.aplicacao.utils.PTagDocx;
-import br.com.michelon.softimob.aplicacao.utils.TagDocx;
+import br.com.michelon.softimob.aplicacao.utils.tag.ETagDocx;
+import br.com.michelon.softimob.aplicacao.utils.tag.PTagDocx;
+import br.com.michelon.softimob.aplicacao.utils.tag.TagDocx;
 
 import com.google.common.collect.Lists;
 
@@ -101,7 +101,14 @@ public class DocxHelper {
 						cText.setValue("");
 					}
 					
-					cleanList.get(0).setValue(beforeTag.concat(tag.format(coringa, object)).concat(afterTag));
+					String txtFormat;
+					try {
+						txtFormat = tag.format(coringa, object);
+					} catch (Exception e) {
+						txtFormat = "Parâmetro não encontrado";
+					}
+					
+					cleanList.get(0).setValue(beforeTag.concat(txtFormat).concat(afterTag));
 				}
 			}
 		}

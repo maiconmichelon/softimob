@@ -18,11 +18,12 @@ public class ReflectionHelper {
 
 	private static Logger log = Logger.getLogger(ReflectionHelper.class);
 	
-	public static Object getAtribute(Object obj, String atributo) {
+	public static Object getAtribute(Object obj, String atributo) throws Exception {
 		try {
 			obj = obj.getClass().getMethod("get"+ StringUtils.capitalize(StringUtils.substringBefore(atributo, "."))).invoke(obj);
 		} catch (Exception e) {
 			log.error(String.format("Erro ao usar pegar atributo %s da classe %s", atributo, obj.getClass().getName()), e);
+			throw e;
 		}
 		
 		if(obj == null)

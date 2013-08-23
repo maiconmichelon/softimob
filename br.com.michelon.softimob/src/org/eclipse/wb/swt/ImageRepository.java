@@ -72,7 +72,15 @@ public enum ImageRepository{
 	CHECKLIST_16("icons/checkList/checkList16.png"),
 	CHECKLIST_32("icons/checkList/checkList32.png"), 
 	ALTERAR16("icons/alterar/alteracao16.png"), 
-	BOLETO_16("icons/boleto/boleto16.png")
+	BOLETO_16("icons/boleto/boleto16.png"), 
+	INFO_16("icons/typeMessage/info16.png"), 
+	INFO_32("icons/typeMessage/info32.png"), 
+	WARN_16("icons/typeMessage/warn16.png"), 
+	WARN_32("icons/typeMessage/warn32.png"), 
+	ERROR_16("icons/typeMessage/error16.png"),
+	ERROR_32("icons/typeMessage/error32.png"),
+	SUCCESS_16("icons/typeMessage/success16.png"),
+	SUCCESS_32("icons/typeMessage/success32.png")
 	;
 	
 	private String caminho;

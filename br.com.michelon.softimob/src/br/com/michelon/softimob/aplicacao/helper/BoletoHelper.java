@@ -9,7 +9,6 @@ import br.com.caelum.stella.boleto.Boleto;
 import br.com.caelum.stella.boleto.Datas;
 import br.com.caelum.stella.boleto.Emissor;
 import br.com.caelum.stella.boleto.Sacado;
-import br.com.caelum.stella.boleto.bancos.HSBC;
 import br.com.caelum.stella.boleto.transformer.GeradorDeBoleto;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.ParametrosEmpresa;
@@ -21,7 +20,7 @@ public class BoletoHelper {
 		ParametrosEmpresa parametroEmpresa = ParametrosEmpresa.getInstance();
 		Calendar c = Calendar.getInstance();
 		
-		Emissor rodrigo = Emissor
+		Emissor emissor = Emissor
 				.novoEmissor()
 				.comCedente(parametroEmpresa.getRazaoSocial())
 				.comAgencia(parametroEmpresa.getAgencia())
@@ -32,7 +31,7 @@ public class BoletoHelper {
 				.comCarteira(parametroEmpresa.getCarteira())
 				.comNossoNumero(parametroEmpresa.getNossoNumero());
 		
-		Sacado paulo = Sacado.novoSacado().comNome("Paulo Silveira");
+		Sacado sacado = Sacado.novoSacado().comNome("Paulo Silveira");
 		
 		Datas datas = Datas.novasDatas();
 		datas.comProcessamento(c);
@@ -43,9 +42,9 @@ public class BoletoHelper {
 		c.setTime(conta.getDataVencimento());
 		datas.comVencimento(c);
 		
-		Boleto boleto = Boleto.novoBoleto().comDatas(datas).comEmissor(rodrigo)
-				.comBanco(new HSBC()).comSacado(paulo).comValorBoleto(2680.16)
-				.comNumeroDoDocumento("123456");
+		Boleto boleto = Boleto.novoBoleto().comDatas(datas).comEmissor(emissor)
+				.comBanco(parametroEmpresa.getBanco().getBanco()).comSacado(sacado).comValorBoleto(conta.getValor())
+				.comNumeroDoDocumento("1");
 
 		new GeradorDeBoleto(boleto).geraPDF("arquivo.pdf");
 		try {

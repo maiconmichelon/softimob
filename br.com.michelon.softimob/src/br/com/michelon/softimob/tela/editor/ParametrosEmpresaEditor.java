@@ -20,8 +20,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -566,14 +564,6 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		NumberTextField numberTextField_1 = new NumberTextField(composite_7);
 		text_1 = numberTextField_1.getControl();
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-	}
-	
-	@Override
-	public void saveCurrentObject(GenericService<ParametrosEmpresa> service) {
-		if(salvar(getService(), value)){
-			IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditor(activeEditor, false);
-		}
 	}
 	
 	@Override

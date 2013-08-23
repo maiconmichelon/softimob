@@ -1,7 +1,5 @@
 package br.com.michelon.softimob.aplicacao.main;
 
-import org.eclipse.jface.action.IStatusLineManager;
-import org.eclipse.jface.action.StatusLineContributionItem;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IPartListener;
@@ -14,6 +12,8 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 import br.com.michelon.softimob.persistencia.SpringUtils;
+import br.com.michelon.softimob.tela.popup.notifier.NotificationType;
+import br.com.michelon.softimob.tela.popup.notifier.NotifierDialog;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
@@ -32,13 +32,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setInitialSize(new Point(1024, 690));
 		configurer.setShowCoolBar(true);
 		configurer.setShowFastViewBars(true);
+		configurer.setShowStatusLine(true);
 		configurer.setTitle("SoftImob");
-		
-		
-		IStatusLineManager lineManager = getWindowConfigurer().getActionBarConfigurer().getStatusLineManager();
-    	StatusLineContributionItem scMsg = new StatusLineContributionItem("avisos", StatusLineContributionItem.CALC_TRUE_WIDTH);
-		lineManager.add(scMsg);
-		lineManager.update(true);
 		
 		SpringUtils.initializeContext();
 	}
@@ -46,6 +41,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	@Override
 	public void postWindowOpen() {
 		addPartListener();
+		
+		NotifierDialog.notify("Feliz aniversário !", "Fulano esta de aniversário.", NotificationType.INFO);
+		NotifierDialog.notify("Olá, você possui notificações !", "Você possui 5 pendências.", NotificationType.WARN);
 	}
 	
 	private void addPartListener() {
