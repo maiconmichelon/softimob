@@ -4,9 +4,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.google.common.collect.Lists;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 import br.com.michelon.softimob.modelo.Pendencia;
+
+import com.google.common.collect.Lists;
 
 public class PendenciaService {
 
@@ -15,7 +18,7 @@ public class PendenciaService {
 		
 		Calendar c = Calendar.getInstance();
 		c.setTime(dataVencimento);
-		c.set(Calendar.DATE, c.get(Calendar.DATE) + 1);
+		c.set(Calendar.MONTH, c.get(Calendar.MONTH) + 1);
 		dataVencimento = c.getTime();
 		
 		pendencias.addAll(new ContaPagarReceberService().findByDataVencimento(dataVencimento));
@@ -24,6 +27,10 @@ public class PendenciaService {
 		pendencias.addAll(new ChamadoReformaService().findByDataVencimento(dataVencimento));
 		
 		return pendencias;
+	}
+
+	public void finalizarPendencia(Pendencia pendencia) throws PartInitException {
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(pendencia.getEditorInput(), pendencia.getIdEditor());
 	}
 	
 }

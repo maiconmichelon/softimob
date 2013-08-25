@@ -26,7 +26,7 @@ public class ContratoPrestacaoServicoService extends GenericService<ContratoPres
 	}
 	
 	public List<Pendencia> findByDataVencimento(Date dataVencimento){
-		return getRepository().findByDataVencimento(dataVencimento);
+		return getRepository().findByDataVencimentoBeforeAndResolvidoFalse(dataVencimento);
 	}
 	
 	public List<ContratoPrestacaoServico> findByTipo(TipoContrato tipo){

@@ -13,6 +13,6 @@ public interface ContratoPrestacaoServicoDAO extends CrudRepository<ContratoPres
 
 	List<ContratoPrestacaoServico> findByImovel(Imovel imovel);
 
-	List<Pendencia> findByDataVencimento(Date dataVencimento);
+	List<Pendencia> findByDataVencimentoBeforeAndResolvidoFalse(Date dataVencimento);
 	
 }

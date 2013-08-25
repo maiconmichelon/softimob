@@ -19,10 +19,12 @@ import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
 
+import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInput;
 import br.com.michelon.softimob.aplicacao.exception.ParametroNaoInformadoException;
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
-import br.com.michelon.softimob.tela.view.PgtoRecContaView;
+import br.com.michelon.softimob.aplicacao.service.PendenciaService;
+import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
 
 @Entity
 @MappedSuperclass
@@ -196,12 +198,12 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 
 	@Override
 	public String getIdEditor() {
-		return PgtoRecContaView.ID;
+		return ContaPagarReceberEditor.ID;
 	}
 
 	@Override
 	public IEditorInput getEditorInput() {
-		return null;
+		return new ContaPagarReceberEditorInput();
 	}
 
 	public BigDecimal getValorPagoParcialTratado(){
@@ -257,14 +259,22 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	public void setContaPai(ContaPagarReceber contaPai) {
 		this.contaPai = contaPai;
 	}
+
+	private transient static ContaPagarReceberService cservice;
+	private transient static PendenciaService pservice;
 	
-	private transient static ContaPagarReceberService c;
+	@Override
+	public void finalizarPendencia() throws Exception{
+		if(pservice == null)
+			pservice = new PendenciaService();
+		pservice.finalizarPendencia(this);
+	}
 	
 	@Override
 	public GenericService<?> getService() {
-		if(c == null)
-			c = new ContaPagarReceberService();
-		return c;
+		if(cservice == null)
+			cservice = new ContaPagarReceberService();
+		return cservice;
 	}
 	
 	@Override

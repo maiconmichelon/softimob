@@ -48,6 +48,7 @@ public abstract class Comissionado implements Serializable{
 	private String email;
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition="TIMESTAMP WITH TIME ZONE")
 	private Date dataNascimento;
 	
 	@Column

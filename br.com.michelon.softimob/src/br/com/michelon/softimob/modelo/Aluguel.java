@@ -1,13 +1,14 @@
 package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
@@ -27,15 +28,17 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	private Cliente fiador;
 	
 	@NotNull(message = "A duração do contrato não pode ser vazia.")
-	@Column
-	private Integer duracao;
-	
-//	@NotNull
-//	@Temporal(TemporalType.TIMESTAMP)
-//	private Date dataVencimento;
+	@Temporal(TemporalType.DATE)
+	private Date dataVencimento = new Date();
 	
 	@Column
 	private Integer reajuste;
+	
+	@Column(nullable = false)
+	private Boolean resolvido = false;
+	
+	@Temporal(TemporalType.DATE)
+	private Date dataFechamento = null;
 	
 	public Aluguel(){
 	}
@@ -48,14 +51,6 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 		this.fiador = fiador;
 	}
 
-	public Integer getDuracao() {
-		return duracao;
-	}
-
-	public void setDuracao(Integer duracao) {
-		this.duracao = duracao;
-	}
-
 	public Integer getReajuste() {
 		return reajuste;
 	}
@@ -64,6 +59,15 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 		this.reajuste = reajuste;
 	}
 
+	public void setResolvido(Boolean resolvido) {
+		dataFechamento = resolvido ? new Date() : null;
+		this.resolvido = resolvido;
+	}
+	
+	public Boolean getResolvido() {
+		return resolvido;
+	}
+	
 	public List<ChamadoReforma> getChamados() {
 		return new ChamadoReformaService().findByAluguel(this);
 	}
@@ -84,16 +88,16 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 
 	@Override
 	public Date getDataVencimento() {
-		Calendar c = Calendar.getInstance();
-		c.setTime(getDataAssinaturaContrato());
-		c.set(Calendar.MONTH, c.get(Calendar.MONTH) + duracao);
-		return c.getTime();
+		return dataVencimento;
 	}
 
+	public void setDataVencimento(Date dataVencimento) {
+		this.dataVencimento = dataVencimento;
+	}
+	
 	@Override
 	public Date getDataFechamento() {
-		// TODO Auto-generated method stub
-		return null;
+		return dataFechamento;
 	}
 
 	@Override
@@ -111,6 +115,12 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 		AluguelEditorInput aluguelEditorInput = new AluguelEditorInput();
 		aluguelEditorInput.setModelo(this);
 		return aluguelEditorInput;
+	}
+
+	@Override
+	public void finalizarPendencia() throws Exception {
+		setResolvido(true);
+		((AluguelService)getService()).salvar(this);
 	}
 
 }

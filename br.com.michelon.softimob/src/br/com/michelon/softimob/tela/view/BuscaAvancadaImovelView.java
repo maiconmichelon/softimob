@@ -304,6 +304,7 @@ public class BuscaAvancadaImovelView extends ViewPart {
 			public void widgetSelected(SelectionEvent e) {
 				Comodo comodo = SelectionHelper.getObject(tvbComodo.getTableViewer());
 				((ModeloBusca)value.getValue()).getComodos().remove(comodo);
+				tvbComodo.getTableViewer().refresh();
 			}
 		});
 		

@@ -30,6 +30,7 @@ import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateTextField;
+import br.com.michelon.softimob.tela.widget.MoneyTextField;
 
 public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 	
@@ -109,7 +110,8 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblValor.setText("Valor");
 		
-		text = new Text(parent, SWT.BORDER);
+		MoneyTextField fmtValor = new MoneyTextField(parent);
+		text = fmtValor.getControl();
 		GridData gd_text = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_text.widthHint = 150;
 		text.setLayoutData(gd_text);

@@ -245,7 +245,7 @@ public abstract class GenericView<T> extends ViewPart{
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(getIEditorInput(null), getEditorId(null));
 		} catch (PartInitException e) {
-			e.printStackTrace();
+			log.error("Erro ao abrir tela de cadastro.", e);
 		}
 	}
 
@@ -421,8 +421,9 @@ public abstract class GenericView<T> extends ViewPart{
 		
 		if(iEditorInput == null)
 			return null;
+		if(iEditorInput.getModelo() == null)
+			iEditorInput.setModelo(getModelOfEditorInput(element));
 		
-		iEditorInput.setModelo(getModelOfEditorInput(element));
 		return iEditorInput;
 	}
 	

@@ -17,8 +17,10 @@ import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
 
+import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
 import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.tela.editor.ImovelEditor;
 
 @Entity
 public class ContratoPrestacaoServico implements Pendencia{
@@ -77,6 +79,12 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@ManyToOne(optional = false)
 	private Cliente cliente;
 	
+	@Column(nullable=false)
+	private Boolean resolvido = false;
+	
+	@Temporal(TemporalType.DATE)
+	private Date dataFechamento;
+	
 	public ContratoPrestacaoServico(Imovel imovel){
 		this.imovel = imovel;
 	}
@@ -111,8 +119,7 @@ public class ContratoPrestacaoServico implements Pendencia{
 
 	@Override
 	public Date getDataGeracao() {
-		// TODO Auto-generated method stub
-		return null;
+		return dataInicio;
 	}
 
 	
@@ -123,8 +130,7 @@ public class ContratoPrestacaoServico implements Pendencia{
 
 	@Override
 	public Date getDataFechamento() {
-		// TODO Auto-generated method stub
-		return null;
+		return dataFechamento;
 	}
 
 	@Override
@@ -135,14 +141,14 @@ public class ContratoPrestacaoServico implements Pendencia{
 
 	@Override
 	public String getIdEditor() {
-		// TODO Auto-generated method stub
-		return null;
+		return ImovelEditor.ID;
 	}
 
 	@Override
 	public IEditorInput getEditorInput() {
-		// TODO Auto-generated method stub
-		return null;
+		ImovelEditorInput editorInput = new ImovelEditorInput();
+		editorInput.setModelo(getImovel());
+		return editorInput;
 	}
 
 	@Override
@@ -150,6 +156,15 @@ public class ContratoPrestacaoServico implements Pendencia{
 		return this.valor;
 	}
 
+	public Boolean getResolvido() {
+		return resolvido;
+	}
+	
+	public void setResolvido(Boolean resolvido) {
+		dataFechamento = resolvido ? new Date() : null;
+		this.resolvido = resolvido;
+	}
+	
 	public Boolean getDivulgar() {
 		return divulgar;
 	}
@@ -205,6 +220,12 @@ public class ContratoPrestacaoServico implements Pendencia{
 	}
 
 	@Override
+	public void finalizarPendencia() throws Exception {
+		setResolvido(true);
+		((ContratoPrestacaoServicoService)getService()).salvar(this);
+	}
+	
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -228,5 +249,5 @@ public class ContratoPrestacaoServico implements Pendencia{
 			return false;
 		return true;
 	}
-	
+
 }

@@ -43,7 +43,7 @@ public class AluguelView extends GenericView<Aluguel>{
 		atributos.add(new ColumnProperties("Fiador", "fiador.nome",20));
 		atributos.add(new ColumnProperties("Valor", "valor", 10));
 		atributos.add(new ColumnProperties("Data", "dataAssinaturaContrato", 10, new DateStringValueFormatter()));
-		atributos.add(new ColumnProperties("Duração", "duracao",10));
+		atributos.add(new ColumnProperties("Vencimento", "dataVencimento", 10, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Reajuste", "reajuste", 10));
 	}
 	

@@ -23,6 +23,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import br.com.michelon.softimob.aplicacao.service.AcontecimentoChamadoService;
 import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.PendenciaService;
 
 @Entity
 public class ChamadoReforma implements Serializable, Pendencia{
@@ -155,6 +156,7 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	}
 	
 	private transient static ChamadoReformaService c;
+	private transient static PendenciaService pService;
 	
 	@Override
 	public GenericService<?> getService() {
@@ -163,6 +165,13 @@ public class ChamadoReforma implements Serializable, Pendencia{
 		return c;
 	}
 
+	@Override
+	public void finalizarPendencia() throws Exception {
+		if(pService == null)
+			pService = new PendenciaService();
+		pService.finalizarPendencia(this);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -187,5 +196,5 @@ public class ChamadoReforma implements Serializable, Pendencia{
 			return false;
 		return true;
 	}
-	
+
 }

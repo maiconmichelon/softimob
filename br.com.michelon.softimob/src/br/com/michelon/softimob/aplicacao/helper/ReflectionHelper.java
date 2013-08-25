@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
+import br.com.michelon.softimob.aplicacao.annotation.Log;
 
 import com.google.common.collect.Lists;
 
@@ -90,10 +91,18 @@ public class ReflectionHelper {
 	}
 	
 	public static List<Field> getAtributoAtivoDesativado(Class<?> clazz){
+		return getFieldByAnnotation(clazz, DeactivateOnDelete.class);
+	}
+	
+	public static List<Field> getAtributoLog(Class<?> clazz){
+		return getFieldByAnnotation(clazz, Log.class);
+	}
+	
+	public static List<Field> getFieldByAnnotation(Class<?> clazz, Class<? extends Annotation> clazzAnnotation){
 		List<Field> fields = Lists.newArrayList();
 		
 		for(Field f : clazz.getDeclaredFields()){
-			if(f.getAnnotation(DeactivateOnDelete.class) != null)
+			if(f.getAnnotation(clazzAnnotation) != null)
 				fields.add(f);
 		}
 		

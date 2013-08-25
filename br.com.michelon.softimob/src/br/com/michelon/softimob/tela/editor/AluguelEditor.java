@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.exception.ParametroNaoInformadoException;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
@@ -92,30 +91,30 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private AluguelService service = new AluguelService();
 	
 	private Text text;
-	private Text text_1;
-	private Text text_4;
-	private Text text_3;
-	private Text text_2;
-	private Text text_6;
-	private Text text_7;
-	private Text text_31;
-	private Text text_25;
-	private Text text_36;
-	private Text text_10;
-	private Text text_24;
-	private Text text_23;
-	private Text text_35;
-	private Text text_19;
+	private Text txtCliente;
+	private Text txtDataVencimento;
+	private Text txtDataAssinaturaContrato;
+	private Text txtValor;
+	private Text txtFiador;
+	private Text txtFuncionario;
+	private Text txtDescricaoFinalReforma;
+	private Text txtFuncionarioFinalizacaoReforma;
+	private Text txtFinalizacaoReforma;
+	private Text txtDataAcontecimentoChamado;
+	private Text txtProblemaReforma;
+	private Text txtFuncionarioReforma;
+	private Text txtDataChamado;
+	private Text txtObservacoesVistoria;
 	private Text text_18;
-	private Text text_16;
-	private Text text_34;
-	private Text text_27;
-	private Text text_28;
-	private Text text_8;
+	private Text txtFuncionarioVistoria;
+	private Text txtDataVistoria;
+	private Text txtFuncionarioAndamentoReforma;
+	private Text txtDescricaoAndamentoReforma;
+	private Text txtComissionado;
 	private Text text_9;
-	private Text txtContrato;
-	private Text text_11;
-	private Text textChamado;
+	private Text txtModeloContrato;
+	private Text txtValorComissao;
+	private Text txtIdChamado;
 	private Text txtDataVencimentoComissao;
 
 	private TableViewerBuilder tvbChamadoGeral;
@@ -128,10 +127,10 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private TableViewer tvCheckListAluguel;
 	private TableViewer tvCheckListVistoria;
 
-	private RadioGroupViewer radioGroupViewer;
-	private List list;
+	private RadioGroupViewer radiouGroupStatusReforma;
+	private List listContasReforma;
 
-	private CTabFolder tabFolder;
+	private CTabFolder tfItens;
 
 	public AluguelEditor() {
 		super(Aluguel.class);
@@ -162,9 +161,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblFuncionrio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFuncionrio.setText("Corretor");
 		
-		text_7 = new Text(parent, SWT.BORDER);
-		text_7.setEditable(false);
-		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtFuncionario = new Text(parent, SWT.BORDER);
+		txtFuncionario.setEditable(false);
+		txtFuncionario.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_2 = new Button(parent, SWT.NONE);
 		button_2.setImage(ImageRepository.SEARCH_16.getImage());
@@ -178,9 +177,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblValor.setText("Locatário");
 		
-		text_1 = new Text(parent, SWT.BORDER);
-		text_1.setEditable(false);
-		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtCliente = new Text(parent, SWT.BORDER);
+		txtCliente.setEditable(false);
+		txtCliente.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button = new Button(parent, SWT.NONE);
 		button.setImage(ImageRepository.SEARCH_16.getImage());
@@ -195,9 +194,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblFiador.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFiador.setText("Fiador");
 		
-		text_6 = new Text(parent, SWT.BORDER);
-		text_6.setEditable(false);
-		text_6.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtFiador = new Text(parent, SWT.BORDER);
+		txtFiador.setEditable(false);
+		txtFiador.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button button_1 = new Button(parent, SWT.NONE);
 		button_1.setImage(ImageRepository.SEARCH_16.getImage());
@@ -211,9 +210,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblModeloContrato.setText("Modelo de Contrato");
 		lblModeloContrato.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		
-		txtContrato = new Text(parent, SWT.BORDER);
-		txtContrato.setEditable(false);
-		txtContrato.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtModeloContrato = new Text(parent, SWT.BORDER);
+		txtModeloContrato.setEditable(false);
+		txtModeloContrato.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnAddContrato = new Button(parent, SWT.NONE);
 		btnAddContrato.setImage(ImageRepository.SEARCH_16.getImage());
@@ -236,31 +235,26 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblData.setText("Data");
 		
 		DateTextField dateTextField = new DateTextField(parent);
-		text_3 = dateTextField.getControl();
-		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
+		dateTextField.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		txtDataAssinaturaContrato = dateTextField.getControl();
+		txtDataAssinaturaContrato.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblDurao = new Label(parent, SWT.NONE);
 		lblDurao.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblDurao.setText("Duração");
+		lblDurao.setText("Data de Vencimento");
 		
-		text_4 = new Text(parent, SWT.BORDER);
-		new FormattedText(text_4).setFormatter(new NumberFormatter("###"));
-		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-		
-		Label lblNewLabel = new Label(parent, SWT.NONE);
-		lblNewLabel.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
-		lblNewLabel.setText("meses");
+		DateTextField dtVencimento = new DateTextField(parent);
+		dtVencimento.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		txtDataVencimento = dtVencimento.getControl();
+		txtDataVencimento.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblValor_1 = new Label(parent, SWT.NONE);
 		lblValor_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblValor_1.setText("Valor");
 		
 		MoneyTextField moneyTextField = new MoneyTextField(parent);
-		text_2 = moneyTextField.getControl();
-		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtValor = moneyTextField.getControl();
+		txtValor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
@@ -268,14 +262,14 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		
-		tabFolder = new CTabFolder(parent, SWT.BORDER);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
-		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		tfItens = new CTabFolder(parent, SWT.BORDER);
+		tfItens.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
+		tfItens.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
-		CTabItem tbtmComisso = new CTabItem(tabFolder, SWT.NONE);
+		CTabItem tbtmComisso = new CTabItem(tfItens, SWT.NONE);
 		tbtmComisso.setText("Comissão");
 		
-		Composite composite = new Composite(tabFolder, SWT.NONE);
+		Composite composite = new Composite(tfItens, SWT.NONE);
 		tbtmComisso.setControl(composite);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		composite.setLayout(new GridLayout(1, false));
@@ -293,9 +287,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblComissionado.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblComissionado.setText("Comissionado");
 		
-		text_8 = new Text(grpComisso, SWT.BORDER);
-		text_8.setEditable(false);
-		text_8.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtComissionado = new Text(grpComisso, SWT.BORDER);
+		txtComissionado.setEditable(false);
+		txtComissionado.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnNewButton = new Button(grpComisso, SWT.NONE);
 		btnNewButton.setImage(ImageRepository.SEARCH_16.getImage());
@@ -331,8 +325,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblValor_2.setText("Valor");
 		
 		MoneyTextField moneyValorcomissao = new MoneyTextField(grpComisso);
-		text_11 = moneyValorcomissao.getControl();
-		text_11.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtValorComissao = moneyValorcomissao.getControl();
+		txtValorComissao.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpComisso, SWT.NONE);
 		new Label(grpComisso, SWT.NONE);
 		new Label(grpComisso, SWT.NONE);
@@ -346,10 +340,10 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 			}
 		});
 		
-		CTabItem tbtmVistoria = new CTabItem(tabFolder, SWT.NONE);
+		CTabItem tbtmVistoria = new CTabItem(tfItens, SWT.NONE);
 		tbtmVistoria.setText("Vistorias");
 		
-		Composite composite_8 = new Composite(tabFolder, SWT.NONE);
+		Composite composite_8 = new Composite(tfItens, SWT.NONE);
 		tbtmVistoria.setControl(composite_8);
 		composite_8.setLayout(new GridLayout(1, false));
 		
@@ -375,8 +369,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblData_2.setText("Data");
 		
 		DateTextField dateTextField_2 = new DateTextField(cpAddVistoria);
-		text_34 = dateTextField_2.getControl();
-		text_34.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtDataVistoria = dateTextField_2.getControl();
+		txtDataVistoria.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(cpAddVistoria, SWT.NONE);
 		new Label(cpAddVistoria, SWT.NONE);
 		
@@ -384,9 +378,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblFuncion.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFuncion.setText("Funcionário");
 		
-		text_16 = new Text(cpAddVistoria, SWT.BORDER);
-		text_16.setEditable(false);
-		text_16.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtFuncionarioVistoria = new Text(cpAddVistoria, SWT.BORDER);
+		txtFuncionarioVistoria.setEditable(false);
+		txtFuncionarioVistoria.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionarFuncionarioVistoria = new Button(cpAddVistoria, SWT.NONE);
 		btnSelecionarFuncionarioVistoria.setImage(ImageRepository.SEARCH_16.getImage());
@@ -414,9 +408,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblObservaes_1.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes_1.setText("Observações");
 		
-		text_19 = new Text(cpAddVistoria, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		txtObservacoesVistoria = new Text(cpAddVistoria, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 //		gd_text_19.heightHint = 40;
-		text_19.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 2));
+		txtObservacoesVistoria.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 2));
 		new Label(cpAddVistoria, SWT.NONE);
 		
 		CTabItem tbtmFotos = new CTabItem(tabFolder_1, SWT.NONE);
@@ -440,10 +434,10 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		tabFolder_1.setSelection(0);
 		
-		CTabItem tbtmChamada = new CTabItem(tabFolder, SWT.NONE);
+		CTabItem tbtmChamada = new CTabItem(tfItens, SWT.NONE);
 		tbtmChamada.setText("Chamados");
 		
-		Composite composite_6 = new Composite(tabFolder, SWT.NONE);
+		Composite composite_6 = new Composite(tfItens, SWT.NONE);
 		tbtmChamada.setControl(composite_6);
 		composite_6.setLayout(new GridLayout(1, false));
 		
@@ -475,9 +469,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblNmero_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNmero_2.setText("Número");
 		
-		textChamado = new Text(cpAberturaChamado, SWT.BORDER);
-		textChamado.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		textChamado.setEnabled(false);
+		txtIdChamado = new Text(cpAberturaChamado, SWT.BORDER);
+		txtIdChamado.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtIdChamado.setEnabled(false);
 		new Label(cpAberturaChamado, SWT.NONE);
 		new Label(cpAberturaChamado, SWT.NONE);
 		
@@ -486,10 +480,10 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblData_3.setText("Data");
 		
 		DateTextField dateTextField_3 = new DateTextField(cpAberturaChamado);
-		text_35 = dateTextField_3.getControl();
+		txtDataChamado = dateTextField_3.getControl();
 		GridData gd_text_35 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_text_35.widthHint = 70;
-		text_35.setLayoutData(gd_text_35);
+		txtDataChamado.setLayoutData(gd_text_35);
 		new Label(cpAberturaChamado, SWT.NONE);
 		new Label(cpAberturaChamado, SWT.NONE);
 		
@@ -497,9 +491,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblFuncionrio_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFuncionrio_2.setText("Funcionário");
 		
-		text_23 = new Text(cpAberturaChamado, SWT.BORDER);
-		text_23.setEditable(false);
-		text_23.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtFuncionarioReforma = new Text(cpAberturaChamado, SWT.BORDER);
+		txtFuncionarioReforma.setEditable(false);
+		txtFuncionarioReforma.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar_4 = new Button(cpAberturaChamado, SWT.NONE);
 		btnSelecionar_4.setImage(ImageRepository.SEARCH_16.getImage());
@@ -514,8 +508,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblDescrio.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblDescrio.setText("Descrição");
 		
-		text_24 = new Text(cpAberturaChamado, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		text_24.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+		txtProblemaReforma = new Text(cpAberturaChamado, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		txtProblemaReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 		new Label(cpAberturaChamado, SWT.NONE);
 		new Label(cpAberturaChamado, SWT.NONE);
 		new Label(cpAberturaChamado, SWT.NONE);
@@ -545,19 +539,19 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblData_4.setText("Data");
 		
 		DateTimeTextField dateTimeTextField = new DateTimeTextField(composite_12);
-		text_10 = dateTimeTextField.getControl();
-		text_10.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtDataAcontecimentoChamado = dateTimeTextField.getControl();
+		txtDataAcontecimentoChamado.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_12, SWT.NONE);
 		new Label(composite_12, SWT.NONE);
 		
 		Label lblFuncionrio_3 = new Label(composite_12, SWT.NONE);
 		lblFuncionrio_3.setText("Funcionário");
 		
-		text_27 = new Text(composite_12, SWT.BORDER);
-		text_27.setEditable(false);
+		txtFuncionarioAndamentoReforma = new Text(composite_12, SWT.BORDER);
+		txtFuncionarioAndamentoReforma.setEditable(false);
 		GridData gd_text_27 = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_text_27.widthHint = 133;
-		text_27.setLayoutData(gd_text_27);
+		txtFuncionarioAndamentoReforma.setLayoutData(gd_text_27);
 		
 		Button btnSelecionar_5 = new Button(composite_12, SWT.NONE);
 		btnSelecionar_5.setImage(ImageRepository.SEARCH_16.getImage());
@@ -572,8 +566,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblDescrio_1.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblDescrio_1.setText("Descrição");
 		
-		text_28 = new Text(composite_12, SWT.BORDER);
-		text_28.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 3, 1));
+		txtDescricaoAndamentoReforma = new Text(composite_12, SWT.BORDER);
+		txtDescricaoAndamentoReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 3, 1));
 		new Label(composite_12, SWT.NONE);
 		new Label(composite_12, SWT.NONE);
 		new Label(composite_12, SWT.NONE);
@@ -597,25 +591,25 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblData_5.setText("Data");
 		
 		DateTextField dateTextField_4 = new DateTextField(composite_13);
-		text_36 = dateTextField_4.getControl();
+		txtFinalizacaoReforma = dateTextField_4.getControl();
 		GridData gd_text_36 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_text_36.widthHint = 76;
-		text_36.setLayoutData(gd_text_36);
+		txtFinalizacaoReforma.setLayoutData(gd_text_36);
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		
-		radioGroupViewer = new RadioGroupViewer(composite_13, SWT.NONE);
-		radioGroupViewer.setContentProvider(ArrayContentProvider.getInstance());
-		radioGroupViewer.setLabelProvider(new LabelProvider(){
+		radiouGroupStatusReforma = new RadioGroupViewer(composite_13, SWT.NONE);
+		radiouGroupStatusReforma.setContentProvider(ArrayContentProvider.getInstance());
+		radiouGroupStatusReforma.setLabelProvider(new LabelProvider(){
 			@Override
 			public String getText(Object element) {
 				return element.equals(ChamadoReforma.ACEITO) ? "Aceito" : "Recusado";
 			}
 		});
-		radioGroupViewer.setInput(new Object[]{ChamadoReforma.ACEITO, ChamadoReforma.RECUSADO});
+		radiouGroupStatusReforma.setInput(new Object[]{ChamadoReforma.ACEITO, ChamadoReforma.RECUSADO});
 		
-		RadioGroup radioGroup = radioGroupViewer.getRadioGroup();
+		RadioGroup radioGroup = radiouGroupStatusReforma.getRadioGroup();
 		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
@@ -623,9 +617,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		Label lblFuncionrio_4 = new Label(composite_13, SWT.NONE);
 		lblFuncionrio_4.setText("Funcionário");
 		
-		text_25 = new Text(composite_13, SWT.BORDER);
-		text_25.setEditable(false);
-		text_25.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtFuncionarioFinalizacaoReforma = new Text(composite_13, SWT.BORDER);
+		txtFuncionarioFinalizacaoReforma.setEditable(false);
+		txtFuncionarioFinalizacaoReforma.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSelecionar_6 = new Button(composite_13, SWT.NONE);
 		btnSelecionar_6.setImage(ImageRepository.SEARCH_16.getImage());
@@ -640,8 +634,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblDescrio_2.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblDescrio_2.setText("Descrição");
 		
-		text_31 = new Text(composite_13, SWT.BORDER);
-		text_31.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		txtDescricaoFinalReforma = new Text(composite_13, SWT.BORDER);
+		txtDescricaoFinalReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		
@@ -649,8 +643,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblValor_3.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblValor_3.setText("Contas");
 		
-		list = new org.eclipse.swt.widgets.List(composite_13, SWT.BORDER);
-		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
+		listContasReforma = new org.eclipse.swt.widgets.List(composite_13, SWT.BORDER);
+		listContasReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 		
 		Button btnAdicionar_1 = new Button(composite_13, SWT.NONE);
 		btnAdicionar_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
@@ -663,7 +657,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 					if(dialog.open() == IDialogConstants.OK_ID){
 						FinalizacaoChamadoReforma fin = (FinalizacaoChamadoReforma) valueFinalizacaoChamado.getValue();
 						fin.getContas().add(dialog.getConta());
-						list.redraw();
+						listContasReforma.redraw();
 					}
 				} catch (ParametroNaoInformadoException e1) {
 					DialogHelper.openWarning(e1.getMessage());
@@ -686,12 +680,12 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 			tfChamado.setSelection(0);
 		}
 		
-		tabFolder.setSelection(0);
+		tfItens.setSelection(0);
 		
-		CTabItem tbtmCheckList_1 = new CTabItem(tabFolder, SWT.NONE);
+		CTabItem tbtmCheckList_1 = new CTabItem(tfItens, SWT.NONE);
 		tbtmCheckList_1.setText("Check List");
 		
-		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
+		Composite composite_3 = new Composite(tfItens, SWT.NONE);
 		tbtmCheckList_1.setControl(composite_3);
 		tvCheckListAluguel = criarTabelaCheckList(composite_3);
 	}
@@ -881,31 +875,31 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		IObservableValue valueContratonomeObserveDetailValue = PojoProperties.value(Aluguel.class, "contrato", ContratoPrestacaoServico.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueContratonomeObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_1);
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtCliente);
 		IObservableValue valueClientenomeObserveDetailValue = PojoProperties.value(Aluguel.class, "cliente.nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_1ObserveWidget, valueClientenomeObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_7ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_7);
+		IObservableValue observeTextText_7ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtFuncionario);
 		IObservableValue valueFuncionarionomeObserveDetailValue = PojoProperties.value(Aluguel.class, "funcionario.nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_7ObserveWidget, valueFuncionarionomeObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_6);
+		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtFiador);
 		IObservableValue valueFiadorObserveDetailValue = PojoProperties.value(Aluguel.class, "fiador", Cliente.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_6ObserveWidget, valueFiadorObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextModeloContratoObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtContrato);
+		IObservableValue observeTextModeloContratoObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtModeloContrato);
 		IObservableValue valueModeloContratoObserveDetailValue = PojoProperties.value(Aluguel.class, "modeloContrato.nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextModeloContratoObserveWidget, valueModeloContratoObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_3);
+		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataAssinaturaContrato);
 		IObservableValue valueDataAssinaturaContratoObserveDetailValue = PojoProperties.value(Aluguel.class, "dataAssinaturaContrato", Date.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_3ObserveWidget, valueDataAssinaturaContratoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
-		IObservableValue valueDuracaoObserveDetailValue = PojoProperties.value(Aluguel.class, "duracao", Integer.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_4ObserveWidget, valueDuracaoObserveDetailValue, null, null);
+		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataVencimento);
+		IObservableValue valueDuracaoObserveDetailValue = PojoProperties.value(Aluguel.class, "dataVencimento", Date.class).observeDetail(value);
+		bindingContext.bindValue(observeTextText_4ObserveWidget, valueDuracaoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_2);
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtValor);
 		IObservableValue valueValorObserveDetailValue = PojoProperties.value(Aluguel.class, "valor", BigDecimal.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_2ObserveWidget, valueValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
 		//
@@ -917,76 +911,76 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		IObservableValue valueComissaoDataVencimentoObserveDetailValue = PojoProperties.value(Comissao.class, "dataVencimento", Date.class).observeDetail(valueComissao);
 		bindingContext.bindValue(observeTextText_DataVencimentobserveWidget, valueComissaoDataVencimentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeTextText_8ObserveWidget = WidgetProperties.text(SWT.None).observe(text_8);
+		IObservableValue observeTextText_8ObserveWidget = WidgetProperties.text(SWT.None).observe(txtComissionado);
 		IObservableValue valueComissionadoComissaoObserveDetailValue = PojoProperties.value(Comissao.class, "comissionado", Comissionado.class).observeDetail(valueComissao);
 		bindingContext.bindValue(observeTextText_8ObserveWidget, valueComissionadoComissaoObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_11ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_11);
+		IObservableValue observeTextText_11ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtValorComissao);
 		IObservableValue valueValorComissaoObserveDetailValue = PojoProperties.value(Comissao.class, "valor", BigDecimal.class).observeDetail(valueComissao);
 		Binding bindValorComissao = bindingContext.bindValue(observeTextText_11ObserveWidget, valueValorComissaoObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
 		ControlDecorationSupport.create(bindValorComissao, SWT.LEFT | SWT.TOP);
 		//
-		IObservableValue observeTextText_34ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_34);
+		IObservableValue observeTextText_34ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataVistoria);
 		IObservableValue valueVistoriaDataObserveDetailValue = PojoProperties.value(Vistoria.class, "data", Date.class).observeDetail(valueVistoria);
 		bindingContext.bindValue(observeTextText_34ObserveWidget, valueVistoriaDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeTextText_16ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_16);
+		IObservableValue observeTextText_16ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtFuncionarioVistoria);
 		IObservableValue valueVistoriaFuncionarionomeObserveDetailValue = PojoProperties.value(Vistoria.class, "funcionario.nome", String.class).observeDetail(valueVistoria);
 		bindingContext.bindValue(observeTextText_16ObserveWidget, valueVistoriaFuncionarionomeObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_19ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_19);
+		IObservableValue observeTextText_19ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtObservacoesVistoria);
 		IObservableValue valueVistoriaObservacoesObserveDetailValue = PojoProperties.value(Vistoria.class, "observacoes", String.class).observeDetail(valueVistoria);
 		bindingContext.bindValue(observeTextText_19ObserveWidget, valueVistoriaObservacoesObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextTextObserveWidget_1 = WidgetProperties.text(SWT.Modify).observe(textChamado);
+		IObservableValue observeTextTextObserveWidget_1 = WidgetProperties.text(SWT.Modify).observe(txtIdChamado);
 		IObservableValue valueChamadoNumeroObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "id", Long.class).observeDetail(valueChamado);
 		bindingContext.bindValue(observeTextTextObserveWidget_1, valueChamadoNumeroObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_35ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_35);
+		IObservableValue observeTextText_35ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataChamado);
 		IObservableValue valueVistoriaDataAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "data", Date.class).observeDetail(valueChamado);
 		bindingContext.bindValue(observeTextText_35ObserveWidget, valueVistoriaDataAberturaObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeTextText_23ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_23);
+		IObservableValue observeTextText_23ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtFuncionarioReforma);
 		IObservableValue valueChamadoFuncionarioAberturaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "funcionario.nome", String.class).observeDetail(valueChamado);
 		bindingContext.bindValue(observeTextText_23ObserveWidget, valueChamadoFuncionarioAberturaObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_24ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_24);
+		IObservableValue observeTextText_24ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtProblemaReforma);
 		IObservableValue valueProblemaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "problema", String.class).observeDetail(valueChamado);
 		bindingContext.bindValue(observeTextText_24ObserveWidget, valueProblemaObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_10ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_10);
+		IObservableValue observeTextText_10ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataAcontecimentoChamado);
 		IObservableValue valueAcontecimentoChamadoDataObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "data", Date.class).observeDetail(valueAcontecimentoChamado);
 		bindingContext.bindValue(observeTextText_10ObserveWidget, valueAcontecimentoChamadoDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeTextText_27ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_27);
+		IObservableValue observeTextText_27ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtFuncionarioAndamentoReforma);
 		IObservableValue valueAcontecimentoChamadoFuncionarionomeObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "funcionario.nome", String.class).observeDetail(valueAcontecimentoChamado);
 		bindingContext.bindValue(observeTextText_27ObserveWidget, valueAcontecimentoChamadoFuncionarionomeObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_28ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_28);
+		IObservableValue observeTextText_28ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDescricaoAndamentoReforma);
 		IObservableValue valueAcontecimentoChamadoDescricaoObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "descricao", String.class).observeDetail(valueAcontecimentoChamado);
 		bindingContext.bindValue(observeTextText_28ObserveWidget, valueAcontecimentoChamadoDescricaoObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_36ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_36);
+		IObservableValue observeTextText_36ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtFinalizacaoReforma);
 		IObservableValue valueChamadoDataFechamentoObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "data", Date.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindValue(observeTextText_36ObserveWidget, valueChamadoDataFechamentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeSingleSelectionRadioGroupViewer = ViewerProperties.singleSelection().observe(radioGroupViewer);
+		IObservableValue observeSingleSelectionRadioGroupViewer = ViewerProperties.singleSelection().observe(radiouGroupStatusReforma);
 		IObservableValue valueChaveLocalizacaoObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "status", Integer.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindValue(observeSingleSelectionRadioGroupViewer, valueChaveLocalizacaoObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_25ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_25);
+		IObservableValue observeTextText_25ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtFuncionarioFinalizacaoReforma);
 		IObservableValue valueChamadoFuncionarioFechamentonomeObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "funcionario.nome", String.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindValue(observeTextText_25ObserveWidget, valueChamadoFuncionarioFechamentonomeObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_31ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_31);
+		IObservableValue observeTextText_31ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDescricaoFinalReforma);
 		IObservableValue valueChamadoDescricaoConclusaoObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "descricaoConclusao", String.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindValue(observeTextText_31ObserveWidget, valueChamadoDescricaoConclusaoObserveDetailValue, null, null);
 		//
-		IObservableList itemsListObserveWidget = WidgetProperties.items().observe(list);
+		IObservableList itemsListObserveWidget = WidgetProperties.items().observe(listContasReforma);
 		IObservableList valueFinalizacaoChamadoContasObserveDetailList = PojoProperties.list(FinalizacaoChamadoReforma.class, "contas", java.util.List.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindList(itemsListObserveWidget, valueFinalizacaoChamadoContasObserveDetailList, null, null);
 		//
-		IObservableValue observeEnabledTfImovelObserveWidget = WidgetProperties.enabled().observe(tabFolder);
+		IObservableValue observeEnabledTfImovelObserveWidget = WidgetProperties.enabled().observe(tfItens);
 		IObservableValue valuePropostaIdObserveDetailValue = PojoProperties.value(Aluguel.class, "id", Long.class).observeDetail(value);
 		bindingContext.bindValue(observeEnabledTfImovelObserveWidget, valuePropostaIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
 		//

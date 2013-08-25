@@ -28,4 +28,6 @@ public interface Pendencia {
 	
 	GenericService<?> getService();
 	
+	void finalizarPendencia() throws Exception;
+	
 }

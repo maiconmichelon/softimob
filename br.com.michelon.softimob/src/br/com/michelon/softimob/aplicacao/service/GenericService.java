@@ -2,10 +2,12 @@ package br.com.michelon.softimob.aplicacao.service;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
+import br.com.michelon.softimob.aplicacao.helper.LogHelper;
 import br.com.michelon.softimob.aplicacao.helper.ReflectionHelper;
 import br.com.michelon.softimob.persistencia.SpringUtils;
 
@@ -25,11 +27,13 @@ public class GenericService<T> {
 		return crudRepository;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void salvar(T registro) throws Exception{
-		crudRepository.save(registro);
+		salvar((List<T>) Arrays.asList(registro));
 	}
 	
 	public void salvar(List<T> registros) throws Exception{
+		LogHelper.setLog(registros);
 		crudRepository.save(registros);
 	}
 	

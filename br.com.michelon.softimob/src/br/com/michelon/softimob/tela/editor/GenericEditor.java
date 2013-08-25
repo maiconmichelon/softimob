@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -30,6 +31,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
@@ -85,12 +87,13 @@ public abstract class GenericEditor<T> extends EditorPart {
 //		}
 		
 		Composite cpOpcoes = new Composite(composite, SWT.BORDER);
-		cpOpcoes.setLayout(new GridLayout(2, false));
+		GridLayout gl_cpOpcoes = new GridLayout(5, false);
+		cpOpcoes.setLayout(gl_cpOpcoes);
 		cpOpcoes.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnSalvar = new Button(cpOpcoes, SWT.NONE);
 		btnSalvar.setImage(ResourceManager.getPluginImage("br.com.michelon.softimob", "icons/save/save32.png"));
-		GridData gd_btnSalvar = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		GridData gd_btnSalvar = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 3);
 		gd_btnSalvar.widthHint = 80;
 		gd_btnSalvar.heightHint = 50;
 		btnSalvar.setLayoutData(gd_btnSalvar);
@@ -104,12 +107,49 @@ public abstract class GenericEditor<T> extends EditorPart {
 		
 		Button btnNovo = new Button(cpOpcoes, SWT.NONE);
 		btnNovo.setImage(ImageRepository.NOVO_32.getImage());
-		GridData gd_btnNovo = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
+		GridData gd_btnNovo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 3);
 		gd_btnNovo.widthHint = 80;
 		gd_btnNovo.heightHint = 50;
 		btnNovo.setLayoutData(gd_btnNovo);
 		formToolkit.adapt(btnNovo, true, true);
 		btnNovo.setText("Novo");
+		
+		Label label = new Label(cpOpcoes, SWT.NONE);
+		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 3));
+		formToolkit.adapt(label, true, true);
+		
+		Label lblNewLabel = new Label(cpOpcoes, SWT.NONE);
+		lblNewLabel.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
+		lblNewLabel.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
+		lblNewLabel.setText("Usuario Cadastro");
+		
+		Label lblFulano = new Label(cpOpcoes, SWT.NONE);
+		GridData gd_lblFulano = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
+		gd_lblFulano.widthHint = 93;
+		lblFulano.setLayoutData(gd_lblFulano);
+		lblFulano.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		lblFulano.setText("Fulano");
+		
+		Label lblDataDeCadastro = new Label(cpOpcoes, SWT.NONE);
+		lblDataDeCadastro.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
+		lblDataDeCadastro.setText("Data de Cadastro");
+		lblDataDeCadastro.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
+		
+		Label label_2 = new Label(cpOpcoes, SWT.NONE);
+		label_2.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
+		label_2.setText("Fulano");
+		label_2.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		
+		Label lblNewLabel_1 = new Label(cpOpcoes, SWT.NONE);
+		lblNewLabel_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		lblNewLabel_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
+		lblNewLabel_1.setText("Ultima alteracao");
+		
+		Label lblCicrano = new Label(cpOpcoes, SWT.NONE);
+		lblCicrano.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		lblCicrano.setText("Cicrano");
+		lblCicrano.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		
 		btnNovo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

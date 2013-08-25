@@ -180,5 +180,5 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 	public List<ContaPagarReceber> buscarContas(Date dataInicio, Date dataFinal){
 		return getRepository().buscarContas(dataInicio, dataFinal);
 	}
-	
+
 }

@@ -9,8 +9,9 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
-import br.com.michelon.softimob.modelo.Imovel;
+import br.com.michelon.softimob.modelo.Comodo;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico.TipoContrato;
+import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.tela.view.BuscaAvancadaImovelView.ModeloBusca;
 
 @Repository
@@ -20,61 +21,62 @@ public class ImovelDAOImpl {
 	private EntityManager em;
 
 	public List<Imovel> buscaAvancada(ModeloBusca m){
-		
 		Date dataHoje = new Date();
 		
-		String query = "SELECT distinct i FROM Imovel i " +
-				"LEFT JOIN ContratoPrestacaoServico c on c.imovel = i " +
-				"LEFT JOIN Reserva r on r.imovel = i " +
-				"WHERE ";
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("SELECT distinct i FROM Imovel i ");
+		sb.append("LEFT JOIN ContratoPrestacaoServico c on c.imovel = i ");
+		sb.append("LEFT JOIN Reserva r on r.imovel = i ");
+		
+		List<Comodo> comodos = m.getComodos();
+		for(int p = 0 ; p < comodos.size(); p++)
+			sb.append(String.format("JOIN Comodo c%s on c%s.imovel = i ", p, p));
+
+		sb.append("WHERE ");
 		
 		if(m.getCodigo() != null)
-			query += "AND (i.id = :codigo) ";
+			sb.append("AND (i.id = :codigo) ");
 		if(m.getMetroMin() != null)
-			query += "AND :metroMin <= i.metragem ";
+			sb.append("AND :metroMin <= i.metragem ");
 		if(m.getMetroMax() != null)
-			query += "AND :metroMax >= i.metragem ";
+			sb.append("AND :metroMax >= i.metragem ");
 		if(m.getValMin() != null)
-			query += "AND :valMin <= c.valor ";
+			sb.append("AND :valMin <= c.valor ");
 		if(m.getValMax() != null)
-			query += "AND :valMax >= c.valor ";
+			sb.append("AND :valMax >= c.valor ");
 		if(m.getAngariador() != null)
-			query += "AND :angariador = i.angariador ";
+			sb.append("AND :angariador = i.angariador ");
 		if(m.getProprietario() != null)
-			query += "AND i.proprietario = :proprietario ";
+			sb.append("AND i.proprietario = :proprietario ");
 		if(m.getTipoImovel() != null)
-			query += "AND i.tipo = :tipoImovel ";
+			sb.append("AND i.tipo = :tipoImovel ");
 		if(m.getBairro() != null)
-			query += "AND i.endereco.rua.bairro = :bairro ";
+			sb.append("AND i.endereco.rua.bairro = :bairro ");
 		if(m.getCidade() != null)
-			query += "AND i.endereco.rua.bairro.cidade = :cidade ";
+			sb.append("AND i.endereco.rua.bairro.cidade = :cidade ");
 		if(m.getObservacoes() != null)
-			query += "AND i.observacoes like CONCAT('%', :observacoes, '%') ";
+			sb.append("AND i.observacoes like CONCAT('%', :observacoes, '%') ");
 		if(!(m.isReservado() && m.isNaoReservado())){
-			query += "AND (((:naoReservado = true AND c is null)) ";
-			query += "OR ((:reservado = true AND c is not null AND c.dataVencimento >= :dataHoje))) ";
+			sb.append("AND (((:naoReservado = true AND c is null)) ");
+			sb.append("OR ((:reservado = true AND c is not null AND c.dataVencimento >= :dataHoje))) ");
 		}
-//		if(!m.getComodos().isEmpty()){
-//			for(int i = 0; i < m.getComodos().size(); i++){
-//				query.setParameter("tipoComodo1", m.getComodos().get(i).getTipoComodo());
-//				query.setParameter("comodoDesc1", m.getComodos().get(i).getDescricao());
-//			}
-//		}
+
+		for(int p = 0 ; p < comodos.size(); p++){
+			sb.append(String.format("AND c%s.tipoComodo = :tp%s AND c%s.descricao = :comDescricao%s ", p, p, p, p));
+		}
 		
+		sb.append("AND ((:isTodos = true) ");
+		sb.append("OR c.dataVencimento >= :dataHoje ");
+		sb.append("AND ( :isVenda = true AND (c.tipo = :tipoVenda OR c.tipo =:tipoVendaAluguel)) ");
+		sb.append("OR (:isAluguel = true AND (c.tipo = :tipoAluguel OR c.tipo =:tipoVendaAluguel)) ");
+		sb.append("OR (:isVendaAluguel = true))");
 		
-		query+="AND ((:isTodos = true) " +
-				"OR c.dataVencimento >= :dataHoje " +
-				"AND ( " +
-					"(:isVenda = true AND (c.tipo = :tipoVenda OR c.tipo =:tipoVendaAluguel)) " +
-					"OR (:isAluguel = true AND (c.tipo = :tipoAluguel OR c.tipo =:tipoVendaAluguel)) " +
-					"OR (:isVendaAluguel = true)" +
-				"))";
+		sb = new StringBuilder(sb.toString().replaceAll("WHERE AND", "WHERE"));
+		if(sb.toString().endsWith("WHERE "))
+			sb = new StringBuilder(sb.toString().replaceAll("WHERE ", ""));
 		
-		query = query.replaceAll("WHERE AND", "WHERE");
-		if(query.endsWith("WHERE "))
-			query = query.replaceAll("WHERE ", "");
-		
-		TypedQuery<Imovel> typedQuery = em.createQuery(query, Imovel.class);
+		TypedQuery<Imovel> typedQuery = em.createQuery(sb.toString(), Imovel.class);
 		
 		if(m.getCodigo() != null)
 			typedQuery.setParameter("codigo", m.getCodigo());
@@ -102,12 +104,14 @@ public class ImovelDAOImpl {
 			typedQuery.setParameter("naoReservado", m.isNaoReservado());
 			typedQuery.setParameter("reservado", m.isReservado());
 		}
-//		if(!m.getComodos().isEmpty()){
-//			for(int i = 0; i < m.getComodos().size(); i++){
-//				typedQuery.setParameter("tipoComodo1", m.getComodos().get(i).getTipoComodo());
-//				typedQuery.setParameter("comodoDesc1", m.getComodos().get(i).getDescricao());
-//			}
-//		}
+		
+		if(!comodos.isEmpty()){
+			for(int p = 0 ; p < comodos.size(); p++){
+				Comodo c = comodos.get(p);
+				typedQuery.setParameter(String.format("tp%s", p), c.getTipoComodo());
+				typedQuery.setParameter(String.format("comDescricao%s", p), c.getDescricao());				
+			}
+		}
 		
 		typedQuery.setParameter("dataHoje", dataHoje);
 		typedQuery.setParameter("isAluguel", m.isLocacao());

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -37,6 +38,8 @@ public class NotifierDialog {
     // how many tick steps we use when fading out 
     private static final int   FADE_OUT_STEP = 8;
 
+    private static final int HEIGHT = 110;
+    
     // how high the alpha value is when we have finished fading in 
     private static final int   FINAL_ALPHA   = 225;
 
@@ -60,14 +63,11 @@ public class NotifierDialog {
 
     private static Shell       _shell;
 
-    /**
-     * Creates and shows a notification dialog with a specific title, message and a
-     * 
-     * @param title
-     * @param message
-     * @param type
-     */
     public static void notify(String title, String message, NotificationType type) {
+    	notify(title, message, type, null);
+    }
+    
+    public static void notify(String title, String message, NotificationType type, MouseListener event) {
         _shell = new Shell(Display.getDefault().getActiveShell(), SWT.NO_FOCUS | SWT.NO_TRIM);
         _shell.setLayout(new FillLayout());
         _shell.setForeground(_fgColor);
@@ -80,7 +80,7 @@ public class NotifierDialog {
         });
 
         final Composite inner = new Composite(_shell, SWT.NONE);
-
+        
         GridLayout gl = new GridLayout(2, false);
         gl.marginLeft = 5;
         gl.marginTop = 0;
@@ -130,7 +130,6 @@ public class NotifierDialog {
 
         String lines[] = message.split("\n");
         Point longest = null;
-        int typicalHeight = gc.stringExtent("X").y;
 
         for (String line : lines) {
             Point extent = gc.stringExtent(line);
@@ -144,9 +143,7 @@ public class NotifierDialog {
             }
         }
         gc.dispose();
-
-        int minHeight = typicalHeight * lines.length;
-
+        
         CLabel imgLabel = new CLabel(inner, SWT.NONE);
         imgLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING));
         imgLabel.setImage(type.getImage());
@@ -173,16 +170,14 @@ public class NotifierDialog {
         text.setForeground(_fgColor);
         text.setText(message);
 
-        minHeight = 100;
-
-        _shell.setSize(350, minHeight);
+        _shell.setSize(350, HEIGHT);
 
         if (Display.getDefault().getActiveShell() == null || Display.getDefault().getActiveShell().getMonitor() == null) { return; }
 
         Rectangle clientArea = Display.getDefault().getActiveShell().getMonitor().getClientArea();
 
         int startX = clientArea.x + clientArea.width - 352;
-        int startY = clientArea.y + clientArea.height - 102;
+        int startY = clientArea.y + clientArea.height - HEIGHT;
 
         // move other shells up
         if (!_activeShells.isEmpty()) {
@@ -190,8 +185,8 @@ public class NotifierDialog {
             Collections.reverse(modifiable);
             for (Shell shell : modifiable) {
                 Point curLoc = shell.getLocation();
-                shell.setLocation(curLoc.x, curLoc.y - 100);
-                if (curLoc.y - 100 < 0) {
+                shell.setLocation(curLoc.x, curLoc.y - HEIGHT);
+                if (curLoc.y - HEIGHT < 0) {
                     _activeShells.remove(shell);
                     shell.dispose();
                 }
