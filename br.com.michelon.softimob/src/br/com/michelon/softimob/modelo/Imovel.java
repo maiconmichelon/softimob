@@ -61,49 +61,11 @@ public class Imovel implements Serializable, ContainsPhotos{
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Arquivo> fotos = Lists.newArrayList();
+
+	@OneToOne(cascade=CascadeType.ALL)
+	@br.com.michelon.softimob.aplicacao.annotation.Log
+	private Log log;
 	
-//	@OneToMany(cascade = CascadeType.ALL)
-//	private List<ContratoPrestacaoServico> contratos = Lists.newArrayList();
-//	
-//	@OneToMany(cascade = CascadeType.ALL)
-//	private List<Proposta> propostas = Lists.newArrayList();
-//	
-//	@OneToMany(cascade = CascadeType.ALL)
-//	private List<Reserva> reservas = Lists.newArrayList();
-//	
-//	@OneToMany(cascade = CascadeType.ALL)
-//	private List<Comodo> comodos = Lists.newArrayList();
-//
-//	@OneToMany(cascade = CascadeType.ALL)
-//	private List<Chave> chaves = Lists.newArrayList();
-//	
-//	@OneToMany(cascade = CascadeType.ALL)
-//	private List<Feedback> feedbacks = Lists.newArrayList();
-//	
-//	public List<ContratoPrestacaoServico> getContratos() {
-//		return contratos;
-//	}
-//	
-//	public List<Chave> getChaves() {
-//		return chaves;
-//	}
-//	
-//	public List<Comodo> getComodos() {
-//		return comodos;
-//	}
-//	
-//	public List<Feedback> getFeedbacks() {
-//		return feedbacks;
-//	}
-//	
-//	public List<Proposta> getPropostas() {
-//		return propostas;
-//	}
-//	
-//	public List<Reserva> getReservas() {
-//		return reservas;
-//	}
-//	
 	public List<ContratoPrestacaoServico> getContratos() {
 		return new ContratoPrestacaoServicoService().findByImovel(this);
 	}
@@ -198,6 +160,14 @@ public class Imovel implements Serializable, ContainsPhotos{
 	
 	public void setFotos(List<Arquivo> fotos) {
 		this.fotos = fotos;
+	}
+	
+	public Log getLog() {
+		return log;
+	}
+	
+	public void setLog(Log log) {
+		this.log = log;
 	}
 	
 	private transient static ImovelService service;

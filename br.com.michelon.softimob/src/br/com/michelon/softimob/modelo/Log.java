@@ -21,10 +21,10 @@ public class Log implements Serializable{
 	private Long id;
 	
 	@ManyToOne
-	private Funcionario funcionarioCadastro;
+	private Usuario usuarioCadastro;
 	
 	@ManyToOne
-	private Funcionario funcionarioAlteracao;
+	private Usuario usuarioAlteracao;
 	
 	@Temporal(TemporalType.DATE)
 	private Date dataAlteracao;
@@ -37,20 +37,20 @@ public class Log implements Serializable{
 		this.id = id;
 	}
 
-	public Funcionario getFuncionarioCadastro() {
-		return funcionarioCadastro;
+	public Usuario getUsuarioCadastro() {
+		return usuarioCadastro;
 	}
 
-	public void setFuncionarioCadastro(Funcionario funcionarioCadastro) {
-		this.funcionarioCadastro = funcionarioCadastro;
+	public void setUsuarioCadastro(Usuario usuarioCadastro) {
+		this.usuarioCadastro = usuarioCadastro;
 	}
 
-	public Funcionario getFuncionarioAlteracao() {
-		return funcionarioAlteracao;
+	public Usuario getUsuarioAlteracao() {
+		return usuarioAlteracao;
 	}
 
-	public void setFuncionarioAlteracao(Funcionario funcionarioAlteracao) {
-		this.funcionarioAlteracao = funcionarioAlteracao;
+	public void setUsuarioAlteracao(Usuario usuarioAlteracao) {
+		this.usuarioAlteracao = usuarioAlteracao;
 	}
 
 	public Date getDataAlteracao() {

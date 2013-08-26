@@ -257,12 +257,28 @@
             id="br.com.michelon.softimob.tela.view.ImovelMapView"
             name="New ViewPart">
       </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.UsuarioView"
+            icon="icons/user/user16.png"
+            id="br.com.michelon.softimob.tela.view.UsuarioView"
+            name="Usuário"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
 
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="Aplicação">
+            <command
+                  commandId="br.com.michelon.softimob.command.cmdReiniciar"
+                  icon="icons/refresh/refresh16.png"
+                  label="Reiniciar"
+                  style="push">
+            </command>
+         </menu>
          <menu
                label="Imóveis">
             <menu
@@ -456,6 +472,16 @@
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
                      value="br.com.michelon.softimob.tela.view.CheckListView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/user/user16.png"
+                  label="Usuário"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.UsuarioView">
                </parameter>
             </command>
          </menu>
@@ -749,6 +775,12 @@
             id="br.com.michelon.softimob.tela.editor.ClientePJEditor"
             name="Cadastro Pessoa Juridica">
       </editor>
+      <editor
+            class="br.com.michelon.softimob.tela.editor.UsuarioEditor"
+            icon="icons/user/user16.png"
+            id="br.com.michelon.softimob.tela.editor.UsuarioEditor"
+            name="Cadastro Usuário">
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -801,6 +833,11 @@
             defaultHandler="br.com.michelon.softimob.aplicacao.command.RazaoCommand"
             id="br.com.michelon.softimob.command.cmdRazao"
             name="Razão">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.ReiniciarCommand"
+            id="br.com.michelon.softimob.command.cmdReiniciar"
+            name="Cliente">
       </command>
    </extension>
    <extension

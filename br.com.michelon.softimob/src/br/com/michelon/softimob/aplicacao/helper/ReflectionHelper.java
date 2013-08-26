@@ -107,7 +107,7 @@ public class ReflectionHelper {
 		}
 		
 		if(!clazz.getSuperclass().equals(Object.class))
-			fields.addAll(getAtributoAtivoDesativado(clazz.getSuperclass()));
+			fields.addAll(getFieldByAnnotation(clazz.getSuperclass(), clazzAnnotation));
 		
 		return fields;
 	}

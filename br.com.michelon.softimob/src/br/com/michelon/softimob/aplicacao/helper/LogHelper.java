@@ -1,42 +1,37 @@
 package br.com.michelon.softimob.aplicacao.helper;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import br.com.michelon.softimob.modelo.Funcionario;
+import org.apache.log4j.Logger;
+
 import br.com.michelon.softimob.modelo.Log;
+import br.com.michelon.softimob.modelo.Usuario;
 
 public class LogHelper {
 
-	public static void setLog(Object obj){
-		try {
-			setLog(Arrays.asList(obj));
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public static void setLog(List<Object> objs) throws IllegalArgumentException, IllegalAccessException{
-		for(Object obj : objs){
+	public static void setLog(Object obj) {
+		try{
 			List<Field> fields = ReflectionHelper.getAtributoLog(obj.getClass());
 			
 			for(Field f : fields){
-				Log log = (Log) f.get(obj);
+				Log log = (Log) ReflectionHelper.getAtribute(obj, f.getName());
 				
-				Funcionario func = LoginHelper.getFuncionarioLogado();
+				Usuario usuario = LoginHelper.getUsuarioLogado();
 				
-				if(log.getFuncionarioCadastro() == null)
-					log.setFuncionarioCadastro(func);
+				if(log == null)
+					log = new Log();
+
+				if(log.getUsuarioCadastro() == null)
+					log.setUsuarioCadastro(usuario);
 				log.setDataAlteracao(Calendar.getInstance().getTime());
-				log.setFuncionarioAlteracao(func);
+				log.setUsuarioAlteracao(usuario);
+				
+				ReflectionHelper.setAtribute(obj, f.getName(), log, Log.class);
 			}
-			
+		}catch(Exception e){
+			Logger.getLogger(LogHelper.class).error("Erro ao setar log", e);
 		}
 	}
 	

@@ -161,7 +161,10 @@ public abstract class GenericView<T> extends ViewPart{
 			viewer.setContentProvider(ArrayContentProvider.getInstance());
 		
 		viewer.addFilter(getFilter());
-		viewer.addDoubleClickListener(getDoubleClickListener());
+		
+		IDoubleClickListener doubleClickListener = getDoubleClickListener();
+		if(doubleClickListener != null)
+			viewer.addDoubleClickListener(doubleClickListener);
 
 		for(Action action : createActions()){
 			frmNewForm.getToolBarManager().add(action);
@@ -323,7 +326,7 @@ public abstract class GenericView<T> extends ViewPart{
 		try {
 			getService(objeto).removerAtivarOuDesativar(objeto);
 			
-			DialogHelper.openInformation((String.format("Registro %s com sucesso.", addGroupAtivadoDesativado ? "desativado / reativado" : "removido")));
+			DialogHelper.openInformation((String.format("Registro %s com sucesso.", addGroupAtivadoDesativado ? "desativado/ativado" : "removido")));
 		} catch (Exception e) {
 			DialogHelper.openError("Houveram erros ao remover registro.");
 			log.error("Erro ao remover registro.", e);

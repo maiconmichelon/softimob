@@ -27,7 +27,6 @@ import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Pendencia;
-import br.com.michelon.softimob.persistencia.SpringUtils;
 import br.com.michelon.softimob.tela.popup.notifier.NotificationType;
 import br.com.michelon.softimob.tela.popup.notifier.NotifierDialog;
 import br.com.michelon.softimob.tela.view.PgtoRecContaView;
@@ -56,9 +55,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowCoolBar(true);
 		configurer.setShowFastViewBars(true);
 		configurer.setShowStatusLine(true);
-		configurer.setTitle("SoftImob");
 		
-		SpringUtils.initializeContext();
+		configurer.setTitle("SoftImob");
 	}
 	
 	@Override

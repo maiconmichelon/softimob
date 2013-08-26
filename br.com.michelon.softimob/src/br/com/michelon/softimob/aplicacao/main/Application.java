@@ -2,9 +2,13 @@ package br.com.michelon.softimob.aplicacao.main;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+
+import br.com.michelon.softimob.persistencia.SpringUtils;
+import br.com.michelon.softimob.tela.dialog.LoginDialog;
 
 /**
  * This class controls all aspects of the application's execution
@@ -17,6 +21,13 @@ public class Application implements IApplication {
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 		Display display = PlatformUI.createDisplay();
+
+		SpringUtils.initializeContext();
+		
+		LoginDialog loginDialog = new LoginDialog(display.getActiveShell());
+		if(loginDialog.open() != IDialogConstants.OK_ID)
+			return IApplication.EXIT_OK;
+			
 		try {
 			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
 

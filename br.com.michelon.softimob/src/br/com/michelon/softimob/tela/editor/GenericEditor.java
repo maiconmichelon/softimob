@@ -1,15 +1,21 @@
 package br.com.michelon.softimob.tela.editor;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.RollbackException;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.persistence.exceptions.DatabaseException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -32,14 +38,19 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.postgresql.util.PSQLException;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import br.com.michelon.softimob.aplicacao.annotation.Log;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.exception.ValidationException;
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.ReflectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.SWTHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.ValidatorHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 
 public abstract class GenericEditor<T> extends EditorPart {
 
@@ -53,6 +64,9 @@ public abstract class GenericEditor<T> extends EditorPart {
 	private Logger log = Logger.getLogger(getClass());
 	private Composite cpPrincipal;
 	private DataBindingContext initDataBindings;
+	private Label lblUsuarioCadastro;
+	private Label lblDataAlteracao;
+	private Label lblUsuarioAlteracao;
 	
 	public GenericEditor(Class<T> clazz) {
 		mainClass = clazz;
@@ -78,13 +92,6 @@ public abstract class GenericEditor<T> extends EditorPart {
 		afterCreatePartControl(cpPrincipal);
 		scrolledComposite.setContent(cpPrincipal);
 		scrolledComposite.setMinSize(cpPrincipal.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		
-		//PARA ABRIR NO WINDOW BUILDER
-		if(getEditorInput() instanceof GenericEditorInput)
-			initDataBindings = initBindings();
-//		else{
-//			initDataBindings = this.initDataBindings();
-//		}
 		
 		Composite cpOpcoes = new Composite(composite, SWT.BORDER);
 		GridLayout gl_cpOpcoes = new GridLayout(5, false);
@@ -114,49 +121,61 @@ public abstract class GenericEditor<T> extends EditorPart {
 		formToolkit.adapt(btnNovo, true, true);
 		btnNovo.setText("Novo");
 		
-		Label label = new Label(cpOpcoes, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 3));
-		formToolkit.adapt(label, true, true);
-		
-		Label lblNewLabel = new Label(cpOpcoes, SWT.NONE);
-		lblNewLabel.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
-		lblNewLabel.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
-		lblNewLabel.setText("Usuario Cadastro");
-		
-		Label lblFulano = new Label(cpOpcoes, SWT.NONE);
-		GridData gd_lblFulano = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
-		gd_lblFulano.widthHint = 93;
-		lblFulano.setLayoutData(gd_lblFulano);
-		lblFulano.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		lblFulano.setText("Fulano");
-		
-		Label lblDataDeCadastro = new Label(cpOpcoes, SWT.NONE);
-		lblDataDeCadastro.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
-		lblDataDeCadastro.setText("Data de Cadastro");
-		lblDataDeCadastro.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
-		
-		Label label_2 = new Label(cpOpcoes, SWT.NONE);
-		label_2.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
-		label_2.setText("Fulano");
-		label_2.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		
-		Label lblNewLabel_1 = new Label(cpOpcoes, SWT.NONE);
-		lblNewLabel_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		lblNewLabel_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
-		lblNewLabel_1.setText("Ultima alteracao");
-		
-		Label lblCicrano = new Label(cpOpcoes, SWT.NONE);
-		lblCicrano.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		lblCicrano.setText("Cicrano");
-		lblCicrano.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		
 		btnNovo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				resetValue();
 			}
 		});
+		
+		if(!valueHasLog()){
+			Label label = new Label(cpOpcoes, SWT.NONE);
+			label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 3));
+			formToolkit.adapt(label, true, true);
+
+			Label lblDataDeCadastro = new Label(cpOpcoes, SWT.NONE);
+			lblDataDeCadastro.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
+			lblDataDeCadastro.setText("Última Alteração");
+			lblDataDeCadastro.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
+			
+			lblDataAlteracao = new Label(cpOpcoes, SWT.NONE);
+			lblDataAlteracao.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
+			lblDataAlteracao.setText("");
+			lblDataAlteracao.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+			
+			Label lblNewLabel = new Label(cpOpcoes, SWT.NONE);
+			lblNewLabel.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
+			lblNewLabel.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
+			lblNewLabel.setText("Usuário Cadastro");
+			
+			lblUsuarioCadastro = new Label(cpOpcoes, SWT.NONE);
+			GridData gd_lblFulano = new GridData(SWT.FILL, SWT.BOTTOM, false, false, 1, 1);
+			gd_lblFulano.widthHint = 93;
+			lblUsuarioCadastro.setLayoutData(gd_lblFulano);
+			lblUsuarioCadastro.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+			lblUsuarioCadastro.setText("");
+			
+			Label lblNewLabel_1 = new Label(cpOpcoes, SWT.NONE);
+			lblNewLabel_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+			lblNewLabel_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
+			lblNewLabel_1.setText("Ultima Alteração");
+			
+			lblUsuarioAlteracao = new Label(cpOpcoes, SWT.NONE);
+			lblUsuarioAlteracao.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
+			lblUsuarioAlteracao.setText("");
+			lblUsuarioAlteracao.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		}
+		
+		//PARA ABRIR NO WINDOW BUILDER
+		if(getEditorInput() instanceof GenericEditorInput)
+			initDataBindings = initBindings();
+		bindLog(initDataBindings);
+//		else{
+//			initDataBindings = this.initDataBindings();
+//		}
+		
 	}
+
 
 	protected void resetValue() {
 		resetValue(getCurrentObject());
@@ -178,6 +197,22 @@ public abstract class GenericEditor<T> extends EditorPart {
 		return bindingContext;
 	}
 	
+	private void bindLog(DataBindingContext bindingContext) {
+		if(!valueHasLog()){
+			IObservableValue observeTextLblDataCadastroObserveWidget = WidgetProperties.text().observe(lblDataAlteracao);
+			IObservableValue valueDataCadastroObserveDetailValue = PojoProperties.value(mainClass, "log.dataAlteracao", Date.class).observeDetail(value);
+			bindingContext.bindValue(observeTextLblDataCadastroObserveWidget, valueDataCadastroObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+			//
+			IObservableValue observeTextLblUsuarioCadastroObserveWidget = WidgetProperties.text().observe(lblUsuarioCadastro);
+			IObservableValue valueLogusuarioCadastrologinObserveDetailValue = PojoProperties.value(mainClass, "log.usuarioCadastro.login", String.class).observeDetail(value);
+			bindingContext.bindValue(observeTextLblUsuarioCadastroObserveWidget, valueLogusuarioCadastrologinObserveDetailValue, null, null);
+			//
+			IObservableValue observeTextLblUltimaAlteracaoObserveWidget = WidgetProperties.text().observe(lblUsuarioAlteracao);
+			IObservableValue valueLogusuarioAlteracaologinObserveDetailValue = PojoProperties.value(mainClass, "log.usuarioAlteracao.login", String.class).observeDetail(value);
+			bindingContext.bindValue(observeTextLblUltimaAlteracaoObserveWidget, valueLogusuarioAlteracaologinObserveDetailValue, null, null);
+		}
+	}
+	
 	public abstract GenericService<T> getService();
 
 	/**
@@ -187,6 +222,10 @@ public abstract class GenericEditor<T> extends EditorPart {
 	public void saveCurrentObject(GenericService<T> service) {
 		salvar(getService(), value, true);
 		updateTargets();
+	}
+	
+	private boolean valueHasLog(){
+		return ReflectionHelper.getFieldByAnnotation(mainClass, Log.class).isEmpty();
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -202,10 +241,22 @@ public abstract class GenericEditor<T> extends EditorPart {
 			setFocus();
 			
 			return true;
+		} catch (PSQLException e){
+			MessageDialog.openError(ShellHelper.getActiveShell(), "Erro", "Erro ao salvar registro\n" + e.getMessage());
 		} catch (DataIntegrityViolationException e){
 			log.error("Erro ao salvar registro", e);
 			MessageDialog.openError(ShellHelper.getActiveShell(), "Erro", "Erro ao salvar registro\n" + e.getMessage());
 		} catch (Exception e) {
+			if(e.getCause() != null && e.getCause().getClass().equals(RollbackException.class)){
+				RollbackException re = (RollbackException) e.getCause();
+				if(re.getCause() != null && re.getCause().getClass().equals(DatabaseException.class)){
+					DatabaseException de = (DatabaseException) re.getCause();
+					if(de.getErrorCode() == 4002){
+						DialogHelper.openError("Já existe um registro com estas caracteristicas.");
+						return false;
+					}
+				}
+			}
 			log.error("Erro ao salvar registro", e);
 			MessageDialog.openError(ShellHelper.getActiveShell(), "Erro", "Erro ao salvar registro\n" + e.getMessage());
 		}

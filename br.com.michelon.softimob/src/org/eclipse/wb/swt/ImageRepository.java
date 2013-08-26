@@ -80,7 +80,9 @@ public enum ImageRepository{
 	ERROR_16("icons/typeMessage/error16.png"),
 	ERROR_32("icons/typeMessage/error32.png"),
 	SUCCESS_16("icons/typeMessage/success16.png"),
-	SUCCESS_32("icons/typeMessage/success32.png")
+	SUCCESS_32("icons/typeMessage/success32.png"), 
+	USER_32("icons/user/user32.png"),
+	USER_16("icons/user/user16.png")
 	;
 	
 	private String caminho;

@@ -41,13 +41,13 @@ class BuscaCEP implements CEPService {
 	 * @see org.talesolutions.cep.CEPService#obtemPorNumeroCEP(int)
 	 */
 	@Override
-	public CEP obtemPorNumeroCEP(String numeroCEP) {
+	public CEP obtemPorNumeroCEP(String numeroCEP) throws Exception {
 		final HtmlTable table = getHtmlTableWithResults(numeroCEP);
 		HtmlTableRow row = table.getRow(0);
 		return criaCEP(row);
 	}
 
-	private HtmlTable getHtmlTableWithResults(String query){
+	private HtmlTable getHtmlTableWithResults(String query) throws Exception{
 		try {
 			final HtmlPage page = getWebClient()
 					.getPage(BUSCA_CEP_SERVICE_BASE_URL + query);
@@ -72,7 +72,7 @@ class BuscaCEP implements CEPService {
 	 * @see org.talesolutions.cep.CEPService#obtemPorEndereco(java.lang.String)
 	 */
 	@Override
-	public List<CEP> obtemPorEndereco(String query) {
+	public List<CEP> obtemPorEndereco(String query) throws Exception {
 		final HtmlTable table = getHtmlTableWithResults(query);
 		List<CEP> ceps = new ArrayList<CEP>(table.getRows().size());
 		for (HtmlTableRow row : table.getRows()) {

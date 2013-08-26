@@ -97,9 +97,9 @@ public class EnderecoGroup {
 					if(rua != null)
 						selecionarRua(rua);
 				}catch(CEPNaoEncontradoException ce){
-					log.info("Cep não encontrado", ce);
+					log.info("Cep não encontrado");
 				}catch(CEPServiceFailureException se){
-					log.error("Não houve exito em conectar-se com o serviço dos correios.", se);
+					log.error("Não houve exito em conectar-se com o serviço dos correios.");
 				}catch(Exception e1){
 					log.error("Erro ao buscar CEP.", e1);
 				}

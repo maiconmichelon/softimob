@@ -45,6 +45,7 @@
     <class>br.com.michelon.softimob.modelo.TipoComodo</class>
     <class>br.com.michelon.softimob.modelo.TipoImovelTipoComodo</class>
     <class>br.com.michelon.softimob.modelo.TipoImovel</class>
+    <class>br.com.michelon.softimob.modelo.Usuario</class>
     <class>br.com.michelon.softimob.modelo.VendaAluguel</class>
     <class>br.com.michelon.softimob.modelo.Venda</class>
     <class>br.com.michelon.softimob.modelo.Vistoria</class>

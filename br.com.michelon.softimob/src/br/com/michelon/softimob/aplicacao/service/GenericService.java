@@ -29,11 +29,12 @@ public class GenericService<T> {
 	
 	@SuppressWarnings("unchecked")
 	public void salvar(T registro) throws Exception{
-		salvar((List<T>) Arrays.asList(registro));
+		salvar(Arrays.asList(registro));
 	}
 	
 	public void salvar(List<T> registros) throws Exception{
-		LogHelper.setLog(registros);
+		for(T t : registros)
+			LogHelper.setLog(t);
 		crudRepository.save(registros);
 	}
 	

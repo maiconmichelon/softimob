@@ -1,7 +1,11 @@
 package br.com.michelon.softimob.tela.dialog;
 
+import javax.security.auth.login.LoginException;
+
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -11,10 +15,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.helper.LoginHelper;
+import br.com.michelon.softimob.aplicacao.service.UsuarioService;
+import br.com.michelon.softimob.modelo.Usuario;
+
 public class LoginDialog extends TitleAreaDialog{
 	
 	public LoginDialog(Shell shell) {
 		super(shell);
+		setShellStyle(SWT.BORDER);
 	}
 	
 	private Text txtLogin;
@@ -41,18 +50,51 @@ public class LoginDialog extends TitleAreaDialog{
 		
 		txtSenha = new Text(composite, SWT.BORDER | SWT.PASSWORD);
 		txtSenha.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtSenha.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				((Text)e.widget).selectAll();
+			}
+		});
 		
 		return composite;
 	}
 
 	@Override
 	protected void okPressed() {
-		super.okPressed();
+		try {
+			logar(txtLogin.getText(), txtSenha.getText());
+			super.okPressed();
+		} catch (LoginException e) {
+			setErrorMessage(e.getMessage());
+			return;
+		}
+	}
+	
+	private void logar(String login, String senha) throws LoginException{
+		if(login == null || login.isEmpty())
+			throw new LoginException("Login deve ser informada.");
+		if(senha == null || senha.isEmpty())
+			throw new LoginException("Senha deve ser informada.");
+
+		UsuarioService usuarioService = new UsuarioService();
+		Usuario usuario = usuarioService.cadastraSeNaoHaverUsuarios(login, senha);
+		if(usuario == null)
+			usuario = usuarioService.findByLogin(login);
+		
+		if(usuario == null)
+			throw new LoginException("Usuário não encontrado.");
+		if(!usuario.getAtivo())
+			throw new LoginException("Este usuário esta desativado.");
+		if(!usuario.getSenha().equals(senha))
+			throw new LoginException("Senha incorreta.");
+			
+		LoginHelper.setUsuarioLogado(usuario);
 	}
 	
 	@Override
 	protected Point getInitialSize() {
-		return new Point(400, 250);
+		return new Point(400, 200);
 	}
 
 }
