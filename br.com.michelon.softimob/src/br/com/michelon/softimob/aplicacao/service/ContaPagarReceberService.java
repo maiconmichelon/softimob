@@ -179,8 +179,8 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 		c.setValorJurosDesconto(BigDecimal.ZERO);
 	}
 	
-	public List<Pendencia> findByDataVencimento(Date dataVencimento){
-		return getRepository().findByDataVencimentoBeforeAndDataPagamentoIsNull(dataVencimento);
+	public List<Pendencia> findByDataVencimento(){
+		return getRepository().findByDataPagamentoIsNull();
 	}
 	
 	public List<ContaPagarReceber> buscarContas(Date dataInicio, Date dataFinal){

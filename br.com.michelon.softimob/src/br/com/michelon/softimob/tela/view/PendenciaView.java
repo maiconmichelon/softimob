@@ -12,26 +12,25 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.wb.swt.ImageRepository;
+import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
+import br.com.michelon.softimob.aplicacao.helper.SWTHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PendenciaService;
 import br.com.michelon.softimob.modelo.Pendencia;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
-import br.com.michelon.softimob.tela.widget.DateTextField;
 
 import com.google.common.collect.Lists;
 
@@ -39,7 +38,6 @@ public class PendenciaView extends GenericView<Pendencia>{
 
 	private List<ColumnProperties> atributos;
 	private PendenciaService service = new PendenciaService();
-	private DateTextField dateTextField;
 	private Table table;
 	
 	public PendenciaView() {
@@ -98,7 +96,7 @@ public class PendenciaView extends GenericView<Pendencia>{
 
 	@Override
 	protected List<Pendencia> getInput() {
-		return service.findPendencias(dateTextField.getValue());
+		return service.findPendencias();
 	}
 
 	@Override
@@ -132,6 +130,11 @@ public class PendenciaView extends GenericView<Pendencia>{
 				Pendencia p = (Pendencia) element;
 				return FormatterHelper.getSimpleDateFormat().format(p.getDataGeracao());
 			}
+			
+			@Override
+			public Color getForeground(Object element) {
+				return getColorPendencia((Pendencia) element);
+			}
 		});
 		
 		TableViewerColumn tvcDataVencimento = new TableViewerColumn(tableViewer, SWT.NONE);
@@ -146,6 +149,12 @@ public class PendenciaView extends GenericView<Pendencia>{
 					return StringUtils.EMPTY;
 				return FormatterHelper.getSimpleDateFormat().format(p.getDataVencimento());
 			}
+			
+			@Override
+			public Color getForeground(Object element) {
+				return getColorPendencia((Pendencia) element);
+			}
+			
 		});
 		
 		TableViewerColumn tvcValor = new TableViewerColumn(tableViewer, SWT.NONE);
@@ -157,6 +166,11 @@ public class PendenciaView extends GenericView<Pendencia>{
 			public String getText(Object element) {
 				Pendencia p = (Pendencia) element;
 				return FormatterHelper.getDefaultValueFormatterToMoney().format(p.getValor());
+			}
+			
+			@Override
+			public Color getForeground(Object element) {
+				return getColorPendencia((Pendencia) element);
 			}
 		});
 
@@ -170,36 +184,31 @@ public class PendenciaView extends GenericView<Pendencia>{
 				Pendencia p = (Pendencia) element;
 				return p.getDescricao();
 			}
+			
+			@Override
+			public Color getForeground(Object element) {
+				return getColorPendencia((Pendencia) element);
+			}
 		});
+		
+		tableViewer.addFilter(getFilter());
 		
 		return tableViewer;
 	}
 	
-	@Override
-	public void createComponentsCpTop(Composite parent, FormToolkit frm) {
-		Label lblDataDeVencimento = new Label(parent, SWT.NONE);
-		frm.adapt(lblDataDeVencimento, true, true);
-		lblDataDeVencimento.setText("Vencimento");
-		
-		dateTextField = new DateTextField(parent);
-		dateTextField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		frm.adapt(dateTextField);
-		frm.paintBordersFor(dateTextField);
-		
+	public Color getColorPendencia(Pendencia pendencia) {
 		Calendar c = Calendar.getInstance();
-		c.set(Calendar.MONTH, c.get(Calendar.MONTH) + 1);
-		dateTextField.setValue(c.getTime());
+		if(pendencia.getDataVencimento() == null)
+			return SWTHelper.getYellowColor();
+		if(pendencia.getDataVencimento().compareTo(c.getTime()) > 0)
+			return ResourceManager.getColor(SWT.COLOR_RED);
+		else{
+			c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) - 10);
+			if(pendencia.getDataVencimento().compareTo(c.getTime()) > 0)
+				return SWTHelper.getYellowColor();
+		}
 		
-		Button btnBuscar = new Button(parent, SWT.NONE);
-		frm.adapt(btnBuscar, true, true);
-		btnBuscar.setText("Buscar");
-		btnBuscar.setImage(ImageRepository.SEARCH_16.getImage());
-		btnBuscar.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				atualizar();
-			}
-		});
+		return ResourceManager.getColor(SWT.COLOR_BLACK);
 	}
 	
 }

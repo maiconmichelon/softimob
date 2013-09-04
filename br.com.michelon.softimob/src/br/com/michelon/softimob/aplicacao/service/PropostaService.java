@@ -1,6 +1,5 @@
 package br.com.michelon.softimob.aplicacao.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -28,8 +27,8 @@ public class PropostaService extends GenericService<Proposta>{
 		return getRepository().findByImovel(imovel);
 	}
 
-	public List<Proposta> findPendencias(Date dataVencimento) {
-		return getRepository().findByDataBeforeAndStatusIsNull(dataVencimento);
+	public List<Proposta> findPendencias() {
+		return getRepository().findByStatusIsNull();
 	}
 
 	public void abrirTela(Proposta proposta) {

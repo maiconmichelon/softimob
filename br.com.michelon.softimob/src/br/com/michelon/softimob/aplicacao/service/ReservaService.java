@@ -29,8 +29,8 @@ public class ReservaService extends GenericService<Reserva>{
 		return getRepository().findByImovel(imovel);
 	}
 
-	public List<Reserva> findPendencias(Date data){
-		return getRepository().findByDataVencimentoBeforeAndResolvidoFalse(data);
+	public List<Reserva> findPendencias(){
+		return getRepository().findByResolvidoFalse();
 	}
 	
 	public List<Reserva> findByDataVencimentoAfter(Date data, Imovel imovel){

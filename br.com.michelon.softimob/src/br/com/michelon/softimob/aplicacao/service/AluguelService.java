@@ -1,6 +1,5 @@
 package br.com.michelon.softimob.aplicacao.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -28,8 +27,8 @@ public class AluguelService extends GenericService<Aluguel>{
 		return getRepository().findByImovel(imovel);
 	}
 	
-	public List<Pendencia> findByDataVencimento(Date dataVencimento){
-		return getRepository().findByDataVencimentoBeforeAndResolvidoFalse(dataVencimento);
+	public List<Pendencia> findByDataVencimento(){
+		return getRepository().findByResolvidoFalse();
 	}
 
 	public void finalizarPendencia(Aluguel aluguel) {

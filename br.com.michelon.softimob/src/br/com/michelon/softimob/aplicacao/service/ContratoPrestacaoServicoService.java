@@ -1,6 +1,5 @@
 package br.com.michelon.softimob.aplicacao.service;
 
-import java.util.Date;
 import java.util.List;
 
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
@@ -25,8 +24,8 @@ public class ContratoPrestacaoServicoService extends GenericService<ContratoPres
 		return getRepository().findByImovel(imovel);
 	}
 	
-	public List<Pendencia> findByDataVencimento(Date dataVencimento){
-		return getRepository().findByDataVencimentoBeforeAndResolvidoFalse(dataVencimento);
+	public List<Pendencia> findByDataVencimento(){
+		return getRepository().findByResolvidoFalse();
 	}
 	
 	public List<ContratoPrestacaoServico> findByTipo(TipoContrato tipo){

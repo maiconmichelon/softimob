@@ -168,7 +168,7 @@ public abstract class GenericView<T> extends ViewPart{
 		if(viewer instanceof TableViewer)
 			viewer.setContentProvider(ArrayContentProvider.getInstance());
 		
-		viewer.addFilter(getFilter());
+//		viewer.addFilter(getFilter());
 		
 		IDoubleClickListener doubleClickListener = getDoubleClickListener();
 		if(doubleClickListener != null)

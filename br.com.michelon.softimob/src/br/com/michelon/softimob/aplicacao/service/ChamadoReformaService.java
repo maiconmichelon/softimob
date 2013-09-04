@@ -1,7 +1,6 @@
 package br.com.michelon.softimob.aplicacao.service;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -29,8 +28,8 @@ public class ChamadoReformaService extends GenericService<ChamadoReforma>{
 		return getRepository().findByAluguel(aluguel);
 	}
 
-	public Collection<ChamadoReforma> findByDataVencimento(Date dataVencimento) {
-		return getRepository().findByDataBeforeAndFinalizacaoIsNull(dataVencimento);
+	public Collection<ChamadoReforma> findByDataVencimento() {
+		return getRepository().findByFinalizacaoIsNull();
 	}
 
 	public void abrirTela(ChamadoReforma chamado) {

@@ -11,12 +11,14 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -42,6 +44,7 @@ import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.ImageRepository;
+import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInput;
 import br.com.michelon.softimob.aplicacao.exception.ContaNaoParametrizadaException;
@@ -67,8 +70,8 @@ import com.google.common.collect.Lists;
 
 import de.ralfebert.rcputils.properties.BaseValue;
 import de.ralfebert.rcputils.properties.IValue;
+import de.ralfebert.rcputils.tables.ICellFormatter;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
-import org.eclipse.jface.action.Action;
 
 public class PgtoRecContaView extends ViewPart {
 
@@ -423,8 +426,12 @@ public class PgtoRecContaView extends ViewPart {
 				@Override
 				public void setValue(Object element, Object value) {
 					ContaPagarReceber c = (ContaPagarReceber) element;
-					BigDecimal valorComJurosDesconto = new BigDecimal(value.toString().replace(',', '.'));
-					c.setValorJurosDesconto(valorComJurosDesconto.subtract(c.getValor()));
+					try{
+						BigDecimal valorComJurosDesconto = new BigDecimal(value.toString().replace(',', '.'));
+						c.setValorJurosDesconto(valorComJurosDesconto.subtract(c.getValor()));
+					}catch(Exception e){
+						log.warn("Erro ao converter valor do juros/desconto.");
+					}
 				}
 				
 				@Override
@@ -441,7 +448,19 @@ public class PgtoRecContaView extends ViewPart {
 			public Object get(ContaPagarReceber element) {
 				return element.getValorJurDescTratado().abs();
 			}
-		}).format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
+		}).format(new ICellFormatter() {
+			
+			@Override
+			public void formatCell(ViewerCell arg0, Object arg1) {
+				ContaPagarReceber conta = (ContaPagarReceber) arg0.getElement();
+				int signum = conta.getValorJurDescTratado().signum();
+				if(signum != 0)
+					arg0.setForeground(signum > 0 ? ResourceManager.getColor(SWT.COLOR_RED) : ResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+				arg0.setText(FormatterHelper.getDefaultValueFormatterToMoney().format((BigDecimal) arg1));
+			}
+			
+		}).build();
+		
 		
 		tvbContas.getTableViewer().addFilter(propertyFilter);
 		

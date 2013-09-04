@@ -1,6 +1,5 @@
 package br.com.michelon.softimob.persistencia;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
@@ -13,6 +12,6 @@ public interface ContratoPrestacaoServicoDAO extends CrudRepository<ContratoPres
 
 	List<ContratoPrestacaoServico> findByImovel(Imovel imovel);
 
-	List<Pendencia> findByDataVencimentoBeforeAndResolvidoFalse(Date dataVencimento);
+	List<Pendencia> findByResolvidoFalse();
 	
 }

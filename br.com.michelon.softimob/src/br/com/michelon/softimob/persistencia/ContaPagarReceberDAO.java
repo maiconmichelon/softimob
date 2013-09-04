@@ -30,7 +30,7 @@ public interface ContaPagarReceberDAO extends CrudRepository<ContaPagarReceber, 
 				" AND (c.dataPagamento is not null AND c.movimentacao is not null) ")
 	public List<ContaPagarReceber> findContaParaEstornar(@Param(value="dataInicio") Date dataInicio, @Param(value="dataFinal") Date dataFinal);
 
-	public List<Pendencia> findByDataVencimentoBeforeAndDataPagamentoIsNull(Date dataVencimento);
+	public List<Pendencia> findByDataPagamentoIsNull();
 
 	@Query(value = "" +
 			"SELECT c " +
