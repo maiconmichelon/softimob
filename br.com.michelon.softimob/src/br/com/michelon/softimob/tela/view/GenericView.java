@@ -72,13 +72,21 @@ public abstract class GenericView<T> extends ViewPart{
 	private GenericFilter filter;
 	
 	private boolean addGroupAtivadoDesativado;
+	private Class<? extends T> mainClass;
 
 	private AtivadoDesativadoFilter ativadoDesativadoFilter;
 	private RadioGroup radioGroup;
 	private RadioGroupViewer radioGroupViewer;
 
+
+	@SuppressWarnings("unchecked")
 	public GenericView(boolean addGroupAtivadoDesativado) {
+		this(addGroupAtivadoDesativado, (Class<? extends T>) Object.class);
+	}
+	
+	public GenericView(boolean addGroupAtivadoDesativado, Class<? extends T> mainClass) {
 		this.addGroupAtivadoDesativado = addGroupAtivadoDesativado;
+		this.mainClass = mainClass;
 	}
 	
 	/** 
@@ -286,8 +294,10 @@ public abstract class GenericView<T> extends ViewPart{
 	 * @return Filter
 	 */
 	protected GenericFilter getFilter(){
-		if(filter == null){
-			filter = new PropertyFilter(getAttributes());
+		ArrayList<String> attributes = getAttributes();
+		
+		if(filter == null && !attributes.isEmpty()){
+			filter = new PropertyFilter(getAttributes().toArray(), mainClass);
 		}
 		
 		return filter;
@@ -373,9 +383,6 @@ public abstract class GenericView<T> extends ViewPart{
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				T t = getSelecionado();
-				if(t == null)
-					return ;
-				
 				alterar(t);
 			}
 		};
@@ -399,6 +406,10 @@ public abstract class GenericView<T> extends ViewPart{
 
 	protected void alterar(T element) {
 		try {
+			
+			if(element == null || !(mainClass.isInstance(element)))
+				return ;
+			
 			refresh(element);
 			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 			GenericEditorInput<?> editorInputWithModel = getEditorInputWithModel(element);

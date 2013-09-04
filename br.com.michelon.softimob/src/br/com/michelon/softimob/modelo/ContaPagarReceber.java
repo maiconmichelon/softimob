@@ -23,7 +23,6 @@ import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInp
 import br.com.michelon.softimob.aplicacao.exception.ParametroNaoInformadoException;
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
-import br.com.michelon.softimob.aplicacao.service.PendenciaService;
 import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
 
 @Entity
@@ -41,9 +40,6 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	@NotNull(message = "O valor da conta não pode ser vazio.")
 	@Column(precision = 14, scale = 2, nullable = false)
 	private BigDecimal valor;
-	
-	@Column(precision = 14, scale = 2)
-	private BigDecimal valorPagoParcial = BigDecimal.ZERO;
 	
 	@Column(precision = 14, scale = 2)
 	private BigDecimal valorJurosDesconto = BigDecimal.ZERO;
@@ -66,14 +62,11 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	@Column(length = 1, nullable = false)
 	private Integer tipo;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private MovimentacaoContabil movimentacao;
 
 	@Column
 	private String observacoes;
-	
-	@OneToOne
-	private ContaPagarReceber contaPai;
 	
 	public ContaPagarReceber(FinalizacaoChamadoReforma fin) throws ParametroNaoInformadoException{
 		OrigemConta tipoContaPrestacaoServico = ParametrosEmpresa.getInstance().getTipoContaReforma();
@@ -102,14 +95,6 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
-	}
-
-	public BigDecimal getValorPagoParcial() {
-		return valorPagoParcial;
-	}
-
-	public void setValorPagoParcial(BigDecimal valorPagoParcial) {
-		this.valorPagoParcial = valorPagoParcial;
 	}
 
 	public BigDecimal getValorJurosDesconto() {
@@ -177,10 +162,6 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 		this.id = id;
 	}
 	
-	public void efetuarBaixa(MovimentacaoContabil movimentacao2) {
-		// TODO Auto-generated method stub
-	}
-
 	@Override
 	public Date getDataGeracao() {
 		return dataConta;
@@ -206,18 +187,12 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 		return new ContaPagarReceberEditorInput();
 	}
 
-	public BigDecimal getValorPagoParcialTratado(){
-		if(valorPagoParcial == null || valorPagoParcial.signum() == 0 || valorPagoParcial.compareTo(valor) == 0)
-			return BigDecimal.ZERO;
-		return valorPagoParcial;
-	}
-	
-	public BigDecimal getValorParcialOuValorCheio(){
-		return getValorPagoParcialTratado().signum() == 0 ? getValor() : getValorPagoParcialTratado();
-	}
-	
 	public BigDecimal getValorJurDescTratado(){
 		return valorJurosDesconto == null ? BigDecimal.ZERO : valorJurosDesconto;
+	}
+
+	public BigDecimal getValorJurDescZeroCasoNegativo(){
+		return getValorJurDescTratado().signum() <= 0 ? BigDecimal.ZERO : getValorJurDescTratado();
 	}
 	
 	public boolean isApagar(){
@@ -233,41 +208,27 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	}
 	
 	public BigDecimal getValorMovimentacao(){
-		return getValorParcialOuValorCheio().add(getValorJurDescTratado());
+		return getValor().add(getValorJurDescZeroCasoNegativo());
 	}
 	
 	public BigDecimal getValorDebito(){
-		if( getValorJurDescTratado().signum() == 0 )
-			return getValorParcialOuValorCheio();
-		else{
-			return isAReceber() ? getValorParcialOuValorCheio().add(getValorJurDescTratado()) : getValorParcialOuValorCheio();
-		}
+		if(getValorJurDescTratado().signum() < 0)
+			return isApagar() ? getValor() : getValor().add(getValorJurDescTratado());
+		return isApagar() ? getValor().add(getValorJurDescTratado()) : getValor();	
 	}
 	
 	public BigDecimal getValorCredito(){
-		if( getValorJurDescTratado().signum() == 0 )
-			return getValorParcialOuValorCheio();
-		else{
-			return isApagar() ? getValorParcialOuValorCheio().add(getValorJurDescTratado()) : getValorParcialOuValorCheio();
-		}
-	}
-
-	public ContaPagarReceber getContaPai() {
-		return contaPai;
-	}
-
-	public void setContaPai(ContaPagarReceber contaPai) {
-		this.contaPai = contaPai;
+		if(getValorJurDescTratado().signum() < 0)
+			return isAReceber() ? getValor() : getValor().add(getValorJurDescTratado());
+		return isAReceber() ? getValor().add(getValorJurDescTratado()) : getValor();
 	}
 
 	private transient static ContaPagarReceberService cservice;
-	private transient static PendenciaService pservice;
 	
 	@Override
 	public void finalizarPendencia() throws Exception{
-		if(pservice == null)
-			pservice = new PendenciaService();
-		pservice.finalizarPendencia(this);
+		ContaPagarReceberService service = (ContaPagarReceberService) getService();
+		service.abrirTela();
 	}
 	
 	@Override

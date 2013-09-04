@@ -43,6 +43,12 @@ public class ValidationErrorDialog extends TitleAreaDialog {
 	}
 
 	@Override
+	protected void configureShell(Shell newShell) {
+		newShell.setText("Softimob");
+		super.configureShell(newShell);
+	}
+	
+	@Override
 	protected Point getInitialSize() {
 		return new Point(421, 253);
 	}

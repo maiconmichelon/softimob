@@ -7,10 +7,16 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import br.com.michelon.softimob.modelo.TipoComodo;
+import br.com.michelon.softimob.modelo.TipoImovel;
 
 public interface TipoComodoDAO extends CrudRepository<TipoComodo, Long>{
 
 	@Query("SELECT r FROM TipoComodo r WHERE r.ativo = :ativo")
 	List<TipoComodo> findAtivo(@Param(value = "ativo") Boolean ativo);
 
+	@Query(value="SELECT distinct(tc) " +
+			"FROM TipoComodo tc, IN(tc.tipoImovelTipoComodo) titc " +
+			"WHERE titc.preSelecionado = true AND titc.tipoImovel = :tipoImovel")
+	List<TipoComodo> findByTipoImovelAndPreSelecionadoIsTrue(@Param(value = "tipoImovel")TipoImovel tipoImovel);
+	
 }

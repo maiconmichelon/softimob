@@ -1,31 +1,33 @@
 package br.com.michelon.softimob.tela.editor;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
+import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
-import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
+
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PlanoContaService;
 import br.com.michelon.softimob.modelo.PlanoConta;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.core.databinding.beans.PojoProperties;
-import org.eclipse.jface.databinding.viewers.ViewerProperties;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
+import br.com.michelon.softimob.tela.widget.NumberTextField;
 
 public class PlanoContaEditor extends GenericEditor<PlanoConta> {
 	public static final String ID = "br.com.michelon.softimob.tela.editor.PlanoContaEditor";
 	
 	private PlanoContaService service = new PlanoContaService();
 	
-	private Text text;
 	private Text text_1;
+	private Text text_2;
 	private RadioGroupViewer radioGroupViewer;
 	
 	public PlanoContaEditor() {
@@ -47,10 +49,9 @@ public class PlanoContaEditor extends GenericEditor<PlanoConta> {
 		lblNmero.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNmero.setText("Número");
 		
-		text = new Text(parent, SWT.BORDER);
-		GridData gd_text = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text.widthHint = 162;
-		text.setLayoutData(gd_text);
+		NumberTextField numberTextField = new NumberTextField(parent);
+		text_2 = numberTextField.getControl();
+		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblDescrio = new Label(parent, SWT.NONE);
 		lblDescrio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -84,7 +85,7 @@ public class PlanoContaEditor extends GenericEditor<PlanoConta> {
 	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_2);
 		IObservableValue valueCodigoObserveDetailValue = PojoProperties.value(PlanoConta.class, "codigo", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueCodigoObserveDetailValue, null, null);
 		//

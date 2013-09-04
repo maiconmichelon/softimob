@@ -15,6 +15,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -38,6 +39,7 @@ public abstract class Comissionado implements Serializable{
 	
 	@Column(length=13, nullable = false)
 	@Length(max = 13, min = 13, message = "O telefone deve ter 13 caracteres.")
+	@NotNull(message = "O telefone deve ter 13 caracteres.")
 	private String telefone;
 	
 	@Column(length=13)

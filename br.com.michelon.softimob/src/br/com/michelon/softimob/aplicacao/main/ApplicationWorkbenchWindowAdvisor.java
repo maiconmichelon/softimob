@@ -1,10 +1,11 @@
 package br.com.michelon.softimob.aplicacao.main;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.action.StatusLineContributionItem;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
@@ -27,6 +28,8 @@ import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Pendencia;
+import br.com.michelon.softimob.modelo.Proposta;
+import br.com.michelon.softimob.modelo.Reserva;
 import br.com.michelon.softimob.tela.popup.notifier.NotificationType;
 import br.com.michelon.softimob.tela.popup.notifier.NotifierDialog;
 import br.com.michelon.softimob.tela.view.PgtoRecContaView;
@@ -52,17 +55,23 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	public void preWindowOpen() {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setInitialSize(new Point(1024, 690));
-		configurer.setShowCoolBar(true);
-		configurer.setShowFastViewBars(true);
-		configurer.setShowStatusLine(true);
+
+		IStatusLineManager statusLineManager = getWindowConfigurer().getActionBarConfigurer().getStatusLineManager();
+		StatusLineContributionItem sciSpacer = new StatusLineContributionItem("spacer", 800);
+		sciSpacer.setText(" ");
+		statusLineManager.add(sciSpacer);
+		statusLineManager.update(true);
 		
+		configurer.setShowStatusLine(true);
+		configurer.setShowProgressIndicator(true);
+
 		configurer.setTitle("SoftImob");
 	}
 	
 	@Override
 	public void postWindowOpen() {
 		addPartListener();
-		
+
 		showNotifications();
 	}
 
@@ -79,7 +88,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 					sb.toString(), NotificationType.INFO);
 		}
 		
-		List<Pendencia> pendencias = new PendenciaService().findPendencias(new Date());
+		List<Pendencia> pendencias = new PendenciaService().findPendencias();
 		if(pendencias != null && !pendencias.isEmpty()){
 			StringBuilder sb = new StringBuilder();
 			
@@ -106,10 +115,17 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 			if(!chamadosReforma.isEmpty())
 				sb.append(String.format("%s chamado(s) de reforma em aberto.\n", chamadosReforma.size()));
 			
+			Collection<Pendencia> reservas = map.get(Reserva.class);
+			if(!reservas.isEmpty())
+				sb.append(String.format("%s reservas(s) em para vencer.\n", reservas.size()));
+			
+			Collection<Pendencia> propostas = map.get(Proposta.class);
+			if(!propostas.isEmpty())
+				sb.append(String.format("%s propostas(s) em aberto.\n", propostas.size()));
+			
 			NotifierDialog.notify(String.format("Olá, você possui %s pendência(s) !", pendencias.size()), sb.toString(), NotificationType.WARN, new MouseAdapter() {
 				@Override
 				public void mouseDoubleClick(MouseEvent e) {
-					System.out.println("aaa");
 					try {
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PgtoRecContaView.ID);
 					} catch (PartInitException e1) {

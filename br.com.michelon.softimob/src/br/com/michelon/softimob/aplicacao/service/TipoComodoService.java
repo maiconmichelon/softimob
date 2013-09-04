@@ -3,6 +3,7 @@ package br.com.michelon.softimob.aplicacao.service;
 import java.util.List;
 
 import br.com.michelon.softimob.modelo.TipoComodo;
+import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.persistencia.TipoComodoDAO;
 
 public class TipoComodoService extends GenericService<TipoComodo>{
@@ -18,6 +19,10 @@ public class TipoComodoService extends GenericService<TipoComodo>{
 
 	public List<TipoComodo> findAtivos() {
 		return getRepository().findAtivo(true);
+	}
+	
+	public List<TipoComodo> findByTipoComodoAndSelecionadoIsTrue(TipoImovel tipoImovel){
+		return getRepository().findByTipoImovelAndPreSelecionadoIsTrue(tipoImovel);
 	}
 	
 }

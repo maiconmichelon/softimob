@@ -118,7 +118,7 @@
             class="br.com.michelon.softimob.tela.view.MovimentacaoContabilView"
             icon="icons/movimentacao/movimentacao16.png"
             id="br.com.michelon.softimob.tela.view.MovimentacaoContabilView"
-            name="Movimentações Contábeis"
+            name="Movimentações"
             restorable="true">
       </view>
       <view
@@ -247,6 +247,7 @@
             restorable="true">
       </view>
       <view
+            allowMultiple="true"
             class="br.com.michelon.softimob.tela.view.ReportView"
             icon="icons/report/report16.png"
             id="br.com.michelon.softimob.tela.view.ReportView"
@@ -273,9 +274,29 @@
          <menu
                label="Aplicação">
             <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/user/user16.png"
+                  label="Usuário"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.UsuarioView">
+               </parameter>
+            </command>
+            <separator
+                  name="br.com.michelon.softimob.separator1"
+                  visible="true">
+            </separator>
+            <command
                   commandId="br.com.michelon.softimob.command.cmdReiniciar"
                   icon="icons/refresh/refresh16.png"
                   label="Reiniciar"
+                  style="push">
+            </command>
+            <command
+                  commandId="br.com.michelon.softimob.command.cmdSair"
+                  icon="icons/exit/exit16.png"
+                  label="Sair"
                   style="push">
             </command>
          </menu>
@@ -286,7 +307,7 @@
                   label="Imóvel">
                <command
                      commandId="org.eclipse.ui.views.showView"
-                     label="Consulta simples"
+                     label="Busca Simples"
                      style="push">
                   <parameter
                         name="org.eclipse.ui.views.showView.viewId"
@@ -295,7 +316,7 @@
                </command>
                <command
                      commandId="org.eclipse.ui.views.showView"
-                     label="Consulta avançada"
+                     label="Busca Avançada"
                      style="push">
                   <parameter
                         name="org.eclipse.ui.views.showView.viewId"
@@ -474,23 +495,13 @@
                      value="br.com.michelon.softimob.tela.view.CheckListView">
                </parameter>
             </command>
-            <command
-                  commandId="org.eclipse.ui.views.showView"
-                  icon="icons/user/user16.png"
-                  label="Usuário"
-                  style="push">
-               <parameter
-                     name="org.eclipse.ui.views.showView.viewId"
-                     value="br.com.michelon.softimob.tela.view.UsuarioView">
-               </parameter>
-            </command>
          </menu>
          <menu
                label="Financeiro">
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/movimentacao/movimentacao16.png"
-                  label="Movimentações Contábeis"
+                  label="Movimentações"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
@@ -520,13 +531,27 @@
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/planoConta/planoConta16.png"
-                  label="Plano Conta"
+                  label="Plano de Contas"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
                      value="br.com.michelon.softimob.tela.view.PlanoContaView">
                </parameter>
             </command>
+            <menu
+                  icon="icons/report/report16.png"
+                  label="Relatórios">
+               <command
+                     commandId="br.com.michelon.softimob.command.cmdBalancete"
+                     label="Balancete"
+                     style="push">
+               </command>
+               <command
+                     commandId="br.com.michelon.softimob.command.cmdRazao"
+                     label="Razão"
+                     style="push">
+               </command>
+            </menu>
          </menu>
          <menu
                label="Operações">
@@ -611,19 +636,105 @@
                </parameter>
             </command>
          </menu>
-         <menu
-               label="Relatórios">
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="br.com.michelon.softimob.toolbar">
             <command
-                  commandId="br.com.michelon.softimob.command.cmdBalancete"
-                  label="Balancete"
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/cliente/cliente16.png"
+                  label="Pessoa Fisica"
                   style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.ClientePFView">
+               </parameter>
             </command>
             <command
-                  commandId="br.com.michelon.softimob.command.cmdRazao"
-                  label="Razão"
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/empresa/empresa16.png"
+                  label="Pessoa Jurídica"
                   style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.ClientePJView">
+               </parameter>
             </command>
-         </menu>
+            <separator
+                  name="br.com.michelon.softimob.separator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/casa/casa16.png"
+                  label="Imóveis"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.ImovelView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/aluguel/aluguel16.png"
+                  label="Aluguel"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.AluguelView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/venda/venda16.png"
+                  label="Venda"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.VendaView">
+               </parameter>
+            </command>
+            <separator
+                  name="br.com.michelon.softimob.separator2"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/movimentacao/movimentacao16.png"
+                  label="Movimentações"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.MovimentacaoContabilView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/contaPagar/contaPagar16.png"
+                  label="Contas Pagar/Receber"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.PgtoRecContaView">
+               </parameter>
+            </command>
+            <separator
+                  name="br.com.michelon.softimob.separator3"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/pendencia/pendencia16.png"
+                  label="Pendências"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.PendenciaView">
+               </parameter>
+            </command>
+         </toolbar>
       </menuContribution>
    </extension>
    <extension
@@ -632,59 +743,59 @@
             class="br.com.michelon.softimob.tela.editor.FuncionarioEditor"
             icon="icons/funcionario/funcionario16.png"
             id="br.com.michelon.softimob.tela.editor.FuncionarioEditor"
-            name="Cadastro Funcionário">
+            name="Cadastro de Funcionário">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.PlacaEditor"
             icon="icons/placa/placa16.png"
             id="br.com.michelon.softimob.tela.editor.PlacaEditor"
-            name="Cadastro Placa">
+            name="Cadastro de Placa">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.ClienteEditor"
             icon="icons/cliente/cliente16.png"
             id="br.com.michelon.softimob.tela.editor.ClienteEditor"
-            name="Cadastro Cliente">
+            name="Cadastro de Cliente">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.TipoComodoEditor"
             icon="icons/comodo/door16.png"
             id="br.com.michelon.softimob.tela.editor.ComodoEditor"
-            name="Cadastro Tipo de Cômodo">
+            name="Cadastro de Tipo de Cômodo">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.ImovelEditor"
             icon="icons/casa/casa16.png"
             id="br.com.michelon.softimob.tela.editor.ImovelEditor"
-            name="Cadastro Imóvel">
+            name="Cadastro de Imóvel">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.BairroEditor"
             default="false"
             icon="icons/endereco/endereco16.png"
             id="br.com.michelon.softimob.tela.editor.BairroEditor"
-            name="Cadastro Bairro">
+            name="Cadastro de Bairro">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.CidadeEditor"
             default="false"
             icon="icons/endereco/endereco16.png"
             id="br.com.michelon.softimob.tela.editor.CidadeEditor"
-            name="Cadastro Cidade">
+            name="Cadastro de Cidade">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.EstadoEditor"
             default="false"
             icon="icons/endereco/endereco16.png"
             id="br.com.michelon.softimob.tela.editor.EstadoEditor"
-            name="Cadastro Estado">
+            name="Cadastro de Estado">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.RuaEditor"
             default="false"
             icon="icons/endereco/endereco16.png"
             id="br.com.michelon.softimob.tela.editor.RuaEditor"
-            name="Cadastro Rua">
+            name="Cadastro de Rua">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.AluguelEditor"
@@ -712,21 +823,21 @@
             default="false"
             icon="icons/departamento/departamento16.png"
             id="br.com.michelon.softimob.tela.editor.DepartamentoEditor"
-            name="Cadastro Departamento">
+            name="Cadastro de Departamento">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.ModeloContratoEditor"
             default="false"
             icon="icons/contrato/contrato16.png"
             id="br.com.michelon.softimob.tela.editor.ModeloContratoEditor"
-            name="Cadastro Modelo Contrato">
+            name="Cadastro de Modelo Contrato">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor"
             default="false"
             icon="icons/movimentacao/movimentacao16.png"
             id="br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor"
-            name="Movimentações Contábeis">
+            name="Movimentações">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.ParametrosEmpresaEditor"
@@ -740,21 +851,21 @@
             default="false"
             icon="icons/planoConta/planoConta16.png"
             id="br.com.michelon.softimob.tela.editor.PlanoContaEditor"
-            name="Cadastro Plano Conta">
+            name="Cadastro de Plano de Contas">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
             default="false"
             icon="icons/casa/casa16.png"
             id="br.com.michelon.softimob.tela.editor.TipoImovelEditor"
-            name="Cadastro Tipo de Imovel">
+            name="Cadastro de Tipo de Imovel">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.OrigemContaEditor"
             default="false"
             icon="icons/origemConta/origemConta16.png"
             id="br.com.michelon.softimob.tela.editor.OrigemContaEditor"
-            name="Cadastro Origem de Conta">
+            name="Cadastro de Origem de Conta">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.IndiceEditor"
@@ -767,19 +878,19 @@
             class="br.com.michelon.softimob.tela.editor.ClientePFEditor"
             icon="icons/cliente/cliente16.png"
             id="br.com.michelon.softimob.tela.editor.ClientePFEditor"
-            name="Cadastro Pessoa Fisica">
+            name="Cadastro de Pessoa Fisica">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.ClientePJEditor"
             icon="icons/cliente/cliente16.png"
             id="br.com.michelon.softimob.tela.editor.ClientePJEditor"
-            name="Cadastro Pessoa Juridica">
+            name="Cadastro de Pessoa Juridica">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.UsuarioEditor"
             icon="icons/user/user16.png"
             id="br.com.michelon.softimob.tela.editor.UsuarioEditor"
-            name="Cadastro Usuário">
+            name="Cadastro de Usuário">
       </editor>
    </extension>
    <extension
@@ -837,7 +948,12 @@
       <command
             defaultHandler="br.com.michelon.softimob.aplicacao.command.ReiniciarCommand"
             id="br.com.michelon.softimob.command.cmdReiniciar"
-            name="Cliente">
+            name="Reiniciar">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.SairCommand"
+            id="br.com.michelon.softimob.command.cmdSair"
+            name="Sair">
       </command>
    </extension>
    <extension

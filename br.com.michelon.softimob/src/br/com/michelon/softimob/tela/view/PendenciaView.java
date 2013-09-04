@@ -3,6 +3,7 @@ package br.com.michelon.softimob.tela.view;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewer;
@@ -18,6 +19,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -53,6 +55,20 @@ public class PendenciaView extends GenericView<Pendencia>{
 	
 	@Override
 	protected void createMenuItens(Menu menu) {
+		MenuItem miFinalizar = new MenuItem(menu, SWT.BORDER);
+		miFinalizar.setText("Finalizar");
+		miFinalizar.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				try {
+					Pendencia pendencia = getSelecionado();
+					pendencia.finalizarPendencia();
+				} catch (Exception e1) {
+					log.error("Erro ao finalizar pendencia");
+				}
+			}
+		});
+		miFinalizar.setImage(ImageRepository.CHECKED.getImage());
 	}
 	
 	@Override
@@ -100,7 +116,7 @@ public class PendenciaView extends GenericView<Pendencia>{
 	protected ColumnViewer criarTabela(Composite composite) {
 		composite.setLayout(new GridLayout(1, false));
 		
-		TableViewer tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		TableViewer tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
 		table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
@@ -126,6 +142,8 @@ public class PendenciaView extends GenericView<Pendencia>{
 			@Override
 			public String getText(Object element) {
 				Pendencia p = (Pendencia) element;
+				if(p.getDataVencimento() == null)
+					return StringUtils.EMPTY;
 				return FormatterHelper.getSimpleDateFormat().format(p.getDataVencimento());
 			}
 		});

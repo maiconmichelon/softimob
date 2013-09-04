@@ -133,8 +133,7 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 
 	@Override
 	public void finalizarPendencia() throws Exception {
-		setResolvido(true);
-		((AluguelService)getService()).salvar(this);
+		((AluguelService)getService()).finalizarPendencia(this);
 	}
 
 }

@@ -6,7 +6,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
+import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import br.com.caelum.stella.bean.validation.CPF;
 
 @Entity
 public class PessoaFisica extends Cliente{
@@ -33,10 +36,13 @@ public class PessoaFisica extends Cliente{
 	
 	private static final long serialVersionUID = 1L;
 	
+	@Index
+	@CPF(message = "CPF informardo é inválido.", formatted = true)
 	@NotEmpty(message = "O CPF não pode ser vazio.")
 	@Column(nullable = false)
 	private String cpf;
 	
+	@Index
 	@NotEmpty(message = "O RG não pode ser vazio.")
 	@Column(nullable = false)
 	private String rg;

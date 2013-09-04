@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
@@ -23,10 +24,12 @@ public class PlanoConta implements Serializable{
 	@Id @GeneratedValue
 	private Long id;
 	
+	@Index
 	@Column(unique = true, nullable = false)
 	@NotEmpty(message = "O código da conta não pode ser vazio.")
 	private String codigo;
 	
+	@Index
 	@NotEmpty(message = "A descrição do plano de conta não pode ser vazio.")
 	@Column(nullable = false)
 	private String nome;

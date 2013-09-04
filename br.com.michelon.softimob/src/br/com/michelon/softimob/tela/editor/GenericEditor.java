@@ -167,9 +167,10 @@ public abstract class GenericEditor<T> extends EditorPart {
 		}
 		
 		//PARA ABRIR NO WINDOW BUILDER
-		if(getEditorInput() instanceof GenericEditorInput)
+		if(getEditorInput() instanceof GenericEditorInput){
 			initDataBindings = initBindings();
-		bindLog(initDataBindings);
+			bindLog(initDataBindings);
+		}
 //		else{
 //			initDataBindings = this.initDataBindings();
 //		}
@@ -251,7 +252,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 				RollbackException re = (RollbackException) e.getCause();
 				if(re.getCause() != null && re.getCause().getClass().equals(DatabaseException.class)){
 					DatabaseException de = (DatabaseException) re.getCause();
-					if(de.getErrorCode() == 4002){
+					if(de.getErrorCode() == 4002 && de.getCause() instanceof PSQLException && ((PSQLException)de.getCause()).getSQLState().equals("23505")){
 						DialogHelper.openError("Já existe um registro com estas caracteristicas.");
 						return false;
 					}

@@ -14,6 +14,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.aplicacao.exception.ParametroNaoInformadoException;
+import br.com.michelon.softimob.aplicacao.helper.DateHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.OkListElementDialogListener;
@@ -24,6 +26,7 @@ import br.com.michelon.softimob.tela.widget.DateTextField;
 import com.google.common.collect.Maps;
 
 public class RazaoDialog extends ReportDialog{
+	
 	public RazaoDialog() {
 	}
 	
@@ -51,6 +54,7 @@ public class RazaoDialog extends ReportDialog{
 		dtInicial = new DateTextField(composite);
 		text = dtInicial.getControl();
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		dtInicial.setValue(DateHelper.getPrimeiroDiaMes());
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		
@@ -61,6 +65,7 @@ public class RazaoDialog extends ReportDialog{
 		dtFinal = new DateTextField(composite);
 		text_1 = dtFinal.getControl();
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		dtFinal.setValue(DateHelper.getUltimoDiaMes());
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		
@@ -94,13 +99,17 @@ public class RazaoDialog extends ReportDialog{
 	}
 
 	@Override
-	protected Map<String, Object> getParametros() {
+	protected Map<String, Object> getParametros() throws ParametroNaoInformadoException {
+		if(dtInicial.getValue() == null || dtFinal.getValue() == null)
+			throw new ParametroNaoInformadoException("É necessário que as datas sejam informadas.");
+		if(planoConta == null)
+			throw new ParametroNaoInformadoException("Informe o plano de contas.");
+
 		Map<String, Object> parameters = Maps.newHashMap();
 		parameters.put("dataInicio", dtInicial.getValue());
 		parameters.put("dataFinal", dtFinal.getValue());
+		parameters.put("plano_conta_id", planoConta.getId());
 		
-		if(planoConta != null)
-			parameters.put("plano_conta_id", planoConta.getId());
 		
 		return parameters;
 	}
@@ -116,7 +125,7 @@ public class RazaoDialog extends ReportDialog{
 	}
 
 	@Override
-	protected String getTitle() {
+	protected String getTitleDialog() {
 		return "Razão";
 	}
 	

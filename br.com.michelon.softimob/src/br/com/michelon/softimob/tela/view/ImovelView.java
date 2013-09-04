@@ -40,12 +40,16 @@ public class ImovelView extends GenericView<Imovel>{
 	private List<Imovel> input;
 	
 	public ImovelView() {
-		super(true);
+		super(true, Imovel.class);
 		
 		atributos = Lists.newArrayList();
 		
 		atributos.add(new ColumnProperties("Código", "id"));
-//		atributos.add(new ColumnProperties("Endereço", "endereco"));
+		atributos.add(new ColumnProperties("Código", "metragem"));
+		atributos.add(new ColumnProperties("Código", "angariador.nome"));
+		atributos.add(new ColumnProperties("Código", "tipo.nome"));
+		atributos.add(new ColumnProperties("Código", "proprietario.nome"));
+		atributos.add(new ColumnProperties("Código", "observacoes"));
 	}
 	
 	@Override

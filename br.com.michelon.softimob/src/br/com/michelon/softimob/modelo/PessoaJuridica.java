@@ -5,7 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import br.com.caelum.stella.bean.validation.CNPJ;
 
 @Entity
 public class PessoaJuridica extends Cliente{
@@ -15,7 +18,9 @@ public class PessoaJuridica extends Cliente{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@CNPJ(message = "CNPJ informado é invalido", formatted = true)
 	@NotEmpty(message = "O cnpj não pode ser vazio.")
+	@Index
 	@Column(nullable = false)
 	private String cnpj;
 	

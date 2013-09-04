@@ -10,7 +10,7 @@ import br.com.michelon.softimob.tela.widget.xViewer.CabecalhoXViewer;
 public class CabecalhoComodo extends CabecalhoXViewer<Comodo>{
 
 	public CabecalhoComodo(List<Comodo> subElements) {
-		super(Comodo.class, subElements, ImageRepository.COMODO16.getImage(), "Cômodo", "Descrição");
+		super(Comodo.class, subElements, ImageRepository.COMODO16.getImage(), "Cômodo", "Quantidade", "Descrição");
 	}
 
 }

@@ -38,7 +38,7 @@ public class NotifierDialog {
     // how many tick steps we use when fading out 
     private static final int   FADE_OUT_STEP = 8;
 
-    private static final int HEIGHT = 110;
+    private static final int HEIGHT = 140;
     
     // how high the alpha value is when we have finished fading in 
     private static final int   FINAL_ALPHA   = 225;

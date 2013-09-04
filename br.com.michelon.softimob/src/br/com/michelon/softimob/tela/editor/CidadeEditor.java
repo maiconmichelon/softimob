@@ -1,5 +1,7 @@
 package br.com.michelon.softimob.tela.editor;
 
+import java.util.List;
+
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -20,15 +22,18 @@ import br.com.michelon.softimob.aplicacao.service.EstadoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Cidade;
 import br.com.michelon.softimob.modelo.Estado;
+import br.com.michelon.softimob.tela.widget.LoadOnFocus;
+import br.com.michelon.softimob.tela.widget.LoadOnFocus.Load;
 
 public class CidadeEditor extends GenericEditor<Cidade> {
 
 	public static final String ID = "br.com.michelon.softimob.tela.editor.CidadeEditor";
 	
 	private CidadeService service = new CidadeService();
-
+	private EstadoService estadoService = new EstadoService();
+	
 	private Text text;
-	private ComboViewer comboViewer;
+	private ComboViewer cvEstado;
 	
 	public CidadeEditor() {
 		super(Cidade.class);
@@ -48,11 +53,16 @@ public class CidadeEditor extends GenericEditor<Cidade> {
 		lblUf.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblUf.setText("UF");
 		
-		comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
-		Combo combo = comboViewer.getCombo();
+		cvEstado = new ComboViewer(parent, SWT.READ_ONLY);
+		Combo combo = cvEstado.getCombo();
 		combo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
-		comboViewer.setInput(new EstadoService().findAll());
+		cvEstado.setContentProvider(ArrayContentProvider.getInstance());
+		LoadOnFocus.setFocusGainedListener(cvEstado, new Load() {
+			@Override
+			public List<?> getInput() {
+				return estadoService.findAll();
+			}
+		});
 		
 		Label lblCidade = new Label(parent, SWT.NONE);
 		lblCidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -70,7 +80,7 @@ public class CidadeEditor extends GenericEditor<Cidade> {
 	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeSingleSelectionComboViewer = ViewerProperties.singleSelection().observe(comboViewer);
+		IObservableValue observeSingleSelectionComboViewer = ViewerProperties.singleSelection().observe(cvEstado);
 		IObservableValue valueEstadoObserveDetailValue = PojoProperties.value(Cidade.class, "estado", Estado.class).observeDetail(value);
 		bindingContext.bindValue(observeSingleSelectionComboViewer, valueEstadoObserveDetailValue, null, null);
 		//

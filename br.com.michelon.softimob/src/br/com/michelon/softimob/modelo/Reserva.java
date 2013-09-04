@@ -14,8 +14,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.eclipse.ui.IEditorInput;
+
+import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.ReservaService;
+import br.com.michelon.softimob.tela.editor.ImovelEditor;
+
 @Entity
-public class Reserva implements Serializable{
+public class Reserva implements Serializable, Pendencia{
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,6 +55,9 @@ public class Reserva implements Serializable{
 	@ManyToOne(optional=false)
 	private Imovel imovel;
 
+	@Column(nullable=false)
+	private Boolean resolvido = false;
+	
 	@SuppressWarnings("unused")
 	private Reserva(){	}
 	
@@ -120,6 +130,55 @@ public class Reserva implements Serializable{
 	}
 
 	@Override
+	public Date getDataGeracao() {
+		return getDataReserva();
+	}
+
+	@Override
+	public Date getDataFechamento() {
+		return null;
+	}
+
+	@Override
+	public String getDescricao() {
+		return "Reserva";
+	}
+
+	@Override
+	public String getIdEditor() {
+		return ImovelEditor.ID;
+	}
+
+	@Override
+	public IEditorInput getEditorInput() {
+		ImovelEditorInput ei = new ImovelEditorInput();
+		ei.setModelo(getImovel());
+		return ei;
+	}
+
+	public Boolean getResolvido() {
+		return resolvido;
+	}
+	
+	public void setResolvido(Boolean resolvido) {
+		this.resolvido = resolvido;
+	}
+	
+	private static transient ReservaService service;
+	
+	@Override
+	public GenericService<?> getService() {
+		if(service == null)
+			service = new ReservaService();
+		return service;
+	}
+
+	@Override
+	public void finalizarPendencia() throws Exception {
+		((ReservaService)getService()).finalizarPendencia(this);
+	}
+	
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -143,5 +202,5 @@ public class Reserva implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 }

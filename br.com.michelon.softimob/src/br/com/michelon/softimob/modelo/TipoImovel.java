@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import org.eclipse.persistence.annotations.Index;
+
 import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
 
 @Entity
@@ -19,6 +21,7 @@ public class TipoImovel implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Index
 	@NotNull(message = "O nome do tipo de imóvel não pode ser vazio.")
 	@Column(nullable = false, unique = true)
 	private String nome;

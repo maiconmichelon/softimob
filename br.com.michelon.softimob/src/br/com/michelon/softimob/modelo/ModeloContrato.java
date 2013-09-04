@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import org.eclipse.persistence.annotations.Index;
+
 import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
 
 @Entity
@@ -23,6 +25,7 @@ public class ModeloContrato implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Index
 	@NotNull(message = "O nome não pode ser vazio")
 	@Column(nullable = false, unique = true)
 	private String nome;

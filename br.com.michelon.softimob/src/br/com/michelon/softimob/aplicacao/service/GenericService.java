@@ -80,5 +80,5 @@ public class GenericService<T> {
 	public <D> D getDaoImpl(Class<D> daoImpl){
 		return SpringUtils.getContext().getBean(daoImpl);
 	}
-	
+
 }

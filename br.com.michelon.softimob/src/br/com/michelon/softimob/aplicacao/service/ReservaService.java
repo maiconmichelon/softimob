@@ -1,13 +1,21 @@
 package br.com.michelon.softimob.aplicacao.service;
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.Reserva;
 import br.com.michelon.softimob.persistencia.ReservaDAO;
+import br.com.michelon.softimob.persistencia.ReservaDAOImpl;
+import br.com.michelon.softimob.persistencia.SpringUtils;
 
 public class ReservaService extends GenericService<Reserva>{
 
+	private Logger log = Logger.getLogger(getClass());
+	
 	public ReservaService() {
 		super(ReservaDAO.class);
 	}
@@ -19,6 +27,33 @@ public class ReservaService extends GenericService<Reserva>{
 	
 	public List<Reserva> findByReserva(Imovel imovel) {
 		return getRepository().findByImovel(imovel);
+	}
+
+	public List<Reserva> findPendencias(Date data){
+		return getRepository().findByDataVencimentoBeforeAndResolvidoFalse(data);
+	}
+	
+	public List<Reserva> findByDataVencimentoAfter(Date data, Imovel imovel){
+		return getRepository().findByDataVencimentoAfterAndImovelEquals(data, imovel);
+	}
+	
+	public List<Reserva> findIntersecao(Reserva reserva){
+		return getDaoImpl().findIntersecao(reserva);
+	}
+	
+	private ReservaDAOImpl getDaoImpl(){
+		return SpringUtils.getContext().getBean(ReservaDAOImpl.class);
+	}
+	
+	public void finalizarPendencia(Reserva reserva) {
+		if (DialogHelper.openConfirmation("Tem certeza que deseja finalizar a reserva ?")) {
+			try {
+				reserva.setResolvido(true);
+				salvar(reserva);
+			} catch (Exception e) {
+				log.error("Erro ao finalizar aluguel como pendencia.", e);
+			}
+		}
 	}
 
 }

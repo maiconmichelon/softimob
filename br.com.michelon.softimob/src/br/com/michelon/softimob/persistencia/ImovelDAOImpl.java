@@ -63,7 +63,12 @@ public class ImovelDAOImpl {
 		}
 
 		for(int p = 0 ; p < comodos.size(); p++){
-			sb.append(String.format("AND c%s.tipoComodo = :tp%s AND c%s.descricao = :comDescricao%s ", p, p, p, p));
+			Comodo comodo = comodos.get(p);
+			sb.append(String.format("AND c%s.tipoComodo = :tp%s ", p, p));
+			if(comodo.getDescricao() != null)
+				sb.append(String.format("AND c%s.descricao LIKE :comDescricao%s ", p, p));
+			if(comodo.getQuantidade() != null)
+				sb.append(String.format("AND c%s.quantidade = :comQuantidade%s ", p, p));
 		}
 		
 		sb.append("AND ((:isTodos = true) ");
@@ -109,7 +114,10 @@ public class ImovelDAOImpl {
 			for(int p = 0 ; p < comodos.size(); p++){
 				Comodo c = comodos.get(p);
 				typedQuery.setParameter(String.format("tp%s", p), c.getTipoComodo());
-				typedQuery.setParameter(String.format("comDescricao%s", p), c.getDescricao());				
+				if(c.getDescricao() != null)
+					typedQuery.setParameter(String.format("comDescricao%s", p), "%" + c.getDescricao() + "%");
+				if(c.getQuantidade() != null)
+					typedQuery.setParameter(String.format("comQuantidade%s", p), c.getQuantidade());	
 			}
 		}
 		

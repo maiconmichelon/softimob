@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
@@ -21,6 +22,7 @@ public class OrigemConta implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Index
 	@NotEmpty(message = "Nome não pode ser vazio")
 	@Column(unique = true, nullable = false)
 	private String nome;

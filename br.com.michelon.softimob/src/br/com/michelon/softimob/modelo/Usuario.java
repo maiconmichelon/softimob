@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.michelon.softimob.aplicacao.annotation.DeactivateOnDelete;
@@ -21,6 +22,7 @@ public class Usuario implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
+	@Index
 	@Column(nullable = false)
 	@NotEmpty(message="O usuário deve ter no minimo 1 caractér.")
 	private String login;

@@ -20,10 +20,11 @@ import javax.validation.constraints.NotNull;
 import org.eclipse.ui.IEditorInput;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.service.AcontecimentoChamadoService;
 import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
-import br.com.michelon.softimob.aplicacao.service.PendenciaService;
+import br.com.michelon.softimob.tela.editor.AluguelEditor;
 
 @Entity
 public class ChamadoReforma implements Serializable, Pendencia{
@@ -117,20 +118,19 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	
 	@Override
 	public String getIdEditor() {
-		// TODO Auto-generated method stub
-		return null;
+		return AluguelEditor.ID;
 	}
 
 	@Override
 	public IEditorInput getEditorInput() {
-		// TODO Auto-generated method stub
-		return null;
+		AluguelEditorInput ei = new AluguelEditorInput();
+		ei.setModelo(getAluguel());
+		return ei;
 	}
 
 	@Override
 	public BigDecimal getValor() {
-		// TODO Auto-generated method stub
-		return null;
+		return BigDecimal.ZERO;
 	}
 
 	@Override
@@ -156,7 +156,6 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	}
 	
 	private transient static ChamadoReformaService c;
-	private transient static PendenciaService pService;
 	
 	@Override
 	public GenericService<?> getService() {
@@ -167,9 +166,7 @@ public class ChamadoReforma implements Serializable, Pendencia{
 
 	@Override
 	public void finalizarPendencia() throws Exception {
-		if(pService == null)
-			pService = new PendenciaService();
-		pService.finalizarPendencia(this);
+		((ChamadoReformaService)getService()).abrirTela(this);
 	}
 	
 	@Override

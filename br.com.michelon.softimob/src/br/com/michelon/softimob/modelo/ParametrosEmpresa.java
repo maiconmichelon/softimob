@@ -97,6 +97,9 @@ public class ParametrosEmpresa implements Serializable{
 	@OneToOne
 	private PlanoConta contaJurosRecebido;
 	
+	@OneToOne
+	private PlanoConta contaCaixa;
+	
 	@Enumerated(EnumType.ORDINAL)
 	@Column
 	private Bancos banco;
@@ -148,6 +151,14 @@ public class ParametrosEmpresa implements Serializable{
 		this.creci = creci;
 	}
 
+	public PlanoConta getContaCaixa() {
+		return contaCaixa;
+	}
+	
+	public void setContaCaixa(PlanoConta contaCaixa) {
+		this.contaCaixa = contaCaixa;
+	}
+	
 	public ModeloContrato getContratoAluguel() {
 		return contratoAluguel;
 	}

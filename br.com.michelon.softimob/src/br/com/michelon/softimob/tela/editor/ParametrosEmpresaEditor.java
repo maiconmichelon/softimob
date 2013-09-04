@@ -66,6 +66,7 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 	private Text txtContaReforma;
 	private Text txtContaComissao;
 	private Text txtContaDescontoRecebido;
+	private Text txtContaCaixa;
 	private Text txtJurosPagos;
 	private Text txtContaDescontoConcedido;
 	private Text txtContaJurosRecebido;
@@ -117,6 +118,89 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		
+		CTabItem tbtmContas = new CTabItem(tabFolder, SWT.NONE);
+		tbtmContas.setText("Contas");
+		
+		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
+		tbtmContas.setControl(composite_2);
+		composite_2.setLayout(new GridLayout(4, false));
+		//
+		Label lblContaCaixa = new Label(composite_2, SWT.NONE);
+		lblContaCaixa.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblContaCaixa.setText("Caixa");
+		
+		txtContaCaixa = new Text(composite_2, SWT.BORDER);
+		txtContaCaixa.setEditable(false);
+		txtContaCaixa.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button buttonAddContaCaixa = new Button(composite_2, SWT.NONE);
+		buttonAddContaCaixa.setImage(ImageRepository.SEARCH_16.getImage());
+		
+		Button btnRemoveContaCaixa = new Button(composite_2, SWT.NONE);
+		btnRemoveContaCaixa.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		btnRemoveContaCaixa.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, buttonAddContaCaixa, btnRemoveContaCaixa, value, "contaCaixa");
+
+		Label lblDescontoRecebido = new Label(composite_2, SWT.NONE);
+		lblDescontoRecebido.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDescontoRecebido.setText("Desconto Obtido");
+		
+		txtContaDescontoRecebido = new Text(composite_2, SWT.BORDER);
+		txtContaDescontoRecebido.setEditable(false);
+		txtContaDescontoRecebido.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_13 = new Button(composite_2, SWT.NONE);
+		button_13.setImage(ImageRepository.SEARCH_16.getImage());
+		
+		Button button_30 = new Button(composite_2, SWT.NONE);
+		button_30.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		button_30.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_13, button_30, value, "contaDescontoRecebido");
+		
+		Label lblJurosPago = new Label(composite_2, SWT.NONE);
+		lblJurosPago.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblJurosPago.setText("Juros Pago");
+		
+		txtJurosPagos = new Text(composite_2, SWT.BORDER);
+		txtJurosPagos.setEditable(false);
+		txtJurosPagos.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_14 = new Button(composite_2, SWT.NONE);
+		button_14.setImage(ImageRepository.SEARCH_16.getImage());
+		
+		Button button_31 = new Button(composite_2, SWT.NONE);
+		button_31.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_14, button_31, value, "contaJurosPagos");
+		
+		Label lblDescontoConcedido = new Label(composite_2, SWT.NONE);
+		lblDescontoConcedido.setText("Desconto Concedido");
+		
+		txtContaDescontoConcedido = new Text(composite_2, SWT.BORDER);
+		txtContaDescontoConcedido.setEditable(false);
+		txtContaDescontoConcedido.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_15 = new Button(composite_2, SWT.NONE);
+		button_15.setImage(ImageRepository.SEARCH_16.getImage());
+		
+		Button button_32 = new Button(composite_2, SWT.NONE);
+		button_32.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_15, button_32, value, "contaDescontoConcedido");
+		
+		Label lblJurosRecebido = new Label(composite_2, SWT.NONE);
+		lblJurosRecebido.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblJurosRecebido.setText("Juros Recebido");
+		
+		txtContaJurosRecebido = new Text(composite_2, SWT.BORDER);
+		txtContaJurosRecebido.setEditable(false);
+		txtContaJurosRecebido.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button button_16 = new Button(composite_2, SWT.NONE);
+		button_16.setImage(ImageRepository.SEARCH_16.getImage());
+		
+		Button button_33 = new Button(composite_2, SWT.NONE);
+		button_33.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_16, button_33, value, "contaJurosRecebido");
 		
 		CTabItem tbtmVenda = new CTabItem(tabFolder, SWT.NONE);
 		tbtmVenda.setText("Venda");
@@ -411,73 +495,6 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		tabFolder.setSelection(0);
 		
-		CTabItem tbtmContas = new CTabItem(tabFolder, SWT.NONE);
-		tbtmContas.setText("Contas");
-		
-		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
-		tbtmContas.setControl(composite_2);
-		composite_2.setLayout(new GridLayout(4, false));
-		
-		Label lblDescontoRecebido = new Label(composite_2, SWT.NONE);
-		lblDescontoRecebido.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblDescontoRecebido.setText("Desconto Obtido");
-		
-		txtContaDescontoRecebido = new Text(composite_2, SWT.BORDER);
-		txtContaDescontoRecebido.setEditable(false);
-		txtContaDescontoRecebido.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_13 = new Button(composite_2, SWT.NONE);
-		button_13.setImage(ImageRepository.SEARCH_16.getImage());
-		
-		Button button_30 = new Button(composite_2, SWT.NONE);
-		button_30.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		button_30.setImage(ImageRepository.REMOVE_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_13, button_30, value, "contaDescontoRecebido");
-		
-		Label lblJurosPago = new Label(composite_2, SWT.NONE);
-		lblJurosPago.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblJurosPago.setText("Juros Pago");
-		
-		txtJurosPagos = new Text(composite_2, SWT.BORDER);
-		txtJurosPagos.setEditable(false);
-		txtJurosPagos.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_14 = new Button(composite_2, SWT.NONE);
-		button_14.setImage(ImageRepository.SEARCH_16.getImage());
-		
-		Button button_31 = new Button(composite_2, SWT.NONE);
-		button_31.setImage(ImageRepository.REMOVE_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_14, button_31, value, "contaJurosPagos");
-		
-		Label lblDescontoConcedido = new Label(composite_2, SWT.NONE);
-		lblDescontoConcedido.setText("Desconto Concedido");
-		
-		txtContaDescontoConcedido = new Text(composite_2, SWT.BORDER);
-		txtContaDescontoConcedido.setEditable(false);
-		txtContaDescontoConcedido.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_15 = new Button(composite_2, SWT.NONE);
-		button_15.setImage(ImageRepository.SEARCH_16.getImage());
-		
-		Button button_32 = new Button(composite_2, SWT.NONE);
-		button_32.setImage(ImageRepository.REMOVE_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_15, button_32, value, "contaDescontoConcedido");
-		
-		Label lblJurosRecebido = new Label(composite_2, SWT.NONE);
-		lblJurosRecebido.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblJurosRecebido.setText("Juros Recebido");
-		
-		txtContaJurosRecebido = new Text(composite_2, SWT.BORDER);
-		txtContaJurosRecebido.setEditable(false);
-		txtContaJurosRecebido.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_16 = new Button(composite_2, SWT.NONE);
-		button_16.setImage(ImageRepository.SEARCH_16.getImage());
-		
-		Button button_33 = new Button(composite_2, SWT.NONE);
-		button_33.setImage(ImageRepository.REMOVE_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.PLANOCONTA, button_16, button_33, value, "contaJurosRecebido");
-		
 		CTabItem tbtmBoletos = new CTabItem(tabFolder, SWT.NONE);
 		tbtmBoletos.setText("Boletos");
 		
@@ -658,6 +675,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		IObservableValue observeTextTxtContaContratoPrestacaoServicoObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtContaContratoPrestacaoServico);
 		IObservableValue value2OrigemObserveDetailValue_2 = PojoProperties.value(ParametrosEmpresa.class, "tipoContaPrestacaoServico", OrigemConta.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTxtContaContratoPrestacaoServicoObserveWidget, value2OrigemObserveDetailValue_2, null, null);
+		//
+		IObservableValue observeTextCaixaObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtContaCaixa);
+		IObservableValue valueContaCaixaObserveDetailValue = PojoProperties.value(ParametrosEmpresa.class, "contaCaixa", PlanoConta.class).observeDetail(value);
+		bindingContext.bindValue(observeTextCaixaObserveWidget, valueContaCaixaObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtContaDescontoRecebido);
 		IObservableValue valueContaDescontoRecebidoObserveDetailValue = PojoProperties.value(ParametrosEmpresa.class, "contaDescontoRecebido", PlanoConta.class).observeDetail(value);

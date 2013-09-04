@@ -25,7 +25,7 @@ public class MovimentacaoContabilView extends GenericView<MovimentacaoContabil>{
 	private MovimentacaoContabilService service = new MovimentacaoContabilService();
 	
 	public MovimentacaoContabilView(){
-		super(false);
+		super(false, MovimentacaoContabil.class);
 		
 		atributos = Lists.newArrayList();
 		

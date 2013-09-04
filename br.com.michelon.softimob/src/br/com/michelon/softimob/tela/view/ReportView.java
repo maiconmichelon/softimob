@@ -47,5 +47,5 @@ public class ReportView extends ViewPart {
 	public void setFocus() {
 		// Set the focus
 	}
-
+	
 }

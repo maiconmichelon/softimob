@@ -8,9 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 public class Comodo implements Serializable{
@@ -24,9 +25,13 @@ public class Comodo implements Serializable{
 	@ManyToOne(optional=false)
 	private TipoComodo tipoComodo;
 	
-	@NotEmpty(message = "A descrição do cômodo não pode ser vazia.")
+	@NotNull(message = "A quantidade de cômodos não pode ser vazia.")
 	@Column(nullable=false)
-	private String descricao;
+	@Min(message = "A quantidade deve ser maior que ZERO.", value = 1)
+	private Integer quantidade;
+	
+	@Column
+	private String descricao = StringUtils.EMPTY;
 	
 	@ManyToOne(optional=false)
 	private Imovel imovel;
@@ -54,6 +59,14 @@ public class Comodo implements Serializable{
 		this.descricao = descricao;
 	}
 
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+	
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
+	
 	public TipoComodo getTipoComodo() {
 		return tipoComodo;
 	}

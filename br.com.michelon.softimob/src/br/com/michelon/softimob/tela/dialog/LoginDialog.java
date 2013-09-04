@@ -43,6 +43,12 @@ public class LoginDialog extends TitleAreaDialog{
 		
 		txtLogin = new Text(composite, SWT.BORDER);
 		txtLogin.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtLogin.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				((Text)e.widget).selectAll();
+			}
+		});
 		
 		Label lblSenha = new Label(composite, SWT.NONE);
 		lblSenha.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));

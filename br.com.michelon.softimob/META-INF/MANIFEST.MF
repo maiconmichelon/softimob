@@ -85,6 +85,7 @@ Bundle-ClassPath: .,
  lib/org.eclipse.nebula.widgets.cdatetime_0.14.0.201305101602.jar,
  lib/caelum-stella/caelum-stella-boleto-2.0.4.jar,
  lib/docx/jaxb-xmldsig-core-1.0.0.jar,
- lib/itextpdf-5.1.2.jar
+ lib/itextpdf-5.1.2.jar,
+ swing2swt.jar
 Import-Package: com.google.common.base,
  com.google.common.collect

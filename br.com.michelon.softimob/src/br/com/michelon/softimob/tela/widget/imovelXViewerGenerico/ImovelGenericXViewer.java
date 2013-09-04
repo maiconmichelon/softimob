@@ -47,7 +47,7 @@ public class ImovelGenericXViewer {
 		Map<Class<?>, XViewerColumnProperties> m2 = Maps.newHashMap();
 		m2.put(Imovel.class, new XViewerColumnProperties("metragem"));
 		m2.put(Endereco.class, new XViewerColumnProperties("rua.bairro.cidade.estado.uf"));
-		m2.put(Comodo.class, new XViewerColumnProperties("descricao"));
+		m2.put(Comodo.class, new XViewerColumnProperties("quantidade"));
 		m2.put(Chave.class, new XViewerColumnProperties("localizacao"));
 		m2.put(Feedback.class, new XViewerColumnProperties("funcionario.nome"));
 		m2.put(Proposta.class, new XViewerColumnProperties("cliente.nome"));
@@ -58,6 +58,7 @@ public class ImovelGenericXViewer {
 		Map<Class<?>, XViewerColumnProperties> m3 = Maps.newHashMap();
 		m3.put(Imovel.class, new XViewerColumnProperties("angariador.nome"));
 		m3.put(Endereco.class, new XViewerColumnProperties("rua.bairro.cidade.nome"));
+		m3.put(Comodo.class, new XViewerColumnProperties("descricao"));
 		m3.put(Feedback.class, new XViewerColumnProperties("cliente.nome"));
 		m3.put(Proposta.class, new XViewerColumnProperties("funcionario.nome"));
 		m3.put(Reserva.class, new XViewerColumnProperties("cliente.nome"));

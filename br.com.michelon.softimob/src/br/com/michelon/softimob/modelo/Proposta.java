@@ -17,8 +17,15 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
+import org.eclipse.ui.IEditorInput;
+
+import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
+import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.PropostaService;
+import br.com.michelon.softimob.tela.editor.ImovelEditor;
+
 @Entity
-public class Proposta implements Serializable{
+public class Proposta implements Serializable, Pendencia{
 
 	private static final long serialVersionUID = 1L;
 
@@ -177,6 +184,47 @@ public class Proposta implements Serializable{
 			"Proprietário - " + getImovel().getProprietario().getNome();
 	}
 
+	@Override
+	public Date getDataGeracao() {
+		return getData();
+	}
+
+	@Override
+	public Date getDataVencimento() {
+		return null;
+	}
+
+	@Override
+	public String getDescricao() {
+		return "Proposta";
+	}
+
+	@Override
+	public String getIdEditor() {
+		return ImovelEditor.ID;
+	}
+
+	@Override
+	public IEditorInput getEditorInput() {
+		ImovelEditorInput editorInput = new ImovelEditorInput();
+		editorInput.setModelo(getImovel());
+		return editorInput;
+	}
+
+	private static transient PropostaService service;
+	
+	@Override
+	public GenericService<?> getService() {
+		if(service == null)
+			service = new PropostaService();
+		return service;
+	}
+
+	@Override
+	public void finalizarPendencia() throws Exception {
+		((PropostaService)getService()).abrirTela(this);
+	}
+	
 	public String getStatusExtenso(){
 		Integer status = getStatus();
 		if(status == null)
@@ -214,5 +262,5 @@ public class Proposta implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 }

@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.persistencia;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.Pendencia;
 
-public interface AluguelDAO extends CrudRepository<Aluguel, Long>{
+public interface AluguelDAO extends CrudRepository<Aluguel, Long>, Serializable{
 
 	@Query(value="SELECT a FROM Aluguel a WHERE a.contrato.imovel = :imovel")
 	List<Aluguel> findByImovel(@Param(value = "imovel")Imovel imovel);

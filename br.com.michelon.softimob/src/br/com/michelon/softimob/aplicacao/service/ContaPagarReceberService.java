@@ -5,7 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
+import br.com.michelon.softimob.aplicacao.exception.ContaNaoParametrizadaException;
 import br.com.michelon.softimob.aplicacao.helper.HistoricoHelper;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.LancamentoContabil;
@@ -15,14 +19,15 @@ import br.com.michelon.softimob.modelo.ParametrosEmpresa;
 import br.com.michelon.softimob.modelo.Pendencia;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.persistencia.ContaPagarReceberDAO;
-import br.com.michelon.softimob.persistencia.ContaPagarReceberDAOImpl;
-import br.com.michelon.softimob.persistencia.SpringUtils;
+import br.com.michelon.softimob.tela.view.PgtoRecContaView;
 import br.com.michelon.softimob.tela.view.PgtoRecContaView.ModeloPgtoConta;
 
 import com.google.common.collect.Lists;
 
 public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 
+	private Logger log = Logger.getLogger(getClass());
+	
 	public ContaPagarReceberService() {
 		super(ContaPagarReceberDAO.class);
 	}
@@ -30,10 +35,6 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 	@Override
 	protected ContaPagarReceberDAO getRepository() {
 		return (ContaPagarReceberDAO) super.getRepository();
-	}
-	
-	private ContaPagarReceberDAOImpl getDAOImpl(){
-		return SpringUtils.getContext().getBean(ContaPagarReceberDAOImpl.class);
 	}
 	
 	public MovimentacaoContabil geraMovimentacao(ContaPagarReceber c, ModeloPgtoConta model) throws Exception{
@@ -46,6 +47,7 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 		return mov;
 	}
 	
+
 	/**
 	 * Gera todos os lançamentos da baixa da conta, inclusive o lançamento de Juros e descontos
 	 * 
@@ -56,26 +58,33 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 	 * @return - Retorna a mesma movimentação que foi passada em parametro
 	 */
 	public List<LancamentoContabil> gerarLancamentos(ContaPagarReceber conta, MovimentacaoContabil movimentacao, Date dataPagamento, PlanoConta planoContaBanco) throws Exception{
-		ParametrosEmpresa parametros = new ParametrosEmpresaService().findParametrosEmpresa();
-		List<LancamentoContabil> lctos = Lists.newArrayList();
+		ParametrosEmpresa parametroEmpresa = ParametrosEmpresa.getInstance();
 		
-		if(conta.getOrigem().getConta() != null){
-			lctos.add(LancamentoContabil.createCredito(movimentacao, conta.isApagar() && planoContaBanco != null ? planoContaBanco : conta.getOrigem().getConta(), 
-					conta.getValorCredito(), HistoricoHelper.getHistoricoPagamento(conta, dataPagamento), ""));
-		}
+		BigDecimal valorDuplicata = conta.getValor();
+		List<LancamentoContabil> lancamentos = Lists.newArrayList();
+
+		String historico = HistoricoHelper.getHistoricoPagamento(conta, dataPagamento);
+
+		if (conta.isApagar())
+			lancamentos.add(LancamentoContabil.createDebito(movimentacao, conta.getOrigem().getConta(), valorDuplicata, historico, ""));
+		else
+			lancamentos.add(LancamentoContabil.createCredito(movimentacao, conta.getOrigem().getContaContraPartida(), valorDuplicata, historico, ""));
+
+		PlanoConta contaCaixaBanco = planoContaBanco == null ? parametroEmpresa.getContaCaixa() : planoContaBanco;
 		
-		if(conta.getOrigem().getContaContraPartida() != null){
-			lctos.add(LancamentoContabil.createDebito(movimentacao, conta.isAReceber() && planoContaBanco != null ? planoContaBanco : conta.getOrigem().getContaContraPartida(), 
-					conta.getValorDebito(), HistoricoHelper.getHistoricoPagamento(conta, dataPagamento), ""));
-		}
-		
-		LancamentoContabil lctoJurosDesconto = gerarLancamentoJurosDesconto(conta, dataPagamento, parametros, movimentacao);
+		if (conta.isAReceber())
+			lancamentos.add(LancamentoContabil.createDebito(movimentacao, contaCaixaBanco, conta.getValor().add(conta.getValorJurDescTratado()), historico, ""));
+		else
+			lancamentos.add(LancamentoContabil.createCredito(movimentacao, contaCaixaBanco, conta.getValor().add(conta.getValorJurDescTratado()), historico, ""));
+
+		LancamentoContabil lctoJurosDesconto = gerarLancamentoJurosDesconto(conta, dataPagamento, parametroEmpresa, movimentacao);
 		if(lctoJurosDesconto != null)
-			lctos.add(lctoJurosDesconto);
+			lancamentos.add(lctoJurosDesconto);
 		
-		return lctos;
+		return lancamentos;
 	}
 
+	
 	private LancamentoContabil gerarLancamentoJurosDesconto(ContaPagarReceber c, Date dataPagamento, ParametrosEmpresa parametros, MovimentacaoContabil mov) throws Exception {
 		BigDecimal jurDesc = c.getValorJurosDesconto();
 		
@@ -84,31 +93,29 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 			
 		PlanoConta contaJurDesc = null;
 		TipoLancamento credDeb = null;
-//		String historico = null;
 				
 		if(c.isApagar()){
 			if(jurDesc.signum() < 0){
 				contaJurDesc = parametros.getContaDescontoRecebido();
 				credDeb = TipoLancamento.CREDITO;
-//				historico = "Desconto concedido sobre ";
 			} else {
 				contaJurDesc = parametros.getContaJurosPagos();
 				credDeb = TipoLancamento.DEBITO;
-//				historico = "Juros concedido sobre ";
 			}
 		} else {
 			if(jurDesc.signum() < 0){
 				contaJurDesc = parametros.getContaDescontoConcedido();
 				credDeb = TipoLancamento.DEBITO;
-//				historico = "Descontos concedidos sobre ";
 			} else {
 				contaJurDesc = parametros.getContaJurosRecebido();
 				credDeb = TipoLancamento.CREDITO;
-//				historico = "Juros recebidos sobre ";
 			}
 		}
 
-		return LancamentoContabil.create(mov, credDeb, contaJurDesc, jurDesc, HistoricoHelper.getHistoricoJurosDesconto(c, dataPagamento), StringUtils.EMPTY);
+		if(contaJurDesc == null)
+			throw new ContaNaoParametrizadaException("A conta de Juros/Desconto deve ser parametrizada.");
+		
+		return LancamentoContabil.create(mov, credDeb, contaJurDesc, jurDesc.abs(), HistoricoHelper.getHistoricoJurosDesconto(c, dataPagamento), StringUtils.EMPTY);
 	}
 	
 	public void baixarContas (List<ContaPagarReceber> contas) throws Exception{
@@ -116,28 +123,28 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 		for(ContaPagarReceber conta : contas){
 			contasParaSalvar.add(conta);
 			
-			if(conta.getValorPagoParcialTratado().signum() != 0 && conta.getValorPagoParcialTratado().compareTo(conta.getValor()) < 0){
-				ContaPagarReceber contaFilha = new ContaPagarReceber();
-				
-				contaFilha.setValor(conta.getValor().subtract(conta.getValorPagoParcialTratado()));
-				contaFilha.setContaPai(conta);
-				contaFilha.setDataConta(conta.getDataConta());
-				contaFilha.setDataVencimento(conta.getDataVencimento());
-				contaFilha.setObservacoes(conta.getObservacoes());
-				contaFilha.setOrigem(conta.getOrigem());
-				contaFilha.setTipo(conta.getTipo());
-				
-				contasParaSalvar.add(contaFilha);
-			} 
-
-			conta.setValorPagoParcial(conta.getValor());
+//			if(conta.getValorPagoParcialTratado().signum() != 0 && conta.getValorPagoParcialTratado().compareTo(conta.getValor()) < 0){
+//				ContaPagarReceber contaFilha = new ContaPagarReceber();
+//				
+//				contaFilha.setValor(conta.getValor().subtract(conta.getValorPagoParcialTratado()));
+//				contaFilha.setContaPai(conta);
+//				contaFilha.setDataConta(conta.getDataConta());
+//				contaFilha.setDataVencimento(conta.getDataVencimento());
+//				contaFilha.setObservacoes(conta.getObservacoes());
+//				contaFilha.setOrigem(conta.getOrigem());
+//				contaFilha.setTipo(conta.getTipo());
+//				
+//				contasParaSalvar.add(contaFilha);
+//			} 
+//
+//			conta.setValorPagoParcial(conta.getValor());
 			
 			if(conta.getDataPagamento() == null)
 				throw new Exception("A conta não possui data de pagamento.");
 			if(conta.getMovimentacao() == null)
 				throw new Exception("A conta não possui movimentação");
-			if(conta.getValorPagoParcial().signum() == 0)
-				throw new Exception("O valor pago parcial não pode ser igual a zero");
+//			if(conta.getValorPagoParcial().signum() == 0)
+//				throw new Exception("O valor pago parcial não pode ser igual a zero");
 
 			contasParaSalvar.add(conta);
 		}
@@ -147,29 +154,28 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 	
 	public void estornarContas(List<ContaPagarReceber> contas) throws Exception{
 		List<ContaPagarReceber> contasToMerge = Lists.newArrayList();
-		List<ContaPagarReceber> contasToDelete = Lists.newArrayList();
 		
 		for(ContaPagarReceber c : contas){
-			if(c.getContaPai() == null){
+//			if(c.getContaPai() == null){
 				zerarConta(c);
 				
 				contasToMerge.add(c);
-			} else {
-				ContaPagarReceber contaPai = c.getContaPai();
-				zerarConta(contaPai);
-
-				contasToDelete.add(c);
-				contasToMerge.add(contaPai);
-			}
+//			} else {
+//				ContaPagarReceber contaPai = c.getContaPai();
+//				zerarConta(contaPai);
+//
+//				contasToDelete.add(c);
+//				contasToMerge.add(contaPai);
+//			}
 		}
 		
-		getDAOImpl().estornar(contasToDelete, contasToMerge);
+		salvar(contasToMerge);
 	}
 
 	private void zerarConta(ContaPagarReceber c) {
 		c.setDataPagamento(null);
 		c.setMovimentacao(null);
-		c.setValorPagoParcial(BigDecimal.ZERO);
+//		c.setValorPagoParcial(BigDecimal.ZERO);
 		c.setValorJurosDesconto(BigDecimal.ZERO);
 	}
 	
@@ -179,6 +185,14 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 	
 	public List<ContaPagarReceber> buscarContas(Date dataInicio, Date dataFinal){
 		return getRepository().buscarContas(dataInicio, dataFinal);
+	}
+
+	public void abrirTela() {
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PgtoRecContaView.ID);
+		} catch (PartInitException e) {
+			log.error("Erro ao abrir view de pagamento de contas.");
+		}
 	}
 
 }

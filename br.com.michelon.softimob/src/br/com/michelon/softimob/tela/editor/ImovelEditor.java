@@ -48,6 +48,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
+import br.com.michelon.softimob.aplicacao.exception.ValidationException;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
@@ -64,6 +65,7 @@ import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.aplicacao.service.PropostaService;
 import br.com.michelon.softimob.aplicacao.service.ReservaService;
+import br.com.michelon.softimob.aplicacao.service.TipoComodoService;
 import br.com.michelon.softimob.aplicacao.service.TipoImovelService;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.Chave;
@@ -81,15 +83,20 @@ import br.com.michelon.softimob.modelo.TipoComodo;
 import br.com.michelon.softimob.modelo.TipoImovel;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.dialog.ContraPropostaDialog;
+import br.com.michelon.softimob.tela.dialog.ValidationErrorDialog;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.EnderecoGroup;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
+import br.com.michelon.softimob.tela.widget.NumberTextField;
 import br.com.michelon.softimob.tela.widget.PhotoComposite;
 import br.com.michelon.softimob.tela.widget.propostaXViewer.PropostaGenericXViewer;
 import br.com.michelon.softimob.tela.widget.xViewer.GenericXViewer;
+
+import com.google.common.collect.Lists;
+
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 import de.ralfebert.rcputils.tables.format.Formatter;
 
@@ -160,6 +167,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 
 	private CTabFolder tfImovel;
 	private CTabItem tbtmEndereo;
+	private Text txtQuantidadeComodos;
 
 	public ImovelEditor() {
 		super(Imovel.class);
@@ -283,10 +291,10 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		Composite composite_5 = new Composite(tfImovel, SWT.NONE);
 		tbtmDescrio_1.setControl(composite_5);
 		composite_5.setLayout(new GridLayout(1, false));
-				
+		
 		Composite composite_10 = new Composite(composite_5, SWT.NONE);
 		composite_10.setLayout(new GridLayout(1, false));
-		composite_10.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
+		composite_10.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		criarTabelaComodo(composite_10);
 		
@@ -301,7 +309,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		text_26 = new Text(grpCmodo, SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
 		text_26.setEditable(false);
-		text_26.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+		text_26.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		
 		Button btnSelecionarComodo = new Button(grpCmodo, SWT.NONE);
 		btnSelecionarComodo.setImage(ImageRepository.SEARCH_16.getImage());
@@ -311,6 +319,16 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		btnRemoverComodo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		btnRemoverComodo.setImage(ImageRepository.REMOVE_16.getImage());
 		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoverComodo, valueComodo, "tipoComodo", TipoComodo.class);
+		
+		Label lblQuantidade = new Label(grpCmodo, SWT.NONE);
+		lblQuantidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblQuantidade.setText("Quantidade");
+		
+		NumberTextField numberTextField = new NumberTextField(grpCmodo);
+		txtQuantidadeComodos = numberTextField.getControl();
+		txtQuantidadeComodos.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(grpCmodo, SWT.NONE);
+		new Label(grpCmodo, SWT.NONE);
 
 		Label lblDescrio_3 = new Label(grpCmodo, SWT.NONE);
 		lblDescrio_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -673,7 +691,11 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		createButtonAddItem(grpReserva, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				addReserva();
+				try {
+					addReserva();
+				} catch (ValidationException e1) {
+					new ValidationErrorDialog(ShellHelper.getActiveShell(), e1.getMessage()).open();
+				}
 			}
 		});
 		
@@ -809,7 +831,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		tvbContatoPrestacaoServico.createColumn("Data").setPercentWidth(10).bindToProperty("dataInicio").format(new DateStringValueFormatter()).build();
 		tvbContatoPrestacaoServico.createColumn("Data de Vencimento").setPercentWidth(10).bindToProperty("dataVencimento").format(new DateStringValueFormatter()).build();
-		tvbContatoPrestacaoServico.createColumn("Valor").setPercentWidth(10).bindToProperty("valor").format(FormatterHelper.getCurrencyFormatter()).build();
+		tvbContatoPrestacaoServico.createColumn("Valor").setPercentWidth(10).bindToProperty("valor").format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
 		tvbContatoPrestacaoServico.createColumn("Funcionário").setPercentWidth(20).format(new NullStringValueFormatter()).bindToProperty("funcionario.nome").build();
 		tvbContatoPrestacaoServico.createColumn("Tipo").setPercentWidth(10).bindToProperty("tipo").build();
 		tvbContatoPrestacaoServico.createColumn("Divulgar").bindToProperty("divulgarExtenso").build();
@@ -827,7 +849,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbReserva.createColumn("Data de Vencimento").setPercentWidth(10).bindToProperty("dataVencimento").format(new DateStringValueFormatter()).build();
 		tvbReserva.createColumn("Cliente").setPercentWidth(15).bindToProperty("cliente.nome").build();
 		tvbReserva.createColumn("Funcionário").setPercentWidth(15).bindToProperty("funcionario.nome").format(new NullStringValueFormatter()).build();
-		tvbReserva.createColumn("Valor").bindToProperty("valor").setPercentWidth(10).format(FormatterHelper.getCurrencyFormatter()).build();
+		tvbReserva.createColumn("Valor").bindToProperty("valor").setPercentWidth(10).format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
 		tvbReserva.createColumn("Observações").setPercentWidth(40).bindToProperty("observacoes").format(new NullStringValueFormatter()).build();
 		
 		tvbReserva.setInput(((Imovel)value.getValue()).getReservas());
@@ -854,7 +876,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbComodo = new TableViewerBuilder(composite);
 		
 		tvbComodo.createColumn("Cômodo").setPercentWidth(30).bindToProperty("tipoComodo.nome").build();
-		tvbComodo.createColumn("Descrição").setPercentWidth(70).bindToProperty("descricao").build();
+		tvbComodo.createColumn("Quantidade").setPercentWidth(10).bindToProperty("quantidade").build();
+		tvbComodo.createColumn("Descrição").setPercentWidth(60).bindToProperty("descricao").build();
 		
 		tvbComodo.setInput(((Imovel)value.getValue()).getComodos());
 		
@@ -922,9 +945,9 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		tvbLocacao.createColumn("Locatario").setPercentWidth(10).bindToProperty("cliente.nome").build();
 		tvbLocacao.createColumn("Fiador").setPercentWidth(10).bindToProperty("fiador.nome").build();
 		tvbLocacao.createColumn("Corretor").setPercentWidth(10).bindToProperty("funcionario.nome").build();
-		tvbLocacao.createColumn("Valor").setPercentWidth(10).format(FormatterHelper.getCurrencyFormatter()).bindToProperty("valor").build();
+		tvbLocacao.createColumn("Valor").setPercentWidth(10).format(FormatterHelper.getDefaultValueFormatterToMoney()).bindToProperty("valor").build();
 		tvbLocacao.createColumn("Data").setPercentWidth(10).format(new DateStringValueFormatter()).bindToProperty("dataAssinaturaContrato").build();
-		tvbLocacao.createColumn("Ducação (meses)").setPercentWidth(10).bindToProperty("duracao").build();
+		tvbLocacao.createColumn("Data de Vencimento").setPercentWidth(10).bindToProperty("dataVencimento").format(new DateStringValueFormatter()).build();
 //		tvbLocacao.createColumn("Reajuste").setPercentWidth(10).bindToProperty("reajuste").build();
 		
 		tvbLocacao.setInput(new AluguelService().findByImovel(getCurrentObject()));
@@ -967,14 +990,55 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		addItens(new FeedbackService(), valueFeedback, tvFeedbacks, getCurrentObject().getFeedbacks());
 	}
 	
-	private void addReserva() {
-		addItens(new ReservaService(), valueReserva, tvReservas, getCurrentObject().getReservas());
+	private void addReserva() throws ValidationException {
+		ReservaService reservaService = new ReservaService();
+		Reserva reserva = (Reserva) valueReserva.getValue();
+		
+		if(reserva.getDataReserva().compareTo(reserva.getDataVencimento()) > 0)
+			throw new ValidationException("A data de vencimento não pode ser menor que a data da reserva");
+		if(!reservaService.findIntersecao(reserva).isEmpty())
+			throw new ValidationException("Já existe uma reserva entre que acaba ou começa entre os mesmos dias.");
+		
+		addItens(reservaService, valueReserva, tvReservas, getCurrentObject().getReservas());
 	}
 	
 	@Override
 	public void saveCurrentObject(GenericService<Imovel> service) {
-		if(validarComMensagem(getCurrentObject().getEndereco())){
+		boolean isNewObject = getCurrentObject().getId() == null;
+		
+		if(validarComMensagem(getCurrentObject().getEndereco()) && validarComMensagem(getCurrentObject())){
 			super.saveCurrentObject(service);
+			
+			if(isNewObject){
+				List<TipoComodo> tiposComodo = new TipoComodoService().findByTipoComodoAndSelecionadoIsTrue(getCurrentObject().getTipo());
+
+				if(tiposComodo == null || tiposComodo.isEmpty())
+					return;
+				
+				ComodoService comodoService = new ComodoService();
+				List<Comodo> comodos = Lists.newArrayList();
+				
+				for(TipoComodo tipoComodo : tiposComodo){
+					Comodo comodo = new Comodo(getCurrentObject());
+					comodo.setDescricao("");
+					comodo.setTipoComodo(tipoComodo);
+					
+					comodos.add(comodo);
+				}
+				
+				try {
+					comodoService.salvar(comodos);
+					
+					Imovel imovel = getCurrentObject();
+					
+					value.setValue(null);
+					value.setValue(imovel);
+
+					tvComodos.setInput(imovel.getComodos());
+				} catch (Exception e) {
+					log.error("Erro ao salvar cômodos do imóvel.", e);
+				}
+			}
 		}
 	}
 	
@@ -1050,6 +1114,10 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		IObservableValue observeTextText_26ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_26);
 		IObservableValue valueComodoTipoComodoObserveDetailValue = PojoProperties.value(Comodo.class, "tipoComodo", TipoComodo.class).observeDetail(valueComodo);
 		bindingContext.bindValue(observeTextText_26ObserveWidget, valueComodoTipoComodoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextTxtQuantidadeComodosObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtQuantidadeComodos);
+		IObservableValue valueComodoQuantidadeObserveDetailValue = PojoProperties.value(Comodo.class, "quantidade", Integer.class).observeDetail(valueComodo);
+		bindingContext.bindValue(observeTextTxtQuantidadeComodosObserveWidget, valueComodoQuantidadeObserveDetailValue, UVSHelper.uvsStringToInteger(), UVSHelper.uvsIntegerToString());
 		//
 		IObservableValue observeTextTxtDescrioObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDescrio);
 		IObservableValue valueComodoDescricaoObserveDetailValue = PojoProperties.value(Comodo.class, "descricao", String.class).observeDetail(valueComodo);
