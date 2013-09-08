@@ -60,6 +60,9 @@ public class FormatterHelper {
 			@Override
 			public BigDecimal parse(String arg0) {
 				try {
+					Number parse = getDecimalFormat().parse(arg0);
+					if(parse instanceof Long)
+						return BigDecimal.valueOf((Long) parse);
 					return (BigDecimal) getDecimalFormat().parse(arg0);
 				} catch (ParseException e) {
 					return null;

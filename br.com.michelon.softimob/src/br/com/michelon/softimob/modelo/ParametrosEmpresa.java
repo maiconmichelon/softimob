@@ -72,19 +72,10 @@ public class ParametrosEmpresa implements Serializable{
 	
 	@OneToOne
 	private OrigemConta tipoContaPrestacaoServico;
-	
+
 	@OneToOne
-	private PlanoConta contaVenda;
-	
-	@OneToOne
-	private PlanoConta contraPartidaVenda;
-	
-	@OneToOne
-	private PlanoConta contaAluguel;
-	
-	@OneToOne
-	private PlanoConta contraPartidaAluguel;
-	
+	private OrigemConta tipoContaAluguel;
+
 	@OneToOne
 	private PlanoConta contaDescontoConcedido;
 	
@@ -108,25 +99,25 @@ public class ParametrosEmpresa implements Serializable{
 	private String cedente;
 	
 	@Column
-	private Integer agencia;
+	private String agencia;
 	
 	@Column
 	private Character digitoAgencia;
 	
 	@Column
-	private Integer contaCorrente;
+	private String contaCorrente;
 	
 	@Column
 	private Character digitoContaCorrente;
 	
 	@Column
-	private Integer carteira;
+	private String carteira;
 	
 	@Column
-	private Long numeroConvenio;
+	private String numeroConvenio;
 	
 	@Column
-	private Long nossoNumero;
+	private String nossoNumero;
 	
 	private ParametrosEmpresa(){}
 	
@@ -231,38 +222,15 @@ public class ParametrosEmpresa implements Serializable{
 		this.tipoContaComissao = tipoContaComissao;
 	}
 
-	public PlanoConta getContaVenda() {
-		return contaVenda;
-	}
 
-	public void setContaVenda(PlanoConta contaVenda) {
-		this.contaVenda = contaVenda;
+	public OrigemConta getTipoContaAluguel() {
+		return tipoContaAluguel;
 	}
-
-	public PlanoConta getContraPartidaVenda() {
-		return contraPartidaVenda;
+	
+	public void setTipoContaAluguel(OrigemConta tipoContaAluguel) {
+		this.tipoContaAluguel = tipoContaAluguel;
 	}
-
-	public void setContraPartidaVenda(PlanoConta contraPartidaVenda) {
-		this.contraPartidaVenda = contraPartidaVenda;
-	}
-
-	public PlanoConta getContaAluguel() {
-		return contaAluguel;
-	}
-
-	public void setContaAluguel(PlanoConta contaAluguel) {
-		this.contaAluguel = contaAluguel;
-	}
-
-	public PlanoConta getContraPartidaAluguel() {
-		return contraPartidaAluguel;
-	}
-
-	public void setContraPartidaAluguel(PlanoConta contraPartidaAluguel) {
-		this.contraPartidaAluguel = contraPartidaAluguel;
-	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -367,19 +335,19 @@ public class ParametrosEmpresa implements Serializable{
 		this.cedente = cedente;
 	}
 
-	public Integer getAgencia() {
+	public String getAgencia() {
 		return agencia;
 	}
 
-	public void setAgencia(Integer agencia) {
+	public void setAgencia(String agencia) {
 		this.agencia = agencia;
 	}
 
-	public Integer getContaCorrente() {
+	public String getContaCorrente() {
 		return contaCorrente;
 	}
 
-	public void setContaCorrente(Integer contaCorrente) {
+	public void setContaCorrente(String contaCorrente) {
 		this.contaCorrente = contaCorrente;
 	}
 
@@ -399,27 +367,27 @@ public class ParametrosEmpresa implements Serializable{
 		this.digitoContaCorrente = digitoContaCorrente;
 	}
 	
-	public Integer getCarteira() {
+	public String getCarteira() {
 		return carteira;
 	}
 
-	public void setCarteira(Integer carteira) {
+	public void setCarteira(String carteira) {
 		this.carteira = carteira;
 	}
 
-	public Long getNumeroConvenio() {
+	public String getNumeroConvenio() {
 		return numeroConvenio;
 	}
 	
-	public void setNumeroConvenio(Long numeroConvenio) {
+	public void setNumeroConvenio(String numeroConvenio) {
 		this.numeroConvenio = numeroConvenio;
 	}
 	
-	public Long getNossoNumero() {
+	public String getNossoNumero() {
 		return nossoNumero;
 	}
 	
-	public void setNossoNumero(Long nossoNumero) {
+	public void setNossoNumero(String nossoNumero) {
 		this.nossoNumero = nossoNumero;
 	}
 	

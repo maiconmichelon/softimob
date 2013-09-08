@@ -2,6 +2,7 @@ package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -49,12 +51,24 @@ public class Chave implements Serializable{
 	@Column(nullable=false)
 	private LocalizacaoChave localizacao;
 	
+	@OneToOne(cascade=CascadeType.ALL, orphanRemoval = true)
+	@br.com.michelon.softimob.aplicacao.annotation.Log
+	private Log log = new Log();
+	
 	public Chave(Imovel imovel) {
 		this.imovel = imovel;
 	}
 	
 	@SuppressWarnings("unused")
 	private Chave(){}
+	
+	public Log getLog() {
+		return log;
+	}
+	
+	public void setLog(Log log) {
+		this.log = log;
+	}
 	
 	public Imovel getImovel() {
 		return imovel;

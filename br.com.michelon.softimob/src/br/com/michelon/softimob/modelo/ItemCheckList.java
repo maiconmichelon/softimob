@@ -22,11 +22,15 @@ public class ItemCheckList {
 	@Column()
 	private String valor = StringUtils.EMPTY;
 	
-	@Column
+	@Column(nullable = false)
 	private Boolean finalizado = false;
 	
-	public ItemCheckList(String nome) {
+	@Column(nullable = false)
+	private Boolean obrigatorio = false;
+	
+	public ItemCheckList(String nome, Boolean obrigatorio) {
 		this.nome = nome;
+		this.obrigatorio = obrigatorio;
 	}
 
 	@SuppressWarnings("unused")
@@ -62,6 +66,14 @@ public class ItemCheckList {
 	
 	public void setFinalizado(Boolean finalizado) {
 		this.finalizado = finalizado;
+	}
+	
+	public Boolean getObrigatorio() {
+		return obrigatorio;
+	}
+	
+	public void setObrigatorio(Boolean obrigatorio) {
+		this.obrigatorio = obrigatorio;
 	}
 	
 	@Override

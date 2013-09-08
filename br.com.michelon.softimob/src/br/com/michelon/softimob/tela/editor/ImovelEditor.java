@@ -88,6 +88,7 @@ import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.EnderecoGroup;
+import br.com.michelon.softimob.tela.widget.LoadOnFocus;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.NumberTextField;
@@ -216,7 +217,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 			}
 		});
 		cvTipoImovel.setContentProvider(ArrayContentProvider.getInstance());
-		cvTipoImovel.setInput(new TipoImovelService().findAll());
+		LoadOnFocus.setFocusGainedListener(cvTipoImovel, new TipoImovelService());
 		
 		Label lblProprietario = new Label(composite, SWT.NONE);
 		lblProprietario.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -1220,7 +1221,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		for(CTabItem c : tfImovel.getItems()){
 			if(c.equals(tbtmEndereo))
 				continue;
-			bindingContext.bindValue(WidgetProperties.enabled().observe(c.getControl()), PojoProperties.value(Imovel.class, "id", Long.class).observeDetail(value));
+			bindingContext.bindValue(WidgetProperties.enabled().observe(c.getControl()), PojoProperties.value(Imovel.class, "id", Long.class).observeDetail(value), null, UVSHelper.uvsLongIsNull());
 		}
 		//
 		return bindingContext;

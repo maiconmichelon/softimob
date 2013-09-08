@@ -25,6 +25,7 @@ import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.EnderecoGroup;
+import br.com.michelon.softimob.tela.widget.LoadOnFocus;
 import br.com.michelon.softimob.tela.widget.PhoneTextField;
 
 public class FuncionarioEditor extends GenericEditor<Funcionario> {
@@ -77,7 +78,7 @@ public class FuncionarioEditor extends GenericEditor<Funcionario> {
 		Combo combo = cvDepartamento.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		cvDepartamento.setContentProvider(ArrayContentProvider.getInstance());
-		cvDepartamento.setInput(new DepartamentoService().findAll());
+		LoadOnFocus.setFocusGainedListener(cvDepartamento, new DepartamentoService());
 		
 		Label lblDataDeNascimento = new Label(composite, SWT.NONE);
 		lblDataDeNascimento.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));

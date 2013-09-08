@@ -13,7 +13,7 @@ public class PendenciaService {
 		
 		pendencias.addAll(new ContaPagarReceberService().findByDataVencimento());
 		pendencias.addAll(new ContratoPrestacaoServicoService().findByDataVencimento());
-		pendencias.addAll(new AluguelService().findByDataVencimento());
+		pendencias.addAll(new AluguelService().findPendencias());
 		pendencias.addAll(new ChamadoReformaService().findByDataVencimento());
 		pendencias.addAll(new PropostaService().findPendencias());
 		pendencias.addAll(new ReservaService().findPendencias());

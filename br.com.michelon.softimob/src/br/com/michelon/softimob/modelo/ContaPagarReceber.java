@@ -260,6 +260,16 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (dataVencimento == null) {
+			if (other.dataVencimento != null)
+				return false;
+		} else if (!dataVencimento.equals(other.dataVencimento))
+			return false;
+		if (valor == null) {
+			if (other.valor != null)
+				return false;
+		} else if (!valor.equals(other.valor))
+			return false;
 		return true;
 	}
 

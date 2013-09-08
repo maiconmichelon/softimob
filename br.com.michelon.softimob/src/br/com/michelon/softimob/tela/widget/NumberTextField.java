@@ -10,7 +10,7 @@ public class NumberTextField extends FormattedText{
 	public NumberTextField(Composite parent) {
 		super(parent, SWT.BORDER);
 
-		NumberFormatter formatter2 = new NumberFormatter("##########");
+		NumberFormatter formatter2 = new NumberFormatter("##################");
 		formatter2.setDecimalSeparatorAlwaysShown(false);
 		setFormatter(formatter2);
 	}

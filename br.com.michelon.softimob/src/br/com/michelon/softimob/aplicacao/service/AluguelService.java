@@ -27,7 +27,7 @@ public class AluguelService extends GenericService<Aluguel>{
 		return getRepository().findByImovel(imovel);
 	}
 	
-	public List<Pendencia> findByDataVencimento(){
+	public List<Pendencia> findPendencias(){
 		return getRepository().findByResolvidoFalse();
 	}
 
@@ -40,6 +40,10 @@ public class AluguelService extends GenericService<Aluguel>{
 				log.error("Erro ao finalizar aluguel como pendencia.", e);
 			}
 		}
+	}
+
+	public String geraObservacoesContaAluguel(Aluguel aluguel) {
+		return String.format("Aluguel da casa %s para %s", aluguel.getContrato().getImovel().toString(), aluguel.getCliente());
 	}
 	
 }

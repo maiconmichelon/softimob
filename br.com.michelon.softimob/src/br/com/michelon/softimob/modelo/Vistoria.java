@@ -70,8 +70,8 @@ public class Vistoria implements Serializable, ContainsPhotos{
 		if(instance != null){
 			CheckList chkList = instance.getCheckListVistoria();
 			if (chkList != null) {
-				for (String item : chkList.getItens()) {
-					getItensCheckList().add(new ItemCheckList(item));
+				for (Item item : chkList.getItens()) {
+					getItensCheckList().add(new ItemCheckList(item.getNome(), item.getObrigatorio()));
 				}
 			}
 		}

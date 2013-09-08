@@ -15,7 +15,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -48,17 +49,21 @@ import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInput;
 import br.com.michelon.softimob.aplicacao.exception.ContaNaoParametrizadaException;
+import br.com.michelon.softimob.aplicacao.exception.ListException;
+import br.com.michelon.softimob.aplicacao.filter.ContaFilter;
 import br.com.michelon.softimob.aplicacao.filter.PropertyFilter;
 import br.com.michelon.softimob.aplicacao.helper.BoletoHelper;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
+import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.PlanoConta;
+import br.com.michelon.softimob.tela.dialog.ValidationErrorDialog;
 import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
@@ -77,10 +82,6 @@ public class PgtoRecContaView extends ViewPart {
 
 	public static final String ID = "br.com.michelon.softimob.tela.view.PgtoRecContaView";
 
-	private static final String PAGAR = "A pagar";
-	private static final String RECEBER = "A receber";
-	private static final String TODAS = "Todas";
-	
 	private Logger log = Logger.getLogger(getClass());
 	
 	private Text txtFiltro;
@@ -107,6 +108,7 @@ public class PgtoRecContaView extends ViewPart {
 	private CTabFolder tfPagamento;
 	private Action actAdd;
 	private Action actRefresh;
+	private ContaFilter contaFilter = new ContaFilter();
 	
 	public PgtoRecContaView() {
 		createActions();
@@ -210,18 +212,19 @@ public class PgtoRecContaView extends ViewPart {
 			}
 		});
 		
-		ComboViewer comboViewer = new ComboViewer(composite_4, SWT.READ_ONLY);
+		final ComboViewer comboViewer = new ComboViewer(composite_4, SWT.READ_ONLY);
 		Combo combo = comboViewer.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		comboViewer.setLabelProvider(new LabelProvider(){
+		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewer.setInput(Arrays.asList(ContaFilter.TODAS, ContaFilter.PAGAR, ContaFilter.RECEBER));
+		comboViewer.setSelection(new StructuredSelection(ContaFilter.TODAS));
+		comboViewer.addPostSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
-			public String getText(Object element) {
-				return element.toString();
+			public void selectionChanged(SelectionChangedEvent event) {
+				contaFilter.setStatus((String) SelectionHelper.getObject(comboViewer.getSelection()));
+				tvbContaPgto.getTableViewer().refresh();
 			}
 		});
-		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
-		comboViewer.setInput(Arrays.asList(TODAS, PAGAR, RECEBER));
-		comboViewer.setSelection(new StructuredSelection(TODAS));
 		
 		tfPrincipal = new CTabFolder(cpPrincipal, SWT.BORDER);
 		tfPrincipal.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -463,7 +466,7 @@ public class PgtoRecContaView extends ViewPart {
 		
 		
 		tvbContas.getTableViewer().addFilter(propertyFilter);
-		
+		tvbContas.getTableViewer().addFilter(contaFilter);
 		if(isPagamento){
 			tvbContas.getTableViewer().addFilter(new ViewerFilter() {
 				@Override
@@ -506,7 +509,11 @@ public class PgtoRecContaView extends ViewPart {
 			miGerarBoleto.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					BoletoHelper.gerarBoleto((ContaPagarReceber) SelectionHelper.getObject(tvbContaPgto.getTableViewer()));
+					try {
+						BoletoHelper.gerarBoleto((ContaPagarReceber) SelectionHelper.getObject(tvbContaPgto.getTableViewer()));
+					} catch (ListException e1) {
+						new ValidationErrorDialog(ShellHelper.getActiveShell(), e1.getMessage(), "gerar boleto").open();
+					}
 				}
 			});
 			miGerarBoleto.setImage(ImageRepository.BOLETO_16.getImage());

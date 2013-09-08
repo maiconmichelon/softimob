@@ -60,6 +60,18 @@ public abstract class Comissionado implements Serializable{
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional=false)
 	private Endereco endereco = new Endereco();
 	
+	@OneToOne(cascade=CascadeType.ALL, orphanRemoval = true)
+	@br.com.michelon.softimob.aplicacao.annotation.Log
+	private Log log = new Log();
+	
+	public Log getLog() {
+		return log;
+	}
+	
+	public void setLog(Log log) {
+		this.log = log;
+	}
+	
 	public Long getId() {
 		return id;
 	}

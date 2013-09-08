@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -41,7 +43,7 @@ public class VendaAluguel implements Serializable{
 	private ContratoPrestacaoServico contrato;
 
 	@NotNull(message = "O modelo de contrato não pode ser vazio.")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ModeloContrato modeloContrato;
 	
 	//Cliente que vai alugar ou comprar a casa
@@ -60,11 +62,24 @@ public class VendaAluguel implements Serializable{
 	
 	@NotNull(message = "A data não pode ser vazia.")
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column
 	private Date dataAssinaturaContrato = new Date();
 
 	@NotNull()
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemCheckList> itensCheckList = Lists.newArrayList();
+	
+	@OneToOne(cascade=CascadeType.ALL, orphanRemoval = true)
+	@br.com.michelon.softimob.aplicacao.annotation.Log
+	private Log log = new Log();
+	
+	public Log getLog() {
+		return log;
+	}
+	
+	public void setLog(Log log) {
+		this.log = log;
+	}
 	
 	public Long getId() {
 		return id;

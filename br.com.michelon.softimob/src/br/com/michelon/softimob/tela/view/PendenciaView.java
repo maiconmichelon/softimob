@@ -23,10 +23,10 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
-import br.com.michelon.softimob.aplicacao.helper.SWTHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PendenciaService;
 import br.com.michelon.softimob.modelo.Pendencia;
@@ -66,7 +66,7 @@ public class PendenciaView extends GenericView<Pendencia>{
 				}
 			}
 		});
-		miFinalizar.setImage(ImageRepository.CHECKED.getImage());
+		miFinalizar.setImage(ImageRepository.SOLVED_16.getImage());
 	}
 	
 	@Override
@@ -196,16 +196,19 @@ public class PendenciaView extends GenericView<Pendencia>{
 		return tableViewer;
 	}
 	
+	private Color COLOR_A_VENCER = SWTResourceManager.getColor(255, 165, 0);
+	private Color COLOR_VENCIDA = SWTResourceManager.getColor(255, 215, 0);
+	
 	public Color getColorPendencia(Pendencia pendencia) {
 		Calendar c = Calendar.getInstance();
 		if(pendencia.getDataVencimento() == null)
-			return SWTHelper.getYellowColor();
-		if(pendencia.getDataVencimento().compareTo(c.getTime()) > 0)
-			return ResourceManager.getColor(SWT.COLOR_RED);
+			return COLOR_A_VENCER;
+		if(pendencia.getDataVencimento().compareTo(c.getTime()) < 0)
+			return COLOR_VENCIDA;
 		else{
 			c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) - 10);
 			if(pendencia.getDataVencimento().compareTo(c.getTime()) > 0)
-				return SWTHelper.getYellowColor();
+				return COLOR_A_VENCER;
 		}
 		
 		return ResourceManager.getColor(SWT.COLOR_BLACK);

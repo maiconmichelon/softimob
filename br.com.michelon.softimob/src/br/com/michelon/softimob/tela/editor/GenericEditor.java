@@ -50,6 +50,7 @@ import br.com.michelon.softimob.aplicacao.helper.SWTHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.ValidatorHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.modelo.Usuario;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 
 public abstract class GenericEditor<T> extends EditorPart {
@@ -67,9 +68,15 @@ public abstract class GenericEditor<T> extends EditorPart {
 	private Label lblUsuarioCadastro;
 	private Label lblDataAlteracao;
 	private Label lblUsuarioAlteracao;
+	private boolean hasNovo;
 	
 	public GenericEditor(Class<T> clazz) {
+		this(clazz, true);
+	}
+	
+	public GenericEditor(Class<T> clazz, boolean hasNovo) {
 		mainClass = clazz;
+		this.hasNovo = hasNovo;
 		value = WritableValue.withValueType(mainClass);
 	}
 	
@@ -112,23 +119,25 @@ public abstract class GenericEditor<T> extends EditorPart {
 			}
 		});
 		
-		Button btnNovo = new Button(cpOpcoes, SWT.NONE);
-		btnNovo.setImage(ImageRepository.NOVO_32.getImage());
-		GridData gd_btnNovo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 3);
-		gd_btnNovo.widthHint = 80;
-		gd_btnNovo.heightHint = 50;
-		btnNovo.setLayoutData(gd_btnNovo);
-		formToolkit.adapt(btnNovo, true, true);
-		btnNovo.setText("Novo");
+		if(hasNovo){
+			Button btnNovo = new Button(cpOpcoes, SWT.NONE);
+			btnNovo.setImage(ImageRepository.NOVO_32.getImage());
+			GridData gd_btnNovo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 3);
+			gd_btnNovo.widthHint = 80;
+			gd_btnNovo.heightHint = 50;
+			btnNovo.setLayoutData(gd_btnNovo);
+			formToolkit.adapt(btnNovo, true, true);
+			btnNovo.setText("Novo");
+			
+			btnNovo.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					resetValue();
+				}
+			});
+		}
 		
-		btnNovo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				resetValue();
-			}
-		});
-		
-		if(!valueHasLog()){
+		if(valueHasLog()){
 			Label label = new Label(cpOpcoes, SWT.NONE);
 			label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 3));
 			formToolkit.adapt(label, true, true);
@@ -153,7 +162,6 @@ public abstract class GenericEditor<T> extends EditorPart {
 			gd_lblFulano.widthHint = 93;
 			lblUsuarioCadastro.setLayoutData(gd_lblFulano);
 			lblUsuarioCadastro.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-			lblUsuarioCadastro.setText("");
 			
 			Label lblNewLabel_1 = new Label(cpOpcoes, SWT.NONE);
 			lblNewLabel_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
@@ -162,7 +170,6 @@ public abstract class GenericEditor<T> extends EditorPart {
 			
 			lblUsuarioAlteracao = new Label(cpOpcoes, SWT.NONE);
 			lblUsuarioAlteracao.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
-			lblUsuarioAlteracao.setText("");
 			lblUsuarioAlteracao.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		}
 		
@@ -199,17 +206,17 @@ public abstract class GenericEditor<T> extends EditorPart {
 	}
 	
 	private void bindLog(DataBindingContext bindingContext) {
-		if(!valueHasLog()){
+		if(valueHasLog()){
 			IObservableValue observeTextLblDataCadastroObserveWidget = WidgetProperties.text().observe(lblDataAlteracao);
 			IObservableValue valueDataCadastroObserveDetailValue = PojoProperties.value(mainClass, "log.dataAlteracao", Date.class).observeDetail(value);
 			bindingContext.bindValue(observeTextLblDataCadastroObserveWidget, valueDataCadastroObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 			//
 			IObservableValue observeTextLblUsuarioCadastroObserveWidget = WidgetProperties.text().observe(lblUsuarioCadastro);
-			IObservableValue valueLogusuarioCadastrologinObserveDetailValue = PojoProperties.value(mainClass, "log.usuarioCadastro.login", String.class).observeDetail(value);
+			IObservableValue valueLogusuarioCadastrologinObserveDetailValue = PojoProperties.value(mainClass, "log.usuarioCadastro", Usuario.class).observeDetail(value);
 			bindingContext.bindValue(observeTextLblUsuarioCadastroObserveWidget, valueLogusuarioCadastrologinObserveDetailValue, null, null);
 			//
 			IObservableValue observeTextLblUltimaAlteracaoObserveWidget = WidgetProperties.text().observe(lblUsuarioAlteracao);
-			IObservableValue valueLogusuarioAlteracaologinObserveDetailValue = PojoProperties.value(mainClass, "log.usuarioAlteracao.login", String.class).observeDetail(value);
+			IObservableValue valueLogusuarioAlteracaologinObserveDetailValue = PojoProperties.value(mainClass, "log.usuarioAlteracao", Usuario.class).observeDetail(value);
 			bindingContext.bindValue(observeTextLblUltimaAlteracaoObserveWidget, valueLogusuarioAlteracaologinObserveDetailValue, null, null);
 		}
 	}
@@ -226,7 +233,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 	}
 	
 	private boolean valueHasLog(){
-		return ReflectionHelper.getFieldByAnnotation(mainClass, Log.class).isEmpty();
+		return !ReflectionHelper.getFieldByAnnotation(mainClass, Log.class).isEmpty();
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -278,7 +285,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 		if(!salvar(service, value, false))
 			return false;
 			
-		SWTHelper.setSuccesfulMessageInBottomScreen("Item salvo com sucesso !", getEditorSite().getActionBars().getStatusLineManager());
+		SWTHelper.setSuccesfulMessageInBottomScreen("Item salvo com sucesso !");
 		
 		List<Y> elementos = (List<Y>) tv.getInput();
 		if(!elementos.contains(value.getValue()))

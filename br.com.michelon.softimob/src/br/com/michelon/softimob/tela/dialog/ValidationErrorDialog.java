@@ -13,16 +13,22 @@ import org.eclipse.swt.widgets.Shell;
 
 public class ValidationErrorDialog extends TitleAreaDialog {
 	private final String erros;
+	private final String acao;
 
 	public ValidationErrorDialog(Shell parentShell, String erros) {
+		this(parentShell, erros, "salvar o registro");
+	}
+	
+	public ValidationErrorDialog(Shell parentShell, String erros, String acao) {
 		super(parentShell);
 		this.erros = erros;
+		this.acao = acao;
 	}
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		setTitle("Erro ao salvar registro");
-		setMessage("Os seguintes erros foram encontrados ao salvar o registro.");
+		setTitle("Erro ao " + acao);
+		setMessage("Os seguintes erros foram encontrados ao " + acao + ".");
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, false));

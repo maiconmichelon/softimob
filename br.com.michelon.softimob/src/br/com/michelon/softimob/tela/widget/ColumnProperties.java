@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.tela.widget;
 
+import de.ralfebert.rcputils.properties.IValueFormatter;
 import de.ralfebert.rcputils.tables.format.StringValueFormatter;
 
 public class ColumnProperties {
@@ -10,9 +11,9 @@ public class ColumnProperties {
 	
 	private Integer tamanho;
 	
-	private StringValueFormatter formatter;
+	private IValueFormatter<?, ?> formatter;
 
-	public ColumnProperties(String label, String atributo, Integer tamanho, StringValueFormatter formatter) {
+	public ColumnProperties(String label, String atributo, Integer tamanho, IValueFormatter<?, ?> formatter) {
 		this.label = label;
 		this.atributo = atributo;
 		this.tamanho = tamanho;
@@ -52,7 +53,7 @@ public class ColumnProperties {
 		this.tamanho = tamanho;
 	}
 
-	public StringValueFormatter getFormatter() {
+	public IValueFormatter<?, ?> getFormatter() {
 		return formatter;
 	}
 	

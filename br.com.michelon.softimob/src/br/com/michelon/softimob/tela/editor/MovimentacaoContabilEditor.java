@@ -65,7 +65,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 	private Text text_2;
 	private Text text_3;
 	private Text text_4;
-	private Text text_5;
+	private Text txtDataLancamento;
 	private TableViewer tvLancamentosDebito;
 	private TableViewer tvLancamentosCredito;
 
@@ -105,10 +105,10 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 
 		DateTextField dateTextField = new DateTextField(parent);
 		dateTextField.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 7, 1));
-		text_5 = dateTextField.getControl();
+		txtDataLancamento = dateTextField.getControl();
 		GridData gd_text_5 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_text_5.widthHint = 90;
-		text_5.setLayoutData(gd_text_5);
+		txtDataLancamento.setLayoutData(gd_text_5);
 
 		Label lblValor = new Label(parent, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -373,6 +373,11 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 	}
 
 	@Override
+	public void setFocus() {
+		txtDataLancamento.forceFocus();
+	}
+	
+	@Override
 	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -380,7 +385,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		IObservableValue valueIdObserveDetailValue = PojoProperties.value(MovimentacaoContabil.class, "id", Long.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueIdObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
+		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataLancamento);
 		IObservableValue valueModeloLctoDataLancamentoObserveDetailValue = PojoProperties.value(MovimentacaoContabil.class, "data", Date.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_5ObserveWidget, valueModeloLctoDataLancamentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		// //TODO data da movimentao deve ser somente setada no momento que for

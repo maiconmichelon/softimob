@@ -17,6 +17,7 @@ import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.helper.DocxHelper;
 import br.com.michelon.softimob.aplicacao.helper.FileHelper;
+import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Aluguel;
@@ -41,7 +42,7 @@ public class AluguelView extends GenericView<Aluguel>{
 		atributos.add(new ColumnProperties("Locatário", "cliente.nome", 20));
 		atributos.add(new ColumnProperties("Corretor", "funcionario.nome", 20));
 		atributos.add(new ColumnProperties("Fiador", "fiador.nome",20));
-		atributos.add(new ColumnProperties("Valor", "valor", 10));
+		atributos.add(new ColumnProperties("Valor", "valor", 10, FormatterHelper.getDefaultValueFormatterToMoney()));
 		atributos.add(new ColumnProperties("Data", "dataAssinaturaContrato", 10, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Vencimento", "dataVencimento", 10, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Reajuste", "reajuste", 10));

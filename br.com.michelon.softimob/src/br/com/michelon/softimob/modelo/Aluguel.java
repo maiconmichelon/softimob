@@ -8,12 +8,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
+
+import com.google.common.collect.Lists;
 
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
@@ -42,19 +44,11 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date dataFechamento = null;
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	@br.com.michelon.softimob.aplicacao.annotation.Log
-	private Log log;
+	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true)
+	private List<ContaPagarReceber> parcelas = Lists.newArrayList();
 	
-	public Aluguel(){
-	}
-	
-	public Log getLog() {
-		return log;
-	}
-	
-	public void setLog(Log log) {
-		this.log = log;
+	public List<ContaPagarReceber> getParcelas() {
+		return parcelas;
 	}
 	
 	public Cliente getFiador() {

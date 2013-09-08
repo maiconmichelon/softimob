@@ -30,6 +30,7 @@ import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateTextField;
+import br.com.michelon.softimob.tela.widget.LoadOnFocus;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 
 public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
@@ -103,7 +104,7 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 				return ((OrigemConta)element).getNome();
 			}
 		});
-		cvOrigem.setInput(new OrigemContaService().findAll());
+		LoadOnFocus.setFocusGainedListener(cvOrigem, new OrigemContaService());
 		new Label(parent, SWT.NONE);
 		
 		Label lblValor = new Label(parent, SWT.NONE);

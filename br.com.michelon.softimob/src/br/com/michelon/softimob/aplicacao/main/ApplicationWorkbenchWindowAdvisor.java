@@ -33,6 +33,7 @@ import br.com.michelon.softimob.modelo.Reserva;
 import br.com.michelon.softimob.tela.popup.notifier.NotificationType;
 import br.com.michelon.softimob.tela.popup.notifier.NotifierDialog;
 import br.com.michelon.softimob.tela.view.PgtoRecContaView;
+import br.com.michelon.softimob.tela.widget.SucessfulContributionItem;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Multimap;
@@ -41,6 +42,8 @@ import com.google.common.collect.Multimaps;
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 	private Logger log = Logger.getLogger(getClass());
+	
+	public static String MESSAGE_AREA_ID = "messageArea"; 
 	
 	public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
@@ -56,15 +59,18 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setInitialSize(new Point(1024, 690));
 
-		IStatusLineManager statusLineManager = getWindowConfigurer().getActionBarConfigurer().getStatusLineManager();
-		StatusLineContributionItem sciSpacer = new StatusLineContributionItem("spacer", 800);
+		IStatusLineManager statusLineManager = configurer.getActionBarConfigurer().getStatusLineManager();
+		StatusLineContributionItem sciSpacer = new StatusLineContributionItem("spacer", 50);
 		sciSpacer.setText(" ");
 		statusLineManager.add(sciSpacer);
-		statusLineManager.update(true);
 		
+		SucessfulContributionItem sci = SucessfulContributionItem.getInstance();
+		statusLineManager.add(sci);
+		
+		statusLineManager.update(true);
 		configurer.setShowStatusLine(true);
 		configurer.setShowProgressIndicator(true);
-
+		
 		configurer.setTitle("SoftImob");
 	}
 	

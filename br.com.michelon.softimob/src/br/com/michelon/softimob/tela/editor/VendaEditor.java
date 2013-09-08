@@ -82,6 +82,8 @@ public class VendaEditor extends GenericEditor<Venda>{
 	private TableViewer tvCheckListVistoria;
 
 	private CTabFolder tabFolder;
+	private Composite cpVistoria;
+	
 	
 	public VendaEditor() {
 		super(Venda.class);
@@ -257,16 +259,16 @@ public class VendaEditor extends GenericEditor<Venda>{
 		CTabItem tbtmVistoria = new CTabItem(tabFolder, SWT.NONE);
 		tbtmVistoria.setText("Vistorias");
 		
-		Composite composite_8 = new Composite(tabFolder, SWT.NONE);
-		tbtmVistoria.setControl(composite_8);
-		composite_8.setLayout(new GridLayout(1, false));
+		cpVistoria = new Composite(tabFolder, SWT.NONE);
+		tbtmVistoria.setControl(cpVistoria);
+		cpVistoria.setLayout(new GridLayout(1, false));
 		
-		Composite cpVistoria = new Composite(composite_8, SWT.NONE);
-		cpVistoria.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		Composite cpCadVistoria = new Composite(cpVistoria, SWT.NONE);
+		cpCadVistoria.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
-		criarTabelaVistoria(cpVistoria);
+		criarTabelaVistoria(cpCadVistoria);
 		
-		CTabFolder tabFolder_1 = new CTabFolder(composite_8, SWT.BORDER);
+		CTabFolder tabFolder_1 = new CTabFolder(cpVistoria, SWT.BORDER);
 		tabFolder_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 		tabFolder_1.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
@@ -328,7 +330,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		tbtmCheckList.setControl(composite_2);
 		tvCheckListVistoria = criarTabelaCheckList(composite_2);
 		
-		createButtonAddItem(composite_8, new SelectionAdapter() {
+		createButtonAddItem(cpVistoria, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addVistoria(valueVistoria);
@@ -496,12 +498,15 @@ public class VendaEditor extends GenericEditor<Venda>{
 		IObservableValue valueVistoriaObservacoesObserveDetailValue = PojoProperties.value(Vistoria.class, "observacoes", String.class).observeDetail(valueVistoria);
 		bindingContext.bindValue(observeTextText_19ObserveWidget, valueVistoriaObservacoesObserveDetailValue, null, null);
 		//
-		IObservableValue observeEnabledTfImovelObserveWidget = WidgetProperties.enabled().observe(tabFolder);
-		IObservableValue valuePropostaIdObserveDetailValue = PojoProperties.value(Venda.class, "id", Long.class).observeDetail(value);
-		bindingContext.bindValue(observeEnabledTfImovelObserveWidget, valuePropostaIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
-		//
+		bindEnableControl(bindingContext);
 		bindTables(bindingContext);
 		//
 		return bindingContext;
+	}
+	
+	private void bindEnableControl(DataBindingContext bindingContext){
+		IObservableValue observeEnabledTfImovelObserveWidget = WidgetProperties.enabled().observe(cpVistoria);
+		IObservableValue valuePropostaIdObserveDetailValue = PojoProperties.value(Venda.class, "id", Long.class).observeDetail(value);
+		bindingContext.bindValue(observeEnabledTfImovelObserveWidget, valuePropostaIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
 	}
 }

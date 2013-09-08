@@ -29,19 +29,28 @@ public class FileHelper {
 	}
 	
 	public static File criarDiretorioArquivos(List<Arquivo> arquivos){
-		File tempFolder = Files.createTempDir();
+		File tempFolder = criarDiretorioArquivos();
 		for(Arquivo arq : arquivos){
 			insertIntTempFolder(tempFolder, arq);
 		}
 		return tempFolder;
 	}
 	
+	public static File criarDiretorioArquivos(){
+		return Files.createTempDir();
+	}
+	
+	
 	public static void insertIntTempFolder(File createTempDir, Arquivo arq) {
-        File file = new File(createTempDir.getAbsoluteFile() + "/" + arq.getNome());
+		insertIntTempFolder(createTempDir, arq.getNome(), arq.getArquivo().getArquivo());
+	}
+	
+	public static void insertIntTempFolder(File createTempDir, String nome, byte[] arquivo) {
+        File file = new File(createTempDir.getAbsoluteFile() + "/" + nome);
  
         try {
 		    FileOutputStream fileOuputStream = new FileOutputStream(file); 
-		    fileOuputStream.write(arq.getArquivo().getArquivo());
+		    fileOuputStream.write(arquivo);
 		    fileOuputStream.close();
         }catch(Exception e){
             e.printStackTrace();

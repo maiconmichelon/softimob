@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import br.com.michelon.softimob.tela.widget.SucessfulContributionItem;
+
 public class SWTHelper {
 
 	private static Logger log = Logger.getLogger(SWTHelper.class);
@@ -16,6 +18,10 @@ public class SWTHelper {
 	private static final int TIME = 1000;
 	private static final int INTERVAL = 50;
 
+	public static void setSuccesfulMessageInBottomScreen(String message) {
+		SucessfulContributionItem.getInstance().setSucessfulMessage(message);
+	}
+	
 	public static void setSuccesfulMessageInBottomScreen(String message, IStatusLineManager lineManager) {
 		setMessageInBottonScreen(message, false, ImageRepository.SUCCESS_16.getImage(), lineManager);
 	}

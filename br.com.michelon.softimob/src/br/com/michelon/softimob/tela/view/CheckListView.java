@@ -2,6 +2,7 @@ package br.com.michelon.softimob.tela.view;
 
 import java.util.List;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.ImageRepository;
 
@@ -66,7 +67,8 @@ public class CheckListView extends GenericView<CheckList>{
 	@Override
 	protected void alterar(CheckList element) {
 		CheckListEditorDialog dialog = new CheckListEditorDialog(ShellHelper.getActiveShell(), element);
-		dialog.open();
+		if(dialog.open() == IDialogConstants.OK_ID)
+			atualizar();
 	}
 	
 	@Override

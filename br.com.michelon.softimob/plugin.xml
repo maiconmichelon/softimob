@@ -255,8 +255,9 @@
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.ImovelMapView"
+            icon="icons/map/map16.png"
             id="br.com.michelon.softimob.tela.view.ImovelMapView"
-            name="New ViewPart">
+            name="Mapa">
       </view>
       <view
             class="br.com.michelon.softimob.tela.view.UsuarioView"

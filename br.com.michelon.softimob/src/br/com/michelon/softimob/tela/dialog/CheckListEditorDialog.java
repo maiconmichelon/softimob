@@ -1,16 +1,20 @@
 package br.com.michelon.softimob.tela.dialog;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.List;
+
 import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -21,33 +25,38 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.ValidatorHelper;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.modelo.CheckList;
+import br.com.michelon.softimob.modelo.Item;
+import br.com.michelon.softimob.modelo.ItemCheckList;
+import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class CheckListEditorDialog extends TitleAreaDialog{
+	
 	private Text txtCheckList;
 	private Text txtNome;
-	private String current;
-	private CheckList checkList;
 	
 	private Logger log = Logger.getLogger(getClass());
-	private ListViewer lstItens;
+	private TableViewer tvItens;
+	
+	private WritableValue checkListValue = WritableValue.withValueType(CheckList.class);
+	private WritableValue itemValue = WritableValue.withValueType(Item.class);
+	private Button btnObrigatrio;
 	
 	public CheckListEditorDialog(Shell parentShell, CheckList checkList) {
 		super(parentShell);
-		
-		if(checkList == null)
-			checkList = new CheckList();
-		
-		this.checkList = checkList;
+		checkListValue.setValue(checkList == null ? new CheckList() : checkList);
+		itemValue.setValue(new Item());
 	}
 
 	@Override
@@ -65,25 +74,12 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		
 		txtCheckList = new Text(composite, SWT.BORDER);
 		txtCheckList.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		txtCheckList.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				checkList.setNome(((Text)e.widget).getText());
-			}
-		});
-		if(checkList != null && checkList.getNome() != null)
-			txtCheckList.setText(checkList.getNome());
 		
 		Composite cpTabela = new Composite(composite, SWT.NONE);
 		cpTabela.setLayout(new GridLayout(1, false));
 		cpTabela.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		
-		lstItens = new ListViewer(cpTabela, SWT.BORDER | SWT.V_SCROLL);
-		List list = lstItens.getList();
-		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		lstItens.setContentProvider(ArrayContentProvider.getInstance());
-		prepararList(lstItens);
-//		tvItens = criarTabelaIndices(cpTabela).getTableViewer();
+		tvItens = criarTabelaIndices(cpTabela).getTableViewer();
 		
 		Group grpItem = new Group(composite, SWT.NONE);
 		grpItem.setLayout(new GridLayout(2, false));
@@ -96,46 +92,45 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		
 		txtNome = new Text(grpItem, SWT.BORDER);
 		txtNome.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(grpItem, SWT.NONE);
+		
+		btnObrigatrio = new Button(grpItem, SWT.CHECK);
+		btnObrigatrio.setText("Obrigatório");
 		
 		return composite;
 	}
 	
-	private void setItens(String item){
-		current = item;
-		txtNome.setText(item);
-	}
-	
-	private void limpar(){
-		txtNome.setText(StringUtils.EMPTY);
-		current = null;
-	}
-	
-	private String getItens(){
-		if(current == null)
-			current = new String();
+	private TableViewerBuilder criarTabelaIndices(Composite cpTabela) {
+		TableViewerBuilder tvb = new TableViewerBuilder(cpTabela);
 		
-		current = txtNome.getText();
+		tvb.createColumn("Nome").bindToProperty("nome").setPercentWidth(70).build();
+		tvb.createColumn("Obrigatório").bindToProperty("obrigatorioFormatado").build();
 		
-		return current;
-	}
-	
-	private void prepararList(ListViewer listViewer) {
-		if(checkList != null)
-			listViewer.setInput(checkList.getItens());
+		Menu menu = new Menu(tvb.getTable());
+		tvb.getTable().setMenu(menu);
 		
-		listViewer.addDoubleClickListener(new IDoubleClickListener() {
-			
+		MenuItem miRemover = new MenuItem(menu, SWT.BORDER);
+		miRemover.setImage(ImageRepository.REMOVE_16.getImage());
+		miRemover.setText("Remover");
+		miRemover.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				setItens((String) ((IStructuredSelection)event.getSelection()).getFirstElement());
+			public void widgetSelected(SelectionEvent e) {
+				getCurrent().getItens().remove(SelectionHelper.getObject(tvItens.getSelection()));
+				tvItens.refresh();
 			}
 		});
+		
+		tvb.getTableViewer().addDoubleClickListener(new IDoubleClickListener() {
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				itemValue.setValue(SelectionHelper.getObject(event.getSelection()));
+			}
+		});
+		
+		
+		return tvb;
 	}
-	
-	private boolean isNovo(){
-		return current == null;
-	}
-	
+
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		parent.setLayout(new GridLayout(3, false));
@@ -146,23 +141,15 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		btnRegistrar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				if(isNovo()){
-					String item = getItens();
-					
-					if(ValidatorHelper.validarComMensagem(item))
-						checkList.getItens().add(item);
-					else{
-						current = null;
-						return;
-					}
-				}else{
-					checkList.getItens().remove(current);
-					checkList.getItens().add(getItens());
+				List<Item> itens = getCurrent().getItens();
+				Item item = (Item) itemValue.getValue();
+				
+				if(!itens.contains(item)) {
+					itens.add(item);
 				}
 				
-				lstItens.refresh();
-				
-				limpar();
+				itemValue.setValue(new Item());
+				tvItens.refresh();
 			}
 		});
 		btnRegistrar.setImage(ImageRepository.SAVE_16.getImage());
@@ -172,7 +159,7 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		btnNovo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				limpar();
+				itemValue.setValue(new Item());
 			}
 		});
 		btnNovo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, true));
@@ -188,6 +175,8 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 				salvar();
 			}
 		});
+		
+		initDataBindings();
 	}
 
 	@Override
@@ -195,10 +184,15 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		return new Point(350, 400);
 	}
 
+	private CheckList getCurrent(){
+		return (CheckList) checkListValue.getValue();
+	}
+	
 	private void salvar() {
 		try {
-			if(ValidatorHelper.validarComMensagem(checkList)){
-				new CheckListService().salvar(checkList);
+			CheckList chk = (CheckList) checkListValue.getValue();
+			if(ValidatorHelper.validarComMensagem(chk)){
+				new CheckListService().salvar(chk);
 				DialogHelper.openInformation("Registro salvo com sucesso.");
 				close();
 			}
@@ -208,4 +202,26 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		}
 	}
 	
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue observeTextTxtCheckListObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtCheckList);
+		IObservableValue checkListValueNomeObserveDetailValue = PojoProperties.value(CheckList.class, "nome", String.class).observeDetail(checkListValue);
+		bindingContext.bindValue(observeTextTxtCheckListObserveWidget, checkListValueNomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextTxtNomeObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtNome);
+		IObservableValue itemValueNomeObserveDetailValue = PojoProperties.value(Item.class, "nome", String.class).observeDetail(itemValue);
+		bindingContext.bindValue(observeTextTxtNomeObserveWidget, itemValueNomeObserveDetailValue, null, null);
+		//
+		IObservableValue observeSelectionBtnObrigatrioObserveWidget = WidgetProperties.selection().observe(btnObrigatrio);
+		IObservableValue itemValueObrigatorioObserveDetailValue = PojoProperties.value(Item.class, "obrigatorio", Boolean.class).observeDetail(itemValue);
+		bindingContext.bindValue(observeSelectionBtnObrigatrioObserveWidget, itemValueObrigatorioObserveDetailValue, null, null);
+		//
+		ObservableListContentProvider listContentProvider = new ObservableListContentProvider();
+		tvItens.setContentProvider(listContentProvider);
+		IObservableList checkListValueItensObserveDetailList = PojoProperties.list(CheckList.class, "itens", ItemCheckList.class).observeDetail(checkListValue);
+		tvItens.setInput(checkListValueItensObserveDetailList);
+		//
+		return bindingContext;
+	}
 }

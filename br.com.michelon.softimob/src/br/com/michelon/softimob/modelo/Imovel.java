@@ -62,9 +62,9 @@ public class Imovel implements Serializable, ContainsPhotos{
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Arquivo> fotos = Lists.newArrayList();
 
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.ALL, orphanRemoval = true)
 	@br.com.michelon.softimob.aplicacao.annotation.Log
-	private Log log;
+	private Log log = new Log();
 	
 	public List<ContratoPrestacaoServico> getContratos() {
 		return new ContratoPrestacaoServicoService().findByImovel(this);

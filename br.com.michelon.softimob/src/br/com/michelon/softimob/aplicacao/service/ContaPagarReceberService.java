@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.aplicacao.service;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.LancamentoContabil;
 import br.com.michelon.softimob.modelo.LancamentoContabil.TipoLancamento;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
+import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.modelo.ParametrosEmpresa;
 import br.com.michelon.softimob.modelo.Pendencia;
 import br.com.michelon.softimob.modelo.PlanoConta;
@@ -195,4 +197,27 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 		}
 	}
 
+	public List<ContaPagarReceber> gerarParcelas(int numParcelas, BigDecimal valor, Date dataInicio, int tipo, Date dataConta, String observacoes, OrigemConta tipoConta){
+		List<ContaPagarReceber> contas = Lists.newArrayList();
+		
+		for(int i = 0; i < numParcelas ; i++){
+			ContaPagarReceber conta = new ContaPagarReceber();
+			
+			Calendar c = Calendar.getInstance();
+			c.setTime(dataInicio);
+			c.set(Calendar.MONTH, c.get(Calendar.MONTH) + i);
+			
+			conta.setDataVencimento(c.getTime());
+			conta.setDataConta(dataConta);
+			conta.setOrigem(tipoConta);
+			conta.setValor(valor);
+			conta.setTipo(tipo);
+			conta.setObservacoes(observacoes);
+			
+			contas.add(conta);
+		}
+		
+		return contas;
+	}
+	
 }

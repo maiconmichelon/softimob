@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.modelo.CheckList;
+import br.com.michelon.softimob.modelo.Item;
 import br.com.michelon.softimob.modelo.ItemCheckList;
 import br.com.michelon.softimob.persistencia.ModeloCheckListDAO;
 
@@ -90,8 +91,8 @@ public class CheckListService extends GenericService<CheckList>{
 		if(chk == null)
 			return itens;
 		
-		for (String item : chk.getItens()) {
-			itens.add(new ItemCheckList(item));
+		for (Item item : chk.getItens()) {
+			itens.add(new ItemCheckList(item.getNome(), item.getObrigatorio()));
 		}
 		
 		return itens;
