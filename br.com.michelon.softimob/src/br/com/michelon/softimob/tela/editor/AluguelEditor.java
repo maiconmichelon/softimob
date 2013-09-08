@@ -40,6 +40,16 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
+import org.hibernate.validator.ap.util.TypeNames.JodaTypes;
+import org.joda.time.Chronology;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeFieldType;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Instant;
+import org.joda.time.Months;
+import org.joda.time.ReadableInstant;
+import org.springframework.format.datetime.joda.JodaTimeContext;
 
 import br.com.michelon.softimob.aplicacao.exception.ParametroNaoInformadoException;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
@@ -748,19 +758,34 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	@Override
 	public void saveCurrentObject(GenericService<Aluguel> service) {
 		java.util.List<ContaPagarReceber> parcelas = getCurrentObject().getParcelas();
-		if(getCurrentObject().getId() == null && parcelas.isEmpty()){
+		
+		if(validarComMensagem(getCurrentObject()) ){//&& getCurrentObject().getId() == null && parcelas.isEmpty()){
+		
 			ContaPagarReceberService contaService = new ContaPagarReceberService();
 			ParametrosEmpresa parametros = ParametrosEmpresa.getInstance();
 			AluguelService aluguelService = (AluguelService) service;
 			
-//			contaService.gerarParcelas(null, getCurrentObject().getValor(), null, ContaPagarReceber.PAGAR, 
-//					getCurrentObject().getDataGeracao(), aluguelService.geraObservacoesContaAluguel(getCurrentObject()), parametros.getTipoContaAluguel());
-//			
-//			contaService.gerarParcelas(null, getCurrentObject().getValor(), null, ContaPagarReceber.RECEBER, 
-//					getCurrentObject().getDataGeracao(), aluguelService.geraObservacoesContaAluguel(getCurrentObject()), parametros.getTipoContaAluguel());
+			DateMidnight data = new DateMidnight(getCurrentObject().getDataAssinaturaContrato());
+			DateMidnight dataVencimento = new DateMidnight(getCurrentObject().getDataVencimento());
+			
+			
+			Months monthsBetween = Months.monthsBetween(data, dataVencimento);
+
+			Calendar c = Calendar.getInstance();
+			c.setTime(getCurrentObject().getDataAssinaturaContrato());
+			c.set(Calendar.MONTH, c.get(Calendar.MONTH) + 1);
+			c.set(Calendar.DAY_OF_MONTH, parametros.getDiaRecebAluguel());
+			
+			getCurrentObject().getParcelas().addAll(contaService.gerarParcelas(monthsBetween.getMonths(), getCurrentObject().getValor(), c.getTime(), ContaPagarReceber.RECEBER, 
+					getCurrentObject().getDataGeracao(), aluguelService.geraObservacoesContaAluguel(getCurrentObject()), parametros.getTipoContaAluguel()));
+
+			c.set(Calendar.DAY_OF_MONTH, parametros.getDiaRepasseAluguel());
+			
+			getCurrentObject().getParcelas().addAll(contaService.gerarParcelas(monthsBetween.getMonths(), getCurrentObject().getValor(), c.getTime(), ContaPagarReceber.PAGAR, 
+					getCurrentObject().getDataGeracao(), aluguelService.geraObservacoesContaAluguel(getCurrentObject()), parametros.getTipoContaAluguel()));
+			
+			super.saveCurrentObject(service);
 		}
-		
-		super.saveCurrentObject(service);
 	}
 
 	protected void addChamadoReforma(WritableValue value) {

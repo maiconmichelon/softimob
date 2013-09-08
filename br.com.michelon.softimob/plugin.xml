@@ -496,6 +496,15 @@
                      value="br.com.michelon.softimob.tela.view.CheckListView">
                </parameter>
             </command>
+            <menu
+                  icon="icons/report/report16.png"
+                  label="Relatórios">
+               <command
+                     commandId="br.com.michelon.softimob.command.cmdFuncionarioReport"
+                     label="Desempenho dos Funcionários"
+                     style="push">
+               </command>
+            </menu>
          </menu>
          <menu
                label="Financeiro">
@@ -955,6 +964,11 @@
             defaultHandler="br.com.michelon.softimob.aplicacao.command.SairCommand"
             id="br.com.michelon.softimob.command.cmdSair"
             name="Sair">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdFuncionarioReport"
+            id="br.com.michelon.softimob.command.cmdFuncionarioReport"
+            name="Relatorio Funcionarios">
       </command>
    </extension>
    <extension

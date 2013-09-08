@@ -12,13 +12,6 @@ public class BalanceteCommand extends AbstractHandler{
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		new BalanceteDialog().open();
 		
-//		FileDialog dialog = new FileDialog(ShellHelper.getActiveShell());
-//		String open = dialog.open();
-//		Venda object = new Venda();
-//		object.setValor(BigDecimal.TEN);
-//		new DocxHelper().createPartControl(new File(open), object);
-		
-		
 		return null;
 	}
 

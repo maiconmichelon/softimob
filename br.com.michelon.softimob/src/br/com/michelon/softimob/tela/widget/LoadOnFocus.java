@@ -26,6 +26,7 @@ public class LoadOnFocus {
 	}
 
 	public static void setFocusGainedListener(ComboViewer comboViewer, final GenericService<?> service) {
+		comboViewer.setInput(service.findAll());
 		setFocusGainedListener(comboViewer, new Load() {
 			@Override
 			public List<?> getInput() {

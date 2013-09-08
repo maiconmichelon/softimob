@@ -44,7 +44,7 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date dataFechamento = null;
 	
-	@OneToMany(cascade=CascadeType.MERGE, orphanRemoval = true)
+	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<ContaPagarReceber> parcelas = Lists.newArrayList();
 	
 	public List<ContaPagarReceber> getParcelas() {

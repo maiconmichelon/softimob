@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/joda-time-2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jasper/jasperreports-3.7.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/itextpdf-5.1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/docx/jaxb-xmldsig-core-1.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/caelum-stella/caelum-stella-boleto-2.0.4.jar" sourcepath="C:/Users/Seven/Downloads/caelum-stella-master.zip"/>
@@ -21,7 +23,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/spring/spring-orm-3.2.2.RELEASE.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/spring/spring-tx-3.2.2.RELEASE.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jasper/iText-2.1.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jasper/jasperreports-3.7.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/html/cssparser-0.9.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/html/htmlunit-2.10.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/html/htmlunit-core-js-2.10.jar"/>
