@@ -157,9 +157,13 @@ public class GMap extends Composite {
 	 * However, its currently not possible to get the location of the marker
 	 * should the user move it.
 	 */
-	public void addMarker(String name, String address) {
+	public void addMarker(String address) {
 		checkWidget();
-		browser.evaluate("addMarker( \"" + name + "\", \"" + address+ "\" )");
+		
+		if (loaded && address != null) {
+			this.address = address;
+			browser.evaluate("addMultipleMarkers( " + createJsAddress() + " )");
+		}
 	}
 
 	public void addMapListener(MapListener listener) {
@@ -199,7 +203,7 @@ public class GMap extends Composite {
 					gotoAddress("Toledo - PR");
 				else{
 					gotoAddress(endereco);
-					addMarker("Local", endereco);
+					addMarker(endereco);
 				}
 			}
 

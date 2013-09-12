@@ -40,16 +40,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
-import org.hibernate.validator.ap.util.TypeNames.JodaTypes;
-import org.joda.time.Chronology;
 import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeFieldType;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Instant;
 import org.joda.time.Months;
-import org.joda.time.ReadableInstant;
-import org.springframework.format.datetime.joda.JodaTimeContext;
 
 import br.com.michelon.softimob.aplicacao.exception.ParametroNaoInformadoException;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
@@ -757,9 +749,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	
 	@Override
 	public void saveCurrentObject(GenericService<Aluguel> service) {
-		java.util.List<ContaPagarReceber> parcelas = getCurrentObject().getParcelas();
-		
-		if(validarComMensagem(getCurrentObject()) ){//&& getCurrentObject().getId() == null && parcelas.isEmpty()){
+		if(validarComMensagem(getCurrentObject()) && getCurrentObject().getId() == null && getCurrentObject().getParcelas().isEmpty()){
 		
 			ContaPagarReceberService contaService = new ContaPagarReceberService();
 			ParametrosEmpresa parametros = ParametrosEmpresa.getInstance();
@@ -767,7 +757,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 			
 			DateMidnight data = new DateMidnight(getCurrentObject().getDataAssinaturaContrato());
 			DateMidnight dataVencimento = new DateMidnight(getCurrentObject().getDataVencimento());
-			
 			
 			Months monthsBetween = Months.monthsBetween(data, dataVencimento);
 
@@ -783,6 +772,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 			
 			getCurrentObject().getParcelas().addAll(contaService.gerarParcelas(monthsBetween.getMonths(), getCurrentObject().getValor(), c.getTime(), ContaPagarReceber.PAGAR, 
 					getCurrentObject().getDataGeracao(), aluguelService.geraObservacoesContaAluguel(getCurrentObject()), parametros.getTipoContaAluguel()));
+			
+			tvParcelas.refresh();
 			
 			super.saveCurrentObject(service);
 		}

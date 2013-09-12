@@ -151,7 +151,7 @@ public class ImovelMapView extends ViewPart {
 	}
 
 	private void createMarkerControl(Composite parent) {
-		final InputDialog markerDialog = new InputDialog(parent.getShell(), "Marker Name", "Enter Name", null, null);
+		final InputDialog markerDialog = new InputDialog(parent.getShell(), "Adicionar Marcador", "Insira o endereço", null, null);
 		Button addMarker = new Button(parent, SWT.PUSH);
 		addMarker.setText("add Marker");
 		addMarker.addSelectionListener(new SelectionAdapter() {
@@ -160,7 +160,7 @@ public class ImovelMapView extends ViewPart {
 				markerDialog.open();
 				String result = markerDialog.getValue();
 				if (result != null && result.length() > 0) {
-					gmap.addMarker("teste", "karl guenther");
+					gmap.addMarker(markerDialog.getValue());
 				}
 			}
 		});

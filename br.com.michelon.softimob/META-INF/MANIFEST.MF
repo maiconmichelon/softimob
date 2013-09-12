@@ -86,7 +86,6 @@ Bundle-ClassPath: .,
  lib/docx/jaxb-xmldsig-core-1.0.0.jar,
  lib/itextpdf-5.1.2.jar,
  swing2swt.jar,
- lib/jasper/jasperreports-3.7.6.jar,
- lib/joda-time-2.3.jar
+ lib/jasper/jasperreports-3.7.6.jar
 Import-Package: com.google.common.base,
  com.google.common.collect
