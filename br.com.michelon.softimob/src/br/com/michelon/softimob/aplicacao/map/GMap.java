@@ -162,7 +162,7 @@ public class GMap extends Composite {
 		
 		if (loaded && address != null) {
 			this.address = address;
-			browser.evaluate("addMultipleMarkers( " + createJsAddress() + " )");
+			browser.evaluate("addMultipleMarkers( " + createJsAddress() + ", \'teste\' )");
 		}
 	}
 

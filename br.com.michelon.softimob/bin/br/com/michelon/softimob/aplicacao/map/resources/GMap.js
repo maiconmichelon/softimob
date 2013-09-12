@@ -21,8 +21,18 @@ window.gotoAddress = function( address ) {
   }
 };
 
-window.addMultipleMarkers = function( address ) {
-	geocoderMarker.geocode( { "address": address}, window._addMarkers); 
+window.addMultipleMarkers = function( address, titulo ) {
+
+	geocoderMarker.geocode( { "address": address}, function( results, status ) {
+	var latitude = results[0].geometry.location.lat();
+    var longitude = results[0].geometry.location.lng();
+
+	var marker = new google.maps.Marker({
+		position: new google.maps.LatLng(latitude, longitude),
+		map: window.gmap,
+		title: titulo
+	});
+}); 
 };
 
 // INTERNO
@@ -44,16 +54,5 @@ window._handleAddressResolved = function( results, status ) {
     var newBounds = results[ 0 ].geometry.viewport;
     gmap.fitBounds( newBounds );
   }
-};
-
-window._addMarkers = function( results, status, name ) {
-	var latitude = results[0].geometry.location.lat();
-    var longitude = results[0].geometry.location.lng();
-
-	var marker = new google.maps.Marker({
-		position: new google.maps.LatLng(latitude, longitude),
-		map: window.gmap,
-		title: 'a'
-	});
 };
 
