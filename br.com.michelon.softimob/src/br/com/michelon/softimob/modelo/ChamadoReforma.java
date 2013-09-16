@@ -56,6 +56,10 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	
 	public ChamadoReforma(Aluguel aluguel){
 		this.aluguel = aluguel;
+		
+		ParametrosEmpresa param = ParametrosEmpresa.getInstance();
+		if(param != null)
+			setFuncionario(param.getFuncionarioResponsavelReforma());
 	}
 	
 	@SuppressWarnings("unused")

@@ -16,7 +16,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.wb.swt.ResourceManager;
 
 public class SucessfulContributionItem extends ContributionItem {
 
@@ -130,7 +130,7 @@ public class SucessfulContributionItem extends ContributionItem {
 					@Override
 					public void run() {
 						setText(message);
-						label.setBackground(SWTResourceManager.getColor(152, 251, 152));
+						label.setBackground(ResourceManager.getColor(SWT.COLOR_DARK_GREEN));
 					}
 				});
 				

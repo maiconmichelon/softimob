@@ -25,6 +25,8 @@ import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -82,6 +84,7 @@ import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
+import br.com.michelon.softimob.tela.widget.NumberTextField2;
 import br.com.michelon.softimob.tela.widget.PhotoComposite;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
@@ -111,7 +114,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private Text txtFuncionarioReforma;
 	private Text txtDataChamado;
 	private Text txtObservacoesVistoria;
-	private Text text_18;
 	private Text txtFuncionarioVistoria;
 	private Text txtDataVistoria;
 	private Text txtFuncionarioAndamentoReforma;
@@ -263,6 +265,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		MoneyTextField moneyTextField = new MoneyTextField(parent);
 		txtValor = moneyTextField.getControl();
 		txtValor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
@@ -325,6 +328,36 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		MoneyTextField moneyValorcomissao = new MoneyTextField(grpComisso);
 		txtValorComissao = moneyValorcomissao.getControl();
 		txtValorComissao.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(grpComisso, SWT.NONE);
+		new Label(grpComisso, SWT.NONE);
+		
+		Label lblPorcentagem = new Label(grpComisso, SWT.NONE);
+		lblPorcentagem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblPorcentagem.setText("Porcentagem");
+		
+		NumberTextField2 numberTextField = new NumberTextField2(grpComisso);
+		Text txtPorcentagem = numberTextField.getControl();
+		txtPorcentagem.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtPorcentagem.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				Text txtPorcentagem = (Text) e.widget;
+				String texto = txtPorcentagem.getText();
+
+				if(texto != null && !texto.isEmpty()){
+					if(getCurrentObject().getValor() != null){
+						Comissao c = (Comissao) valueComissao.getValue();
+						BigDecimal p = FormatterHelper.getDefaultValueFormatterToMoney().parse(texto);
+						
+						BigDecimal valor = getCurrentObject().getValor().multiply(p).divide(new BigDecimal(100));
+						c.setValor(valor);
+						
+						updateTargets();
+					}
+				}
+			}
+		});
+		
 		new Label(grpComisso, SWT.NONE);
 		new Label(grpComisso, SWT.NONE);
 		new Label(grpComisso, SWT.NONE);
@@ -426,20 +459,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		btnt_2.setImage(ImageRepository.REMOVE_16.getImage());
 		btnt_2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionarFuncionarioVistoria, btnt_2, valueVistoria, "funcionario");
-		
-		Label lblArquivo = new Label(cpAddVistoria, SWT.NONE);
-		lblArquivo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblArquivo.setText("Arquivo");
-		
-		text_18 = new Text(cpAddVistoria, SWT.BORDER);
-		text_18.setEditable(false);
-		text_18.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_123 = new Button(cpAddVistoria, SWT.NONE);
-		button_123.setImage(ImageRepository.SEARCH_16.getImage());
-		
-		Button btnt_3 = new Button(cpAddVistoria, SWT.NONE);
-		btnt_3.setImage(ImageRepository.REMOVE_16.getImage());
 		
 		Label lblObservaes_1 = new Label(cpAddVistoria, SWT.NONE);
 		lblObservaes_1.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -835,7 +854,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private void addComissao(WritableValue valueComissao) {
 		ParametrosEmpresa parametrosEmpresa = ParametrosEmpresa.getInstance();
 		if(parametrosEmpresa.getTipoContaComissao() == null){
-			DialogHelper.openWarning("Não foi possivel encontrar o tipo da conta de comissão nos Parâmetros da Empresa");
+			DialogHelper.openWarning("Não foi possivel encontrar o Tipo da Conta de Comissão nos Parâmetros da Empresa");
 		}else{
 			((Comissao)valueComissao.getValue()).setOrigem(parametrosEmpresa.getTipoContaComissao());
 			addItens(new ComissaoService(), valueComissao, tvComissao, getCurrentObject().getComissoes());
@@ -874,8 +893,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		tvbChamadoGeral.createColumn("Numero").bindToProperty("id").build();
 		tvbChamadoGeral.createColumn("Data").bindToProperty("data").format(new DateStringValueFormatter()).build();
-		tvbChamadoGeral.createColumn("Problema").bindToProperty("problema").build();
 		tvbChamadoGeral.createColumn("Status").bindToProperty("status").format(new NullStringValueFormatter()).build();
+		tvbChamadoGeral.createColumn("Problema").bindToProperty("problema").setPercentWidth(60).build();
 		
 		tvbChamadoGeral.setInput(getCurrentObject().getChamados());
 		
@@ -910,7 +929,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		tvbVistoria = new TableViewerBuilder(composite);
 		
 		tvbVistoria.createColumn("Data da Vistoria").bindToProperty("data").format(new DateStringValueFormatter()).build();
-		tvbVistoria.createColumn("Funcionário").bindToProperty("funcionario.nome").build();
+		tvbVistoria.createColumn("Funcionário").setPercentWidth(20).bindToProperty("funcionario.nome").build();
 		tvbVistoria.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
 		
 		tvbVistoria.setInput(getCurrentObject().getVistorias());

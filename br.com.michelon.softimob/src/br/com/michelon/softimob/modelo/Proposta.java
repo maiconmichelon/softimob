@@ -35,6 +35,7 @@ public class Proposta implements Serializable, Pendencia{
 
 	public static final int CONTRA_PROPOSTA_PROPRIETARIO = 3;
 	public static final int CONTRA_PROPOSTA_CLIENTE = 4;
+	public static final int PRIMEIRA = 5;
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -69,8 +70,8 @@ public class Proposta implements Serializable, Pendencia{
 	@OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private Proposta contraProposta;
 	
-	@Column
-	private Integer tipoContraProposta;
+	@Column(nullable = false)
+	private Integer tipoContraProposta = PRIMEIRA;
 	
 	@ManyToOne()
 	private Imovel imovel;
@@ -83,9 +84,6 @@ public class Proposta implements Serializable, Pendencia{
 	private Proposta(){}
 	
 	public Proposta(Proposta proposta) {
-		proposta.setContraProposta(this);
-		proposta.setStatus(Proposta.CONTRAPROPOSTA);
-		
 		setFuncionario(proposta.getFuncionario());
 		setCliente(proposta.getCliente());
 		setImovel(proposta.getImovel());
@@ -175,13 +173,17 @@ public class Proposta implements Serializable, Pendencia{
 		return tipoContraProposta;
 	}
 
+	public Comissionado getClienteProprietario(){
+		return tipoContraProposta != null && tipoContraProposta.equals(CONTRA_PROPOSTA_PROPRIETARIO) ? imovel.getProprietario() : cliente;
+	}
+	
 	public void setTipoContraProposta(Integer tipoContraProposta) {
 		this.tipoContraProposta = tipoContraProposta;
 	}
 
 	public String getRealizador() {
-		return tipoContraProposta == CONTRA_PROPOSTA_CLIENTE ? "Cliente - " + getCliente().getNome() : 
-			"Proprietário - " + getImovel().getProprietario().getNome();
+		return tipoContraProposta == null || CONTRA_PROPOSTA_CLIENTE == tipoContraProposta ? 
+				"Cliente - " + getCliente().getNome() : "Proprietário - " + getImovel().getProprietario().getNome();
 	}
 
 	@Override

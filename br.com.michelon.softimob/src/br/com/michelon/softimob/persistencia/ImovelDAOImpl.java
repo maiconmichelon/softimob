@@ -133,4 +133,38 @@ public class ImovelDAOImpl {
 		return typedQuery.getResultList();
 	}
 
+	public List<Imovel> buscarImoveisVender() {
+		return buscarImoveisPorContrato(TipoContrato.VENDA);
+	}
+
+	public List<Imovel> buscarImoveisAluguel() {
+		return buscarImoveisPorContrato(TipoContrato.LOCACAO);
+	}
+
+	public List<Imovel> buscarImoveisVenderAlugar() {
+		return buscarImoveisPorContrato(TipoContrato.LOCACAOVENDA);
+	}
+
+	public List<Imovel> buscarImoveisPorContrato(TipoContrato contrato){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("SELECT i FROM Imovel i ");
+		sb.append("LEFT JOIN ContratoPrestacaoServico c on c.imovel = i ");
+		sb.append("WHERE :dataHoje between c.dataInicio and c.dataVencimento ");
+		
+		if(!contrato.equals(TipoContrato.LOCACAOVENDA))
+			sb.append("AND (c.tipo = :tipo OR c.tipo = :tipoLocacaoVenda) ");
+		
+		TypedQuery<Imovel> queryImoveis = em.createQuery(sb.toString(), Imovel.class);
+		
+		if(!contrato.equals(TipoContrato.LOCACAOVENDA)){
+			queryImoveis.setParameter("tipo", contrato);
+			queryImoveis.setParameter("tipoLocacaoVenda", TipoContrato.LOCACAOVENDA);
+		}
+		
+		queryImoveis.setParameter("dataHoje", new Date());
+		
+		return queryImoveis.getResultList();
+	}
+	
 }

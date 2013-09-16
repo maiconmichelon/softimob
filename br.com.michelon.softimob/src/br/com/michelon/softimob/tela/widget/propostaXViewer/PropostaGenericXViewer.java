@@ -29,8 +29,8 @@ public class PropostaGenericXViewer {
 		GenericXViewerColumn c2 = new GenericXViewerColumn("Data de Fechamento", 130, m2);
 		
 		Map<Class<?>, XViewerColumnProperties> m3 = Maps.newHashMap();
-		m3.put(Proposta.class, new XViewerColumnProperties("cliente.nome"));
-		GenericXViewerColumn c3 = new GenericXViewerColumn("Cliente", 200, m3);
+		m3.put(Proposta.class, new XViewerColumnProperties("clienteProprietario.nome"));
+		GenericXViewerColumn c3 = new GenericXViewerColumn("Quem Propôs", 200, m3);
 		
 		Map<Class<?>, XViewerColumnProperties> m4 = Maps.newHashMap();
 		m4.put(Proposta.class, new XViewerColumnProperties("funcionario.nome"));

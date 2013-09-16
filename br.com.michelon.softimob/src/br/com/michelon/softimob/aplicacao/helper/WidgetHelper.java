@@ -58,7 +58,9 @@ public class WidgetHelper {
 		createMenuItemAlterar(menu, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				value.setValue(SelectionHelper.getObject(viewer));
+				Object object = SelectionHelper.getObject(viewer);
+				if(object != null)
+					value.setValue(object);
 			}
 		});
 	}
@@ -73,7 +75,7 @@ public class WidgetHelper {
 			public void widgetSelected(SelectionEvent e) {
 				Y obj = (Y) SelectionHelper.getObject(cv.getSelection());
 				try {
-					if(!DialogHelper.openConfirmation("Deseja excluir o registro ?"))
+					if(obj == null || !DialogHelper.openConfirmation("Deseja excluir o registro ?"))
 						return;
 					
 					service.removerAtivarOuDesativar(obj);

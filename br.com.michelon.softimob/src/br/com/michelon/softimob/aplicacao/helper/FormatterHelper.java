@@ -63,7 +63,14 @@ public class FormatterHelper {
 					Number parse = getDecimalFormat().parse(arg0);
 					if(parse instanceof Long)
 						return BigDecimal.valueOf((Long) parse);
-					return (BigDecimal) getDecimalFormat().parse(arg0);
+					Number number = getDecimalFormat().parse(arg0);
+					if(number instanceof BigDecimal)
+						return (BigDecimal) number;
+					if(number instanceof Double)
+						return new BigDecimal((Double)number);
+					if(number instanceof Integer)
+						return new BigDecimal((Integer)number);
+					return null;
 				} catch (ParseException e) {
 					return null;
 				}

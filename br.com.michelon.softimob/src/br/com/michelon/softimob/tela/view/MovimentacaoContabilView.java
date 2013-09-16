@@ -37,7 +37,7 @@ public class MovimentacaoContabilView extends GenericView<MovimentacaoContabil>{
 	}
 	
 	@Override
-	protected ColumnViewer criarTabela(Composite composite) {
+	protected ColumnViewer createTable(Composite composite) {
 		return MovimentacaoGenericXViewer.createXviewer(composite);
 	}
 	

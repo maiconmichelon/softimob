@@ -13,6 +13,7 @@ import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Feedback;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 
 import com.google.common.collect.Lists;
 
@@ -26,10 +27,10 @@ public class FeedbackView extends GenericView<Feedback>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Data", "data", 10));
+		atributos.add(new ColumnProperties("Data", "data", 5, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Imóvel", "imovel", 30));
-		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 30));
-		atributos.add(new ColumnProperties("Funcionário", "funcionario.nome", 30));
+		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 10));
+		atributos.add(new ColumnProperties("Funcionário", "funcionario.nome", 10));
 		atributos.add(new ColumnProperties("Feedback", "observacoes", 30));
 	}
 	

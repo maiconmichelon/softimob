@@ -111,7 +111,7 @@ public class PendenciaView extends GenericView<Pendencia>{
 	}
 
 	@Override
-	protected ColumnViewer criarTabela(Composite composite) {
+	protected ColumnViewer createTable(Composite composite) {
 		composite.setLayout(new GridLayout(1, false));
 		
 		TableViewer tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);

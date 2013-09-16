@@ -144,7 +144,7 @@ public abstract class GenericView<T> extends ViewPart{
 		cpBody.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 		formToolkit.paintBordersFor(cpBody);
 		
-		viewer = criarTabela(cpBody);
+		viewer = createTable(cpBody);
 		
 		createComponentsCpBotton(frmNewForm.getBody(), formToolkit);
 		
@@ -233,7 +233,7 @@ public abstract class GenericView<T> extends ViewPart{
 		formToolkit.adapt(txtFiltro, true, true);
 	}
 
-	protected ColumnViewer criarTabela(Composite composite) {
+	protected ColumnViewer createTable(Composite composite) {
 		return WidgetHelper.createTable(composite, getColumns()).getTableViewer();
 	}
 
@@ -280,7 +280,8 @@ public abstract class GenericView<T> extends ViewPart{
 				if(selecionado == null)
 					return;
 				
-				excluirDesativarAtivar(selecionado);
+				if(DialogHelper.openConfirmation("Deseja remover o registro selecionado ?"))
+					excluirDesativarAtivar(selecionado);
 				
 				atualizar(getInput());
 			}

@@ -9,4 +9,10 @@ public class Venda extends VendaAluguel {
 
 	private static final long serialVersionUID = 1L;
 
+	public Venda() {
+		ParametrosEmpresa params = ParametrosEmpresa.getInstance();
+		if(params != null)
+			setModeloContrato(params.getContratoVenda());
+	}
+	
 }

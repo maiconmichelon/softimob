@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/docx/xmlgraphics-commons-1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jasper/jasperreports-3.7.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/itextpdf-5.1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/docx/jaxb-xmldsig-core-1.0.0.jar"/>

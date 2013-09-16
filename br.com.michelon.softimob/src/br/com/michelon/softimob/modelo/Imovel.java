@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,6 +25,7 @@ import br.com.michelon.softimob.aplicacao.service.FeedbackService;
 import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.aplicacao.service.PropostaService;
 import br.com.michelon.softimob.aplicacao.service.ReservaService;
+import br.com.michelon.softimob.modelo.ContratoPrestacaoServico.TipoContrato;
 
 import com.google.common.collect.Lists;
 
@@ -168,6 +170,19 @@ public class Imovel implements Serializable, ContainsPhotos{
 	
 	public void setLog(Log log) {
 		this.log = log;
+	}
+
+	public TipoContrato getEstadoDeContrato(){
+		List<ContratoPrestacaoServico> contratos = getContratos();
+		Date dataHoje = new Date();
+		
+		for(ContratoPrestacaoServico c : contratos){
+			if(c.getDataInicio().compareTo(dataHoje) <= 0 && c.getDataVencimento().compareTo(dataHoje)>=0){
+				return c.getTipo();
+			}
+		}
+		
+		return null;
 	}
 	
 	private transient static ImovelService service;

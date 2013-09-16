@@ -108,7 +108,10 @@ public class TipoComodoEditor extends GenericEditor<TipoComodo>{
 						tipoImovelTipoComodo.setTipoImovel((TipoImovel) obj);
 						tipoImovelTipoComodo.setPreSelecionado(true);
 						
-						((TipoComodo)value.getValue()).getTipoImovelTipoComodo().add(tipoImovelTipoComodo);
+						List<TipoImovelTipoComodo> tipoImovelTipoComodos = ((TipoComodo)value.getValue()).getTipoImovelTipoComodo();
+						if(!tipoImovelTipoComodos.contains(tipoImovelTipoComodo))
+							tipoImovelTipoComodos.add(tipoImovelTipoComodo);
+						
 						tvComodo.refresh();
 					}
 				});

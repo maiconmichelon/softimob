@@ -12,11 +12,11 @@ import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.nebula.widgets.formattedtext.FormattedText;
-import org.eclipse.nebula.widgets.formattedtext.NumberFormatter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -49,6 +49,7 @@ import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
+import br.com.michelon.softimob.tela.widget.NumberTextField2;
 import br.com.michelon.softimob.tela.widget.PhotoComposite;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
@@ -66,7 +67,6 @@ public class VendaEditor extends GenericEditor<Venda>{
 	private Text text_2;
 	private Text text_4;
 	private Text text_5;
-	private Text text_7;
 	private Text text_6;
 	private Text text_34;
 	private Text text_16;
@@ -240,9 +240,29 @@ public class VendaEditor extends GenericEditor<Venda>{
 		lblPorcentagem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblPorcentagem.setText("Porcentagem");
 		
-		text_7 = new Text(composite_1, SWT.BORDER);
-		new FormattedText(text_7).setFormatter(new NumberFormatter("###"));
-		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		NumberTextField2 numberTextField = new NumberTextField2(composite_1);
+		Text txtPorcentagem = numberTextField.getControl();
+		txtPorcentagem.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtPorcentagem.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				Text txtPorcentagem = (Text) e.widget;
+				String texto = txtPorcentagem.getText();
+
+				if(texto != null && !texto.isEmpty()){
+					if(getCurrentObject().getValor() != null){
+						Comissao c = (Comissao) valueComissao.getValue();
+						Double p = Double.parseDouble(texto);
+						
+						BigDecimal valor = getCurrentObject().getValor().multiply(new BigDecimal(p)).divide(new BigDecimal(100));
+						c.setValor(valor);
+						
+						updateTargets();
+					}
+				}
+			}
+		});
+		
 		new Label(composite_1, SWT.NONE);
 		new Label(composite_1, SWT.NONE);
 		new Label(composite_1, SWT.NONE);

@@ -4,11 +4,11 @@ import org.eclipse.nebula.widgets.formattedtext.FormattedText;
 import org.eclipse.nebula.widgets.formattedtext.NumberFormatter;
 import org.eclipse.swt.widgets.Composite;
 
-public class NumberTextField extends FormattedText{
+public class NumberTextField2 extends FormattedText{
 
-	public NumberTextField(Composite parent) {
+	public NumberTextField2(Composite parent) {
 		super(parent);
-		this.setFormatter(new NumberFormatter("#########"));
+		this.setFormatter(new NumberFormatter("######.##"));
 	}
 	
 }

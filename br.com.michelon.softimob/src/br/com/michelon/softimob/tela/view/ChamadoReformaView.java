@@ -11,7 +11,7 @@ import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.ChamadoReforma;
-import br.com.michelon.softimob.tela.editor.ImovelEditor;
+import br.com.michelon.softimob.tela.editor.AluguelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 
@@ -61,7 +61,7 @@ public class ChamadoReformaView extends GenericView<ChamadoReforma>{
 	
 	@Override
 	protected String getEditorId(ChamadoReforma t) {
-		return ImovelEditor.ID;
+		return AluguelEditor.ID;
 	}
 
 	@Override

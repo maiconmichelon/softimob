@@ -24,6 +24,9 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Layout;
 
+import br.com.michelon.softimob.modelo.Endereco;
+import br.com.michelon.softimob.modelo.Imovel;
+
 public class GMap extends Composite {
 
 	private static final String[] AVAILABLE_TYPES = new String[] { "ROADMAP", "SATELLITE", "HYBRID", "TERRAIN" };
@@ -40,6 +43,7 @@ public class GMap extends Composite {
 	private boolean loaded = false;
 	private final List<MapListener> listeners = new ArrayList<MapListener>();
 	private String endereco;
+	private List<Imovel> markers;
 
 	public GMap(Composite parent, int style) {
 		super(parent, style);
@@ -152,17 +156,11 @@ public class GMap extends Composite {
 		return address;
 	}
 
-	/**
-	 * This adds a draggable marker with a an infowindow to the current center.
-	 * However, its currently not possible to get the location of the marker
-	 * should the user move it.
-	 */
-	public void addMarker(String address) {
+	public void addMarker(String address, String texto) {
 		checkWidget();
-		
-		if (loaded && address != null) {
-			this.address = address;
-			browser.evaluate("addMultipleMarkers( " + createJsAddress() + ", \'teste\' )");
+	
+		if(loaded && address != null){
+			browser.evaluate("addMultipleMarkers( \"" + address + "\", \""+texto+"\" )");
 		}
 	}
 
@@ -181,8 +179,10 @@ public class GMap extends Composite {
 		HtmlLoader.load(browser, "GMap.html");
 		browser.addProgressListener(new ProgressListener() {
 			public void completed(ProgressEvent event) {
-				// Note: Calling execute/eval before the document is loaded wont
-				// work.
+				
+				if(loaded)
+					return;
+				
 				loaded = true;
 				
 				StringBuffer script = new StringBuffer();
@@ -199,11 +199,18 @@ public class GMap extends Composite {
 				
 				createBrowserFunctions();
 
+				if(markers != null){
+					for(Imovel i : markers){
+						String enderecoFormatado = formatarEndereco(i.getEndereco());
+						String mensagemTipoContrato = i.getEstadoDeContrato() == null ? "" : " para " + i.getEstadoDeContrato().toString();
+						addMarker(enderecoFormatado, i.getTipo().getNome() + mensagemTipoContrato );
+					}
+				}
+				
 				if(endereco == null || endereco.isEmpty())
 					gotoAddress("Toledo - PR");
 				else{
 					gotoAddress(endereco);
-					addMarker(endereco);
 				}
 			}
 
@@ -211,7 +218,7 @@ public class GMap extends Composite {
 			}
 		});
 	}
-
+	
 	private void createBrowserFunctions() {
 		new BrowserFunction(browser, "onBoundsChanged") {
 			@Override
@@ -259,6 +266,23 @@ public class GMap extends Composite {
 	// ///////
 	// Helper
 
+	private String formatarEndereco(Endereco e){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("Brasil, ");
+		sb.append(e.getRua().getBairro().getCidade().getEstado().getNome());
+		sb.append(", ");
+		sb.append(e.getRua().getBairro().getCidade().getNome());
+		sb.append(", ");
+		sb.append(e.getRua().getBairro().getNome());
+		sb.append(", ");
+		sb.append(e.getRua().getNome());
+		sb.append(", ");
+		sb.append(e.getNumero() == null ? "" : e.getNumero());
+		
+		return sb.toString();
+	}
+	
 	private String createJsMapType() {
 		return '"' + AVAILABLE_TYPES[type] + '"';
 	}
@@ -291,6 +315,10 @@ public class GMap extends Composite {
 
 	public void setEnderecoPadrao(String endereco) {
 		this.endereco = endereco;
+	}
+
+	public void setMarkers(List<Imovel> imoveis) {
+		this.markers = imoveis;
 	}
 
 }

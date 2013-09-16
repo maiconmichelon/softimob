@@ -22,6 +22,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import br.com.michelon.softimob.aplicacao.annotation.WildCard;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.VistoriaService;
@@ -31,7 +32,7 @@ import com.google.common.collect.Lists;
 @Inheritance(strategy=InheritanceType.JOINED)
 @MappedSuperclass
 @Entity
-public class VendaAluguel implements Serializable{
+public abstract class VendaAluguel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -155,6 +156,20 @@ public class VendaAluguel implements Serializable{
 
 	public void carregarCheckList() {
 		getItensCheckList().addAll(new CheckListService().getNewItens(ParametrosEmpresa.getInstance().getCheckListAluguel()));
+	}
+	
+	@WildCard
+	public ParametrosEmpresa getParametros(){
+		return ParametrosEmpresa.getInstance();
+	}
+	
+	public boolean isOkCheckList(){
+		for(ItemCheckList item : getItensCheckList()){
+			if(item.getObrigatorio() && !item.getFinalizado())
+				return false;
+		}
+		
+		return true;
 	}
 	
 	@Override

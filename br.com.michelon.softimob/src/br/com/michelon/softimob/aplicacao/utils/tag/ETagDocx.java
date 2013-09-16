@@ -20,7 +20,10 @@ public class ETagDocx implements TagDocx{
 			BigDecimal valor = (BigDecimal) atribute;
 			NumericToWordsConverter converter = new NumericToWordsConverter(new FormatoDeReal());
 			return converter.toWords(valor.doubleValue());
+		}else if(atribute instanceof Boolean){
+			return (Boolean) atribute ? "sim" : "não";
 		}
+		
 		return atribute.toString();
 	}
 	

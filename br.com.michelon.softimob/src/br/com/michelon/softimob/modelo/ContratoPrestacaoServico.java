@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 
 import org.eclipse.ui.IEditorInput;
 
+import br.com.michelon.softimob.aplicacao.annotation.WildCard;
 import br.com.michelon.softimob.aplicacao.editorInput.ImovelEditorInput;
 import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
@@ -73,9 +74,6 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@ManyToOne
 	private Funcionario funcionario;
 	
-	@SuppressWarnings("unused")
-	private ContratoPrestacaoServico() {}
-	
 	@ManyToOne(optional = false)
 	private Cliente cliente;
 	
@@ -85,8 +83,19 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@Temporal(TemporalType.DATE)
 	private Date dataFechamento;
 	
+	@NotNull(message = "Selecione o tipo do contrato")
+	@ManyToOne(optional = false)
+	private ModeloContrato modeloContrato;
+	
+	@SuppressWarnings("unused")
+	private ContratoPrestacaoServico() {}
+	
 	public ContratoPrestacaoServico(Imovel imovel){
 		this.imovel = imovel;
+		
+		ParametrosEmpresa params = ParametrosEmpresa.getInstance();
+		if(params != null)
+			modeloContrato = params.getContratoPrestacaoServico();
 	}
 	
 	public Long getId() {
@@ -122,6 +131,13 @@ public class ContratoPrestacaoServico implements Pendencia{
 		return dataInicio;
 	}
 
+	public ModeloContrato getModeloContrato() {
+		return modeloContrato;
+	}
+	
+	public void setModeloContrato(ModeloContrato modeloContrato) {
+		this.modeloContrato = modeloContrato;
+	}
 	
 	@Override
 	public Date getDataVencimento() {
@@ -223,6 +239,11 @@ public class ContratoPrestacaoServico implements Pendencia{
 	public void finalizarPendencia() throws Exception {
 		setResolvido(true);
 		((ContratoPrestacaoServicoService)getService()).salvar(this);
+	}
+	
+	@WildCard
+	public ParametrosEmpresa getParametros(){
+		return ParametrosEmpresa.getInstance();
 	}
 	
 	@Override

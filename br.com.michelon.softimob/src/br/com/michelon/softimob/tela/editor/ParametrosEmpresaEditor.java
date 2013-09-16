@@ -8,7 +8,6 @@ import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.nebula.widgets.formattedtext.FormattedText;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -59,7 +58,6 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 	private Text txtCheckListVistoria;
 	private Text txtContratoPrestacaoServico;
 	private Text txtContaAluguel;
-	private Text txtContaContratoPrestacaoServico;
 	private Text txtContaReforma;
 	private Text txtContaComissao;
 	private Text txtContaDescontoRecebido;
@@ -334,22 +332,6 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		button_24.setImage(ImageRepository.REMOVE_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.MODELO_CONTRATO, button_3, button_24, value, "contratoPrestacaoServico");
 		
-		Label lblTipoDeConta_1 = new Label(composite_6, SWT.NONE);
-		lblTipoDeConta_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblTipoDeConta_1.setText("Tipo de Conta");
-		
-		txtContaContratoPrestacaoServico = new Text(composite_6, SWT.BORDER);
-		txtContaContratoPrestacaoServico.setEditable(false);
-		txtContaContratoPrestacaoServico.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		Button button_4 = new Button(composite_6, SWT.NONE);
-		button_4.setImage(ImageRepository.SEARCH_16.getImage());
-		
-		Button button_25 = new Button(composite_6, SWT.NONE);
-		button_25.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		button_25.setImage(ImageRepository.REMOVE_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.ORIGEM_CONTA, button_4, button_25, value, "tipoContaPrestacaoServico");
-		
 		CTabItem tbtmVistoria = new CTabItem(tabFolder, SWT.NONE);
 		tbtmVistoria.setText("Vistoria");
 		
@@ -483,7 +465,7 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		lblAgncia.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblAgncia.setText("Agência");
 		
-		FormattedText formattedText_2 = new NumberTextField(composite_7);
+		NumberTextField formattedText_2 = new NumberTextField(composite_7);
 		txtAgencia = formattedText_2.getControl();
 		txtAgencia.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -498,14 +480,14 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		lblContaCorrente.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblContaCorrente.setText("Conta Corrente");
 		
-		FormattedText formattedText_3 = new NumberTextField(composite_7);
+		NumberTextField formattedText_3 = new NumberTextField(composite_7);
 		txtContaCorrente = formattedText_3.getControl();
 		txtContaCorrente.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblDigitoContaCorrente = new Label(composite_7, SWT.NONE);
 		lblDigitoContaCorrente.setText("Digito Conta Corrente");
 		
-		FormattedText formattedText = new NumberTextField(composite_7);
+		NumberTextField formattedText = new NumberTextField(composite_7);
 		txtNumero = formattedText.getControl();
 		txtNumero.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -513,7 +495,7 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		lblCarteira.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCarteira.setText("Carteira");
 		
-		FormattedText formattedText_4 = new NumberTextField(composite_7);
+		NumberTextField formattedText_4 = new NumberTextField(composite_7);
 		txtCarteira = formattedText_4.getControl();
 		txtCarteira.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -610,10 +592,6 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		IObservableValue observeTextTxtContaReformaObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtContaReforma);
 		IObservableValue value2OrigemObserveDetailValue_1 = PojoProperties.value(ParametrosEmpresa.class, "tipoContaReforma", OrigemConta.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTxtContaReformaObserveWidget, value2OrigemObserveDetailValue_1, null, null);
-		//
-		IObservableValue observeTextTxtContaContratoPrestacaoServicoObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtContaContratoPrestacaoServico);
-		IObservableValue value2OrigemObserveDetailValue_2 = PojoProperties.value(ParametrosEmpresa.class, "tipoContaPrestacaoServico", OrigemConta.class).observeDetail(value);
-		bindingContext.bindValue(observeTextTxtContaContratoPrestacaoServicoObserveWidget, value2OrigemObserveDetailValue_2, null, null);
 		//
 		IObservableValue observeTextCaixaObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtContaCaixa);
 		IObservableValue valueContaCaixaObserveDetailValue = PojoProperties.value(ParametrosEmpresa.class, "contaCaixa", PlanoConta.class).observeDetail(value);

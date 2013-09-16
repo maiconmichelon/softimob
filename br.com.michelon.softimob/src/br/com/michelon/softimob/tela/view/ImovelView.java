@@ -23,6 +23,7 @@ import br.com.michelon.softimob.aplicacao.helper.FileHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.modelo.Arquivo;
+import br.com.michelon.softimob.modelo.ContratoPrestacaoServico.TipoContrato;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
@@ -105,10 +106,37 @@ public class ImovelView extends GenericView<Imovel>{
 				}
 			}
 		});
+		miFotos.setImage(ImageRepository.FOTO_16.getImage());
 		
-		MenuItem miMaps = new MenuItem(menu, SWT.BORDER);
+		MenuItem miMaps = new MenuItem(menu, SWT.CASCADE);
 		miMaps.setText("Visualizar imóvel em mapa");
-		miMaps.addSelectionListener(new SelectionAdapter() {
+		miMaps.setImage(ImageRepository.MAP_16.getImage());
+		
+		Menu menuMaps = new Menu(miMaps);
+		miMaps.setMenu(menuMaps);
+		
+		MenuItem miMapsSelecionado = new MenuItem(menuMaps, SWT.NONE);
+		miMapsSelecionado.setText("Imóvel selecionado");
+		miMapsSelecionado.setImage(ImageRepository.IMOVEL_16.getImage());
+		miMapsSelecionado.addSelectionListener(abrirTelaMaps(null));
+		
+		MenuItem miMapsLocacao = new MenuItem(menuMaps, SWT.NONE);
+		miMapsLocacao.setText("Locação");
+		miMapsLocacao.setImage(ImageRepository.ALUGUEL_16.getImage());
+		miMapsLocacao.addSelectionListener(abrirTelaMaps(TipoContrato.LOCACAO));
+		
+		MenuItem miMapsVenda = new MenuItem(menuMaps, SWT.NONE);
+		miMapsVenda.setText("Venda");
+		miMapsVenda.setImage(ImageRepository.VENDA_16.getImage());
+		miMapsVenda.addSelectionListener(abrirTelaMaps(TipoContrato.VENDA));
+		
+		MenuItem miMapsLocacaoVenda = new MenuItem(menuMaps, SWT.NONE);
+		miMapsLocacaoVenda.setText("Venda/Locação");
+		miMapsLocacaoVenda.addSelectionListener(abrirTelaMaps(TipoContrato.LOCACAOVENDA));
+	}
+	
+	private SelectionAdapter abrirTelaMaps(final TipoContrato tipoContrato){
+		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
@@ -117,15 +145,21 @@ public class ImovelView extends GenericView<Imovel>{
 						return;
 					if(getSelecionado().getEndereco() != null)
 						showView.setEnderecoPadrao(getSelecionado().getEndereco());
+					if(tipoContrato != null){
+						List<Imovel> imoveis = new ImovelService().findByTipoContrato(tipoContrato);
+						showView.setMarkers(imoveis);
+					} else {
+						showView.setMarkers(getSelecionados());
+					}
 				} catch (PartInitException e1) {
 					log.error("Erro ao abrir imóvel na view de Mapa.", e1);
 				}
 			}
-		});
+		};
 	}
 	
 	@Override
-	protected ColumnViewer criarTabela(Composite composite) {
+	protected ColumnViewer createTable(Composite composite) {
 		Composite cpTable = new Composite(composite, SWT.NONE);
 		cpTable.setLayout(new FillLayout(SWT.HORIZONTAL));
 		

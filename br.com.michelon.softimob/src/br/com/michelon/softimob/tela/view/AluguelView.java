@@ -1,8 +1,5 @@
 package br.com.michelon.softimob.tela.view;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -15,13 +12,12 @@ import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
-import br.com.michelon.softimob.aplicacao.helper.DocxHelper;
-import br.com.michelon.softimob.aplicacao.helper.FileHelper;
+import br.com.michelon.softimob.aplicacao.helper.ContratoHelper;
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Aluguel;
-import br.com.michelon.softimob.modelo.Arquivo;
 import br.com.michelon.softimob.tela.editor.AluguelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
@@ -38,14 +34,14 @@ public class AluguelView extends GenericView<Aluguel>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Imóvel", "contrato", 7));
-		atributos.add(new ColumnProperties("Locatário", "cliente.nome", 20));
-		atributos.add(new ColumnProperties("Corretor", "funcionario.nome", 20));
-		atributos.add(new ColumnProperties("Fiador", "fiador.nome",20));
-		atributos.add(new ColumnProperties("Valor", "valor", 10, FormatterHelper.getDefaultValueFormatterToMoney()));
+		atributos.add(new ColumnProperties("Imóvel", "contrato", 30));
+		atributos.add(new ColumnProperties("Locatário", "cliente.nome", 15));
+		atributos.add(new ColumnProperties("Corretor", "funcionario.nome", 15));
+		atributos.add(new ColumnProperties("Fiador", "fiador.nome",15));
+		atributos.add(new ColumnProperties("Valor", "valor", 8, FormatterHelper.getDefaultValueFormatterToMoney()));
 		atributos.add(new ColumnProperties("Data", "dataAssinaturaContrato", 10, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Vencimento", "dataVencimento", 10, new DateStringValueFormatter()));
-		atributos.add(new ColumnProperties("Reajuste", "reajuste", 10));
+		atributos.add(new ColumnProperties("Reajuste", "reajuste", 8));
 	}
 	
 	@Override
@@ -87,22 +83,22 @@ public class AluguelView extends GenericView<Aluguel>{
 	protected void createMenuItens(Menu menu) {
 		super.createMenuItens(menu);
 		
-		MenuItem miFotos = new MenuItem(menu, SWT.BORDER);
-		miFotos.setText("Gerar contrato");
-		miFotos.addSelectionListener(new SelectionAdapter() {
+		MenuItem miContrato = new MenuItem(menu, SWT.BORDER);
+		miContrato.setText("Gerar contrato");
+		miContrato.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Arquivo arquivo = getSelecionado().getModeloContrato().getArquivo();
-				File criarDiretorioArquivos = FileHelper.criarDiretorioArquivos(Arrays.asList(arquivo));
-				File arq = new File(criarDiretorioArquivos, arquivo.getNome());
-				new DocxHelper().createPartControl(arq, getSelecionado());
-				try {
-					FileHelper.openFile(criarDiretorioArquivos, arquivo.getNome());
-				} catch (IOException e1) {
-					log.error("Erro ao abrir contrato.", e1);
+				Aluguel aluguel = getSelecionado();
+				
+				if(!aluguel.isOkCheckList()){
+					DialogHelper.openWarning("Para gerar o contrato é necessário que todos os itens da check-list, tidos como obrigatório, sejam finalizados.");
+					return;
 				}
+				
+				ContratoHelper.gerarContrato(aluguel.getModeloContrato().getArquivo(), aluguel);
 			}
 		});
+		miContrato.setImage(ImageRepository.CONTRATO_16.getImage());
 	}
 	
 }

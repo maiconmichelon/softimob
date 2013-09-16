@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.sf.jasperreports.engine.JasperPrint;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -70,10 +71,13 @@ public abstract class ReportDialog extends TitleAreaDialog {
 	
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
+					monitor.beginTask("Gerando relatórios...", -1);
+					
 					jprint = ReportGen.generateReport(parametros, getCaminhoRelatorio());
-	
+					
 					return Status.OK_STATUS;
 				}
+				
 			};
 	
 			job.addJobChangeListener(new JobChangeAdapter() {
@@ -91,7 +95,7 @@ public abstract class ReportDialog extends TitleAreaDialog {
 									page.bringToTop(showView);
 									showView.getReportViewer().setDocument(jprint);
 								} catch (PartInitException e) {
-									e.printStackTrace();
+									Logger.getLogger(getClass()).error("Erro ao abrir tela de visualização de relatório.", e);
 								}
 								
 							} else
@@ -100,7 +104,6 @@ public abstract class ReportDialog extends TitleAreaDialog {
 					});
 				}
 			});
-	
 			job.setUser(true);
 			job.schedule();
 		}catch(ParametroNaoInformadoException pe){

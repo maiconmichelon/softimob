@@ -126,6 +126,8 @@ public class EnderecoGroup {
 					cvCidades.setInput(estado.getCidades());
 					cvBairros.setInput(null);
 					cvRuas.setInput(null);
+					
+					limparCidade();
 				}
 			}
 		});
@@ -148,6 +150,8 @@ public class EnderecoGroup {
 				if(cidade != null){
 					cvBairros.setInput(cidade.getBairros());
 					cvRuas.setInput(null);
+					
+					limparBairro();
 				}
 			}
 		});
@@ -168,6 +172,7 @@ public class EnderecoGroup {
 				
 				if(bairro != null){
 					cvRuas.setInput(bairro.getRuas());
+					limparRua();
 				}
 			}
 		});
@@ -338,5 +343,24 @@ public class EnderecoGroup {
 	private void selecionarEstado(Estado estado) {
 		cvUF.setInput(estadoService.findAll());
 		cvUF.setSelection(new StructuredSelection(estado));
+	}
+	
+	private void limparCidade(){
+		if(getEndereco() != null){
+			limparBairro();
+			cvCidades.setSelection(null);
+		}
+	}
+	
+	private void limparBairro(){
+		if(getEndereco() != null){
+			limparRua();
+			cvBairros.setSelection(null);
+		}
+	}
+	
+	private void limparRua(){
+		if(getEndereco() != null)
+			getEndereco().setRua(null);
 	}
 }

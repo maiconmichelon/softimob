@@ -175,7 +175,7 @@ public class NotifierDialog {
         if (Display.getDefault().getActiveShell() == null || Display.getDefault().getActiveShell().getMonitor() == null) { return; }
 
         Rectangle clientArea = Display.getDefault().getActiveShell().getMonitor().getClientArea();
-
+        
         int startX = clientArea.x + clientArea.width - 352;
         int startY = clientArea.y + clientArea.height - HEIGHT;
 
@@ -196,7 +196,6 @@ public class NotifierDialog {
         _shell.setLocation(startX, startY);
         _shell.setAlpha(0);
         _shell.setVisible(true);
-
         _activeShells.add(_shell);
 
         fadeIn(_shell);

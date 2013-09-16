@@ -85,7 +85,7 @@ Bundle-ClassPath: .,
  lib/caelum-stella/caelum-stella-boleto-2.0.4.jar,
  lib/docx/jaxb-xmldsig-core-1.0.0.jar,
  lib/itextpdf-5.1.2.jar,
- swing2swt.jar,
- lib/jasper/jasperreports-3.7.6.jar
+ lib/jasper/jasperreports-3.7.6.jar,
+ lib/docx/xmlgraphics-commons-1.4.jar
 Import-Package: com.google.common.base,
  com.google.common.collect

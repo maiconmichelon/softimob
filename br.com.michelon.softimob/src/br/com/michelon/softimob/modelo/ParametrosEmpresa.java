@@ -71,9 +71,6 @@ public class ParametrosEmpresa implements Serializable{
 	private OrigemConta tipoContaComissao;
 	
 	@OneToOne
-	private OrigemConta tipoContaPrestacaoServico;
-
-	@OneToOne
 	private OrigemConta tipoContaAluguel;
 
 	@OneToOne
@@ -277,14 +274,6 @@ public class ParametrosEmpresa implements Serializable{
 
 	public void setDiaRecebAluguel(Integer diaRecebAluguel) {
 		this.diaRecebAluguel = diaRecebAluguel;
-	}
-
-	public OrigemConta getTipoContaPrestacaoServico() {
-		return tipoContaPrestacaoServico;
-	}
-
-	public void setTipoContaPrestacaoServico(OrigemConta tipoContaPrestacaoServico) {
-		this.tipoContaPrestacaoServico = tipoContaPrestacaoServico;
 	}
 
 	public PlanoConta getContaDescontoConcedido() {

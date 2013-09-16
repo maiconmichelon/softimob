@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.tela.view;
 
-import org.eclipse.jface.dialogs.InputDialog;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ModifyEvent;
@@ -21,6 +22,7 @@ import br.com.michelon.softimob.aplicacao.map.GMap;
 import br.com.michelon.softimob.aplicacao.map.LatLng;
 import br.com.michelon.softimob.aplicacao.map.MapAdapter;
 import br.com.michelon.softimob.modelo.Endereco;
+import br.com.michelon.softimob.modelo.Imovel;
 
 public class ImovelMapView extends ViewPart {
 
@@ -57,11 +59,7 @@ public class ImovelMapView extends ViewPart {
 		SashForm sash = new SashForm(cp, SWT.VERTICAL);
 		createMap(sash);
 		controls = new Composite(sash, SWT.BORDER);
-//		createCenterControl(controls);
-//		createZoomControl(controls);
-//		createMapTypeControl(controls);
 		createAddressControl(controls);
-		createMarkerControl(controls);
 		sash.setWeights(new int[] { 8, 1 });
 	}
 
@@ -134,36 +132,6 @@ public class ImovelMapView extends ViewPart {
 				gmap.gotoAddress(addr.getText());
 			}
 		});
-//		Button resolveAddr = new Button(parent, SWT.PUSH);
-//		resolveAddr.setText("resolve");
-//		resolveAddr.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				gmap.resolveAddress();
-//			}
-//		});
-//		gmap.addMapListener(new MapAdapter() {
-//			@Override
-//			public void addressResolved() {
-//				addr.setText(gmap.getAddress());
-//			}
-//		});
-	}
-
-	private void createMarkerControl(Composite parent) {
-		final InputDialog markerDialog = new InputDialog(parent.getShell(), "Adicionar Marcador", "Insira o endereço", null, null);
-		Button addMarker = new Button(parent, SWT.PUSH);
-		addMarker.setText("add Marker");
-		addMarker.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				markerDialog.open();
-				String result = markerDialog.getValue();
-				if (result != null && result.length() > 0) {
-					gmap.addMarker(markerDialog.getValue());
-				}
-			}
-		});
 	}
 
 	private LatLng stringToLatLng(String input) {
@@ -214,6 +182,10 @@ public class ImovelMapView extends ViewPart {
 	public void setEnderecoPadrao(Endereco endereco) {
 		gmap.setEnderecoPadrao(endereco.toString());
 		addr.setText(endereco.toString());
+	}
+
+	public void setMarkers(List<Imovel> imoveis) {
+		gmap.setMarkers(imoveis);
 	}
 
 }

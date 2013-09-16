@@ -9,6 +9,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
 import br.com.michelon.softimob.aplicacao.editorInput.VendaEditorInput;
+import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Aluguel;
@@ -16,6 +17,7 @@ import br.com.michelon.softimob.modelo.Comissao;
 import br.com.michelon.softimob.tela.editor.AluguelEditor;
 import br.com.michelon.softimob.tela.editor.VendaEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
+import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 
 import com.google.common.collect.Lists;
 
@@ -30,7 +32,9 @@ public class ComissaoView extends GenericView<Comissao>{
 		atributos = Lists.newArrayList();
 		
 		atributos.add(new ColumnProperties("Nome", "comissionado.nome", 20));
-		atributos.add(new ColumnProperties("Valor", "valor", 10));
+		atributos.add(new ColumnProperties("Venda/Aluguel", "vendaAluguel", 60));
+		atributos.add(new ColumnProperties("Data de Vencimento", "dataVencimento", 10, new DateStringValueFormatter()));
+		atributos.add(new ColumnProperties("Valor", "valor", 10, FormatterHelper.getDefaultValueFormatterToMoney()));
 	}
 
 	@Override
