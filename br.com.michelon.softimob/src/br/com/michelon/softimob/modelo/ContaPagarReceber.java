@@ -207,6 +207,10 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 		return isApagar() ? "A Pagar" : isAReceber() ? "A Receber" : "";
 	}
 	
+	public boolean isJaPagaRecebida(){
+		return getDataPagamento() != null ;
+	}
+	
 	@Override
 	public boolean confirmarFinalizarPendencia() {
 		return false;

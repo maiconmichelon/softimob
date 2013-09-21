@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,10 +23,11 @@ import org.eclipse.ui.IEditorInput;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
-import br.com.michelon.softimob.aplicacao.service.AcontecimentoChamadoService;
 import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.tela.editor.AluguelEditor;
+
+import com.google.common.collect.Lists;
 
 @Entity
 public class ChamadoReforma implements Serializable, Pendencia{
@@ -55,6 +57,9 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	@OneToOne(cascade = CascadeType.ALL)
 	private FinalizacaoChamadoReforma finalizacao;
 	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<AcontecimentoChamado> acontecimentos = Lists.newArrayList();
+	
 	public ChamadoReforma(Aluguel aluguel){
 		this.aluguel = aluguel;
 		
@@ -80,10 +85,6 @@ public class ChamadoReforma implements Serializable, Pendencia{
 
 	public void setProblema(String problema) {
 		this.problema = problema;
-	}
-
-	public List<AcontecimentoChamado> getAcontecimentos() {
-		return new AcontecimentoChamadoService().findByChamadoReforma(this);
 	}
 
 	@Override
@@ -169,6 +170,10 @@ public class ChamadoReforma implements Serializable, Pendencia{
 
 	public void setFinalizacao(FinalizacaoChamadoReforma finalizacao) {
 		this.finalizacao = finalizacao;
+	}
+	
+	public List<AcontecimentoChamado> getAcontecimentos(){
+		return acontecimentos;
 	}
 	
 	@Override

@@ -22,6 +22,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
+
 import br.com.michelon.softimob.aplicacao.annotation.WildCard;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
@@ -199,6 +201,9 @@ public abstract class VendaAluguel implements Serializable{
 	
 	@Override
 	public String toString() {
+		if(getContrato() == null)
+			return StringUtils.EMPTY;
+		
 		StringBuilder sb = new StringBuilder();
 		
 		boolean a = this instanceof Aluguel;

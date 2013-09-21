@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,7 +40,7 @@ public class FinalizacaoChamadoReforma implements Serializable{
 	@Column(nullable = false)
 	private String descricaoConclusao;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ContaPagarReceber> contas = Lists.newArrayList();
 
 	@NotNull(message = "Informe se o chamado foi aceito ou recusado.")

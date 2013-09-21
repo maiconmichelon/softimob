@@ -30,20 +30,10 @@ public class AcontecimentoChamado implements Serializable{
 	@ManyToOne(optional=false)
 	private Funcionario funcionario;
 	
-	@ManyToOne(optional = false)
-	private ChamadoReforma chamadoReforma;
-	
 	@NotEmpty(message = "A descrição do acontecimento não pode ser vazia.")
 	@Column(nullable=false)
 	private String descricao;
 
-	public AcontecimentoChamado(ChamadoReforma chamadoReforma){
-		this.chamadoReforma = chamadoReforma;
-	}
-	
-	@SuppressWarnings("unused")
-	private AcontecimentoChamado(){}
-	
 	public Long getId() {
 		return id;
 	}
@@ -76,14 +66,6 @@ public class AcontecimentoChamado implements Serializable{
 		this.descricao = descricao;
 	}
 	
-	public ChamadoReforma getChamadoReforma() {
-		return chamadoReforma;
-	}
-	
-	public void setChamadoReforma(ChamadoReforma chamadoReforma) {
-		this.chamadoReforma = chamadoReforma;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

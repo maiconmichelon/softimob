@@ -36,6 +36,8 @@ import br.com.michelon.softimob.tela.view.PgtoRecContaView;
 import br.com.michelon.softimob.tela.widget.SucessfulContributionItem;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
@@ -109,7 +111,13 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 			if(!alugueis.isEmpty())
 				sb.append(String.format("%s aluguél(is) para vencer.\n", alugueis.size()));
 			
-			Collection<Pendencia> contasPagarReceber = map.get(ContaPagarReceber.class);
+			//Diferente pois podem haver varios tipos de contas a pagar/receber então se eu pegasse pela classe da problema, quando fosse comissão ele iria ignorar :(
+			Collection<Pendencia> contasPagarReceber = Collections2.filter(pendencias, new Predicate<Pendencia>() {
+				@Override
+				public boolean apply(Pendencia arg0) {
+					return arg0 instanceof ContaPagarReceber;
+				}
+			});
 			if(!contasPagarReceber.isEmpty())
 				sb.append(String.format("%s conta(s) para pagar/receber.\n", contasPagarReceber.size()));
 			

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
@@ -53,13 +54,11 @@ import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
-import br.com.michelon.softimob.aplicacao.service.AcontecimentoChamadoService;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
 import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
-import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.VistoriaService;
 import br.com.michelon.softimob.modelo.AcontecimentoChamado;
@@ -78,23 +77,25 @@ import br.com.michelon.softimob.modelo.ParametrosEmpresa;
 import br.com.michelon.softimob.modelo.VendaAluguel;
 import br.com.michelon.softimob.modelo.Vistoria;
 import br.com.michelon.softimob.tela.binding.updateValueStrategy.UVSHelper;
+import br.com.michelon.softimob.tela.dialog.AcontecimentoChamadoDialog;
 import br.com.michelon.softimob.tela.dialog.AdicionarContaPagarReformaDialog;
 import br.com.michelon.softimob.tela.dialog.ParcelaDialog;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
-import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.NumberTextField2;
 import br.com.michelon.softimob.tela.widget.PhotoComposite;
+import br.com.michelon.softimob.tela.widget.TimeStringValueFormatter;
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
 
 public class AluguelEditor extends GenericEditor<Aluguel>{
 	public static final String ID = "br.com.michelon.softimob.tela.editor.AluguelEditor";
 	
+	private Logger log = Logger.getLogger(getClass());
+	
 	private WritableValue valueVistoria = WritableValue.withValueType(Vistoria.class);
 	private WritableValue valueChamado = WritableValue.withValueType(ChamadoReforma.class);
-	private WritableValue valueAcontecimentoChamado = WritableValue.withValueType(AcontecimentoChamado.class);
 	private WritableValue valueFinalizacaoChamado = WritableValue.withValueType(FinalizacaoChamadoReforma.class);
 	private WritableValue valueComissao = WritableValue.withValueType(Comissao.class);
 	
@@ -110,15 +111,12 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private Text txtDescricaoFinalReforma;
 	private Text txtFuncionarioFinalizacaoReforma;
 	private Text txtFinalizacaoReforma;
-	private Text txtDataAcontecimentoChamado;
 	private Text txtProblemaReforma;
 	private Text txtFuncionarioReforma;
 	private Text txtDataChamado;
 	private Text txtObservacoesVistoria;
 	private Text txtFuncionarioVistoria;
 	private Text txtDataVistoria;
-	private Text txtFuncionarioAndamentoReforma;
-	private Text txtDescricaoAndamentoReforma;
 	private Text txtComissionado;
 	private Text txtModeloContrato;
 	private Text txtValorComissao;
@@ -126,10 +124,10 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private Text txtDataVencimentoComissao;
 
 	private TableViewerBuilder tvbChamadoGeral;
-	private TableViewerBuilder tvbAndamentoChamado;
+	private TableViewerBuilder tvbAcontecimentoChamado;
 	private TableViewerBuilder tvbVistoria;
 	private TableViewer tvVistoria;
-	private TableViewer tvAndamentoChamado;
+	private TableViewer tvAcontecimentoChamado;
 	private TableViewer tvChamadoGeral;
 	private TableViewer tvComissao;
 	private TableViewer tvCheckListAluguel;
@@ -142,6 +140,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private CTabFolder tfItens;
 	private Composite cpChamados;
 	private Composite cpVistoria;
+	private Composite cpComissao;
 
 	public AluguelEditor() {
 		super(Aluguel.class);
@@ -267,13 +266,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		txtValor = moneyTextField.getControl();
 		txtValor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		
 		tfItens = new CTabFolder(parent, SWT.BORDER);
 		tfItens.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
 		tfItens.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
@@ -281,16 +273,16 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		CTabItem tbtmComisso = new CTabItem(tfItens, SWT.NONE);
 		tbtmComisso.setText("Comissão");
 		
-		Composite composite = new Composite(tfItens, SWT.NONE);
-		tbtmComisso.setControl(composite);
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		composite.setLayout(new GridLayout(1, false));
+		cpComissao = new Composite(tfItens, SWT.NONE);
+		tbtmComisso.setControl(cpComissao);
+		cpComissao.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		cpComissao.setLayout(new GridLayout(1, false));
 		
-		Composite composite_1 = new Composite(composite, SWT.NONE);
+		Composite composite_1 = new Composite(cpComissao, SWT.NONE);
 		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 		criarTabelaComissao(composite_1);
 
-		Group grpComisso = new Group(composite, SWT.NONE);
+		Group grpComisso = new Group(cpComissao, SWT.NONE);
 		grpComisso.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		grpComisso.setText("Comissão");
 		grpComisso.setLayout(new GridLayout(4, false));
@@ -371,6 +363,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 				addComissao(valueComissao);
 			}
 		});
+		new Label(grpComisso, SWT.NONE);
 		
 		CTabItem tbtmParcelas = new CTabItem(tfItens, SWT.NONE);
 		tbtmParcelas.setText("Parcelas");
@@ -578,61 +571,42 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 			}
 		});
 		
-		CTabItem tbAndamento = new CTabItem(tfChamado, SWT.NONE);
-		tbAndamento.setText("Andamento");
+		CTabItem tbAcontecimento = new CTabItem(tfChamado, SWT.NONE);
+		tbAcontecimento.setText("Acontecimentos");
 		
 		Composite composite_12 = new Composite(tfChamado, SWT.NONE);
-		tbAndamento.setControl(composite_12);
-		composite_12.setLayout(new GridLayout(4, false));
+		tbAcontecimento.setControl(composite_12);
+		composite_12.setLayout(new GridLayout(2, false));
 		
 		Composite composite_14 = new Composite(composite_12, SWT.NONE);
 		composite_14.setLayout(new GridLayout(1, false));
-		composite_14.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 4, 1));
+		composite_14.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
 		
-		criarTabelaAndamentoChamado(composite_14);
+		criarTabelaAcontecimentosChamado(composite_14);
 		
-		Label lblData_4 = new Label(composite_12, SWT.NONE);
-		lblData_4.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblData_4.setText("Data");
-		
-		DateTimeTextField dateTimeTextField = new DateTimeTextField(composite_12);
-		txtDataAcontecimentoChamado = dateTimeTextField.getControl();
-		txtDataAcontecimentoChamado.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(composite_12, SWT.NONE);
-		new Label(composite_12, SWT.NONE);
-		
-		Label lblFuncionrio_3 = new Label(composite_12, SWT.NONE);
-		lblFuncionrio_3.setText("Funcionário");
-		
-		txtFuncionarioAndamentoReforma = new Text(composite_12, SWT.BORDER);
-		txtFuncionarioAndamentoReforma.setEditable(false);
-		GridData gd_text_27 = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-		gd_text_27.widthHint = 133;
-		txtFuncionarioAndamentoReforma.setLayoutData(gd_text_27);
-		
-		Button btnSelecionar_5 = new Button(composite_12, SWT.NONE);
-		btnSelecionar_5.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar_5, valueAcontecimentoChamado, "funcionario");
-		
-		Button btnt_5 = new Button(composite_12, SWT.NONE);
-		btnt_5.setImage(ImageRepository.REMOVE_16.getImage());
-		btnt_5.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		ListElementDialogHelper.addSelectionToRemoveButton(btnt_5, valueAcontecimentoChamado, "funcionario", Funcionario.class);
-		
-		Label lblDescrio_1 = new Label(composite_12, SWT.NONE);
-		lblDescrio_1.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
-		lblDescrio_1.setText("Descrição");
-		
-		txtDescricaoAndamentoReforma = new Text(composite_12, SWT.BORDER);
-		txtDescricaoAndamentoReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 3, 1));
-		new Label(composite_12, SWT.NONE);
-		new Label(composite_12, SWT.NONE);
-		new Label(composite_12, SWT.NONE);
-		
-		createButtonAddItem(composite_12, new SelectionAdapter() {
+		Button btnAddAcontecimentoChamado = new Button(composite_12, SWT.NONE);
+		btnAddAcontecimentoChamado.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
+		btnAddAcontecimentoChamado.setImage(ImageRepository.ADD_16.getImage());
+		btnAddAcontecimentoChamado.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				addAndamentoChamadoReforma(valueAcontecimentoChamado);
+				AcontecimentoChamadoDialog dialog = new AcontecimentoChamadoDialog();
+				if(dialog.open() == IDialogConstants.OK_ID){
+					((ChamadoReforma) valueChamado.getValue()).getAcontecimentos().add(dialog.getAcontecimentoChamado());
+					tvAcontecimentoChamado.refresh();
+				}
+			}
+		});
+		
+		Button btnRemoverAcontecimentoChamado = new Button(composite_12, SWT.NONE);
+		btnRemoverAcontecimentoChamado.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
+		btnRemoverAcontecimentoChamado.setImage(ImageRepository.REMOVE_16.getImage());
+		btnRemoverAcontecimentoChamado.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				AcontecimentoChamado acc = SelectionHelper.getObject(tvAcontecimentoChamado);
+				((ChamadoReforma) valueChamado.getValue()).getAcontecimentos().remove(acc);
+				tvAcontecimentoChamado.refresh();
 			}
 		});
 		
@@ -721,10 +695,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 				}
 			}
 		});
-		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
 		
 		createButtonAddItem(composite_13, new SelectionAdapter() {
 			@Override
@@ -747,6 +717,18 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		tvCheckListAluguel = criarTabelaCheckList(composite_3);
 	}
 
+	protected void addChamadoReforma(WritableValue value) {
+		ChamadoReforma chamadoReforma = (ChamadoReforma) value.getValue();
+		
+		if(chamadoReforma.getFinalizacao() != null && !validarComMensagem(chamadoReforma.getFinalizacao()))
+			return;
+		
+		addItens(new ChamadoReformaService(), value, tvChamadoGeral, null);
+		
+		valueFinalizacaoChamado.setValue(new FinalizacaoChamadoReforma());
+		tvAcontecimentoChamado.refresh();
+	}
+	
 	private void createPhotoComposite(CTabItem tbtmFotos) {
 		PhotoComposite photoComposite = new PhotoComposite(tbtmFotos.getParent(), SWT.NONE, valueVistoria);
 		tbtmFotos.setControl(photoComposite);
@@ -758,10 +740,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	}
 	
 	private void limparTabelas(Aluguel obj) {
-		if(tvAndamentoChamado == null)
+		if(tvChamadoGeral == null)
 			return;
 		
-		tvAndamentoChamado.getTable().removeAll();
 		tvChamadoGeral.getTable().removeAll();
 		tvComissao.getTable().removeAll();
 		tvVistoria.getTable().removeAll();
@@ -801,34 +782,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		super.saveCurrentObject(service);
 	}
 
-	protected void addChamadoReforma(WritableValue value) {
-		ChamadoReforma chamadoReforma = (ChamadoReforma) value.getValue();
-		
-		if(chamadoReforma.getFinalizacao() != null && !validarComMensagem(chamadoReforma.getFinalizacao()))
-			return;
-		
-		addItens(new ChamadoReformaService(), value, tvChamadoGeral, null);
-		
-		valueAcontecimentoChamado.setValue(new AcontecimentoChamado((ChamadoReforma) valueChamado.getValue()));
-		valueFinalizacaoChamado.setValue(new FinalizacaoChamadoReforma());
-	}
-
-	protected void addAndamentoChamadoReforma(WritableValue value){
-		ChamadoReforma chamadoReforma = (ChamadoReforma)valueChamado.getValue();
-		if(chamadoReforma.getId() == null){
-			DialogHelper.openError("O chamado deve ser salvo primeiro antes de ser adicionado novos acontecimentos a ele.");
-			return;
-		}
-
-		AcontecimentoChamado acontecimento = (AcontecimentoChamado) valueAcontecimentoChamado.getValue();
-
-		if(validarComMensagem(acontecimento)){
-			ChamadoReforma findOne = new ChamadoReformaService().findOne(chamadoReforma.getId());
-			acontecimento.setChamadoReforma(findOne);
-			addItens(new AcontecimentoChamadoService(), valueAcontecimentoChamado, tvAndamentoChamado, true, findOne);
-		}
-	}
-
 	protected void addFinalizacaoChamado(WritableValue value){
 		// O Usuario deve salvar primeiro o chamado de reforma para depois finalizar
 		if(((ChamadoReforma)valueChamado.getValue()).getId() == null){
@@ -841,7 +794,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 			addItens(new ChamadoReformaService(), valueChamado, tvChamadoGeral, null);
 			
 			valueFinalizacaoChamado.setValue(new FinalizacaoChamadoReforma());
-			valueAcontecimentoChamado.setValue(new AcontecimentoChamado((ChamadoReforma) valueChamado.getValue()));
 		}
 	}
 	
@@ -850,7 +802,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		valueComissao.setValue(new Comissao(getCurrentObject()));
 		valueChamado.setValue(new ChamadoReforma(getCurrentObject()));
 		valueVistoria.setValue(new Vistoria(getCurrentObject()));
-		valueAcontecimentoChamado.setValue(new AcontecimentoChamado((ChamadoReforma) valueChamado.getValue()));
 		valueFinalizacaoChamado.setValue(new FinalizacaoChamadoReforma());
 	}
 	
@@ -911,33 +862,75 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				ChamadoReforma selecionado = (ChamadoReforma) SelectionHelper.getObject(tvbChamadoGeral.getTableViewer());
+				
+				if(selecionado == null)
+					return;
+				
 				valueChamado.setValue(selecionado);
 				valueFinalizacaoChamado.setValue(selecionado.getFinalizacao() != null ? selecionado.getFinalizacao() : new FinalizacaoChamadoReforma());
-				tvbAndamentoChamado.setInput(selecionado.getAcontecimentos());
 			}
 		});
 		
 		WidgetHelper.createMenuItemRemover(menu, new SelectionAdapter() {
-			private ChamadoReformaService chamadoService = new ChamadoReformaService();
-			private AcontecimentoChamadoService acontecimentoService = new AcontecimentoChamadoService();
-			
+			@SuppressWarnings("unchecked")
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-//				if()
+				ChamadoReforma chamadoReforma = SelectionHelper.getObject(tvChamadoGeral);
+				if(chamadoReforma == null)
+					return;
+				if(chamadoReforma.getFinalizacao() != null && chamadoReforma.getFinalizacao().getContas() != null){
+					for(ContaPagarReceber conta : chamadoReforma.getFinalizacao().getContas())
+						if(conta.isJaPagaRecebida()){
+							DialogHelper.openWarning("O chamado possui contas que já foram pagas/recebidas, para excluir é necessário estornar as contas primeiramente.");
+							return;
+						}
+				}
+				
+				if(!DialogHelper.openConfirmation("Deseja excluir o chamado de reforma selecionado ?"))
+					return;
+				
+				try {
+					new ChamadoReformaService().removerAtivarOuDesativar(chamadoReforma);
+					
+					java.util.List<ChamadoReforma> input = (java.util.List<ChamadoReforma>) tvChamadoGeral.getInput();
+					input.remove(chamadoReforma);
+					tvChamadoGeral.refresh();
+					
+					valueChamado.setValue(new ChamadoReforma(getCurrentObject()));
+					valueFinalizacaoChamado.setValue(new FinalizacaoChamadoReforma());
+					
+					DialogHelper.openInformation("Chamado de reforma removido com sucesso.");
+				} catch (Exception e1) {
+					log.error("Erro ao remover chamado de reforma.", e1);
+					DialogHelper.openError("Erro ao excluir os chamados de reforma.");
+				}
 			}
 		});
 		
 		tvChamadoGeral = tvbChamadoGeral.getTableViewer();
 	}
 	
-	private void criarTabelaAndamentoChamado(Composite composite){
-		tvbAndamentoChamado = new TableViewerBuilder(composite);
+	private void criarTabelaAcontecimentosChamado(Composite composite){
+		tvbAcontecimentoChamado = new TableViewerBuilder(composite);
 		
-		tvbAndamentoChamado.createColumn("Data").bindToProperty("data").format(new DateStringValueFormatter()).build();
-		tvbAndamentoChamado.createColumn("Funcionário").bindToProperty("funcionario.nome").format(new NullStringValueFormatter()).build();
-		tvbAndamentoChamado.createColumn("Descrição").bindToProperty("descricao").build();
+		tvbAcontecimentoChamado.createColumn("Data").bindToProperty("data").format(new TimeStringValueFormatter()).setPercentWidth(20).build();
+		tvbAcontecimentoChamado.createColumn("Funcionário").bindToProperty("funcionario.nome").format(new NullStringValueFormatter()).setPercentWidth(20).build();
+		tvbAcontecimentoChamado.createColumn("Descrição").bindToProperty("descricao").setPercentWidth(60).build();
 		
-		tvAndamentoChamado = tvbAndamentoChamado.getTableViewer();
+		tvAcontecimentoChamado = tvbAcontecimentoChamado.getTableViewer();
+		
+		Table table = tvbAcontecimentoChamado.getTable();
+		Menu menu = new Menu(table);
+		table.setMenu(menu);
+		
+		WidgetHelper.createMenuItemRemover(menu, new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				AcontecimentoChamado acc = (AcontecimentoChamado) SelectionHelper.getObject(tvAcontecimentoChamado);
+				((ChamadoReforma)valueChamado.getValue()).getAcontecimentos().remove(acc);
+				tvAcontecimentoChamado.refresh();
+			}
+		});
 	}
 	
 	private void criarTabelaVistoria(Composite composite){
@@ -973,6 +966,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		//
 		tvCheckListVistoria.setContentProvider(new ObservableListContentProvider());
 		tvCheckListVistoria.setInput(PojoProperties.list(Vistoria.class, "itensCheckList", ItemCheckList.class).observeDetail(valueVistoria));
+		//
+		tvAcontecimentoChamado.setContentProvider(new ObservableListContentProvider());
+		tvAcontecimentoChamado.setInput(PojoProperties.list(ChamadoReforma.class, "acontecimentos", AcontecimentoChamado.class).observeDetail(valueChamado));
 		//
 		return bindingContext;
 	}
@@ -1064,18 +1060,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		IObservableValue observeTextText_24ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtProblemaReforma);
 		IObservableValue valueProblemaObserveDetailValue = PojoProperties.value(ChamadoReforma.class, "problema", String.class).observeDetail(valueChamado);
 		bindingContext.bindValue(observeTextText_24ObserveWidget, valueProblemaObserveDetailValue, null, null);
-		//
-		IObservableValue observeTextText_10ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataAcontecimentoChamado);
-		IObservableValue valueAcontecimentoChamadoDataObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "data", Date.class).observeDetail(valueAcontecimentoChamado);
-		bindingContext.bindValue(observeTextText_10ObserveWidget, valueAcontecimentoChamadoDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-		//
-		IObservableValue observeTextText_27ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtFuncionarioAndamentoReforma);
-		IObservableValue valueAcontecimentoChamadoFuncionarionomeObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "funcionario.nome", String.class).observeDetail(valueAcontecimentoChamado);
-		bindingContext.bindValue(observeTextText_27ObserveWidget, valueAcontecimentoChamadoFuncionarionomeObserveDetailValue, null, null);
-		//
-		IObservableValue observeTextText_28ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDescricaoAndamentoReforma);
-		IObservableValue valueAcontecimentoChamadoDescricaoObserveDetailValue = PojoProperties.value(AcontecimentoChamado.class, "descricao", String.class).observeDetail(valueAcontecimentoChamado);
-		bindingContext.bindValue(observeTextText_28ObserveWidget, valueAcontecimentoChamadoDescricaoObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_36ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtFinalizacaoReforma);
 		IObservableValue valueChamadoDataFechamentoObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "data", Date.class).observeDetail(valueFinalizacaoChamado);

@@ -18,6 +18,7 @@ public class FormatterHelper {
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	private static SimpleDateFormat sdfPeriodo = new SimpleDateFormat("MM/yyyy");
+	private static SimpleDateFormat sdfHorasMinutos = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	private static DecimalFormat decimalFormat;
 	
 	
@@ -103,6 +104,10 @@ public class FormatterHelper {
 	
 	public static IValueFormatter<BigDecimal, String> getDefaultValueFormatterToMoney(){
 		return getDecimalFormatter();
+	}
+
+	public static SimpleDateFormat getSimpleDateFormatHorasMinutos() {
+		return sdfHorasMinutos;
 	}
 	
 }

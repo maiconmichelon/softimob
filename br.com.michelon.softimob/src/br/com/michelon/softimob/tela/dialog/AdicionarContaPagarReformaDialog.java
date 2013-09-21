@@ -54,14 +54,11 @@ public class AdicionarContaPagarReformaDialog extends TitleAreaDialog{
 	protected Control createDialogArea(Composite parent) {
 		setTitle("Adicionar conta referente a reforma.");
 		setMessage("Informe os valores referente a conta.");
-		parent.setLayout(new GridLayout(1, false));
 		
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout gl_composite = new GridLayout(2, false);
-		gl_composite.verticalSpacing = 10;
-		gl_composite.marginWidth = 10;
-		composite.setLayout(gl_composite);
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		Composite area = (Composite) super.createDialogArea(parent);
+		Composite composite = new Composite(area, SWT.NONE);
+		composite.setLayout(new GridLayout(2, false));
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		Label lblData = new Label(composite, SWT.NONE);
 		lblData.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -96,7 +93,7 @@ public class AdicionarContaPagarReformaDialog extends TitleAreaDialog{
 		
 		initDataBindings();
 	
-		return composite;
+		return area;
 	}
 	
 	protected DataBindingContext initDataBindings() {
@@ -124,4 +121,11 @@ public class AdicionarContaPagarReformaDialog extends TitleAreaDialog{
 	public ContaPagarReceber getConta() {
 		return (ContaPagarReceber) value.getValue();
 	}
+	
+	@Override
+	protected void configureShell(Shell newShell) {
+		newShell.setText("Adicionar conta referente a reforma.");
+		super.configureShell(newShell);
+	}
+	
 }

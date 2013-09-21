@@ -309,7 +309,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 
 	protected Button createButtonAddItem(Composite cp, SelectionListener listener){
 		Button btnAddItem = new Button(cp, SWT.NONE);
-		btnAddItem.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		btnAddItem.setLayoutData(new GridData(SWT.RIGHT, SWT.BOTTOM, false, false, 1, 1));
 		btnAddItem.setImage(ImageRepository.SAVE_16.getImage());
 		btnAddItem.addSelectionListener(listener);
 		return btnAddItem;

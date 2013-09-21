@@ -422,9 +422,9 @@ public class PgtoRecContaView extends ViewPart {
 		tvbContas.createColumn("Origem").setPercentWidth(1).bindToProperty("origem.nome").build();
 		
 		if(isPagamento){
-			tvbContas.createColumn("Valor").setPercentWidth(1).bindToProperty("valor").format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
+			tvbContas.createColumn("Valor").setPercentWidth(1).bindToProperty("valor").alignRight().format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
 			
-			tvbContas.createColumn("Valor com Juros e Descontos").setPercentWidth(1).bindToValue(new IValue() {
+			tvbContas.createColumn("Valor com Juros e Descontos").setPercentWidth(1).alignRight().bindToValue(new IValue() {
 				
 				@Override
 				public void setValue(Object element, Object value) {
@@ -446,7 +446,7 @@ public class PgtoRecContaView extends ViewPart {
 			
 		}
 		
-		tvbContas.createColumn("Juros / Desconto").setPercentWidth(1).bindToValue(new BaseValue<ContaPagarReceber>() {
+		tvbContas.createColumn("Juros / Desconto").setPercentWidth(1).alignRight().bindToValue(new BaseValue<ContaPagarReceber>() {
 			@Override
 			public Object get(ContaPagarReceber element) {
 				return element.getValorJurDescTratado().abs();

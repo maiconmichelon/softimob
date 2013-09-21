@@ -24,13 +24,6 @@ public class PendenciaService {
 		pendencias.addAll(new PropostaService().findPendencias());
 		pendencias.addAll(new ReservaService().findPendencias(dataHoje));
 		
-//		pendencias.addAll(new ContaPagarReceberService().findAll());
-//		pendencias.addAll(new ContratoPrestacaoServicoService().findAll());
-//		pendencias.addAll(new AluguelService().findAll());
-//		pendencias.addAll(new ChamadoReformaService().findAll());
-//		pendencias.addAll(new PropostaService().findAll());
-//		pendencias.addAll(new ReservaService().findAll());
-		
 		return pendencias;
 	}
 
