@@ -125,6 +125,11 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	}
 
 	@Override
+	public boolean confirmarFinalizarPendencia() {
+		return true;
+	}
+	
+	@Override
 	public IEditorInput getEditorInput() {
 		AluguelEditorInput aluguelEditorInput = new AluguelEditorInput();
 		aluguelEditorInput.setModelo(this);

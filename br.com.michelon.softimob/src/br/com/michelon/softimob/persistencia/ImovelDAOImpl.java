@@ -42,9 +42,9 @@ public class ImovelDAOImpl {
 		if(m.getMetroMax() != null)
 			sb.append("AND :metroMax >= i.metragem ");
 		if(m.getValMin() != null)
-			sb.append("AND :valMin <= c.valor ");
+			sb.append("AND :valMin <= c.valorImovel ");
 		if(m.getValMax() != null)
-			sb.append("AND :valMax >= c.valor ");
+			sb.append("AND :valMax >= c.valorImovel ");
 		if(m.getAngariador() != null)
 			sb.append("AND :angariador = i.angariador ");
 		if(m.getProprietario() != null)

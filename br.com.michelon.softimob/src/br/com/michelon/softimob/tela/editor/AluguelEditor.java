@@ -59,6 +59,7 @@ import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
+import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.VistoriaService;
 import br.com.michelon.softimob.modelo.AcontecimentoChamado;
@@ -774,28 +775,30 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 			ParametrosEmpresa parametros = ParametrosEmpresa.getInstance();
 			AluguelService aluguelService = (AluguelService) service;
 			
-			DateMidnight data = new DateMidnight(getCurrentObject().getDataAssinaturaContrato());
-			DateMidnight dataVencimento = new DateMidnight(getCurrentObject().getDataVencimento());
-			
-			Months monthsBetween = Months.monthsBetween(data, dataVencimento);
-
-			Calendar c = Calendar.getInstance();
-			c.setTime(getCurrentObject().getDataAssinaturaContrato());
-			c.set(Calendar.MONTH, c.get(Calendar.MONTH) + 1);
-			c.set(Calendar.DAY_OF_MONTH, parametros.getDiaRecebAluguel());
-			
-			getCurrentObject().getParcelas().addAll(contaService.gerarParcelas(monthsBetween.getMonths(), getCurrentObject().getValor(), c.getTime(), ContaPagarReceber.RECEBER, 
-					getCurrentObject().getDataGeracao(), aluguelService.geraObservacoesContaAluguel(getCurrentObject()), parametros.getTipoContaAluguel()));
-
-			c.set(Calendar.DAY_OF_MONTH, parametros.getDiaRepasseAluguel());
-			
-			getCurrentObject().getParcelas().addAll(contaService.gerarParcelas(monthsBetween.getMonths(), getCurrentObject().getValor(), c.getTime(), ContaPagarReceber.PAGAR, 
-					getCurrentObject().getDataGeracao(), aluguelService.geraObservacoesContaAluguel(getCurrentObject()), parametros.getTipoContaAluguel()));
-			
-			tvParcelas.refresh();
-			
-			super.saveCurrentObject(service);
+			if(parametros.getDiaRecebAluguel() != null && parametros.getDiaRepasseAluguel() != null){
+				DateMidnight data = new DateMidnight(getCurrentObject().getDataAssinaturaContrato());
+				DateMidnight dataVencimento = new DateMidnight(getCurrentObject().getDataVencimento());
+				
+				Months monthsBetween = Months.monthsBetween(data, dataVencimento);
+	
+				Calendar c = Calendar.getInstance();
+				c.setTime(getCurrentObject().getDataAssinaturaContrato());
+				c.set(Calendar.MONTH, c.get(Calendar.MONTH) + 1);
+				c.set(Calendar.DAY_OF_MONTH, parametros.getDiaRecebAluguel());
+				
+				getCurrentObject().getParcelas().addAll(contaService.gerarParcelas(monthsBetween.getMonths(), getCurrentObject().getValor(), c.getTime(), ContaPagarReceber.RECEBER, 
+						getCurrentObject().getDataGeracao(), aluguelService.geraObservacoesContaAluguel(getCurrentObject()), parametros.getTipoContaAluguel()));
+	
+				c.set(Calendar.DAY_OF_MONTH, parametros.getDiaRepasseAluguel());
+				
+				getCurrentObject().getParcelas().addAll(contaService.gerarParcelas(monthsBetween.getMonths(), getCurrentObject().getValor(), c.getTime(), ContaPagarReceber.PAGAR, 
+						getCurrentObject().getDataGeracao(), aluguelService.geraObservacoesContaAluguel(getCurrentObject()), parametros.getTipoContaAluguel()));
+				
+				tvParcelas.refresh();
+			}
 		}
+		
+		super.saveCurrentObject(service);
 	}
 
 	protected void addChamadoReforma(WritableValue value) {
@@ -885,6 +888,8 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		tvbComissao.setInput(getCurrentObject().getComissoes());
 		
+		WidgetHelper.addMenusToTable(tvbComissao, new ComissaoService(), valueComissao);
+		
 		tvComissao = tvbComissao.getTableViewer();
 	}
 	
@@ -909,6 +914,16 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 				valueChamado.setValue(selecionado);
 				valueFinalizacaoChamado.setValue(selecionado.getFinalizacao() != null ? selecionado.getFinalizacao() : new FinalizacaoChamadoReforma());
 				tvbAndamentoChamado.setInput(selecionado.getAcontecimentos());
+			}
+		});
+		
+		WidgetHelper.createMenuItemRemover(menu, new SelectionAdapter() {
+			private ChamadoReformaService chamadoService = new ChamadoReformaService();
+			private AcontecimentoChamadoService acontecimentoService = new AcontecimentoChamadoService();
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+//				if()
 			}
 		});
 		

@@ -148,7 +148,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private Text text_9;
 	private Text text_32;
 	private Text text_33;
-	private Text text_4;
+	private Text txtValorImovel;
 	private Text text_26;
 	private Text txtDescrio;
 	private Text text_30;
@@ -198,14 +198,9 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblCdigo.setText("Código");
 		
 		txtCodigoImovel = new Text(composite, SWT.BORDER);
+		txtCodigoImovel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 7, 1));
 		txtCodigoImovel.setEditable(false);
 		txtCodigoImovel.setEnabled(false);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
 		
 		Label lblTipoImvel = new Label(composite, SWT.NONE);
 		lblTipoImvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -261,9 +256,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblMetragem.setText("Metragem");
 		
 		txtMetragem = new Text(composite, SWT.BORDER);
+		txtMetragem.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		new FormattedText(txtMetragem).setFormatter(new NumberFormatter("##############"));
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
 		
 		Label lblObservaes_3 = new Label(composite, SWT.NONE);
 		lblObservaes_3.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
@@ -782,8 +776,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblValor.setText("Valor do imóvel");
 		
 		MoneyTextField moneyTextField = new MoneyTextField(grpContratoPrestaoDe);
-		text_4 = moneyTextField.getControl();
-		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtValorImovel = moneyTextField.getControl();
+		txtValorImovel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		new Label(grpContratoPrestaoDe, SWT.NONE);
 		
@@ -849,7 +843,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		tvbContatoPrestacaoServico.createColumn("Data").setPercentWidth(10).bindToProperty("dataInicio").format(new DateStringValueFormatter()).build();
 		tvbContatoPrestacaoServico.createColumn("Data de Vencimento").setPercentWidth(10).bindToProperty("dataVencimento").format(new DateStringValueFormatter()).build();
-		tvbContatoPrestacaoServico.createColumn("Valor").setPercentWidth(10).bindToProperty("valor").format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
+		tvbContatoPrestacaoServico.createColumn("Valor de Imóvel").setPercentWidth(10).bindToProperty("valorImovel").format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
 		tvbContatoPrestacaoServico.createColumn("Funcionário").setPercentWidth(20).format(new NullStringValueFormatter()).bindToProperty("funcionario.nome").build();
 		tvbContatoPrestacaoServico.createColumn("Tipo").setPercentWidth(10).bindToProperty("tipo").build();
 		tvbContatoPrestacaoServico.createColumn("Divulgar").bindToProperty("divulgarExtenso").build();
@@ -1072,8 +1066,11 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		if(reserva.getDataReserva().compareTo(reserva.getDataVencimento()) > 0)
 			throw new ValidationException("A data de vencimento não pode ser menor que a data da reserva");
-		if(!reservaService.findIntersecao(reserva).isEmpty())
-			throw new ValidationException("Já existe uma reserva entre que acaba ou começa entre os mesmos dias.");
+
+		List<Reserva> intersecao = reservaService.findIntersecao(reserva);
+		for(Reserva i : intersecao)
+			if(!i.equals(reserva))
+				throw new ValidationException("Já existe uma reserva entre que acaba ou começa entre os mesmos dias.");
 		
 		addItens(reservaService, valueReserva, tvReservas, getCurrentObject().getReservas());
 	}
@@ -1290,8 +1287,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		IObservableValue valueContratoDataVencimentoObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "dataVencimento", Date.class).observeDetail(valueContrato);
 		bindingContext.bindValue(observeTextText_16ObserveWidget, valueContratoDataVencimentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
-		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
-		IObservableValue valueContratoValorObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "valor", BigDecimal.class).observeDetail(valueContrato);
+		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtValorImovel);
+		IObservableValue valueContratoValorObserveDetailValue = PojoProperties.value(ContratoPrestacaoServico.class, "valorImovel", BigDecimal.class).observeDetail(valueContrato);
 		bindingContext.bindValue(observeTextText_4ObserveWidget, valueContratoValorObserveDetailValue, null, null);
 		//
 		IObservableValue observeSelectionBtnDivulgarObserveWidget = WidgetProperties.selection().observe(btnDivulgar);

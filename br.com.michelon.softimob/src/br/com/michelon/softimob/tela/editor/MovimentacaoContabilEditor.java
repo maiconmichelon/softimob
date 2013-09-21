@@ -157,7 +157,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		lblHistrico.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblHistrico.setText("Histórico");
 
-		text_4 = new Text(parent, SWT.BORDER);
+		text_4 = new Text(parent, SWT.BORDER | SWT.MULTI);
 		GridData gd_text_4 = new GridData(SWT.FILL, SWT.FILL, true, false, 7, 1);
 		gd_text_4.heightHint = 39;
 		text_4.setLayoutData(gd_text_4);
@@ -171,7 +171,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 			public void widgetSelected(SelectionEvent e) {
 				MovimentacaoContabil mov = getCurrentObject();
 				ModeloLancamentos mod = (ModeloLancamentos) valueModeloLcto.getValue();
-
+				
 				if (mod.getContaCredito() == null && mod.getContaDebito() == null) {
 					DialogHelper.openWarning("Informe pelo menos uma conta");
 					return;
@@ -381,6 +381,22 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
+		IObservableValue valueModeloLctoValorObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "valor", BigDecimal.class).observeDetail(valueModeloLcto);
+		bindingContext.bindValue(observeTextText_1ObserveWidget, valueModeloLctoValorObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
+		IObservableValue valueModeloLctoContaDebitoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "contaDebito", PlanoConta.class).observeDetail(valueModeloLcto);
+		bindingContext.bindValue(observeTextText_2ObserveWidget, valueModeloLctoContaDebitoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_3);
+		IObservableValue valueModeloLctoContaCreditoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "contaCredito", PlanoConta.class).observeDetail(valueModeloLcto);
+		bindingContext.bindValue(observeTextText_3ObserveWidget, valueModeloLctoContaCreditoObserveDetailValue, null, null);
+		//
+		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
+		IObservableValue valueModeloLctoHistoricoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "historico", String.class).observeDetail(valueModeloLcto);
+		bindingContext.bindValue(observeTextText_4ObserveWidget, valueModeloLctoHistoricoObserveDetailValue, null, null);
+		//
 		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
 		IObservableValue valueIdObserveDetailValue = PojoProperties.value(MovimentacaoContabil.class, "id", Long.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueIdObserveDetailValue, null, null);
@@ -388,24 +404,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataLancamento);
 		IObservableValue valueModeloLctoDataLancamentoObserveDetailValue = PojoProperties.value(MovimentacaoContabil.class, "data", Date.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_5ObserveWidget, valueModeloLctoDataLancamentoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
-		// //TODO data da movimentao deve ser somente setada no momento que for
-		// salva, verificando se a data de todos os lancamentos sao iguais
-		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_1);
-		IObservableValue valueModeloLctoValorObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "valor", BigDecimal.class).observeDetail(valueModeloLcto);
-		bindingContext.bindValue(observeTextText_1ObserveWidget, valueModeloLctoValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
-		//
-		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_2);
-		IObservableValue valueModeloLctoContaDebitoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "contaDebito.codigoDescricao", PlanoConta.class).observeDetail(valueModeloLcto);
-		bindingContext.bindValue(observeTextText_2ObserveWidget, valueModeloLctoContaDebitoObserveDetailValue, null, null);
-		//
-		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_3);
-		IObservableValue valueModeloLctoContaCreditoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "contaCredito.codigoDescricao", PlanoConta.class).observeDetail(valueModeloLcto);
-		bindingContext.bindValue(observeTextText_3ObserveWidget, valueModeloLctoContaCreditoObserveDetailValue, null, null);
-		//
-		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
-		IObservableValue valueModeloLctoHistoricoObserveDetailValue = PojoProperties.value(ModeloLancamentos.class, "historico", String.class).observeDetail(valueModeloLcto);
-		bindingContext.bindValue(observeTextText_4ObserveWidget, valueModeloLctoHistoricoObserveDetailValue, null, null);
-		//
+
 		IObservableValue observeSingleSelectionTableViewerDebito = ViewerProperties.input().observe(tvLancamentosDebito);
 		IObservableValue valueLancamentosDebitoObserveDetailValue = PojoProperties.value(MovimentacaoContabil.class, "lancamentos", List.class).observeDetail(value);
 		bindingContext.bindValue(observeSingleSelectionTableViewerDebito, valueLancamentosDebitoObserveDetailValue, null, null);
@@ -416,5 +415,5 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		//
 		return bindingContext;
 	}
-
+	
 }

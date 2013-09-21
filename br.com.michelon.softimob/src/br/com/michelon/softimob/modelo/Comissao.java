@@ -46,7 +46,5 @@ public class Comissao extends ContaPagarReceber{
 	public void setVendaAluguel(VendaAluguel vendaAluguel) {
 		this.vendaAluguel = vendaAluguel;
 	}
-
-	
 	
 }

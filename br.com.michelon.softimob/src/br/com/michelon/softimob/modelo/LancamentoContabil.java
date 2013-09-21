@@ -157,13 +157,17 @@ public class LancamentoContabil implements Serializable{
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		if (this == obj)
+			return true;
 		LancamentoContabil other = (LancamentoContabil) obj;
+		
+		if(id == null && other.id == null)
+			return tipo != null && tipo.equals(other.tipo) && valor != null && valor.equals(other.valor) && conta != null && conta.equals(other.conta);
+		
 		if (id == null) {
 			if (other.id != null)
 				return false;

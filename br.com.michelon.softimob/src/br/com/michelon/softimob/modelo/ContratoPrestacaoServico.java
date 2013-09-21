@@ -49,7 +49,7 @@ public class ContratoPrestacaoServico implements Pendencia{
 	private Long id;
 	
 	@Column(precision = 14, scale = 2)
-	private BigDecimal valor = BigDecimal.ZERO;
+	private BigDecimal valorImovel = BigDecimal.ZERO;
 	
 	@NotNull(message="Informe o tipo do contrato.")
 	@Column(nullable=false)
@@ -83,7 +83,7 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@Temporal(TemporalType.DATE)
 	private Date dataFechamento;
 	
-	@NotNull(message = "Selecione o tipo do contrato")
+	@NotNull(message = "Selecione o modelo de contrato.")
 	@ManyToOne(optional = false)
 	private ModeloContrato modeloContrato;
 	
@@ -122,10 +122,6 @@ public class ContratoPrestacaoServico implements Pendencia{
 		this.imovel = imovel;
 	}
 
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
-	}
-
 	@Override
 	public Date getDataGeracao() {
 		return dataInicio;
@@ -151,10 +147,17 @@ public class ContratoPrestacaoServico implements Pendencia{
 
 	@Override
 	public String getDescricao() {
-		// TODO Auto-generated method stub
-		return null;
+		return String.format("Contrato de prestação de serviço do %s", getImovel().getDescricao());
 	}
 
+	public BigDecimal getValorImovel() {
+		return valorImovel;
+	}
+	
+	public void setValorImovel(BigDecimal valorImovel) {
+		this.valorImovel = valorImovel;
+	}
+	
 	@Override
 	public String getIdEditor() {
 		return ImovelEditor.ID;
@@ -169,7 +172,7 @@ public class ContratoPrestacaoServico implements Pendencia{
 
 	@Override
 	public BigDecimal getValor() {
-		return this.valor;
+		return null;
 	}
 
 	public Boolean getResolvido() {
@@ -219,6 +222,11 @@ public class ContratoPrestacaoServico implements Pendencia{
 	
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+	
+	@Override
+	public boolean confirmarFinalizarPendencia() {
+		return true;
 	}
 	
 	private transient static ContratoPrestacaoServicoService c;

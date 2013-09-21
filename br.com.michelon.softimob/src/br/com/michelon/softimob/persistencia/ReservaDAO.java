@@ -12,7 +12,7 @@ public interface ReservaDAO extends CrudRepository<Reserva, Long>{
 
 	List<Reserva> findByImovel(Imovel imovel);
 
-	List<Reserva> findByResolvidoFalse();
+	List<Reserva> findByResolvidoFalseAndDataVencimentoLessThan(Date dataHoje);
 
 	List<Reserva> findByDataVencimentoAfterAndImovelEquals(Date data, Imovel imovel);
 	

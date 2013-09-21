@@ -61,6 +61,8 @@ public class EnderecoGroup {
 	private RuaService ruaService = new RuaService();
 	private ComboViewer cvUF;
 
+	private DataBindingContext context;
+
 	public EnderecoGroup(Composite parent, Endereco endereco, int style) {
 		createComponents(parent, style);
 
@@ -213,7 +215,11 @@ public class EnderecoGroup {
 		txtComplemento.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(control, SWT.NONE);
 
-		initDataBindings();
+		context = initDataBindings();
+	}
+	
+	private void updateTargets(){
+		context.updateTargets();
 	}
 
 	protected Rua cadastrarCep(CEP cep) {
@@ -325,7 +331,12 @@ public class EnderecoGroup {
 	private void selecionarRua(Rua rua) {
 		selecionarBairro(rua.getBairro());
 		cvRuas.setInput(ruaService.findRuasByBairro(rua.getBairro()));
-		cvRuas.setSelection(new StructuredSelection(rua));
+
+		if(getEndereco() == null)
+			return ;
+		
+		getEndereco().setRua(rua);
+		updateTargets();
 	}
 
 	private void selecionarBairro(Bairro bairro) {

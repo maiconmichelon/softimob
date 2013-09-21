@@ -74,7 +74,7 @@ public class PalavrasChavesView extends ViewPart {
 		
 		GenericXViewer<Class<? extends PalavraChave>> xviewer = new GenericXViewer<Class<? extends PalavraChave>>(composite, SWT.BORDER, columns, contentProvider);
 		xviewer.setInput(Arrays.asList(Aluguel.class, Venda.class, ContratoPrestacaoServico.class));
-		
+
 		createActions();
 		initializeToolBar();
 		initializeMenu();

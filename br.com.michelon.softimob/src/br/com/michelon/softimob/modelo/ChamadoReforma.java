@@ -2,6 +2,7 @@ package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -92,12 +93,22 @@ public class ChamadoReforma implements Serializable, Pendencia{
 
 	@Override
 	public Date getDataVencimento() {
+		ParametrosEmpresa param = ParametrosEmpresa.getInstance();
+		if(param.getDiasFinalizacaoReforma() != null){
+			Calendar c = Calendar.getInstance();
+			
+			c.setTime(getData());
+			c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + param.getDiasFinalizacaoReforma());
+			
+			return c.getTime();
+		}
+		
 		return null;
 	}
 
 	@Override
 	public String getDescricao() {
-		return "Chamado de Reforma"; 
+		return String.format("Chamado de Reforma de %s do %s", getAluguel().getCliente(), getAluguel().getContrato().getImovel().getDescricao()); 
 	}
 
 	public Date getData() {
@@ -134,13 +145,14 @@ public class ChamadoReforma implements Serializable, Pendencia{
 
 	@Override
 	public BigDecimal getValor() {
-		return BigDecimal.ZERO;
+		return null;
 	}
 
 	@Override
 	public Date getDataFechamento() {
-		// TODO Auto-generated method stub
-		return null;
+		if(finalizacao == null)
+			return null;
+		return finalizacao.getData();
 	}
 	
 	public Aluguel getAluguel() {
@@ -157,6 +169,11 @@ public class ChamadoReforma implements Serializable, Pendencia{
 
 	public void setFinalizacao(FinalizacaoChamadoReforma finalizacao) {
 		this.finalizacao = finalizacao;
+	}
+	
+	@Override
+	public boolean confirmarFinalizarPendencia() {
+		return false;
 	}
 	
 	private transient static ChamadoReformaService c;

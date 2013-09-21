@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.modelo.Reserva;
 import br.com.michelon.softimob.persistencia.ReservaDAO;
@@ -29,8 +28,8 @@ public class ReservaService extends GenericService<Reserva>{
 		return getRepository().findByImovel(imovel);
 	}
 
-	public List<Reserva> findPendencias(){
-		return getRepository().findByResolvidoFalse();
+	public List<Reserva> findPendencias(Date dataHoje){
+		return getRepository().findByResolvidoFalseAndDataVencimentoLessThan(dataHoje);
 	}
 	
 	public List<Reserva> findByDataVencimentoAfter(Date data, Imovel imovel){
@@ -46,13 +45,11 @@ public class ReservaService extends GenericService<Reserva>{
 	}
 	
 	public void finalizarPendencia(Reserva reserva) {
-		if (DialogHelper.openConfirmation("Tem certeza que deseja finalizar a reserva ?")) {
-			try {
-				reserva.setResolvido(true);
-				salvar(reserva);
-			} catch (Exception e) {
-				log.error("Erro ao finalizar aluguel como pendencia.", e);
-			}
+		try {
+			reserva.setResolvido(true);
+			salvar(reserva);
+		} catch (Exception e) {
+			log.error("Erro ao finalizar aluguel como pendencia.", e);
 		}
 	}
 

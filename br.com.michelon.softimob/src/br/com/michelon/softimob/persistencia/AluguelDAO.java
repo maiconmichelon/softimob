@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.persistencia;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,6 @@ public interface AluguelDAO extends CrudRepository<Aluguel, Long>, Serializable{
 	@Query(value="SELECT a FROM Aluguel a WHERE a.contrato.imovel = :imovel")
 	List<Aluguel> findByImovel(@Param(value = "imovel")Imovel imovel);
 	
-	List<Pendencia> findByResolvidoFalse();
+	List<Pendencia> findByResolvidoFalseAndDataVencimentoLessThan(Date dataHoje);
 	
 }

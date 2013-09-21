@@ -1,5 +1,6 @@
 package br.com.michelon.softimob.tela.editor;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -29,6 +30,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
@@ -104,13 +108,22 @@ public class TipoComodoEditor extends GenericEditor<TipoComodo>{
 						if(obj == null)
 							return;
 						
+						List<TipoImovelTipoComodo> tipoImovelTipoComodos = ((TipoComodo)value.getValue()).getTipoImovelTipoComodo();
+						Collection<TipoImovel> tipoimoveis = Collections2.transform(tipoImovelTipoComodos, new Function<TipoImovelTipoComodo, TipoImovel>() {
+							@Override
+							public TipoImovel apply(TipoImovelTipoComodo arg0) {
+								return arg0.getTipoImovel();
+							}
+						});
+						
+						if(tipoimoveis.contains(obj))
+							return;
+						
 						TipoImovelTipoComodo tipoImovelTipoComodo = new TipoImovelTipoComodo();
 						tipoImovelTipoComodo.setTipoImovel((TipoImovel) obj);
 						tipoImovelTipoComodo.setPreSelecionado(true);
 						
-						List<TipoImovelTipoComodo> tipoImovelTipoComodos = ((TipoComodo)value.getValue()).getTipoImovelTipoComodo();
-						if(!tipoImovelTipoComodos.contains(tipoImovelTipoComodo))
-							tipoImovelTipoComodos.add(tipoImovelTipoComodo);
+						tipoImovelTipoComodos.add(tipoImovelTipoComodo);
 						
 						tvComodo.refresh();
 					}

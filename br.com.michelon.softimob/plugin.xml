@@ -118,7 +118,7 @@
             class="br.com.michelon.softimob.tela.view.MovimentacaoContabilView"
             icon="icons/movimentacao/movimentacao16.png"
             id="br.com.michelon.softimob.tela.view.MovimentacaoContabilView"
-            name="Movimentações"
+            name="Movimentações Contábeis"
             restorable="true">
       </view>
       <view
@@ -561,7 +561,7 @@
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/movimentacao/movimentacao16.png"
-                  label="Movimentações"
+                  label="Movimentações Contábeis"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
@@ -771,7 +771,7 @@
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/movimentacao/movimentacao16.png"
-                  label="Movimentações"
+                  label="Movimentações Contábeis"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
@@ -905,7 +905,7 @@
             default="false"
             icon="icons/movimentacao/movimentacao16.png"
             id="br.com.michelon.softimob.tela.editor.MovimentacaoContabilEditor"
-            name="Movimentações">
+            name="Movimentações Contábeis">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.ParametrosEmpresaEditor"

@@ -198,9 +198,14 @@ public class Proposta implements Serializable, Pendencia{
 
 	@Override
 	public String getDescricao() {
-		return "Proposta";
+		return String.format("Proposta de %s para %s referente ao %s", getCliente().getNome(), getImovel().getProprietario().getNome(), getImovel().getDescricao());
 	}
 
+	@Override
+	public boolean confirmarFinalizarPendencia() {
+		return false;
+	}
+	
 	@Override
 	public String getIdEditor() {
 		return ImovelEditor.ID;

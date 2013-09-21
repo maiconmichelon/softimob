@@ -174,7 +174,7 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 
 	@Override
 	public String getDescricao() {
-		return "Conta " + getTipoExtenso() + " originada de "+ getTipoExtenso();
+		return "Conta a " + (isApagar() ? "pagar" : "receber") + " originada de "+ getOrigem().getNome();
 	}
 
 	@Override
@@ -206,6 +206,11 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	public String getTipoExtenso(){
 		return isApagar() ? "A Pagar" : isAReceber() ? "A Receber" : "";
 	}
+	
+	@Override
+	public boolean confirmarFinalizarPendencia() {
+		return false;
+	} 
 	
 	public BigDecimal getValorMovimentacao(){
 		return getValor().add(getValorJurDescZeroCasoNegativo());

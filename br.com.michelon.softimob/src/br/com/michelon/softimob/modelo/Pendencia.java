@@ -30,4 +30,6 @@ public interface Pendencia {
 	
 	void finalizarPendencia() throws Exception;
 	
+	boolean confirmarFinalizarPendencia();
+	
 }

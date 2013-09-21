@@ -33,4 +33,16 @@ public class DateHelper {
 		return c.getTime();
 	}
 	
+	public static Date zerarHoraMinutos(Date data){
+		Calendar c = Calendar.getInstance();
+		
+		c.setTime(data);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+		
+		return c.getTime();
+	}
+	
 }

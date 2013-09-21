@@ -18,23 +18,18 @@ public class GenericXViewer<T> extends XViewer {
 
 		setLabelProvider(new GenericXViewerLabelProvider(this));
 		setContentProvider(contentProvider);
-
+		
 		cols = Maps.uniqueIndex(columns, new Function<GenericXViewerColumn, String>() {
 			public String apply(GenericXViewerColumn from) {
 				return from.getId();
 			}
 		});
-	}
-
-	public GenericXViewer(Composite parent, int style, List<GenericXViewerColumn> columns, GenericXViewerContentProvider contentProvider, GenericXViewerLabelProvider labelProvider) {
-		super(parent, style, new GenericXViewerFactory(columns));
-
-		setLabelProvider(labelProvider);
-		setContentProvider(contentProvider);
+		
+		getMenuManager().dispose();
 	}
 
 	public GenericXViewerColumn getGenericXViewerColumn(String id) {
 		return cols.get(id);
 	}
-
+	
 }

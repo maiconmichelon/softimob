@@ -34,7 +34,7 @@ public class ContratoPrestacaoServicoView extends GenericView<ContratoPrestacaoS
 		atributos.add(new ColumnProperties("Imóvel", "imovel", 20));
 		atributos.add(new ColumnProperties("Data", "dataInicio", 8, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Data de Vencimento", "dataVencimento", 8, new DateStringValueFormatter()));
-		atributos.add(new ColumnProperties("Valor", "valor", 8, FormatterHelper.getDefaultValueFormatterToMoney()));
+		atributos.add(new ColumnProperties("Valor do Imóvel", "valorImovel", 8, FormatterHelper.getDefaultValueFormatterToMoney()));
 		atributos.add(new ColumnProperties("Funcionário", "funcionario.nome", 8, new NullStringValueFormatter()));
 		atributos.add(new ColumnProperties("Tipo", "tipo", 8));
 		atributos.add(new ColumnProperties("Divulgar", "divulgar", 4, new IValueFormatter<Boolean, String>() {

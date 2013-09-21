@@ -26,6 +26,8 @@ import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.helper.DateHelper;
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PendenciaService;
@@ -60,7 +62,13 @@ public class PendenciaView extends GenericView<Pendencia>{
 			public void widgetSelected(SelectionEvent e) {
 				try {
 					Pendencia pendencia = getSelecionado();
+
+					if(pendencia.confirmarFinalizarPendencia() && !DialogHelper.openConfirmation("Deseja finalizar a pendência ?"))
+						return;
+					
 					pendencia.finalizarPendencia();
+					
+					atualizar();
 				} catch (Exception e1) {
 					log.error("Erro ao finalizar pendencia");
 				}
@@ -165,6 +173,8 @@ public class PendenciaView extends GenericView<Pendencia>{
 			@Override
 			public String getText(Object element) {
 				Pendencia p = (Pendencia) element;
+				if(p.getValor() == null)
+					return StringUtils.EMPTY;
 				return FormatterHelper.getDefaultValueFormatterToMoney().format(p.getValor());
 			}
 			
@@ -197,13 +207,13 @@ public class PendenciaView extends GenericView<Pendencia>{
 	}
 	
 	private Color COLOR_A_VENCER = SWTResourceManager.getColor(255, 165, 0);
-	private Color COLOR_VENCIDA = SWTResourceManager.getColor(255, 215, 0);
+	private Color COLOR_VENCIDA = SWTResourceManager.getColor(SWT.COLOR_RED);
 	
 	public Color getColorPendencia(Pendencia pendencia) {
 		Calendar c = Calendar.getInstance();
 		if(pendencia.getDataVencimento() == null)
 			return COLOR_A_VENCER;
-		if(pendencia.getDataVencimento().compareTo(c.getTime()) < 0)
+		if(pendencia.getDataVencimento().compareTo(DateHelper.zerarHoraMinutos(c.getTime())) < 0)
 			return COLOR_VENCIDA;
 		else{
 			c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) - 10);

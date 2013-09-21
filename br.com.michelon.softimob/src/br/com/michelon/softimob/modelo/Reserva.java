@@ -141,9 +141,14 @@ public class Reserva implements Serializable, Pendencia{
 
 	@Override
 	public String getDescricao() {
-		return "Reserva";
+		return String.format("Reserva de %s do %s", getCliente().getNome() ,getImovel().getDescricao());
 	}
 
+	@Override
+	public boolean confirmarFinalizarPendencia() {
+		return true;
+	}
+	
 	@Override
 	public String getIdEditor() {
 		return ImovelEditor.ID;

@@ -194,6 +194,10 @@ public class Imovel implements Serializable, ContainsPhotos{
 		return service.sizeImages(this);
 	}
 	
+	public String getDescricao() {
+		return String.format("%s, código %s localizado em %s.", getTipo().getNome(), getId(), getEndereco().toString());
+	}
+	
 	@Override
 	public String toString() {
 		return this.id + " - " + this.endereco.toString() ;

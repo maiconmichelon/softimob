@@ -137,8 +137,10 @@ public class ContaPagarReceberEditor extends GenericEditor<ContaPagarReceber> {
 		lblObservaes.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblObservaes.setText("Observações");
 		
-		text_4 = new Text(parent, SWT.BORDER);
-		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text_4 = new Text(parent, SWT.BORDER | SWT.MULTI);
+		GridData gd_text_4 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		gd_text_4.heightHint = 81;
+		text_4.setLayoutData(gd_text_4);
 		new Label(parent, SWT.NONE);
 	}
 	
