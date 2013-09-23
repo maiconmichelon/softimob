@@ -16,7 +16,8 @@ public class TipoImovelService extends GenericService<TipoImovel>{
 		return (TipoImovelDAO) super.getRepository();
 	}
 	
-	public List<TipoImovel> findAtivos() {
+	@Override
+	public List<TipoImovel> findAtivados() {
 		return getRepository().findAtivo(true);
 	}
 	

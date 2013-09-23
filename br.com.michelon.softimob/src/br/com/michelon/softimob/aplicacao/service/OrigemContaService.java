@@ -16,7 +16,8 @@ public class OrigemContaService extends GenericService<OrigemConta>{
 		return (OrigemContaDAO) super.getRepository();
 	}
 	
-	public List<OrigemConta> findAtivos() {
+	@Override
+	public List<OrigemConta> findAtivados() {
 		return getRepository().findAtivos(true);
 	}
 	

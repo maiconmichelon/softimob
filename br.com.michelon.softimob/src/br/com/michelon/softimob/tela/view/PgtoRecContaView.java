@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -60,8 +61,10 @@ import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
+import br.com.michelon.softimob.aplicacao.service.OrigemContaService;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
+import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.tela.dialog.ValidationErrorDialog;
 import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
@@ -139,6 +142,7 @@ public class PgtoRecContaView extends ViewPart {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void createPartControl(Composite parent) {
 		
@@ -150,11 +154,11 @@ public class PgtoRecContaView extends ViewPart {
 		
 		Composite cpPrincipal = formToolkit.createComposite(frmContasAPagarreceber.getBody(), SWT.NONE);
 		formToolkit.paintBordersFor(cpPrincipal);
-		cpPrincipal.setLayout(new GridLayout(1, false));
+		cpPrincipal.setLayout(new GridLayout(2, false));
 		
 		Composite composite_4 = new Composite(cpPrincipal, SWT.NONE);
-		composite_4.setLayout(new GridLayout(6, false));
-		composite_4.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		composite_4.setLayout(new GridLayout(5, false));
+		composite_4.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 		formToolkit.adapt(composite_4);
 		formToolkit.paintBordersFor(composite_4);
 		
@@ -165,9 +169,7 @@ public class PgtoRecContaView extends ViewPart {
 		
 		dtInicial = new DateTextField(composite_4);
 		text_1 = dtInicial.getControl();
-		GridData gd_text_1 = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-		gd_text_1.widthHint = 88;
-		text_1.setLayoutData(gd_text_1);
+		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblAt = new Label(composite_4, SWT.NONE);
 		lblAt.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -176,11 +178,7 @@ public class PgtoRecContaView extends ViewPart {
 		
 		dtFinal = new DateTextField(composite_4);
 		text_2 = dtFinal.getControl();
-		GridData gd_text_2 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_text_2.widthHint = 95;
-		text_2.setLayoutData(gd_text_2);
-		
-		setarDatas();
+		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnBuscar = new Button(composite_4, SWT.NONE);
 		btnBuscar.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
@@ -193,9 +191,9 @@ public class PgtoRecContaView extends ViewPart {
 				buscar();
 			}
 		});
-		new Label(composite_4, SWT.NONE);
 		
-		formToolkit.createLabel(composite_4, "Filtro", SWT.NONE);
+		Label label = formToolkit.createLabel(composite_4, "Filtro", SWT.NONE);
+		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		
 		txtFiltro = new Text(composite_4, SWT.BORDER);
 		GridData gd_text = new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1);
@@ -212,22 +210,47 @@ public class PgtoRecContaView extends ViewPart {
 			}
 		});
 		
-		final ComboViewer comboViewer = new ComboViewer(composite_4, SWT.READ_ONLY);
-		Combo combo = comboViewer.getCombo();
-		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
-		comboViewer.setInput(Arrays.asList(ContaFilter.TODAS, ContaFilter.PAGAR, ContaFilter.RECEBER));
-		comboViewer.setSelection(new StructuredSelection(ContaFilter.TODAS));
-		comboViewer.addPostSelectionChangedListener(new ISelectionChangedListener() {
+		Label lblSituao = formToolkit.createLabel(composite_4, "Situação", SWT.NONE);
+		lblSituao.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		
+		final ComboViewer cvStatus = new ComboViewer(composite_4, SWT.READ_ONLY);
+		cvStatus.setContentProvider(ArrayContentProvider.getInstance());
+		cvStatus.setInput(Arrays.asList(ContaFilter.TODAS, ContaFilter.PAGAR, ContaFilter.RECEBER));
+		cvStatus.setSelection(new StructuredSelection(ContaFilter.TODAS));
+		cvStatus.addPostSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				contaFilter.setStatus((String) SelectionHelper.getObject(comboViewer.getSelection()));
+				contaFilter.setStatus((String) SelectionHelper.getObject(cvStatus.getSelection()));
 				tvbContaPgto.getTableViewer().refresh();
 			}
 		});
 		
+		Label lblTipo = new Label(composite_4, SWT.NONE);
+		lblTipo.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		formToolkit.adapt(lblTipo, true, true);
+		lblTipo.setText("Tipo");
+		
+		final ComboViewer cvTipo = new ComboViewer(composite_4, SWT.READ_ONLY);
+		Combo cmbTipo = cvTipo.getCombo();
+		cmbTipo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		formToolkit.paintBordersFor(cmbTipo);
+		cvTipo.setContentProvider(ArrayContentProvider.getInstance());
+		List findAtivados = new OrigemContaService().findAtivados();
+		findAtivados.add(0, "");
+		cvTipo.setInput(findAtivados);
+		cvTipo.addPostSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				Object object = SelectionHelper.getObject(cvTipo.getSelection());
+				contaFilter.setOrigemConta((OrigemConta) (object instanceof OrigemConta ? object : null));
+				tvbContaPgto.getTableViewer().refresh();
+			}
+		});
+		
+		setarDatas();
+		
 		tfPrincipal = new CTabFolder(cpPrincipal, SWT.BORDER);
-		tfPrincipal.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		tfPrincipal.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		formToolkit.adapt(tfPrincipal);
 		formToolkit.paintBordersFor(tfPrincipal);
 		tfPrincipal.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
@@ -270,9 +293,7 @@ public class PgtoRecContaView extends ViewPart {
 		
 		dtBaixa = new DateTextField(composite_3);
 		txtDataBaixa = dtBaixa.getControl();
-		GridData gd_text_11 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_text_11.widthHint = 79;
-		txtDataBaixa.setLayoutData(gd_text_11);
+		txtDataBaixa.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_3, SWT.NONE);
 		new Label(composite_3, SWT.NONE);
 		
@@ -297,7 +318,6 @@ public class PgtoRecContaView extends ViewPart {
 		btnGerarLanamentos.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnGerarLanamentos.setText("Gerar Lançamentos");
 		btnGerarLanamentos.addSelectionListener(new SelectionAdapter() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				gerarLancamentos();
@@ -322,6 +342,53 @@ public class PgtoRecContaView extends ViewPart {
 		formToolkit.paintBordersFor(composite_1);
 		
 		tvbEstorno = criarTabelaContas(false, composite_1);
+		
+		{
+			tfPagamento.setSelection(0);
+			tfPrincipal.setSelection(0);
+		}
+		GridData gd_text_11 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text_11.widthHint = 79;
+		
+		Group group = new Group(cpPrincipal, SWT.NONE);
+		group.setLayout(new GridLayout(3, false));
+		group.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, false, 1, 1));
+		formToolkit.adapt(group);
+		formToolkit.paintBordersFor(group);
+		
+		Button btnTodas = new Button(group, SWT.RADIO);
+		btnTodas.setSelection(true);
+		formToolkit.adapt(btnTodas, true, true);
+		btnTodas.setText("Todas");
+		btnTodas.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				contaFilter.setVencidaNaoVencida(ContaFilter.TODAS);
+				tvbContaPgto.getTableViewer().refresh();
+			}
+		});
+		
+		Button btnVencidas = new Button(group, SWT.RADIO);
+		formToolkit.adapt(btnVencidas, true, true);
+		btnVencidas.setText("Vencidas");
+		btnVencidas.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				contaFilter.setVencidaNaoVencida(ContaFilter.VENCIDA);
+				tvbContaPgto.getTableViewer().refresh();
+			}
+		});
+		
+		Button btnAVencer = new Button(group, SWT.RADIO);
+		formToolkit.adapt(btnAVencer, true, true);
+		btnAVencer.setText("A vencer");
+		btnAVencer.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				contaFilter.setVencidaNaoVencida(ContaFilter.A_VENCER);
+				tvbContaPgto.getTableViewer().refresh();
+			}
+		});
 		
 		Button btnBaixarConta = new Button(cpPrincipal, SWT.NONE);
 		btnBaixarConta.setImage(ImageRepository.FINALIZAR_16.getImage());
@@ -348,11 +415,6 @@ public class PgtoRecContaView extends ViewPart {
 
 		value.setValue(new ModeloPgtoConta());
 		initDataBindings();
-		
-		{
-			tfPagamento.setSelection(0);
-			tfPrincipal.setSelection(0);
-		}
 		
 		frmContasAPagarreceber.getToolBarManager().add(actAdd);
 		frmContasAPagarreceber.getToolBarManager().add(actRefresh);
@@ -528,7 +590,7 @@ public class PgtoRecContaView extends ViewPart {
 	
 	private void efetuarBaixa(List<ContaPagarReceber> selecionados, ContaPagarReceberService service) {
 		try {
-			if(selecionados == null || selecionados.isEmpty() || (tfPrincipal.getSelectionIndex() == 0 || tfPagamento.getSelectionIndex() == 0)){
+			if(selecionados == null || selecionados.isEmpty() || tfPrincipal.getSelectionIndex() == 1 || tfPagamento.getSelectionIndex() == 0){
 				DialogHelper.openWarning("Para efetuar a baixa das contas selecionadas deverá ser gerado todas as movimentações correspondentes.");
 				return;
 			}
@@ -545,6 +607,9 @@ public class PgtoRecContaView extends ViewPart {
 	
 	protected void estornar(List<ContaPagarReceber> selecionados, ContaPagarReceberService service) {
 		try{
+			if(selecionados == null || selecionados.isEmpty())
+				return; 
+			
 			service.estornarContas(selecionados);
 			
 			DialogHelper.openInformation("Estorno da(s) conta(s) efetuada com sucesso.");
@@ -611,5 +676,4 @@ public class PgtoRecContaView extends ViewPart {
 		}
 		
 	}
-	
 }

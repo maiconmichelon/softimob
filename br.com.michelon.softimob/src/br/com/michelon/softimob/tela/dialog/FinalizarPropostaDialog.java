@@ -40,9 +40,9 @@ public class FinalizarPropostaDialog extends TitleAreaDialog {
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		parent.setLayout(new GridLayout(1, false));
 
-		Composite composite = new Composite(parent, SWT.NONE);
+		Composite area = (Composite) super.createDialogArea(parent);
+		Composite composite = new Composite(area, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		GridData gd_text_2 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -73,7 +73,7 @@ public class FinalizarPropostaDialog extends TitleAreaDialog {
 
 		setTitleAndMessage();
 
-		return composite;
+		return area;
 	}
 
 	protected void okPressed() {

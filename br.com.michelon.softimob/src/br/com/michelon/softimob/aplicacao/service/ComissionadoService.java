@@ -16,7 +16,8 @@ public class ComissionadoService extends GenericService<Comissionado>{
 		return (ComissionadoDAO) super.getRepository();
 	}
 	
-	public List<Comissionado> findAtivos() {
+	@Override
+	public List<Comissionado> findAtivados() {
 		return getRepository().findAtivos(true);
 	}
 

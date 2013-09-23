@@ -37,12 +37,12 @@ public abstract class Comissionado implements Serializable{
 	@NotEmpty(message="O nome não pode ser vazio")
 	private String nome;
 	
-	@Column(length=13, nullable = false)
-	@Length(max = 13, min = 13, message = "O telefone deve ter 13 caracteres.")
+	@Column(length=10, nullable = false)
+	@Length(max = 10, min = 10, message = "O telefone deve ter 10 caracteres.")
 	@NotNull(message = "O telefone deve ter 13 caracteres.")
 	private String telefone;
 	
-	@Column(length=13)
+	@Column(length=10)
 	private String celular;
 	
 	@Column

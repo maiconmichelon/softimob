@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
+import br.com.michelon.softimob.aplicacao.exception.ContaJaPagaRecebidaException;
 import br.com.michelon.softimob.aplicacao.exception.ContaNaoParametrizadaException;
 import br.com.michelon.softimob.aplicacao.helper.HistoricoHelper;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
@@ -197,6 +198,13 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 		}
 	}
 
+	@Override
+	public void removerAtivarOuDesativar(ContaPagarReceber registro) throws Exception {
+		if(registro.isJaPagaRecebida())
+			throw new ContaJaPagaRecebidaException();
+		super.removerAtivarOuDesativar(registro);
+	}
+	
 	public List<ContaPagarReceber> gerarParcelas(int numParcelas, BigDecimal valor, Date dataInicio, int tipo, Date dataConta, String observacoes, OrigemConta tipoConta){
 		List<ContaPagarReceber> contas = Lists.newArrayList();
 		

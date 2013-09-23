@@ -44,5 +44,11 @@ public class DateHelper {
 		
 		return c.getTime();
 	}
+
+	public static boolean isVencida(Date dataVencimento) {
+		if(dataVencimento == null)
+			return false;
+		return DateHelper.zerarHoraMinutos(dataVencimento).compareTo(DateHelper.zerarHoraMinutos(Calendar.getInstance().getTime())) < 0 ;
+	}
 	
 }

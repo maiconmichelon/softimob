@@ -16,7 +16,12 @@ public interface TipoComodoDAO extends CrudRepository<TipoComodo, Long>{
 
 	@Query(value="SELECT distinct(tc) " +
 			"FROM TipoComodo tc, IN(tc.tipoImovelTipoComodo) titc " +
-			"WHERE titc.preSelecionado = true AND titc.tipoImovel = :tipoImovel")
+			"WHERE titc.preSelecionado = true AND titc.tipoImovel = :tipoImovel AND tc.ativo = true")
 	List<TipoComodo> findByTipoImovelAndPreSelecionadoIsTrue(@Param(value = "tipoImovel")TipoImovel tipoImovel);
+	
+	@Query(value="SELECT distinct(tc) " +
+			"FROM TipoComodo tc, IN(tc.tipoImovelTipoComodo) titc " +
+			"WHERE titc.tipoImovel = :tipoImovel AND tc.ativo = true")
+	List<TipoComodo> findByTipoImovel(@Param(value = "tipoImovel")TipoImovel tipoImovel);
 	
 }

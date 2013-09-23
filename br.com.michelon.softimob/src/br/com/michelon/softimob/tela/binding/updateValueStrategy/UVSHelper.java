@@ -7,9 +7,14 @@ import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.internal.databinding.conversion.StringToDateConverter;
 import org.eclipse.core.internal.databinding.validation.StringToDateValidator;
 import org.eclipse.core.internal.databinding.validation.StringToIntegerValidator;
+import org.eclipse.nebula.widgets.formattedtext.MaskFormatter;
 
+import br.com.michelon.softimob.aplicacao.helper.NumberHelper;
+import br.com.michelon.softimob.tela.binding.convert.DateTimeToStringConverter;
 import br.com.michelon.softimob.tela.binding.convert.DateToStringConverter;
 import br.com.michelon.softimob.tela.binding.convert.ExtractNumbersConverter;
+import br.com.michelon.softimob.tela.binding.convert.StringToDateTimeConverter;
+import br.com.michelon.softimob.tela.widget.PhoneTextField;
 
 @SuppressWarnings("restriction")
 public class UVSHelper {
@@ -79,7 +84,7 @@ public class UVSHelper {
 	public static UpdateValueStrategy uvsStringToDateTimeStamp(){
 		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
 		
-		StringToDateConverter converter = new StringToDateConverter();
+		StringToDateTimeConverter converter = new StringToDateTimeConverter();
 		updateValueStrategy.setConverter(converter);
 		
 		return updateValueStrategy;
@@ -88,7 +93,7 @@ public class UVSHelper {
 	public static UpdateValueStrategy uvsDateTimeStampToString(){
 		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
 		
-		DateToStringConverter converter = new DateToStringConverter();
+		DateTimeToStringConverter converter = new DateTimeToStringConverter();
 		updateValueStrategy.setConverter(converter);
 		
 		return updateValueStrategy;
@@ -146,6 +151,59 @@ public class UVSHelper {
 					@Override
 					public Object convert(Object fromObject) {
 						return fromObject.toString().trim();
+					}
+				};
+			}
+		};
+	}
+	
+	public static UpdateValueStrategy uvsStringToPhoneTextField() {
+		return new UpdateValueStrategy(){
+			@Override
+			protected IConverter createConverter(Object fromType, Object toType) {
+				return new IConverter() {
+					
+					@Override
+					public Object getToType() {
+						return String.class;
+					}
+					
+					@Override
+					public Object getFromType() {
+						return String.class;
+					}
+					
+					@Override
+					public Object convert(Object fromObject) {
+						return NumberHelper.extractNumbers(fromObject.toString().trim());
+					}
+				};
+			}
+		};
+	}
+	
+	public static UpdateValueStrategy uvsPhoneToStringTextField() {
+		return new UpdateValueStrategy(){
+			@Override
+			protected IConverter createConverter(Object fromType, Object toType) {
+				return new IConverter() {
+					
+					private MaskFormatter f = new MaskFormatter(PhoneTextField.FORMATTER_TELEFONE);
+					
+					@Override
+					public Object getToType() {
+						return String.class;
+					}
+					
+					@Override
+					public Object getFromType() {
+						return String.class;
+					}
+					
+					@Override
+					public Object convert(Object fromObject) {
+						f.setValue(fromObject);
+						return f.getDisplayString();
 					}
 				};
 			}

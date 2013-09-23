@@ -64,9 +64,10 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		setMessage("Adicionar itens a Check List");
 		setTitle("Check List");
 
-		Composite composite = new Composite(parent, SWT.NONE);
+		Composite area = (Composite) super.createDialogArea(parent);
+		Composite composite = new Composite(area, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		Label lblCheckList = new Label(composite, SWT.NONE);
 		lblCheckList.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -97,7 +98,7 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		btnObrigatrio = new Button(grpItem, SWT.CHECK);
 		btnObrigatrio.setText("Obrigatório");
 		
-		return composite;
+		return area;
 	}
 	
 	private TableViewerBuilder criarTabelaIndices(Composite cpTabela) {
@@ -200,6 +201,13 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 			new ValidationErrorDialog(ShellHelper.getActiveShell(), e1.getMessage());
 			log.error("Erro ao salvar check list", e1);
 		}
+	}
+	
+	@Override
+	protected void configureShell(Shell newShell) {
+		newShell.setText("Check-List");
+		
+		super.configureShell(newShell);
 	}
 	
 	protected DataBindingContext initDataBindings() {

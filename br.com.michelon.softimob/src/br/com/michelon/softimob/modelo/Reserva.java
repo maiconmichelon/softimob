@@ -29,14 +29,14 @@ public class Reserva implements Serializable, Pendencia{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@NotNull(message="Informe a data que foi feita a reserva.")
 	@Column(nullable=false)
 	private Date dataReserva = new Date();
 
 	@NotNull(message="Informe a data de vencimento da reserva.")
 	@Column(nullable=false)
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date dataVencimento = new Date();
 	
 	@NotNull(message="Informe o cliente que fez a reserva.")

@@ -35,7 +35,7 @@ public class MovimentacaoContabil implements Serializable{
 	private BigDecimal valor;
 	
 	@NotEmpty(message = "A movimentação deve conter lançamentos.")
-	@OneToMany(cascade=CascadeType.ALL, mappedBy = "movimentacao")
+	@OneToMany(cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<LancamentoContabil> lancamentos = Lists.newArrayList();
 
 	@NotNull(message = "A data da movimentação não pode ser vazia.")

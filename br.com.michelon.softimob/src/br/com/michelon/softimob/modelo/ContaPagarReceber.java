@@ -17,10 +17,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.ui.IEditorInput;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInput;
 import br.com.michelon.softimob.aplicacao.exception.ParametroNaoInformadoException;
+import br.com.michelon.softimob.aplicacao.helper.DateHelper;
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
@@ -66,7 +68,7 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	private MovimentacaoContabil movimentacao;
 
 	@Column
-	private String observacoes;
+	private String observacoes = StringUtils.EMPTY;
 	
 	public ContaPagarReceber(FinalizacaoChamadoReforma fin) throws ParametroNaoInformadoException{
 		OrigemConta tipoContaPrestacaoServico = ParametrosEmpresa.getInstance().getTipoContaReforma();
@@ -209,6 +211,10 @@ public class ContaPagarReceber implements Serializable, Pendencia{
 	
 	public boolean isJaPagaRecebida(){
 		return getDataPagamento() != null ;
+	}
+	
+	public boolean isVencida(){
+		return DateHelper.isVencida(getDataVencimento());
 	}
 	
 	@Override

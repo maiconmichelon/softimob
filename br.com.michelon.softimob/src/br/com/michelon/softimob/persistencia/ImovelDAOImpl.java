@@ -58,8 +58,8 @@ public class ImovelDAOImpl {
 		if(m.getObservacoes() != null)
 			sb.append("AND i.observacoes like CONCAT('%', :observacoes, '%') ");
 		if(!(m.isReservado() && m.isNaoReservado())){
-			sb.append("AND (((:naoReservado = true AND c is null)) ");
-			sb.append("OR ((:reservado = true AND c is not null AND c.dataVencimento >= :dataHoje))) ");
+			sb.append("AND (((:naoReservado = true AND (r.id is null OR (SELECT count(r1) FROM Reserva r1 WHERE r1.imovel = i AND r1.dataReserva <= :dataHoje AND :dataHoje <= r1.dataVencimento) = 0)))");
+			sb.append("OR ((:reservado = true AND r.id is not null AND r.dataReserva <= :dataHoje AND :dataHoje <= r.dataVencimento))) ");
 		}
 
 		for(int p = 0 ; p < comodos.size(); p++){

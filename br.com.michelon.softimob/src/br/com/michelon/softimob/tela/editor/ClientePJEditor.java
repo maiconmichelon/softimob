@@ -188,11 +188,11 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 		//
 		IObservableValue observeTextText_16ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_16);
 		IObservableValue valueTelefoneObserveDetailValue = PojoProperties.value(PessoaJuridica.class, "telefone", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_16ObserveWidget, valueTelefoneObserveDetailValue, UVSHelper.uvsStringToFormatTextField(), null);
+		bindingContext.bindValue(observeTextText_16ObserveWidget, valueTelefoneObserveDetailValue, UVSHelper.uvsStringToPhoneTextField(), UVSHelper.uvsPhoneToStringTextField());
 		//
 		IObservableValue observeTextText_13ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_13);
 		IObservableValue valueCelularObserveDetailValue = PojoProperties.value(PessoaJuridica.class, "celular", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_13ObserveWidget, valueCelularObserveDetailValue, UVSHelper.uvsStringToFormatTextField(), null);
+		bindingContext.bindValue(observeTextText_13ObserveWidget, valueCelularObserveDetailValue, UVSHelper.uvsStringToPhoneTextField(), UVSHelper.uvsPhoneToStringTextField());
 		//
 		IObservableValue observeTextText_17ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_17);
 		IObservableValue valueEmailObserveDetailValue = PojoProperties.value(PessoaJuridica.class, "email", String.class).observeDetail(value);

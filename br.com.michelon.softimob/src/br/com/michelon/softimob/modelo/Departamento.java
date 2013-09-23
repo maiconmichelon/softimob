@@ -21,7 +21,7 @@ public class Departamento implements Serializable {
 	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Index
+	@Index()
 	@NotNull(message = "O nome do departamento não pode ser vazio")
 	@Column(nullable = false, unique = true)
 	private String nome;

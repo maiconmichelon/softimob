@@ -5,8 +5,12 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -16,22 +20,30 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.filter.PendenciaFilter;
 import br.com.michelon.softimob.aplicacao.helper.DateHelper;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
+import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PendenciaService;
 import br.com.michelon.softimob.modelo.Pendencia;
+import br.com.michelon.softimob.modelo.Pendencia.TipoPendencia;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 
 import com.google.common.collect.Lists;
@@ -75,6 +87,74 @@ public class PendenciaView extends GenericView<Pendencia>{
 			}
 		});
 		miFinalizar.setImage(ImageRepository.SOLVED_16.getImage());
+	}
+	
+	@Override
+	public void createComponentsCpTop(Composite composite_4, FormToolkit formToolkit) {
+		
+		Label lblSituao = formToolkit.createLabel(composite_4, "Situação", SWT.NONE);
+		lblSituao.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		
+		final ComboViewer cvTipo = new ComboViewer(composite_4, SWT.READ_ONLY);
+		Combo cmbTipo = cvTipo.getCombo();
+		cmbTipo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1));
+		formToolkit.paintBordersFor(cmbTipo);
+		cvTipo.setContentProvider(ArrayContentProvider.getInstance());
+		List<Object> list = Lists.newArrayList();
+		list.add(0, "");
+		list.addAll(Lists.newArrayList(TipoPendencia.values()));
+		cvTipo.setInput(list);
+		cvTipo.addPostSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				Object object = SelectionHelper.getObject(cvTipo.getSelection());
+				filter.setTipo((TipoPendencia) (object instanceof TipoPendencia ? object : null));
+				getColumnViewer().refresh();
+			}
+		});
+	}
+	
+	@Override
+	public void createComponentsCpBotton(Composite parent, FormToolkit formToolkit2) {
+		Group group = new Group(parent, SWT.NONE);
+		group.setLayout(new GridLayout(3, false));
+		group.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false, 3, 1));
+		formToolkit.adapt(group);
+		formToolkit.paintBordersFor(group);
+		
+		Button btnTodas = new Button(group, SWT.RADIO);
+		btnTodas.setSelection(true);
+		formToolkit.adapt(btnTodas, true, true);
+		btnTodas.setText("Todas");
+		btnTodas.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				filter.setStatus(PendenciaFilter.TODAS);
+				getColumnViewer().refresh();
+			}
+		});
+		
+		Button btnVencidas = new Button(group, SWT.RADIO);
+		formToolkit.adapt(btnVencidas, true, true);
+		btnVencidas.setText("Vencidas");
+		btnVencidas.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				filter.setStatus(PendenciaFilter.VENCIDA);
+				getColumnViewer().refresh();
+			}
+		});
+		
+		Button btnAVencer = new Button(group, SWT.RADIO);
+		formToolkit.adapt(btnAVencer, true, true);
+		btnAVencer.setText("A vencer");
+		btnAVencer.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				filter.setStatus(PendenciaFilter.AVENCER);
+				getColumnViewer().refresh();
+			}
+		});
 	}
 	
 	@Override
@@ -202,12 +282,15 @@ public class PendenciaView extends GenericView<Pendencia>{
 		});
 		
 		tableViewer.addFilter(getFilter());
+		filter = new PendenciaFilter();
+		tableViewer.addFilter(filter);
 		
 		return tableViewer;
 	}
 	
 	private Color COLOR_A_VENCER = SWTResourceManager.getColor(255, 165, 0);
 	private Color COLOR_VENCIDA = SWTResourceManager.getColor(SWT.COLOR_RED);
+	private PendenciaFilter filter;
 	
 	public Color getColorPendencia(Pendencia pendencia) {
 		Calendar c = Calendar.getInstance();

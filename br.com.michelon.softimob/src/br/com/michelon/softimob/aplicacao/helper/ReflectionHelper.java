@@ -3,6 +3,7 @@ package br.com.michelon.softimob.aplicacao.helper;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +66,8 @@ public class ReflectionHelper {
 				return false;
 			if (dado instanceof Date)
 				dado = FormatterHelper.getSimpleDateFormat().format(dado);
+			if (dado instanceof BigDecimal)
+				dado = FormatterHelper.getDefaultValueFormatterToMoney().format((BigDecimal) dado);
 			if (!(dado instanceof String))
 				dado = dado.toString();
 			if (((String) dado).toLowerCase().matches(palavra))

@@ -61,6 +61,10 @@ public class GenericService<T> {
 		crudRepository.delete(registro);
 	}
 	
+	public List<T> findAtivados(){
+		return findAll();
+	}
+	
 	public List<T> findAll(){
 		return (List<T>) crudRepository.findAll();
 	}

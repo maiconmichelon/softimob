@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.eclipse.persistence.annotations.Index;
 
@@ -32,6 +33,7 @@ public class TipoComodo implements Serializable{
 	@Column(nullable = false, unique = true)
 	private String nome;
 
+	@Size(min = 1, message = "O tipo de cômodo deve ter pelo menos um tipo de imóvel.")
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<TipoImovelTipoComodo> tipoImovelTipoComodo = Lists.newArrayList();
 	

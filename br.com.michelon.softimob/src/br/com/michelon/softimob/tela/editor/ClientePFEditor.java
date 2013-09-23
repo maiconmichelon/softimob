@@ -38,7 +38,7 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 	private Text text;
 	private Text text_3;
 	private Text text_5;
-	private Text text_4;
+	private Text txtTelefone;
 	private Text text_7;
 	private Text text_1;
 	private Text text_11;
@@ -139,8 +139,8 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 		lblTelefone_1.setText("Telefone");
 
 		PhoneTextField phoneTextField = new PhoneTextField(parent);
-		text_4 = phoneTextField.getControl();
-		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtTelefone = phoneTextField.getControl();
+		txtTelefone.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Label lblCelular = new Label(parent, SWT.NONE);
 		lblCelular.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -202,13 +202,13 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 		IObservableValue valueNacionalidadeObserveDetailValue = PojoProperties.value(PessoaFisica.class, "nacionalidade", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueNacionalidadeObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_4);
+		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtTelefone);
 		IObservableValue valueTelefoneObserveDetailValue = PojoProperties.value(PessoaFisica.class, "telefone", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_4ObserveWidget, valueTelefoneObserveDetailValue, UVSHelper.uvsStringToFormatTextField(), null);
+		bindingContext.bindValue(observeTextText_4ObserveWidget, valueTelefoneObserveDetailValue, UVSHelper.uvsStringToPhoneTextField(), UVSHelper.uvsPhoneToStringTextField());
 		//
 		IObservableValue observeTextText_7ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_7);
 		IObservableValue valueCelularObserveDetailValue = PojoProperties.value(PessoaFisica.class, "celular", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_7ObserveWidget, valueCelularObserveDetailValue, UVSHelper.uvsStringToFormatTextField(), null);
+		bindingContext.bindValue(observeTextText_7ObserveWidget, valueCelularObserveDetailValue, UVSHelper.uvsStringToPhoneTextField(), UVSHelper.uvsPhoneToStringTextField());
 		//
 		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_6);
 		IObservableValue valueEmailObserveDetailValue = PojoProperties.value(PessoaFisica.class, "email", String.class).observeDetail(value);

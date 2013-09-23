@@ -61,9 +61,10 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		setMessage("Adicionar novos índices");
 		setTitle("Índice");
 
-		Composite composite = new Composite(parent, SWT.NONE);
+		Composite area = (Composite) super.createDialogArea(parent);
+		Composite composite = new Composite(area, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		Label lblNome = new Label(composite, SWT.NONE);
 		lblNome.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -106,7 +107,7 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		txtPorcentagem = new Text(grpIndiceDoPerodo, SWT.BORDER);
 		txtPorcentagem.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		return composite;
+		return area;
 	}
 	
 	private void setItens(IndiceMes indice){
@@ -218,6 +219,13 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		});
 	}
 
+	@Override
+	protected void configureShell(Shell newShell) {
+		newShell.setText("Indices");
+		
+		super.configureShell(newShell);
+	}
+	
 	@Override
 	protected Point getInitialSize() {
 		return new Point(350, 400);

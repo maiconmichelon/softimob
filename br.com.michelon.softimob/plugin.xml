@@ -24,13 +24,6 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="br.com.michelon.softimob.tela.view.ClienteView"
-            icon="icons/cliente/cliente16.png"
-            id="br.com.michelon.softimob.tela.view.ClienteView"
-            name="Cliente"
-            restorable="true">
-      </view>
-      <view
             class="br.com.michelon.softimob.tela.view.FuncionarioView"
             icon="icons/funcionario/funcionario16.png"
             id="br.com.michelon.softimob.tela.view.FuncionarioView"
@@ -818,12 +811,6 @@
             icon="icons/placa/placa16.png"
             id="br.com.michelon.softimob.tela.editor.PlacaEditor"
             name="Cadastro de Placa">
-      </editor>
-      <editor
-            class="br.com.michelon.softimob.tela.editor.ClienteEditor"
-            icon="icons/cliente/cliente16.png"
-            id="br.com.michelon.softimob.tela.editor.ClienteEditor"
-            name="Cadastro de Cliente">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.TipoComodoEditor"

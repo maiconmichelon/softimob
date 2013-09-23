@@ -454,7 +454,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 	private void criarTabelaComissao(Composite composite){
 		TableViewerBuilder tvbComissao = new TableViewerBuilder(composite);
 		
-		tvbComissao.createColumn("Nome").bindToProperty("comissionado.nome").build();
+		tvbComissao.createColumn("Nome").bindToProperty("comissionado.nome").setPercentWidth(20).build();
 //		tvbComissao.createColumn("Valor ( % )").bindToValue(new IValue() {
 //			//TODO AQUI TEM QUE RECALCULAR VALOR			
 //			@Override
@@ -468,8 +468,8 @@ public class VendaEditor extends GenericEditor<Venda>{
 //				return null;
 //			}
 //		}).makeEditable().build();
-		tvbComissao.createColumn("Valor (R$)").bindToProperty("valor").build();
-		tvbComissao.createColumn("Data de Vencimento").bindToProperty("dataVencimento").format(new DateStringValueFormatter()).build();
+		tvbComissao.createColumn("Valor (R$)").bindToProperty("valor").setPercentWidth(20).build();
+		tvbComissao.createColumn("Data de Vencimento").bindToProperty("dataVencimento").setPercentWidth(80).format(new DateStringValueFormatter()).build();
 		
 		tvbComissao.setInput(getCurrentObject().getComissoes());
 		

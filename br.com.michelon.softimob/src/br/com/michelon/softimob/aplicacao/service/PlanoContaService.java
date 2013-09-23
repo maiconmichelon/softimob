@@ -16,7 +16,8 @@ public class PlanoContaService extends GenericService<PlanoConta>{
 		return (PlanoContaDAO) super.getRepository();
 	}
 	
-	public List<PlanoConta> findAtivos() {
+	@Override
+	public List<PlanoConta> findAtivados() {
 		return getRepository().findByAtivoIsTrue();
 	}
 

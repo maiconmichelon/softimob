@@ -16,7 +16,8 @@ public class PessoaFisicaService extends GenericService<PessoaFisica>{
 		return (PessoaFisicaDAO) super.getRepository();
 	}
 	
-	public List<PessoaFisica> findAtivos() {
+	@Override
+	public List<PessoaFisica> findAtivados() {
 		return getRepository().findAtivos(true);
 	}
 

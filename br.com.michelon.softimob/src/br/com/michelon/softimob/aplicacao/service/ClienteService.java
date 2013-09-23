@@ -16,7 +16,8 @@ public class ClienteService extends GenericService<Cliente>{
 		return (ClienteDAO) super.getRepository();
 	}
 	
-	public List<Cliente> findAtivos() {
+	@Override
+	public List<Cliente> findAtivados() {
 		return getRepository().findByAtivoTrue();
 	}
 	

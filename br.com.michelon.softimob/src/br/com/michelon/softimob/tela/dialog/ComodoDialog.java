@@ -48,7 +48,7 @@ public class ComodoDialog extends TitleAreaDialog{
 		Combo combo = comboViewer.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
-		comboViewer.setInput(new TipoComodoService().findAtivos());
+		comboViewer.setInput(new TipoComodoService().findAtivados());
 		
 		Label lblQuantidade = new Label(composite, SWT.NONE);
 		lblQuantidade.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));

@@ -1,7 +1,6 @@
 package br.com.michelon.softimob.tela.editor;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -50,11 +49,13 @@ import org.eclipse.wb.swt.ImageRepository;
 import br.com.michelon.softimob.aplicacao.editorInput.AluguelEditorInput;
 import br.com.michelon.softimob.aplicacao.exception.ValidationException;
 import br.com.michelon.softimob.aplicacao.helper.ContratoHelper;
+import br.com.michelon.softimob.aplicacao.helper.DateHelper;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
+import br.com.michelon.softimob.aplicacao.helper.listElementDialog.InputListener;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
@@ -89,6 +90,7 @@ import br.com.michelon.softimob.tela.dialog.FinalizarPropostaDialog;
 import br.com.michelon.softimob.tela.dialog.ValidationErrorDialog;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
+import br.com.michelon.softimob.tela.widget.DateTimeStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTimeTextField;
 import br.com.michelon.softimob.tela.widget.EnderecoGroup;
 import br.com.michelon.softimob.tela.widget.LoadOnFocus;
@@ -102,7 +104,6 @@ import br.com.michelon.softimob.tela.widget.xViewer.GenericXViewer;
 import com.google.common.collect.Lists;
 
 import de.ralfebert.rcputils.tables.TableViewerBuilder;
-import de.ralfebert.rcputils.tables.format.Formatter;
 
 public class ImovelEditor extends GenericEditor<Imovel>{
 	
@@ -146,7 +147,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private Text text_15;
 	private Text text_20;
 	private Text text_9;
-	private Text text_32;
+	private Text txtDataFeedback;
 	private Text text_33;
 	private Text txtValorImovel;
 	private Text text_26;
@@ -225,7 +226,6 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		txtProprietario = new Text(composite, SWT.BORDER);
 		txtProprietario.setEditable(false);
 		txtProprietario.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		ListElementDialogHelper.addListElementDialogToText(TipoDialog.CLIENTE, txtProprietario, value, "proprietario");
 		
 		Button btnSelecionarProprietario = new Button(composite, SWT.NONE);
 		btnSelecionarProprietario.setImage(ImageRepository.SEARCH_16.getImage());
@@ -312,7 +312,15 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		
 		Button btnSelecionarComodo = new Button(grpCmodo, SWT.NONE);
 		btnSelecionarComodo.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.COMODO, btnSelecionarComodo, valueComodo, "tipoComodo");
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.COMODO, btnSelecionarComodo, valueComodo, "tipoComodo", new InputListener<TipoComodo>() {
+
+			private TipoComodoService service = new TipoComodoService();
+			
+			@Override
+			public List<TipoComodo> getInput() {
+				return service.findByTipoImovel(getCurrentObject().getTipo());
+			}
+		});
 		
 		Button btnRemoverComodo = new Button(grpCmodo, SWT.NONE);
 		btnRemoverComodo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
@@ -425,8 +433,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		lblData_1.setText("Data");
 		
 		DateTimeTextField dateTextField = new DateTimeTextField(grpNovoHistrico);
-		text_32 = dateTextField.getControl();
-		text_32.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtDataFeedback = dateTextField.getControl();
+		txtDataFeedback.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(grpNovoHistrico, SWT.NONE);
 		new Label(grpNovoHistrico, SWT.NONE);
 		
@@ -917,7 +925,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private void criarTabelaFeedback(Composite composite){
 		tvbFeedbacks = new TableViewerBuilder(composite);
 		
-		tvbFeedbacks.createColumn("Data da Visita").setPercentWidth(10).bindToProperty("data").format(Formatter.forDate(new SimpleDateFormat("dd/MM/yyyy hh:mm"))).build();
+		tvbFeedbacks.createColumn("Data da Visita").setPercentWidth(10).bindToProperty("data").format(new DateTimeStringValueFormatter()).build();
 		tvbFeedbacks.createColumn("Funcionário").setPercentWidth(15).bindToProperty("funcionario.nome").format(new NullStringValueFormatter()).build();
 		tvbFeedbacks.createColumn("Cliente").setPercentWidth(15).bindToProperty("cliente.nome").build();
 		tvbFeedbacks.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
@@ -1040,7 +1048,15 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	}
 	
 	private void addContratoPrestacaoServico() {
-		((ContratoPrestacaoServico)valueContrato.getValue()).setCliente(getCurrentObject().getProprietario());
+		ContratoPrestacaoServico contratoPrestacaoServico = (ContratoPrestacaoServico)valueContrato.getValue();
+		
+		if(DateHelper.zerarHoraMinutos(contratoPrestacaoServico.getDataInicio()).compareTo(DateHelper.zerarHoraMinutos(contratoPrestacaoServico.getDataVencimento())) > 0){
+			DialogHelper.openWarning("A data do contrato não pode ser maior que a data de vencimento.");
+			return;
+		}
+			
+		
+		contratoPrestacaoServico.setCliente(getCurrentObject().getProprietario());
 		addItens(new ContratoPrestacaoServicoService(), valueContrato, tvContratosPrestacaoServico, getCurrentObject().getContratos());
 	}
 	
@@ -1197,9 +1213,9 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		IObservableValue valueComodoDescricaoObserveDetailValue = PojoProperties.value(Comodo.class, "descricao", String.class).observeDetail(valueComodo);
 		bindingContext.bindValue(observeTextTxtDescrioObserveWidget, valueComodoDescricaoObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_32ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_32);
+		IObservableValue observeTextText_32ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataFeedback);
 		IObservableValue valueFeedbackDataObserveDetailValue = PojoProperties.value(Feedback.class, "data", Date.class).observeDetail(valueFeedback);
-		bindingContext.bindValue(observeTextText_32ObserveWidget, valueFeedbackDataObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
+		bindingContext.bindValue(observeTextText_32ObserveWidget, valueFeedbackDataObserveDetailValue, UVSHelper.uvsStringToDateTimeStamp(), UVSHelper.uvsDateTimeStampToString());
 		//
 		IObservableValue observeTextText_12ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_12);
 		IObservableValue valueFeedbackFuncionarionomeObserveDetailValue = PojoProperties.value(Feedback.class, "funcionario.nome", String.class).observeDetail(valueFeedback);

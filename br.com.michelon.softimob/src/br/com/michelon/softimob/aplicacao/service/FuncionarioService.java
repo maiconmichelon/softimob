@@ -18,10 +18,6 @@ public class FuncionarioService extends GenericService<Funcionario>{
 		return (FuncionarioDAO) super.getRepository();
 	}
 	
-	public List<Funcionario> findAtivos() {
-		return getRepository().findAtivos(true);
-	}
-	
 	public List<Funcionario> findAniversariantes(Date data){
 		Calendar c = Calendar.getInstance();
 		return getRepository().findAniversariantes(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1);
@@ -33,6 +29,11 @@ public class FuncionarioService extends GenericService<Funcionario>{
 	
 	public List<Funcionario> findByNome(String nome){
 		return getRepository().findByNome(nome);
+	}
+	
+	@Override
+	public List<Funcionario> findAtivados() {
+		return getRepository().findByAtivoIsTrue();
 	}
 	
 }

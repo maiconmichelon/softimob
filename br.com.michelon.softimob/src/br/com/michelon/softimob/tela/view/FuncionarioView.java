@@ -13,6 +13,7 @@ import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.tela.editor.FuncionarioEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
+import br.com.michelon.softimob.tela.widget.TelefoneValueFormatter;
 
 import com.google.common.collect.Lists;
 
@@ -29,8 +30,8 @@ public class FuncionarioView extends GenericView<Funcionario>{
 		atributos.add(new ColumnProperties("Nome", "nome", 20));
 		atributos.add(new ColumnProperties("Departamento", "departamento.nome", 12));
 		atributos.add(new ColumnProperties("Data de Nascimento", "dataNascimento", 12, new DateStringValueFormatter()));
-		atributos.add(new ColumnProperties("Telefone/Ramal", "telefone", 12));
-		atributos.add(new ColumnProperties("Celular", "celular", 12));
+		atributos.add(new ColumnProperties("Telefone/Ramal", "telefone", 12, new TelefoneValueFormatter()));
+		atributos.add(new ColumnProperties("Celular", "celular", 12, new TelefoneValueFormatter()));
 		atributos.add(new ColumnProperties("E-mail", "email", 12));
 		atributos.add(new ColumnProperties("Data de Admissão", "dataAdmissao", 12, new DateStringValueFormatter()));
 		

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 public class Endereco implements Serializable{
 
@@ -18,6 +20,7 @@ public class Endereco implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Length(max = 9, min = 9 ,message = "O CEP esta incorreto.")
 	@Column(length = 9)
 	private String cep;
 	

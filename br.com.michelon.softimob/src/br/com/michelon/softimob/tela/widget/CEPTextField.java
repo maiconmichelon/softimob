@@ -6,10 +6,12 @@ import org.eclipse.swt.widgets.Composite;
 
 public class CEPTextField extends FormattedText{
 
+	public static final String FORMATTER_CEP = "#####-###";
+
 	public CEPTextField(Composite parent) {
 		super(parent);
 
-		setFormatter(new MaskFormatter("#####-###"));
+		setFormatter(new MaskFormatter(FORMATTER_CEP));
 	}
 
 }

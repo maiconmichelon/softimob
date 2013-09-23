@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
-import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
@@ -17,10 +16,12 @@ import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
 import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
@@ -38,9 +39,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 import org.joda.time.DateMidnight;
@@ -135,12 +136,13 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private TableViewer tvParcelas;
 
 	private RadioGroupViewer radiouGroupStatusReforma;
-	private List listContasReforma;
 
 	private CTabFolder tfItens;
 	private Composite cpChamados;
 	private Composite cpVistoria;
 	private Composite cpComissao;
+	private Table tableContasFinalizacaoReforma;
+	private TableViewer tvContasFinalizacaoChamadoReforma;
 
 	public AluguelEditor() {
 		super(Aluguel.class);
@@ -265,6 +267,12 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		MoneyTextField moneyTextField = new MoneyTextField(parent);
 		txtValor = moneyTextField.getControl();
 		txtValor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 		
 		tfItens = new CTabFolder(parent, SWT.BORDER);
 		tfItens.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
@@ -363,6 +371,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 				addComissao(valueComissao);
 			}
 		});
+		new Label(grpComisso, SWT.NONE);
+		new Label(grpComisso, SWT.NONE);
+		new Label(grpComisso, SWT.NONE);
 		new Label(grpComisso, SWT.NONE);
 		
 		CTabItem tbtmParcelas = new CTabItem(tfItens, SWT.NONE);
@@ -613,24 +624,21 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		CTabItem tbtmFinalizar = new CTabItem(tfChamado, SWT.NONE);
 		tbtmFinalizar.setText("Fechamento");
 		
-		Composite composite_13 = new Composite(tfChamado, SWT.NONE);
-		tbtmFinalizar.setControl(composite_13);
-		composite_13.setLayout(new GridLayout(4, false));
+		Composite cpFinalizacaoChamadoReforma = new Composite(tfChamado, SWT.NONE);
+		tbtmFinalizar.setControl(cpFinalizacaoChamadoReforma);
+		cpFinalizacaoChamadoReforma.setLayout(new GridLayout(5, false));
 		
-		Label lblData_5 = new Label(composite_13, SWT.NONE);
+		Label lblData_5 = new Label(cpFinalizacaoChamadoReforma, SWT.NONE);
 		lblData_5.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblData_5.setText("Data");
 		
-		DateTextField dateTextField_4 = new DateTextField(composite_13);
+		DateTextField dateTextField_4 = new DateTextField(cpFinalizacaoChamadoReforma);
 		txtFinalizacaoReforma = dateTextField_4.getControl();
 		GridData gd_text_36 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_text_36.widthHint = 76;
 		txtFinalizacaoReforma.setLayoutData(gd_text_36);
-		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
 		
-		radiouGroupStatusReforma = new RadioGroupViewer(composite_13, SWT.NONE);
+		radiouGroupStatusReforma = new RadioGroupViewer(cpFinalizacaoChamadoReforma, SWT.NONE);
 		radiouGroupStatusReforma.setContentProvider(ArrayContentProvider.getInstance());
 		radiouGroupStatusReforma.setLabelProvider(new LabelProvider(){
 			@Override
@@ -642,42 +650,73 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		
 		RadioGroup radioGroup = radiouGroupStatusReforma.getRadioGroup();
 		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
+		new Label(cpFinalizacaoChamadoReforma, SWT.NONE);
+		new Label(cpFinalizacaoChamadoReforma, SWT.NONE);
 		
-		Label lblFuncionrio_4 = new Label(composite_13, SWT.NONE);
+		Label lblFuncionrio_4 = new Label(cpFinalizacaoChamadoReforma, SWT.NONE);
 		lblFuncionrio_4.setText("Funcionário");
 		
-		txtFuncionarioFinalizacaoReforma = new Text(composite_13, SWT.BORDER);
+		txtFuncionarioFinalizacaoReforma = new Text(cpFinalizacaoChamadoReforma, SWT.BORDER);
 		txtFuncionarioFinalizacaoReforma.setEditable(false);
-		txtFuncionarioFinalizacaoReforma.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtFuncionarioFinalizacaoReforma.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		
-		Button btnSelecionar_6 = new Button(composite_13, SWT.NONE);
+		Button btnSelecionar_6 = new Button(cpFinalizacaoChamadoReforma, SWT.NONE);
 		btnSelecionar_6.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecionar_6, valueFinalizacaoChamado, "funcionario");
 		
-		Button btnt_6 = new Button(composite_13, SWT.NONE);
+		Button btnt_6 = new Button(cpFinalizacaoChamadoReforma, SWT.NONE);
 		btnt_6.setImage(ImageRepository.REMOVE_16.getImage());
 		btnt_6.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		ListElementDialogHelper.addSelectionToRemoveButton(btnt_6, valueFinalizacaoChamado, "funcionario", Funcionario.class);
 		
-		Label lblDescrio_2 = new Label(composite_13, SWT.NONE);
+		Label lblDescrio_2 = new Label(cpFinalizacaoChamadoReforma, SWT.NONE);
 		lblDescrio_2.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblDescrio_2.setText("Descrição");
 		
-		txtDescricaoFinalReforma = new Text(composite_13, SWT.BORDER);
-		txtDescricaoFinalReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		new Label(composite_13, SWT.NONE);
-		new Label(composite_13, SWT.NONE);
+		txtDescricaoFinalReforma = new Text(cpFinalizacaoChamadoReforma, SWT.BORDER);
+		txtDescricaoFinalReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		new Label(cpFinalizacaoChamadoReforma, SWT.NONE);
+		new Label(cpFinalizacaoChamadoReforma, SWT.NONE);
 		
-		Label lblValor_3 = new Label(composite_13, SWT.NONE);
+		Label lblValor_3 = new Label(cpFinalizacaoChamadoReforma, SWT.NONE);
 		lblValor_3.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblValor_3.setText("Contas");
 		
-		listContasReforma = new org.eclipse.swt.widgets.List(composite_13, SWT.BORDER);
-		listContasReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
+		tvContasFinalizacaoChamadoReforma = new TableViewer(cpFinalizacaoChamadoReforma, SWT.BORDER | SWT.FULL_SELECTION);
+		tableContasFinalizacaoReforma = tvContasFinalizacaoChamadoReforma.getTable();
+		tableContasFinalizacaoReforma.setLinesVisible(true);
+		tableContasFinalizacaoReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		
-		Button btnAdicionar_1 = new Button(composite_13, SWT.NONE);
+		TableViewerColumn tvcConta = new TableViewerColumn(tvContasFinalizacaoChamadoReforma, SWT.NONE);
+		tvcConta.setLabelProvider(new ColumnLabelProvider(){
+			@Override
+			public String getText(Object element) {
+				ContaPagarReceber conta = (ContaPagarReceber) element;
+				return String.format("Conta a %s, com vencimento em %s - %s", conta.isApagar() ? "pagar" : "receber", 
+						FormatterHelper.getSimpleDateFormat().format(conta.getDataVencimento()), conta.getObservacoes());
+			}
+		});
+		TableColumn tableColumn = tvcConta.getColumn();
+		tableColumn.setWidth(550);
+		
+		Menu menuContasFinalizacaoChamadoReforma = new Menu(tableContasFinalizacaoReforma);
+		tableContasFinalizacaoReforma.setMenu(menuContasFinalizacaoChamadoReforma);
+		
+		WidgetHelper.createMenuItemRemover(menuContasFinalizacaoChamadoReforma, new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ContaPagarReceber c = SelectionHelper.getObject(tvContasFinalizacaoChamadoReforma);
+				
+				if(c.isJaPagaRecebida())
+					DialogHelper.openWarning("A conta já foi paga/recebida, para exclui-la é necessário estorná-la.");
+				
+				FinalizacaoChamadoReforma fin = (FinalizacaoChamadoReforma) valueFinalizacaoChamado.getValue();
+				fin.getContas().remove(c);
+				
+			}
+		});
+		
+		Button btnAdicionar_1 = new Button(cpFinalizacaoChamadoReforma, SWT.NONE);
 		btnAdicionar_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
 		btnAdicionar_1.setImage(ImageRepository.ADD_16.getImage());
 		btnAdicionar_1.addSelectionListener(new SelectionAdapter() {
@@ -688,15 +727,15 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 					if(dialog.open() == IDialogConstants.OK_ID){
 						FinalizacaoChamadoReforma fin = (FinalizacaoChamadoReforma) valueFinalizacaoChamado.getValue();
 						fin.getContas().add(dialog.getConta());
-						listContasReforma.redraw();
 					}
+					tvContasFinalizacaoChamadoReforma.refresh();
 				} catch (ParametroNaoInformadoException e1) {
 					DialogHelper.openWarning(e1.getMessage());
 				}
 			}
 		});
 		
-		createButtonAddItem(composite_13, new SelectionAdapter() {
+		createButtonAddItem(cpFinalizacaoChamadoReforma, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addFinalizacaoChamado(valueFinalizacaoChamado);
@@ -970,6 +1009,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		tvAcontecimentoChamado.setContentProvider(new ObservableListContentProvider());
 		tvAcontecimentoChamado.setInput(PojoProperties.list(ChamadoReforma.class, "acontecimentos", AcontecimentoChamado.class).observeDetail(valueChamado));
 		//
+		tvContasFinalizacaoChamadoReforma.setContentProvider(new ObservableListContentProvider());
+		tvContasFinalizacaoChamadoReforma.setInput(PojoProperties.list(FinalizacaoChamadoReforma.class, "contas", Class.class).observeDetail(valueFinalizacaoChamado));
+		//
 		return bindingContext;
 	}
 	
@@ -1076,10 +1118,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		IObservableValue observeTextText_31ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDescricaoFinalReforma);
 		IObservableValue valueChamadoDescricaoConclusaoObserveDetailValue = PojoProperties.value(FinalizacaoChamadoReforma.class, "descricaoConclusao", String.class).observeDetail(valueFinalizacaoChamado);
 		bindingContext.bindValue(observeTextText_31ObserveWidget, valueChamadoDescricaoConclusaoObserveDetailValue, null, null);
-		//
-		IObservableList itemsListObserveWidget = WidgetProperties.items().observe(listContasReforma);
-		IObservableList valueFinalizacaoChamadoContasObserveDetailList = PojoProperties.list(FinalizacaoChamadoReforma.class, "contas", java.util.List.class).observeDetail(valueFinalizacaoChamado);
-		bindingContext.bindList(itemsListObserveWidget, valueFinalizacaoChamadoContasObserveDetailList, null, null);
 		//
 		bindEnableControl(bindingContext);
 		initBindTables(bindingContext);

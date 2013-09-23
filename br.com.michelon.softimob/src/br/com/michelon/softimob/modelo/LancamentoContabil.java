@@ -33,18 +33,6 @@ public class LancamentoContabil implements Serializable{
 	@ManyToOne
 	private PlanoConta conta;
 	
-	@ManyToOne(optional = false)
-	private final MovimentacaoContabil movimentacao;
-
-	public LancamentoContabil(MovimentacaoContabil movimentacao){
-		this.movimentacao = movimentacao;
-	}
-	
-	@SuppressWarnings("unused")
-	private LancamentoContabil(){
-		this(null);
-	}
-	
 	public Long getId() {
 		return id;
 	}
@@ -93,10 +81,6 @@ public class LancamentoContabil implements Serializable{
 		this.tipo = tipo;
 	}
 	
-	public MovimentacaoContabil getMovimentacao() {
-		return movimentacao;
-	}
-	
 	public boolean isDebito(){
 		return TipoLancamento.DEBITO.equals(tipo);
 	}
@@ -114,7 +98,7 @@ public class LancamentoContabil implements Serializable{
 	}
 	
 	public static LancamentoContabil create(MovimentacaoContabil mov, TipoLancamento tipo, PlanoConta conta, BigDecimal valor, String historico, String complemento) {
-		LancamentoContabil lcto = new LancamentoContabil(mov);
+		LancamentoContabil lcto = new LancamentoContabil();
 		
 		lcto.setTipo(tipo);
 		lcto.setComplemento(complemento);

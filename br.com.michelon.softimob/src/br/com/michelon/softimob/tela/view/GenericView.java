@@ -59,7 +59,7 @@ import com.google.common.collect.Lists;
 
 public abstract class GenericView<T> extends ViewPart{
 	
-	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
+	protected final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 	
 	protected Logger log = Logger.getLogger(getClass());
 	
@@ -77,7 +77,6 @@ public abstract class GenericView<T> extends ViewPart{
 	private AtivadoDesativadoFilter ativadoDesativadoFilter;
 	private RadioGroup radioGroup;
 	private RadioGroupViewer radioGroupViewer;
-
 
 	@SuppressWarnings("unchecked")
 	public GenericView(boolean addGroupAtivadoDesativado) {
@@ -168,7 +167,9 @@ public abstract class GenericView<T> extends ViewPart{
 		if(viewer instanceof TableViewer)
 			viewer.setContentProvider(ArrayContentProvider.getInstance());
 		
-		viewer.addFilter(getFilter());
+		// PARA ABRIR NO WINDOW BUILDER :D
+		if(viewer != null && getFilter() != null)
+			viewer.addFilter(getFilter());
 		
 		IDoubleClickListener doubleClickListener = getDoubleClickListener();
 		if(doubleClickListener != null)

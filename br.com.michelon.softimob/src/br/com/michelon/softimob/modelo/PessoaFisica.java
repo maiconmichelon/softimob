@@ -39,12 +39,12 @@ public class PessoaFisica extends Cliente{
 	@Index
 	@CPF(message = "CPF informardo é inválido.", formatted = true)
 	@NotEmpty(message = "O CPF não pode ser vazio.")
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String cpf;
 	
 	@Index
 	@NotEmpty(message = "O RG não pode ser vazio.")
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String rg;
 	
 	@Column

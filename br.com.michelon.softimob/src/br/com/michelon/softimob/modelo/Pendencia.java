@@ -9,11 +9,38 @@ import br.com.michelon.softimob.aplicacao.service.GenericService;
 
 public interface Pendencia {
 
-	public static String CONTA_PAGAR = "Conta a pagar";
-	public static String CONTA_RECEBER = "Conta a receber";
-	public static String CONTRATO = "Contrato";
-	public static String REFORMA = "Chamado de reforma";
-	public static String COMISSAO = "Comissão";
+	public enum TipoPendencia{
+
+		ALUGUEL("Aluguel", Aluguel.class),
+		REFORMA("Chamado de reforma", ChamadoReforma.class),
+		COMISSAO("Comissão", Comissao.class),
+		CONTA("Conta", ContaPagarReceber.class),
+		CONTRATO("Contrato de Prestação de Serviço", ContratoPrestacaoServico.class),
+		PROPOSTA("Proposta", Proposta.class),
+		RESERVA("Reserva", Reserva.class);
+		
+		private final Class<?> clazz;
+		private final String nome;
+
+		TipoPendencia(String nome, Class<?> clazz){
+			this.nome = nome;
+			this.clazz = clazz;
+		}
+		
+		public String getNome() {
+			return nome;
+		}
+		
+		public Class<?> getClazz() {
+			return clazz;
+		}
+		
+		@Override
+		public String toString() {
+			return getNome();
+		}
+		
+	}
 
 	Date getDataGeracao();
 	Date getDataVencimento();

@@ -17,7 +17,8 @@ public class TipoComodoService extends GenericService<TipoComodo>{
 		return (TipoComodoDAO) super.getRepository();
 	}
 
-	public List<TipoComodo> findAtivos() {
+	@Override
+	public List<TipoComodo> findAtivados() {
 		return getRepository().findAtivo(true);
 	}
 	
@@ -25,4 +26,8 @@ public class TipoComodoService extends GenericService<TipoComodo>{
 		return getRepository().findByTipoImovelAndPreSelecionadoIsTrue(tipoImovel);
 	}
 	
+	public List<TipoComodo> findByTipoImovel(TipoImovel tipoImovel){
+		return getRepository().findByTipoImovel(tipoImovel);
+	}
+
 }

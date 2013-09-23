@@ -8,13 +8,9 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.wb.swt.ImageRepository;
 
@@ -52,20 +48,14 @@ public class ListElementDialogHelper {
 	
 	private static Logger log = Logger.getLogger(ListElementDialogHelper.class);
 	
-	public static void addListElementDialogToText(final TipoDialog tipoDialog, Text text, final WritableValue value, final String property){
-		addListElementDialogToText(tipoDialog, text, value, property, null);
-	}
-	
-	public static void addListElementDialogToText(final TipoDialog tipoDialog, Text text, final WritableValue value, final String property, final OkListElementDialogListener listener){
-		text.addKeyListener(new KeyAdapter() {
-
+	private static InputListener<Object> getDefaultInputListener(final TipoDialog tipoDialog){
+		return new InputListener<Object>() {
+			@SuppressWarnings("unchecked")
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.keyCode == SWT.F1){
-					openDialogAndSetValue(tipoDialog, value, property, listener);
-				}
+			public List<Object> getInput() {
+				return (List<Object>) tipoDialog.getElements();
 			}
-		});
+		};
 	}
 	
 	// Esse é isolado dos outros, ele faz o simples, só executa o listener quando o usuario seleciona um objeto e da OK
@@ -78,25 +68,29 @@ public class ListElementDialogHelper {
 					public void ok(Object obj) {
 						listener.ok(obj);
 					}
-				});
+				}, getDefaultInputListener(tipoDialog));
 			}
 		});
 	}
 	
 	public static void addSelectionListDialogToButton(final TipoDialog tipoDialog, Button button, final WritableValue value, final String property){
-		addSelectionListDialogToButton(tipoDialog, button, value, property, null);
+		addSelectionListDialogToButton(tipoDialog, button, value, property, getDefaultInputListener(tipoDialog));
 	}
 	
-	public static void addSelectionListDialogToButton(final TipoDialog tipoDialog, Button button, final WritableValue value, final String property, final OkListElementDialogListener listener){
+	public static void addSelectionListDialogToButton(TipoDialog tipoDialog, Button button, WritableValue value, String property, InputListener<?> inputListener) {
+		addSelectionListDialogToButton(tipoDialog, button, value, property, null, inputListener);
+	}
+	
+	public static void addSelectionListDialogToButton(final TipoDialog tipoDialog, Button button, final WritableValue value, final String property, final OkListElementDialogListener listener, final InputListener<?> inputListener){
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				openDialogAndSetValue(tipoDialog, value, property, listener);
+				openDialogAndSetValue(tipoDialog, value, property, listener, inputListener);
 			}
 		});
 	}
 	
-	private static void openDialogAndSetValue(final TipoDialog tipoDialog, final WritableValue value, final String property, final OkListElementDialogListener listener) {
+	private static void openDialogAndSetValue(final TipoDialog tipoDialog, final WritableValue value, final String property, final OkListElementDialogListener listener, InputListener<?> inputListener) {
 
 		tipoDialog.openDialogAndExecuteListeners(new OkListElementDialogListener() {
 			@Override
@@ -115,7 +109,7 @@ public class ListElementDialogHelper {
 					e.printStackTrace();
 				}
 			}
-		});
+		}, inputListener);
 		
 	}
 
@@ -191,18 +185,19 @@ public class ListElementDialogHelper {
 		}
 		
 		public void openDialogAndExecuteListeners(OkListElementDialogListener listener){
-			openDialogAndExecuteListeners(Arrays.asList(listener));
+			openDialogAndExecuteListeners(listener, getDefaultInputListener(this));
 		}
 		
-		public void openDialogAndExecuteListeners(List<OkListElementDialogListener> listeners){
-			ElementListSelectionDialog dialog = openDialog();
+		public void openDialogAndExecuteListeners(OkListElementDialogListener listener, InputListener<?> inputListener){
+			openDialogAndExecuteListeners(Arrays.asList(listener), inputListener);
+		}
+		
+		public void openDialogAndExecuteListeners(List<OkListElementDialogListener> listeners, InputListener<?> inputListener){
+			ElementListSelectionDialog dialog = openDialog(inputListener);
 			
 			if(dialog.open() == IDialogConstants.OK_ID){
 				for(OkListElementDialogListener listener : listeners)
 					listener.ok(dialog.getFirstResult());
-//			} else {
-//				for(OkListElementDialogListener listener : listeners)
-//					listener.ok(null);
 			}
 		}
 		
@@ -214,7 +209,7 @@ public class ListElementDialogHelper {
 			return clazz;
 		}
 		
-		public ElementListSelectionDialog openDialog(){
+		public ElementListSelectionDialog openDialog(InputListener<?> inputListener){
 			ElementListSelectionDialog dialog = new ElementListSelectionDialog(ShellHelper.getActiveShell(), new LabelProvider(){
 				@Override
 				public String getText(Object element) {
@@ -224,43 +219,43 @@ public class ListElementDialogHelper {
 			
 			dialog.setTitle(getTitle());
 			dialog.setMessage(getMessage());
-			dialog.setElements(getElements());
+			dialog.setElements(inputListener.getInput().toArray());
 			dialog.setImage(getImages().getImage());
 			
 			return dialog;
 		}
 		
-		public Object[] getElements(){
+		public List<?> getElements(){
 			if(equals(FUNCIONARIO)){
-				return new FuncionarioService().findAtivos().toArray();//
+				return new FuncionarioService().findAtivados();//
 			} else if(equals(CLIENTE)){
-				return new ClienteService().findAtivos().toArray();
+				return new ClienteService().findAtivados();
 			} else if(equals(PLANOCONTA)){
-				return new PlanoContaService().findAtivos().toArray();
+				return new PlanoContaService().findAtivados();
 			} else if(equals(COMODO)){
-				return new TipoComodoService().findAtivos().toArray();
+				return new TipoComodoService().findAtivados();
 			} else if(equals(TIPO_IMOVEL)){
-				return new TipoImovelService().findAtivos().toArray();
+				return new TipoImovelService().findAtivados();
 			} else if(equals(MODELO_CONTRATO)){
-				return new ModeloContratoService().findAll().toArray();
+				return new ModeloContratoService().findAll();
 			} else if(equals(CONTRATO_SERVICO_TODOS)){
-				return new ContratoPrestacaoServicoService().findAll().toArray();
+				return new ContratoPrestacaoServicoService().findAll();
 			} else if(equals(CONTRATO_SERVICO_LOCACAO)){
-				return new ContratoPrestacaoServicoService().findByTipo(TipoContrato.LOCACAO).toArray();
+				return new ContratoPrestacaoServicoService().findByTipo(TipoContrato.LOCACAO);
 			} else if(equals(CONTRATO_SERVICO_VENDA)){
-				return new ContratoPrestacaoServicoService().findByTipo(TipoContrato.VENDA).toArray();
+				return new ContratoPrestacaoServicoService().findByTipo(TipoContrato.VENDA);
 			} else if(equals(CHECK_LIST)){
-				return new CheckListService().findAll().toArray();
+				return new CheckListService().findAll();
 			} else if(equals(INDICE)){
-				return new IndiceService().findAll().toArray();
+				return new IndiceService().findAll();
 			} else if(equals(COMISSIONADO)){
-				return new ComissionadoService().findAtivos().toArray();
+				return new ComissionadoService().findAtivados();
 			} else if(equals(PESSOA_FISICA)){
-				return new PessoaFisicaService().findAtivos().toArray();
+				return new PessoaFisicaService().findAtivados();
 			} else if(equals(ORIGEM_CONTA)){
-				return new OrigemContaService().findAtivos().toArray();
+				return new OrigemContaService().findAtivados();
 			} else if(equals(IMOVEL)){
-				return new ImovelService().findAll().toArray();
+				return new ImovelService().findAll();
 			} else{
 				throw new UnsupportedOperationException("Não nenhuma busca especificada.");
 			}
