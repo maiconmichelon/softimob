@@ -29,9 +29,9 @@ public class FinalizacaoChamadoReforma implements Serializable{
 	private Long id;
 	
 	@NotNull(message = "Data de fechamento do chamado de reforma não pode ser vazia.")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
-	private Date data;
+	private Date data = new Date();
 	
 	@ManyToOne
 	private Funcionario funcionario;

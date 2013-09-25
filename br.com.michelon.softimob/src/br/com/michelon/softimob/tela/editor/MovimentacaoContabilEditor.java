@@ -317,7 +317,6 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		private PlanoConta contaCredito;
 		private BigDecimal valor;
 		private String historico = StringUtils.EMPTY;
-		private Date dataLancamento;
 
 		public PlanoConta getContaDebito() {
 			return contaDebito;
@@ -349,14 +348,6 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 
 		public void setHistorico(String historico) {
 			this.historico = historico;
-		}
-
-		public Date getDataLancamento() {
-			return dataLancamento;
-		}
-
-		public void setDataLancamento(Date dataLancamento) {
-			this.dataLancamento = dataLancamento;
 		}
 
 		private List<LancamentoContabil> getLancamentos() {

@@ -25,9 +25,9 @@ public class PlanoContaView extends GenericView<PlanoConta>{
 		
 		atributos = Lists.newArrayList();
 		
-		atributos.add(new ColumnProperties("Código", "codigo"));
-		atributos.add(new ColumnProperties("Nome", "nome"));
-		atributos.add(new ColumnProperties("Tipo", "tipoExtenso"));
+		atributos.add(new ColumnProperties("Código", "codigo", 15));
+		atributos.add(new ColumnProperties("Nome", "nome", 30));
+		atributos.add(new ColumnProperties("Tipo", "tipoExtenso", 55));
 	}
 	
 	@Override

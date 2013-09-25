@@ -64,7 +64,7 @@ public abstract class VendaAluguel implements Serializable{
 	private BigDecimal valor;
 	
 	@NotNull(message = "A data não pode ser vazia.")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column
 	private Date dataAssinaturaContrato = new Date();
 

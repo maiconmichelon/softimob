@@ -64,11 +64,11 @@ public class ContratoPrestacaoServico implements Pendencia{
 	private Boolean divulgar = true;
 	
 	@NotNull(message="Informe a data que foi feito o contrato.")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date dataInicio = new Date();
 	
 	@NotNull(message="Informe a data de vencimento do contrato.")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date dataVencimento = new Date();
 	
 	@ManyToOne

@@ -20,6 +20,12 @@ public class Venda extends VendaAluguel {
 	@Column(nullable = false)
 	private Boolean fechado = false;
 	
+	public Venda() {
+//		ParametrosEmpresa params = ParametrosEmpresa.getInstance();
+//		if(params != null)
+//			setModeloContrato(params.getContratoVenda());
+	}
+	
 	public Cliente getProprietario() {
 		return proprietario;
 	}
@@ -44,12 +50,6 @@ public class Venda extends VendaAluguel {
 		}
 		
 		this.fechado = fechado;
-	}
-	
-	public Venda() {
-		ParametrosEmpresa params = ParametrosEmpresa.getInstance();
-		if(params != null)
-			setModeloContrato(params.getContratoVenda());
 	}
 	
 }

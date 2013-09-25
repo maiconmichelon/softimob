@@ -8,12 +8,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.google.common.io.Files;
 
 import br.com.michelon.softimob.modelo.Arquivo;
 
 public class FileHelper {
 
+	private static Logger log = Logger.getLogger(FileHelper.class);
+	
 	public static byte[] getBytes(File file) {
 		int len = (int) file.length();
 		byte[] sendBuf = new byte[len];
@@ -22,9 +26,13 @@ public class FileHelper {
 			inFile = new FileInputStream(file);
 			inFile.read(sendBuf, 0, len);
 
+			inFile.close();
 		} catch (FileNotFoundException fnfex) {
-		} catch (IOException ioex) {}
-		
+			log.error("Erro ao pegar bytes do arquivo.", fnfex);
+		} catch (IOException ioex) {
+			log.error("Erro ao pegar bytes do arquivo.", ioex);
+		}
+			
 		return sendBuf;
 	}
 	
@@ -53,7 +61,7 @@ public class FileHelper {
 		    fileOuputStream.write(arquivo);
 		    fileOuputStream.close();
         }catch(Exception e){
-            e.printStackTrace();
+        	log.error("Erro ao inserir escrever em um diretório.");
         }
 	}
 	

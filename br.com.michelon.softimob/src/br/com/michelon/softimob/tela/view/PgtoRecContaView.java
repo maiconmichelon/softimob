@@ -232,7 +232,10 @@ public class PgtoRecContaView extends ViewPart {
 		
 		final ComboViewer cvTipo = new ComboViewer(composite_4, SWT.READ_ONLY);
 		Combo cmbTipo = cvTipo.getCombo();
-		cmbTipo.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		GridData gridData = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
+		gridData.widthHint = 150;
+		gridData.minimumWidth = 129;
+		cmbTipo.setLayoutData(gridData);
 		formToolkit.paintBordersFor(cmbTipo);
 		cvTipo.setContentProvider(ArrayContentProvider.getInstance());
 		List findAtivados = new OrigemContaService().findAtivados();
@@ -461,7 +464,7 @@ public class PgtoRecContaView extends ViewPart {
 				movs.add(geraMovimentacao);
 			}
 		}catch(ContaNaoParametrizadaException ce){
-			DialogHelper.openError(ce.getMessage());
+			DialogHelper.openWarning(ce.getMessage());
 		}catch(Exception e1){
 			log.error("Erro ao gerar movimentação.", e1);
 			DialogHelper.openError("Erro ao gerar movimentação.\n"+e1.getMessage());

@@ -20,7 +20,7 @@ public class Funcionario extends Comissionado implements Serializable{
 	@ManyToOne(optional=false)
 	private Departamento departamento;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date dataAdmissao;
 	
 	public Funcionario() {

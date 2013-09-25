@@ -3,10 +3,12 @@ package br.com.michelon.softimob.aplicacao.helper;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -108,6 +110,16 @@ public class FormatterHelper {
 
 	public static SimpleDateFormat getSimpleDateFormatHorasMinutos() {
 		return sdfHorasMinutos;
+	}
+	
+	public static String getDataFormatada(Date data){
+		return DateHelper.getDataExtenso(data);
+	}
+	
+	public static String removerAcentos(String str){
+		String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD); 
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
 	
 }

@@ -49,7 +49,7 @@ public abstract class Comissionado implements Serializable{
 	@Email(message="Não é um e-mail válido.")
 	private String email;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(columnDefinition="TIMESTAMP WITH TIME ZONE")
 	private Date dataNascimento;
 	

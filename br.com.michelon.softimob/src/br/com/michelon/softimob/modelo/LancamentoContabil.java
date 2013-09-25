@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 public class LancamentoContabil implements Serializable{
@@ -18,19 +21,22 @@ public class LancamentoContabil implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column
+	@NotNull(message = "Informe se o lançamento é a crédito ou débito")
+	@Column(nullable = false)
 	private TipoLancamento tipo;
 	
 	@Column
-	private String historico;
+	private String historico = StringUtils.EMPTY;
 	
 	@Column
-	private String complemento;
+	private String complemento = StringUtils.EMPTY;
 	
-	@Column(scale=2, length=14)
+	@NotNull(message = "Informe o valor do lançamento")
+	@Column(scale=2, length=14, nullable = false)
 	private BigDecimal valor;
 	
-	@ManyToOne
+	@NotNull(message = "Informe a conta referente do lançamento")
+	@ManyToOne(optional = false)
 	private PlanoConta conta;
 	
 	public Long getId() {

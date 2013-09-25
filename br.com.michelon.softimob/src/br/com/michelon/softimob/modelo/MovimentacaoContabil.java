@@ -39,9 +39,9 @@ public class MovimentacaoContabil implements Serializable{
 	private List<LancamentoContabil> lancamentos = Lists.newArrayList();
 
 	@NotNull(message = "A data da movimentação não pode ser vazia.")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
-	private Date data;
+	private Date data = new Date();
 
 	@OneToOne(cascade=CascadeType.ALL, orphanRemoval = true)
 	@br.com.michelon.softimob.aplicacao.annotation.Log

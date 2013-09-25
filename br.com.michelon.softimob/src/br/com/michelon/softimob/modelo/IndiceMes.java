@@ -21,7 +21,7 @@ public class IndiceMes implements Serializable{
 	
 	@NotNull(message = "A data não pode ser vazia")
 	@Column(nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date data;
 	
 	@NotNull(message = "Valor da porcentagem não pode ser vazia")

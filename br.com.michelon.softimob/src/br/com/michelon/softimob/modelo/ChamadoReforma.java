@@ -44,7 +44,7 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	private Aluguel aluguel;
 	
 	@NotNull(message = "A data do chamado não pode ser vazia")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date data = new Date();
 	
 	@ManyToOne

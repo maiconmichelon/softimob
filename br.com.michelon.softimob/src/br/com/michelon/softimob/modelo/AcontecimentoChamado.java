@@ -24,7 +24,7 @@ public class AcontecimentoChamado implements Serializable{
 	private Long id;
 
 	@NotNull(message = "A data não pode ser vazia")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date data = new Date();
 	
 	@ManyToOne(optional=false)

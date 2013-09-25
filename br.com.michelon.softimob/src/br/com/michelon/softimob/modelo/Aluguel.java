@@ -29,9 +29,9 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	private static final long serialVersionUID = 1L;
 
 	public Aluguel() {
-		ParametrosEmpresa params = ParametrosEmpresa.getInstance();
-		if(params != null)
-			setModeloContrato(params.getContratoVenda());
+//		ParametrosEmpresa params = ParametrosEmpresa.getInstance();
+//		if(params != null)
+//			setModeloContrato(params.getContratoAluguel());
 	}
 	
 	@ManyToOne

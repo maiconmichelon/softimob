@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.widgets.Display;
 
 import br.com.michelon.softimob.modelo.Arquivo;
 
@@ -24,7 +25,20 @@ public class ContratoHelper {
 				
 				File criarDiretorioArquivos = FileHelper.criarDiretorioArquivos(Arrays.asList(modeloContrato));
 				File arq = new File(criarDiretorioArquivos, modeloContrato.getNome());
-				new DocxHelper().createPartControl(arq, obj);
+				
+				try {
+					new DocxHelper().gerarContrato(arq, obj);
+				} catch (final Exception e) {
+					
+					Display.getDefault().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							DialogHelper.openError("Erro ao gerar contrato:\n" + e.getMessage());
+						}
+					});
+					log.error("Erro ao alterar documento .docx .", e);
+					return Status.CANCEL_STATUS;
+				}
 				
 				try {
 					FileHelper.openFile(criarDiretorioArquivos, modeloContrato.getNome());

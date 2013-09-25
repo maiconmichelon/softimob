@@ -31,7 +31,7 @@ public class Vistoria implements Serializable, ContainsPhotos{
 	private Long id;
 	
 	@NotNull(message="Informe a data da vistoria.")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(nullable=false)
 	private Date data = new Date();
 	

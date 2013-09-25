@@ -75,6 +75,9 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 
 		PlanoConta contaCaixaBanco = planoContaBanco == null ? parametroEmpresa.getContaCaixa() : planoContaBanco;
 		
+		if(contaCaixaBanco == null)
+			throw new ContaNaoParametrizadaException("Para gerar os lançamentos é necessário que a conta Caixa esteja parametrizada ou seja informada uma conta conta banco.");
+		
 		if (conta.isAReceber())
 			lancamentos.add(LancamentoContabil.createDebito(movimentacao, contaCaixaBanco, conta.getValor().add(conta.getValorJurDescTratado()), historico, ""));
 		else
