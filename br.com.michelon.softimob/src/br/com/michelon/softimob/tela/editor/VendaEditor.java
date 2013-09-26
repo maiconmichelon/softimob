@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
+import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
+import br.com.michelon.softimob.aplicacao.helper.WidgetHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
@@ -455,23 +457,12 @@ public class VendaEditor extends GenericEditor<Venda>{
 		TableViewerBuilder tvbComissao = new TableViewerBuilder(composite);
 		
 		tvbComissao.createColumn("Nome").bindToProperty("comissionado.nome").setPercentWidth(20).build();
-//		tvbComissao.createColumn("Valor ( % )").bindToValue(new IValue() {
-//			//TODO AQUI TEM QUE RECALCULAR VALOR			
-//			@Override
-//			public void setValue(Object arg0, Object arg1) {
-//				// TODO Auto-generated method stub
-//			}
-//			
-//			@Override
-//			public Object getValue(Object arg0) {
-//				// TODO Auto-generated method stub
-//				return null;
-//			}
-//		}).makeEditable().build();
-		tvbComissao.createColumn("Valor (R$)").bindToProperty("valor").setPercentWidth(20).build();
+		tvbComissao.createColumn("Valor (R$)").bindToProperty("valor").setPercentWidth(20).format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
 		tvbComissao.createColumn("Data de Vencimento").bindToProperty("dataVencimento").setPercentWidth(80).format(new DateStringValueFormatter()).build();
 		
 		tvbComissao.setInput(getCurrentObject().getComissoes());
+		
+		WidgetHelper.addMenusToTable(tvbComissao, new ComissaoService(), valueComissao);
 		
 		tvComissao = tvbComissao.getTableViewer();
 	}
@@ -484,6 +475,8 @@ public class VendaEditor extends GenericEditor<Venda>{
 		tvbVistoria.createColumn("Observações").setPercentWidth(60).bindToProperty("observacoes").build();
 		
 		tvbVistoria.setInput(getCurrentObject().getVistorias());
+		
+		WidgetHelper.addMenusToTable(tvbVistoria, new VistoriaService(), valueVistoria);
 		
 		tvVistoria = tvbVistoria.getTableViewer();
 	}

@@ -184,6 +184,7 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 				tvIndices.refresh();
 				
 				limpar();
+				txtNome.forceFocus();
 			}
 		});
 		btnRegistrar.setImage(ImageRepository.SAVE_16.getImage());

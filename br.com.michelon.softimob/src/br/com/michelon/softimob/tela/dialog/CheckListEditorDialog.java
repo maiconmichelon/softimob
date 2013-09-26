@@ -151,6 +151,7 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 				
 				itemValue.setValue(new Item());
 				tvItens.refresh();
+				txtNome.forceFocus();
 			}
 		});
 		btnRegistrar.setImage(ImageRepository.SAVE_16.getImage());

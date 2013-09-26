@@ -23,6 +23,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.wb.swt.ImageRepository;
 
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
@@ -65,7 +66,7 @@ public class PhotoComposite extends Composite {
 		gallery = new Gallery(this, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER);
 		gallery.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
 		
-		DefaultGalleryGroupRenderer gr = new DefaultGalleryGroupRenderer();
+		final DefaultGalleryGroupRenderer gr = new DefaultGalleryGroupRenderer();
 		
 		gr.setAnimation(true);
 		gr.setMinMargin(2);
@@ -115,6 +116,11 @@ public class PhotoComposite extends Composite {
 		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				giFotosImovel.setExpanded(true);
+				Event event = new Event();
+				event.item = giFotosImovel;
+				gallery.notifyListeners(SWT.Expand, event);
+				
 				List<Arquivo> photos = DialogHelper.openPhotoDialog();
 				
 				if(photos == null || photos.size() < 1)

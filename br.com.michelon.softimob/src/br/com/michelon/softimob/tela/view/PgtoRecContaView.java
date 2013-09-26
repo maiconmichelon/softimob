@@ -430,6 +430,8 @@ public class PgtoRecContaView extends ViewPart {
 	private void setarDatas(){
 		Calendar c = Calendar.getInstance();
 
+		c.set(Calendar.MONTH, c.get(Calendar.MONTH) + 1);
+
 		dtFinal.setValue(c.getTime());
 
 		c.set(Calendar.MONTH, c.get(Calendar.MONTH) - 3);

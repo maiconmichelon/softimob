@@ -1130,6 +1130,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		IObservableValue valueIdObserveDetailValue = PojoProperties.value(Aluguel.class, "id", Long.class).observeDetail(value);
 		bindingContext.bindValue(observeEnabledCpChamadoObserveWidget, valueIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
 		//		
+		IObservableValue observeEnabledCpComissaoObserveWidget = WidgetProperties.enabled().observe(cpComissao);
+		bindingContext.bindValue(observeEnabledCpComissaoObserveWidget, valueIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
+		//
 		IObservableValue observeEnabledCpVistoriaObserveWidget = WidgetProperties.enabled().observe(cpVistoria);
 		bindingContext.bindValue(observeEnabledCpVistoriaObserveWidget, valueIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
 	}

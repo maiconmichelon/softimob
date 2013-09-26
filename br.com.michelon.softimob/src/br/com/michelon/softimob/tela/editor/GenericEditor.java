@@ -116,6 +116,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				saveCurrentObject(getService());
+				setFocus();
 			}
 		});
 		
@@ -133,6 +134,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					resetValue();
+					setFocus();
 				}
 			});
 		}
@@ -326,14 +328,23 @@ public abstract class GenericEditor<T> extends EditorPart {
 	@Override
 	public void setFocus() {
 		Control[] children = cpPrincipal.getChildren();
-		for(Control ctr : children){
-			if(ctr.isEnabled() && (ctr instanceof Text || ctr instanceof Combo)){
-				ctr.forceFocus();
-				break;
-			}
-		}
+		Control firsControlTextCombo = getFirsControlTextCombo(children);
+		if(firsControlTextCombo != null)
+			firsControlTextCombo.forceFocus();
+			
 	}
 
+	public Control getFirsControlTextCombo(Control[] children){
+		for(Control ctr : children){
+			if(ctr.isEnabled() && (ctr instanceof Text || ctr instanceof Combo))
+				return ctr;
+			if(ctr instanceof Composite)
+				return getFirsControlTextCombo(((Composite) ctr).getChildren());
+		}
+		
+		return null;
+	}
+	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 	}

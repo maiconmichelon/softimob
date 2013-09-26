@@ -29,12 +29,12 @@ public class ReservaView extends GenericView<Reserva>{
 		atributos = Lists.newArrayList();
 		
 		atributos.add(new ColumnProperties("Imóvel", "imovel", 25));
-		atributos.add(new ColumnProperties("Data da Reserva", "dataReserva", 8, new DateStringValueFormatter()));
-		atributos.add(new ColumnProperties("Data de Vencimento", "dataVencimento", 8, new DateStringValueFormatter()));
+		atributos.add(new ColumnProperties("Data da Reserva", "dataReserva", 10, new DateStringValueFormatter()));
+		atributos.add(new ColumnProperties("Data de Vencimento", "dataVencimento", 10, new DateStringValueFormatter()));
 		atributos.add(new ColumnProperties("Valor", "valor", 8, FormatterHelper.getDefaultValueFormatterToMoney()));
 		atributos.add(new ColumnProperties("Cliente", "cliente.nome", 10));
 		atributos.add(new ColumnProperties("Funcionário", "funcionario", 10));
-		atributos.add(new ColumnProperties("Observações", "observacoes", 25));
+		atributos.add(new ColumnProperties("Observações", "observacoes", 20));
 	}
 
 	@Override

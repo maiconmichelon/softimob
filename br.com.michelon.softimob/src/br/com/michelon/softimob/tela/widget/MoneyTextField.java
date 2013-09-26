@@ -38,10 +38,10 @@ public class MoneyTextField extends Text{
 				}
 				
 				String vgl = String.valueOf(e.character);
-				if (!(vgl.equals(",")) && !Character.isDigit(e.character))
+				if (!(vgl.equals(",")) && !Character.isDigit(e.character)){
 					e.doit = false;
-				else
-					return;
+				} else if(vgl.equals(",") && v.contains(","))
+					e.doit = false;
 			}
 		});
 	}

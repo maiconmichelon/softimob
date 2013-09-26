@@ -514,6 +514,7 @@
                   label="Relatórios">
                <command
                      commandId="br.com.michelon.softimob.command.cmdFuncionarioReport"
+                     icon="icons/desempenho/desempenho16.png"
                      label="Desempenho dos Funcionários"
                      style="push">
                </command>

@@ -35,7 +35,7 @@ public interface ContaPagarReceberDAO extends CrudRepository<ContaPagarReceber, 
 	@Query(value = "" +
 			"SELECT c " +
 			"FROM ContaPagarReceber c " +
-			"WHERE c.dataConta >= :dataInicio AND c.dataConta <= :dataFinal " +
+			"WHERE c.dataVencimento >= :dataInicio AND c.dataVencimento <= :dataFinal " +
 			"ORDER BY c.dataConta")
 	public List<ContaPagarReceber> buscarContas(@Param(value = "dataInicio")Date dataInicio, @Param(value = "dataFinal")Date dataFinal);
 	

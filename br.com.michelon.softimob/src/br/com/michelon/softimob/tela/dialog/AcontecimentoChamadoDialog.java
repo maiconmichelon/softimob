@@ -117,7 +117,7 @@ public class AcontecimentoChamadoDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(450, 250);
+		return new Point(450, 265);
 	}
 
 	private DataBindingContext initDataBinding(){

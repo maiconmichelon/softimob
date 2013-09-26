@@ -133,6 +133,7 @@ public class ImovelView extends GenericView<Imovel>{
 		MenuItem miMapsLocacaoVenda = new MenuItem(menuMaps, SWT.NONE);
 		miMapsLocacaoVenda.setText("Venda/Locação");
 		miMapsLocacaoVenda.addSelectionListener(abrirTelaMaps(TipoContrato.LOCACAOVENDA));
+		miMapsLocacaoVenda.setImage(ImageRepository.PLACA_16.getImage());
 	}
 	
 	private SelectionAdapter abrirTelaMaps(final TipoContrato tipoContrato){
