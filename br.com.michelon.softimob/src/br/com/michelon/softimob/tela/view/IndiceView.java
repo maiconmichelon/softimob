@@ -68,6 +68,7 @@ public class IndiceView extends GenericView<Indice>{
 	protected void alterar(Indice element) {
 		IndiceEditorDialog dialog = new IndiceEditorDialog(ShellHelper.getActiveShell(), element);
 		dialog.open();
+		atualizar();
 	}
 
 	@Override

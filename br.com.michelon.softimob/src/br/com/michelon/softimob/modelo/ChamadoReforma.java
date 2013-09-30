@@ -54,7 +54,7 @@ public class ChamadoReforma implements Serializable, Pendencia{
 	@Column(nullable = false)
 	private String problema;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private FinalizacaoChamadoReforma finalizacao;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

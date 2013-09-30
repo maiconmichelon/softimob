@@ -34,9 +34,9 @@ public class ContratoHelper {
 						@Override
 						public void run() {
 							DialogHelper.openError("Erro ao gerar contrato:\n" + e.getMessage());
+							log.error("Erro ao alterar documento .docx .", e);
 						}
 					});
-					log.error("Erro ao alterar documento .docx .", e);
 					return Status.CANCEL_STATUS;
 				}
 				

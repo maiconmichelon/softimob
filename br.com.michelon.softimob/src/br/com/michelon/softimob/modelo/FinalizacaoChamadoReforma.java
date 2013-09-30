@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -40,7 +40,7 @@ public class FinalizacaoChamadoReforma implements Serializable{
 	@Column(nullable = false)
 	private String descricaoConclusao;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ContaPagarReceber> contas = Lists.newArrayList();
 
 	@NotNull(message = "Informe se o chamado foi aceito ou recusado.")

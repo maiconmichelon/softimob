@@ -41,7 +41,7 @@
             class="br.com.michelon.softimob.tela.view.AluguelView"
             icon="icons/aluguel/aluguel16.png"
             id="br.com.michelon.softimob.tela.view.AluguelView"
-            name="Aluguel"
+            name="Locação"
             restorable="true">
       </view>
       <view
@@ -513,6 +513,12 @@
                   icon="icons/report/report16.png"
                   label="Relatórios">
                <command
+                     commandId="br.com.michelon.softimob.command.cmdClienteReport"
+                     icon="icons/cliente/cliente16.png"
+                     label="Clientes"
+                     style="push">
+               </command>
+               <command
                      commandId="br.com.michelon.softimob.command.cmdFuncionarioReport"
                      icon="icons/desempenho/desempenho16.png"
                      label="Desempenho dos Funcionários"
@@ -595,6 +601,12 @@
                      style="push">
                </command>
                <command
+                     commandId="br.com.michelon.softimob.command.cmdContaReport"
+                     icon="icons/contaPagar/contaPagar16.png"
+                     label="Contas a pagar/receber"
+                     style="push">
+               </command>
+               <command
                      commandId="br.com.michelon.softimob.command.cmdRazao"
                      label="Razão"
                      style="push">
@@ -606,7 +618,7 @@
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/aluguel/aluguel16.png"
-                  label="Aluguel"
+                  label="Locação"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
@@ -741,7 +753,7 @@
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/aluguel/aluguel16.png"
-                  label="Aluguel"
+                  label="Locação"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"
@@ -858,7 +870,7 @@
             default="false"
             icon="icons/aluguel/aluguel16.png"
             id="br.com.michelon.softimob.tela.editor.AluguelEditor"
-            name="Aluguel">
+            name="Locação">
       </editor>
       <editor
             class="br.com.michelon.softimob.tela.editor.VendaEditor"
@@ -1015,6 +1027,16 @@
             defaultHandler="br.com.michelon.softimob.aplicacao.command.CmdFuncionarioReport"
             id="br.com.michelon.softimob.command.cmdFuncionarioReport"
             name="Relatorio Funcionarios">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.ClienteReportCommand"
+            id="br.com.michelon.softimob.command.cmdClienteReport"
+            name="ClienteReport">
+      </command>
+      <command
+            defaultHandler="br.com.michelon.softimob.aplicacao.command.ContaReportCommand"
+            id="br.com.michelon.softimob.command.cmdContaReport"
+            name="ContaReport">
       </command>
    </extension>
    <extension

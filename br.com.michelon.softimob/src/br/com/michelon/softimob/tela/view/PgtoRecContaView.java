@@ -50,10 +50,8 @@ import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInput;
 import br.com.michelon.softimob.aplicacao.exception.ContaNaoParametrizadaException;
-import br.com.michelon.softimob.aplicacao.exception.ListException;
 import br.com.michelon.softimob.aplicacao.filter.ContaFilter;
 import br.com.michelon.softimob.aplicacao.filter.PropertyFilter;
-import br.com.michelon.softimob.aplicacao.helper.BoletoHelper;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
@@ -66,7 +64,7 @@ import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.modelo.PlanoConta;
-import br.com.michelon.softimob.tela.dialog.ValidationErrorDialog;
+import br.com.michelon.softimob.tela.dialog.GerarBoletoDialog;
 import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
@@ -476,7 +474,7 @@ public class PgtoRecContaView extends ViewPart {
 	}
 	
 	private TableViewerBuilder criarTabelaContas(boolean isPagamento, Composite composite) {
-		TableViewerBuilder tvbContas = new TableViewerBuilder(composite);
+		final TableViewerBuilder tvbContas = new TableViewerBuilder(composite);
 		
 		tvbContas.createColumn("Tipo").setPercentWidth(1).bindToProperty("tipoExtenso").format(new NullStringValueFormatter()).build();
 		tvbContas.createColumn("Data").setPercentWidth(1).bindToProperty("dataConta").format(new DateStringValueFormatter()).build();
@@ -524,8 +522,7 @@ public class PgtoRecContaView extends ViewPart {
 			public void formatCell(ViewerCell arg0, Object arg1) {
 				ContaPagarReceber conta = (ContaPagarReceber) arg0.getElement();
 				int signum = conta.getValorJurDescTratado().signum();
-				if(signum != 0)
-					arg0.setForeground(signum > 0 ? ResourceManager.getColor(SWT.COLOR_RED) : ResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+				arg0.setForeground(ResourceManager.getColor(signum > 0 ? SWT.COLOR_RED : (signum < 0 ? SWT.COLOR_DARK_GREEN : SWT.COLOR_BLACK)));
 				arg0.setText(FormatterHelper.getDefaultValueFormatterToMoney().format((BigDecimal) arg1));
 			}
 			
@@ -576,11 +573,7 @@ public class PgtoRecContaView extends ViewPart {
 			miGerarBoleto.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					try {
-						BoletoHelper.gerarBoleto((ContaPagarReceber) SelectionHelper.getObject(tvbContaPgto.getTableViewer()));
-					} catch (ListException e1) {
-						new ValidationErrorDialog(ShellHelper.getActiveShell(), e1.getMessage(), "gerar boleto").open();
-					}
+					new GerarBoletoDialog(ShellHelper.getActiveShell(), (ContaPagarReceber) SelectionHelper.getObject(tvbContas.getTableViewer())).open();
 				}
 			});
 			miGerarBoleto.setImage(ImageRepository.BOLETO_16.getImage());

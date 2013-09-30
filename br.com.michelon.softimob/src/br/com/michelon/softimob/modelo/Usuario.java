@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import org.eclipse.persistence.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -37,6 +38,9 @@ public class Usuario implements Serializable{
 	@Column(nullable = false)
 	@DeactivateOnDelete
 	private Boolean ativo = true;
+	
+	@ManyToOne(optional = true)
+	private Funcionario funcionario;
 	
 	public Long getId() {
 		return id;
@@ -78,9 +82,21 @@ public class Usuario implements Serializable{
 		this.ativo = ativo;
 	}
 
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+	
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+	
+	public String getNomeOrLogin(){
+		return getFuncionario() == null ? getLogin() : getFuncionario().getNome();
+	}
+	
 	@Override
 	public String toString() {
-		return login;
+		return getNomeOrLogin();
 	}
 	
 	@Override

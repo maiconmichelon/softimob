@@ -41,8 +41,8 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date dataVencimento = new Date();
 	
-	@Column
-	private Integer reajuste;
+	@ManyToOne
+	private Indice reajuste;
 	
 	@Column(nullable = false)
 	private Boolean resolvido = false;
@@ -65,11 +65,11 @@ public class Aluguel extends VendaAluguel implements Pendencia, Serializable{
 		this.fiador = fiador;
 	}
 
-	public Integer getReajuste() {
+	public Indice getReajuste() {
 		return reajuste;
 	}
 
-	public void setReajuste(Integer reajuste) {
+	public void setReajuste(Indice reajuste) {
 		this.reajuste = reajuste;
 	}
 

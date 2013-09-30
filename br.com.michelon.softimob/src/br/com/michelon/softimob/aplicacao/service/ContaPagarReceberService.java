@@ -13,6 +13,7 @@ import org.eclipse.ui.PlatformUI;
 import br.com.michelon.softimob.aplicacao.exception.ContaJaPagaRecebidaException;
 import br.com.michelon.softimob.aplicacao.exception.ContaNaoParametrizadaException;
 import br.com.michelon.softimob.aplicacao.helper.HistoricoHelper;
+import br.com.michelon.softimob.aplicacao.helper.LogHelper;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.LancamentoContabil;
 import br.com.michelon.softimob.modelo.LancamentoContabil.TipoLancamento;
@@ -42,6 +43,7 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 	
 	public MovimentacaoContabil geraMovimentacao(ContaPagarReceber c, ModeloPgtoConta model) throws Exception{
 		MovimentacaoContabil mov = new MovimentacaoContabil();
+		LogHelper.setLog(mov);
 		
 		mov.setData(model.getDataBaixa());
 		mov.setValor(c.getValorMovimentacao());
@@ -68,11 +70,16 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 
 		String historico = HistoricoHelper.getHistoricoPagamento(conta, dataPagamento);
 
-		if (conta.isApagar())
+		if (conta.isApagar()){
+			if(conta.getOrigem().getConta() == null)
+				throw new ContaNaoParametrizadaException(String.format("Para gerar os lançamentos é necessário que para o tipo de conta %s a conta esteja parametrizada.", conta.getOrigem().getNome()));
 			lancamentos.add(LancamentoContabil.createDebito(movimentacao, conta.getOrigem().getConta(), valorDuplicata, historico, ""));
-		else
+		}else{
+			if(conta.getOrigem().getContaContraPartida() == null)
+				throw new ContaNaoParametrizadaException(String.format("Para gerar os lançamentos é necessário que para o tipo de conta %s a conta de contra-partida esteja parametrizada.", conta.getOrigem().getNome()));
 			lancamentos.add(LancamentoContabil.createCredito(movimentacao, conta.getOrigem().getContaContraPartida(), valorDuplicata, historico, ""));
-
+		}
+		
 		PlanoConta contaCaixaBanco = planoContaBanco == null ? parametroEmpresa.getContaCaixa() : planoContaBanco;
 		
 		if(contaCaixaBanco == null)

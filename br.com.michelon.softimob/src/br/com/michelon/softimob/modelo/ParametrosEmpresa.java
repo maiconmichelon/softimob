@@ -4,16 +4,14 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import org.apache.log4j.Logger;
 import org.hibernate.validator.constraints.br.CNPJ;
 
-import br.com.caelum.stella.boleto.bancos.Bancos;
 import br.com.michelon.softimob.aplicacao.service.ParametrosEmpresaService;
 
 @Entity
@@ -21,6 +19,8 @@ public class ParametrosEmpresa implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
+	private static Logger log = Logger.getLogger(ParametrosEmpresa.class);
+	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
@@ -88,13 +88,6 @@ public class ParametrosEmpresa implements Serializable{
 	@OneToOne
 	private PlanoConta contaCaixa;
 	
-	@Enumerated(EnumType.ORDINAL)
-	@Column
-	private Bancos banco;
-	
-	@Column
-	private String cedente;
-	
 	@Column
 	private String agencia;
 	
@@ -114,19 +107,25 @@ public class ParametrosEmpresa implements Serializable{
 	private String numeroConvenio;
 	
 	@Column
-	private String nossoNumero;
+	private String localPagamento;
+	
+	@Column
+	private String instrucaoSacado;
+	
+	@Column
+	private String instrucaoExtra;
 	
 	private ParametrosEmpresa(){}
 	
-	private static transient ParametrosEmpresa params;
+	private static transient ParametrosEmpresaService parametrosEmpresaService;	
 	
 	public static ParametrosEmpresa getInstance(){
 		try{
-			if(params == null)
-				params = new ParametrosEmpresaService().findParametrosEmpresa();
-			return params == null ? new ParametrosEmpresa() : params;
-		
+			if(parametrosEmpresaService == null)
+				parametrosEmpresaService = new ParametrosEmpresaService();
+			return parametrosEmpresaService.findParametrosEmpresa();
 		}catch(Exception e){
+			log.error("Erro ao buscar parametros da empresa.", e);
 			return null;
 		}
 	}
@@ -308,22 +307,6 @@ public class ParametrosEmpresa implements Serializable{
 		this.contaJurosRecebido = contaJurosRecebido;
 	}
 	
-	public Bancos getBanco() {
-		return banco;
-	}
-	
-	public void setBanco(Bancos banco) {
-		this.banco = banco;
-	}
-	
-	public String getCedente() {
-		return cedente;
-	}
-
-	public void setCedente(String cedente) {
-		this.cedente = cedente;
-	}
-
 	public String getAgencia() {
 		return agencia;
 	}
@@ -372,12 +355,28 @@ public class ParametrosEmpresa implements Serializable{
 		this.numeroConvenio = numeroConvenio;
 	}
 	
-	public String getNossoNumero() {
-		return nossoNumero;
+	public String getInstrucaoExtra() {
+		return instrucaoExtra;
 	}
 	
-	public void setNossoNumero(String nossoNumero) {
-		this.nossoNumero = nossoNumero;
+	public String getInstrucaoSacado() {
+		return instrucaoSacado;
+	}
+	
+	public String getLocalPagamento() {
+		return localPagamento;
+	}
+	
+	public void setInstrucaoExtra(String instrucaoExtra) {
+		this.instrucaoExtra = instrucaoExtra;
+	}
+	
+	public void setInstrucaoSacado(String instrucaoSacado) {
+		this.instrucaoSacado = instrucaoSacado;
+	}
+	
+	public void setLocalPagamento(String localPagamento) {
+		this.localPagamento = localPagamento;
 	}
 	
 	@Override

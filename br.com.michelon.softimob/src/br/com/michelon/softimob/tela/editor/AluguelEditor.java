@@ -61,6 +61,7 @@ import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
+import br.com.michelon.softimob.aplicacao.service.IndiceService;
 import br.com.michelon.softimob.aplicacao.service.VistoriaService;
 import br.com.michelon.softimob.modelo.AcontecimentoChamado;
 import br.com.michelon.softimob.modelo.Aluguel;
@@ -72,6 +73,7 @@ import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.FinalizacaoChamadoReforma;
 import br.com.michelon.softimob.modelo.Funcionario;
+import br.com.michelon.softimob.modelo.Indice;
 import br.com.michelon.softimob.modelo.ItemCheckList;
 import br.com.michelon.softimob.modelo.ModeloContrato;
 import br.com.michelon.softimob.modelo.ParametrosEmpresa;
@@ -83,6 +85,7 @@ import br.com.michelon.softimob.tela.dialog.AdicionarContaPagarReformaDialog;
 import br.com.michelon.softimob.tela.dialog.ParcelaDialog;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
+import br.com.michelon.softimob.tela.widget.LoadOnFocus;
 import br.com.michelon.softimob.tela.widget.MoneyTextField;
 import br.com.michelon.softimob.tela.widget.NullStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.NumberTextField2;
@@ -143,6 +146,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private Composite cpComissao;
 	private Table tableContasFinalizacaoReforma;
 	private TableViewer tvContasFinalizacaoChamadoReforma;
+	private ComboViewer cvAjuste;
 
 	public AluguelEditor() {
 		super(Aluguel.class);
@@ -238,9 +242,11 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblReajuste.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblReajuste.setText("Reajuste");
 		
-		ComboViewer comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
-		Combo combo = comboViewer.getCombo();
+		cvAjuste = new ComboViewer(parent, SWT.READ_ONLY);
+		Combo combo = cvAjuste.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+		cvAjuste.setContentProvider(ArrayContentProvider.getInstance());
+		LoadOnFocus.setFocusGainedListener(cvAjuste, new IndiceService());
 		
 		Label lblData = new Label(parent, SWT.NONE);
 		lblData.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -685,41 +691,24 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		tvContasFinalizacaoChamadoReforma = new TableViewer(cpFinalizacaoChamadoReforma, SWT.BORDER | SWT.FULL_SELECTION);
 		tableContasFinalizacaoReforma = tvContasFinalizacaoChamadoReforma.getTable();
 		tableContasFinalizacaoReforma.setLinesVisible(true);
-		tableContasFinalizacaoReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		tableContasFinalizacaoReforma.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 2));
 		
 		TableViewerColumn tvcConta = new TableViewerColumn(tvContasFinalizacaoChamadoReforma, SWT.NONE);
 		tvcConta.setLabelProvider(new ColumnLabelProvider(){
 			@Override
 			public String getText(Object element) {
 				ContaPagarReceber conta = (ContaPagarReceber) element;
-				return String.format("Conta a %s, com vencimento em %s - %s", conta.isApagar() ? "pagar" : "receber", 
-						FormatterHelper.getSimpleDateFormat().format(conta.getDataVencimento()), conta.getObservacoes());
+				return String.format("Conta a %s no valor de %s, com vencimento em %s - %s", conta.isApagar() ? "pagar" : "receber", 
+						FormatterHelper.getCurrencyFormatter().format(conta.getValor()), FormatterHelper.getSimpleDateFormat().format(conta.getDataVencimento()), conta.getObservacoes());
 			}
 		});
 		TableColumn tableColumn = tvcConta.getColumn();
 		tableColumn.setWidth(550);
 		
-		Menu menuContasFinalizacaoChamadoReforma = new Menu(tableContasFinalizacaoReforma);
-		tableContasFinalizacaoReforma.setMenu(menuContasFinalizacaoChamadoReforma);
-		
-		WidgetHelper.createMenuItemRemover(menuContasFinalizacaoChamadoReforma, new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ContaPagarReceber c = SelectionHelper.getObject(tvContasFinalizacaoChamadoReforma);
-				
-				if(c.isJaPagaRecebida())
-					DialogHelper.openWarning("A conta já foi paga/recebida, para exclui-la é necessário estorná-la.");
-				
-				FinalizacaoChamadoReforma fin = (FinalizacaoChamadoReforma) valueFinalizacaoChamado.getValue();
-				fin.getContas().remove(c);
-				
-			}
-		});
-		
-		Button btnAdicionar_1 = new Button(cpFinalizacaoChamadoReforma, SWT.NONE);
-		btnAdicionar_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		btnAdicionar_1.setImage(ImageRepository.ADD_16.getImage());
-		btnAdicionar_1.addSelectionListener(new SelectionAdapter() {
+		Button btnAdicionarContaFinalizacaoReforma = new Button(cpFinalizacaoChamadoReforma, SWT.NONE);
+		btnAdicionarContaFinalizacaoReforma.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
+		btnAdicionarContaFinalizacaoReforma.setImage(ImageRepository.ADD_16.getImage());
+		btnAdicionarContaFinalizacaoReforma.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
@@ -732,6 +721,31 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 				} catch (ParametroNaoInformadoException e1) {
 					DialogHelper.openWarning(e1.getMessage());
 				}
+			}
+		});
+		
+		new Label(cpFinalizacaoChamadoReforma, SWT.NONE);
+		new Label(cpFinalizacaoChamadoReforma, SWT.NONE);
+		
+		Button btnRemoverContaFinalizacaoReforma = new Button(cpFinalizacaoChamadoReforma, SWT.NONE);
+		btnRemoverContaFinalizacaoReforma.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
+		btnRemoverContaFinalizacaoReforma.setImage(ImageRepository.REMOVE_16.getImage());
+		btnRemoverContaFinalizacaoReforma.addSelectionListener(new SelectionAdapter(){
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ContaPagarReceber c = SelectionHelper.getObject(tvContasFinalizacaoChamadoReforma);
+				
+				if(c == null)
+					return;
+				
+				if(c.isJaPagaRecebida()){
+					DialogHelper.openWarning("A conta já foi paga/recebida, para exclui-la é necessário estorná-la.");
+					return;
+				}
+				
+				FinalizacaoChamadoReforma fin = (FinalizacaoChamadoReforma) valueFinalizacaoChamado.getValue();
+				fin.getContas().remove(c);
+				tvContasFinalizacaoChamadoReforma.refresh();
 			}
 		});
 		
@@ -1058,9 +1072,9 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		IObservableValue valueValorObserveDetailValue = PojoProperties.value(Aluguel.class, "valor", BigDecimal.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_2ObserveWidget, valueValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
 		//
-//		IObservableValue observeTextText_5ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_5);
-//		IObservableValue valueReajusteObserveDetailValue = PojoProperties.value(Aluguel.class, "reajuste", Integer.class).observeDetail(value);
-//		bindingContext.bindValue(observeTextText_5ObserveWidget, valueReajusteObserveDetailValue, null, null);
+		IObservableValue observeSingleSelectionCvAjuste = ViewerProperties.singleSelection().observe(cvAjuste);
+		IObservableValue valueVistoriaReajusteObserveDetailValue = PojoProperties.value(Aluguel.class, "reajuste", Indice.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionCvAjuste, valueVistoriaReajusteObserveDetailValue, null, null);
 		//
 		IObservableValue observeTextText_DataVencimentobserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataVencimentoComissao);
 		IObservableValue valueComissaoDataVencimentoObserveDetailValue = PojoProperties.value(Comissao.class, "dataVencimento", Date.class).observeDetail(valueComissao);

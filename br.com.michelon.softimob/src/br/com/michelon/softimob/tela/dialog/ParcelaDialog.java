@@ -103,7 +103,7 @@ public class ParcelaDialog extends TitleAreaDialog{
 			ParametrosEmpresa parametrosEmpresa = ParametrosEmpresa.getInstance();
 			
 			if(parametrosEmpresa.getTipoContaAluguel() == null){
-				setErrorMessage("O tipo da conta de aluguel deve ser cadastrada.");
+				setErrorMessage("O tipo da conta de locação deve ser cadastrada.");
 				return;
 			} else {
 				contas.addAll(new ContaPagarReceberService().gerarParcelas(numParcelas, valor, dataInicio, btnPagar.getSelection() ? ContaPagarReceber.PAGAR : ContaPagarReceber.RECEBER, 

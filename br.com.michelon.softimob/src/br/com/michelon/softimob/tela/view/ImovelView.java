@@ -122,7 +122,7 @@ public class ImovelView extends GenericView<Imovel>{
 		
 		MenuItem miMapsLocacao = new MenuItem(menuMaps, SWT.NONE);
 		miMapsLocacao.setText("Locação");
-		miMapsLocacao.setImage(ImageRepository.ALUGUEL_16.getImage());
+		miMapsLocacao.setImage(ImageRepository.LOCACAO_16.getImage());
 		miMapsLocacao.addSelectionListener(abrirTelaMaps(TipoContrato.LOCACAO));
 		
 		MenuItem miMapsVenda = new MenuItem(menuMaps, SWT.NONE);

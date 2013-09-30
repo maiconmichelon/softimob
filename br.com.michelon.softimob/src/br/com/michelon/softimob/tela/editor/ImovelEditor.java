@@ -1020,13 +1020,13 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	private void criarTabelaLocacoes(Composite composite) {
 		tvbLocacao = new TableViewerBuilder(composite);
 		
-		tvbLocacao.createColumn("Locatario").setPercentWidth(10).bindToProperty("cliente.nome").build();
+		tvbLocacao.createColumn("Locatário").setPercentWidth(10).bindToProperty("cliente.nome").build();
 		tvbLocacao.createColumn("Fiador").setPercentWidth(10).bindToProperty("fiador.nome").build();
 		tvbLocacao.createColumn("Corretor").setPercentWidth(10).bindToProperty("funcionario.nome").build();
 		tvbLocacao.createColumn("Valor").setPercentWidth(10).format(FormatterHelper.getDefaultValueFormatterToMoney()).bindToProperty("valor").build();
 		tvbLocacao.createColumn("Data").setPercentWidth(10).format(new DateStringValueFormatter()).bindToProperty("dataAssinaturaContrato").build();
 		tvbLocacao.createColumn("Data de Vencimento").setPercentWidth(10).bindToProperty("dataVencimento").format(new DateStringValueFormatter()).build();
-//		tvbLocacao.createColumn("Reajuste").setPercentWidth(10).bindToProperty("reajuste").build();
+		tvbLocacao.createColumn("Reajuste").setPercentWidth(10).bindToProperty("reajuste").build();
 		
 		tvbLocacao.setInput(new AluguelService().findByImovel(getCurrentObject()));
 		tvbLocacao.getTableViewer().addDoubleClickListener(new IDoubleClickListener() {
@@ -1039,7 +1039,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(ei, AluguelEditor.ID);
 				} catch (PartInitException e) {
-					log.error("Erro ao abrir tela de aluguel.", e);
+					log.error("Erro ao abrir tela de locação.", e);
 				}
 			}
 		});

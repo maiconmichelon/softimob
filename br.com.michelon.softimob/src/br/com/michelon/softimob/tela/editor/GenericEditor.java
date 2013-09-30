@@ -348,7 +348,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 	}
-
+	
 	@Override
 	public void doSaveAs() {
 	}

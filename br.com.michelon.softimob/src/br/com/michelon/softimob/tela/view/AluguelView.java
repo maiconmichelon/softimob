@@ -46,12 +46,12 @@ public class AluguelView extends GenericView<Aluguel>{
 	
 	@Override
 	protected String getTitleView() {
-		return "Aluguéis";
+		return "Locação";
 	}
 
 	@Override
 	protected Image getImage() {
-		return ImageRepository.ALUGUEL_32.getImage();
+		return ImageRepository.LOCACAO_32.getImage();
 	}
 
 	@Override
