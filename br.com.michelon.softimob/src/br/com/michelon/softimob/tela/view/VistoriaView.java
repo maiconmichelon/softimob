@@ -109,7 +109,7 @@ public class VistoriaView extends GenericView<Vistoria>{
 					FileHelper.openFile(FileHelper.criarDiretorioArquivos(arquivos), arquivos.get(0).getNome());
 				} catch (IOException e2) {
 					log.error("Erro ao abrir fotos.", e2);
-					DialogHelper.openError("Erro ao abrir as fotos da vistoria.\n" + e2.getMessage());
+					DialogHelper.openErrorMultiStatus("Erro ao abrir as fotos da vistoria.\n", e2.getMessage());
 				}
 			}
 		});

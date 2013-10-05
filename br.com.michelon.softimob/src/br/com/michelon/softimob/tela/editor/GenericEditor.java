@@ -262,7 +262,7 @@ public abstract class GenericEditor<T> extends EditorPart {
 				if(re.getCause() != null && re.getCause().getClass().equals(DatabaseException.class)){
 					DatabaseException de = (DatabaseException) re.getCause();
 					if(de.getErrorCode() == 4002 && de.getCause() instanceof PSQLException && ((PSQLException)de.getCause()).getSQLState().equals("23505")){
-						DialogHelper.openError("Já existe um registro com estas caracteristicas.");
+						DialogHelper.openWarning("Já existe um registro com estas caracteristicas.");
 						return false;
 					}
 				}
@@ -279,18 +279,22 @@ public abstract class GenericEditor<T> extends EditorPart {
 	}
 	
 	protected <Y> boolean addItens(GenericService<Y> service, IObservableValue value, ColumnViewer tv, List<Y> list){
-		return addItens(service, value, tv, true, getCurrentObject());
+		return addItens(service, value, tv, list, true);
+	}
+
+	protected <Y> boolean addItens(GenericService<Y> service, IObservableValue value, ColumnViewer tv, List<Y> list, boolean addItenOnTable){
+		return addItens(service, value, tv, true, getCurrentObject(), addItenOnTable);
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <Y> boolean addItens(GenericService<Y> service, IObservableValue value, ColumnViewer tv, boolean resetValue, Object father){
+	protected <Y> boolean addItens(GenericService<Y> service, IObservableValue value, ColumnViewer tv, boolean resetValue, Object father, boolean addItenOnTable){
 		if(!salvar(service, value, false))
 			return false;
 			
 		SWTHelper.setSuccesfulMessageInBottomScreen("Item salvo com sucesso !");
 		
 		List<Y> elementos = (List<Y>) tv.getInput();
-		if(!elementos.contains(value.getValue()))
+		if(!elementos.contains(value.getValue()) && addItenOnTable)
 			elementos.add((Y) value.getValue());
 
 		//Aqui ele tenta resetar o value

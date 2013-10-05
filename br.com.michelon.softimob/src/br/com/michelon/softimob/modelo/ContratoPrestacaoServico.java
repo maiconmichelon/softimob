@@ -48,8 +48,9 @@ public class ContratoPrestacaoServico implements Pendencia{
 	@Id @GeneratedValue
 	private Long id;
 	
+	@NotNull(message = "Informe o valor do imóvel.")
 	@Column(precision = 14, scale = 2)
-	private BigDecimal valorImovel = BigDecimal.ZERO;
+	private BigDecimal valorImovel;
 	
 	@NotNull(message="Informe o tipo do contrato.")
 	@Column(nullable=false)

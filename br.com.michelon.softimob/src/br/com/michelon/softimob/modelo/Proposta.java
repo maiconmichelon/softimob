@@ -58,8 +58,8 @@ public class Proposta implements Serializable, Pendencia{
 	private Funcionario funcionario;
 	
 	@NotNull(message = "Informe o valor da proposta.")
-	@Column(precision = 14, scale = 2)
-	private BigDecimal valor = BigDecimal.ZERO;
+	@Column(precision = 14, scale = 2, nullable = false)
+	private BigDecimal valor;
 
 	@Column
 	private String observacoes;

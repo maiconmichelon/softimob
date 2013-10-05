@@ -57,6 +57,8 @@ public class FormatterHelper {
 
 			@Override
 			public String format(BigDecimal arg0) {
+				if(arg0 == null)
+					return StringUtils.EMPTY;
 				return getDecimalFormat().format(arg0);
 			}
 

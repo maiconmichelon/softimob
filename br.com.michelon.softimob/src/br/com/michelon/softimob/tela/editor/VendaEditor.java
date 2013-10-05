@@ -403,7 +403,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 					getCurrentObject().setFechado(true);
 				} catch (Exception e) {
 					log.error("Erro ao fechar contrato de venda.", e);
-					DialogHelper.openError("Erro ao finalizar contrato.");
+					DialogHelper.openErrorMultiStatus("Erro ao finalizar contrato.", e.getMessage());
 					return;
 				}
 			}

@@ -47,7 +47,7 @@ public class Reserva implements Serializable, Pendencia{
 	private Funcionario funcionario;
 
 	@Column(precision=14, scale=2)
-	private BigDecimal valor = BigDecimal.ZERO;
+	private BigDecimal valor;
 	
 	@Column
 	private String observacoes;

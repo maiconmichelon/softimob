@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import br.com.michelon.softimob.aplicacao.exception.ParametroNaoInformadoException;
 import br.com.michelon.softimob.aplicacao.helper.ReportHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
-import br.com.michelon.softimob.aplicacao.listener.OnErrorListener;
+import br.com.michelon.softimob.aplicacao.listener.OnNenhumRegistroEncontrado;
 import br.com.michelon.softimob.aplicacao.listener.OnSuccessfulListener;
 
 public abstract class ReportDialog extends TitleAreaDialog {
@@ -54,7 +54,7 @@ public abstract class ReportDialog extends TitleAreaDialog {
 	@Override
 	protected void okPressed() {
 		try{
-			ReportHelper.gerarRelatorio(getParametros(), getCaminhoRelatorio(), new OnErrorListener() {
+			ReportHelper.gerarRelatorio(getParametros(), getCaminhoRelatorio(), new OnNenhumRegistroEncontrado() {
 				@Override
 				public void onError(String message) {
 					setErrorMessage(message);

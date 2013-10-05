@@ -114,7 +114,7 @@ public class ContraPropostaDialog extends TitleAreaDialog {
 			if (ValidatorHelper.validarComMensagem(proposta) && ValidatorHelper.validarComMensagem(getCurrentValue())){
 				
 				if(getCurrentValue().getTipoContraProposta() == null || getCurrentValue().getTipoContraProposta().equals(Proposta.PRIMEIRA)){
-					DialogHelper.openError("Selecione quem fez a contra-proposta.");
+					DialogHelper.openWarning("Selecione quem fez a contra-proposta.");
 					return;
 				}
 				
@@ -129,7 +129,7 @@ public class ContraPropostaDialog extends TitleAreaDialog {
 			}
 		} catch (Exception e) {
 			log.error("Erro ao salvar contra-proposta.", e);
-			DialogHelper.openError("Erro ao gerar contra-proposta.\n" + e.getMessage());
+			DialogHelper.openErrorMultiStatus("Erro ao gerar contra-proposta.", e.getMessage());
 		}
 	};
 

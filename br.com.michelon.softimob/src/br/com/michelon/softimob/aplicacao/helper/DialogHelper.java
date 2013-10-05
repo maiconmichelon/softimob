@@ -3,20 +3,25 @@ package br.com.michelon.softimob.aplicacao.helper;
 import java.io.File;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 
-import com.google.common.collect.Lists;
-
-import br.com.michelon.softimob.modelo.ArquivoBytes;
+import br.com.michelon.softimob.aplicacao.main.Activator;
 import br.com.michelon.softimob.modelo.Arquivo;
+import br.com.michelon.softimob.modelo.ArquivoBytes;
+
+import com.google.common.collect.Lists;
 
 public class DialogHelper {
 
-	public static void openError(String message){
-		MessageDialog.openError(ShellHelper.getActiveShell(), "Softimob", message);
-	}
+//	public static void openError(String message){
+//		MessageDialog.openError(ShellHelper.getActiveShell(), "Softimob", message);
+//	}
 	
 	public static void openWarning(String message){
 		MessageDialog.openWarning(ShellHelper.getActiveShell(), "Softimob", message);
@@ -60,6 +65,32 @@ public class DialogHelper {
 		}
 		
 		return arquivos;
+	}
+	
+	public static IStatus createStatus(int status, String mensagem){
+		return new Status(status, Activator.PLUGIN_ID, mensagem);
+	}
+	
+	public static MultiStatus createMultiStatus(String mensagem, int codigoStatus, String... mensagens) {
+		MultiStatus status = new MultiStatus (Activator.PLUGIN_ID, 1, mensagem, null);
+		
+		for (String msg : mensagens) {
+			status.add(createStatus(codigoStatus, msg));
+		}
+		
+		return status;
+	}
+
+	public static void openMultiStatus(int codigoStatus, String mensagem, String... mensagens) {
+		ErrorDialog.openError(ShellHelper.getActiveShell(), "Softimob", null, createMultiStatus(mensagem, codigoStatus, mensagens));
+	}
+	
+	public static void openErrorMultiStatus(String mensagem, String... mensagens){
+		openMultiStatus(Status.ERROR, mensagem, mensagens);
+	}
+
+	public static void openWarningMultiStatus(String mensagem, String... mensagens){
+		openMultiStatus(Status.WARNING, mensagem, mensagens);
 	}
 	
 }

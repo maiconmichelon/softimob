@@ -18,6 +18,7 @@ import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.service.AluguelService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.modelo.Aluguel;
+import br.com.michelon.softimob.tela.dialog.ReajusteDialog;
 import br.com.michelon.softimob.tela.editor.AluguelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
@@ -99,6 +100,27 @@ public class AluguelView extends GenericView<Aluguel>{
 			}
 		});
 		miContrato.setImage(ImageRepository.CONTRATO_16.getImage());
+		
+		MenuItem miReajuste = new MenuItem(menu, SWT.BORDER);
+		miReajuste.setText("Reajustar");
+		miReajuste.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Aluguel aluguel = getSelecionado();
+				
+				if(!aluguel.isOkCheckList()){
+					DialogHelper.openWarning("Para reajustar é necessário que todos os itens da check-list, tidos como obrigatório, sejam finalizados.");
+					return;
+				} else if(aluguel.getReajuste() == null){
+					DialogHelper.openWarning("Para reajustar é necessário colocar o indice do aluguel.");
+					return;
+				}
+				
+				new ReajusteDialog(aluguel.getParcelas(), aluguel.getReajuste()).open();
+			}
+		});
+		miContrato.setImage(ImageRepository.CONTRATO_16.getImage());
+		
 	}
 	
 }

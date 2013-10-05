@@ -87,7 +87,7 @@ public class WidgetHelper {
 					cv.refresh();
 				} catch (Exception e1) {
 					log.error("Erro ao excluir " + obj.getClass(), e1);
-					DialogHelper.openError("Erro ao excluir registro.\n" + e1.getMessage());
+					DialogHelper.openErrorMultiStatus("Erro ao excluir registro.", e1.getMessage());
 				}
 			}
 		});

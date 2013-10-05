@@ -75,7 +75,7 @@ public class FuncionarioReportDialog extends ReportDialog{
 	}
 
 	public String getMessage() {
-		return "Informe o periodo";
+		return "Informe o periodo.";
 	}
 	
 	protected String getTitleDialog(){

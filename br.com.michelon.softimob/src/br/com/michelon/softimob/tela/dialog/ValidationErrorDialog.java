@@ -30,9 +30,10 @@ public class ValidationErrorDialog extends TitleAreaDialog {
 		setTitle("Erro ao " + acao);
 		setMessage("Os seguintes erros foram encontrados ao " + acao + ".");
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(1, false));
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		Composite area = (Composite) super.createDialogArea(parent);
+		Composite composite = new Composite(area, SWT.NONE);
+		composite.setLayout(new GridLayout(2, false));
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		StyledText txtErros = new StyledText(composite, SWT.BORDER);
 		txtErros.setEditable(false);
@@ -40,7 +41,7 @@ public class ValidationErrorDialog extends TitleAreaDialog {
 
 		txtErros.setText(erros);
 		
-		return composite;
+		return area;
 	}
 
 	@Override

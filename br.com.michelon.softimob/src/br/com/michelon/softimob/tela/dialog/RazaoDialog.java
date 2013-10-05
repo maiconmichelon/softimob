@@ -121,7 +121,7 @@ public class RazaoDialog extends ReportDialog{
 
 	@Override
 	public String getMessage() {
-		return "Informe o periodo e a conta";
+		return "Informe o periodo e a conta.";
 	}
 
 	@Override

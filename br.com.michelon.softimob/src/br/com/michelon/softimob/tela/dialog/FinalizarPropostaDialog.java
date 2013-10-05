@@ -81,7 +81,7 @@ public class FinalizarPropostaDialog extends TitleAreaDialog {
 			Integer selecao = (Integer) SelectionHelper.getObject(radioGroupViewer.getSelection());
 
 			if (selecao == null){
-				DialogHelper.openError("Informe o status da proposta.");
+				DialogHelper.openWarning("Informe o status da proposta.");
 				return;
 			}
 				
@@ -93,7 +93,7 @@ public class FinalizarPropostaDialog extends TitleAreaDialog {
 			super.okPressed();
 		} catch (Exception e) {
 			log.error("Erro ao finalizar proposta.", e);
-			DialogHelper.openError("Erro ao finalizar proposta.\n" + e.getMessage());
+			DialogHelper.openErrorMultiStatus("Erro ao finalizar proposta.", e.getMessage());
 		}
 	};
 

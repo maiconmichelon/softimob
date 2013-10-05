@@ -439,7 +439,7 @@ public class PgtoRecContaView extends ViewPart {
 	
 	private void gerarLancamentos() {
 		if(dtBaixa.getValue() == null){
-			DialogHelper.openError("Informe a data da baixa.");
+			DialogHelper.openWarning("Informe a data da baixa.");
 			return;
 		}
 		
@@ -454,7 +454,7 @@ public class PgtoRecContaView extends ViewPart {
 				MovimentacaoContabil geraMovimentacao = service.geraMovimentacao(c, (ModeloPgtoConta) value.getValue());
 				
 				if(geraMovimentacao.getLancamentos().isEmpty()){
-					DialogHelper.openError("Verifique os planos de conta parametrizados.");
+					DialogHelper.openWarning("Verifique os planos de conta parametrizados.");
 					return;
 				}
 
@@ -467,7 +467,7 @@ public class PgtoRecContaView extends ViewPart {
 			DialogHelper.openWarning(ce.getMessage());
 		}catch(Exception e1){
 			log.error("Erro ao gerar movimentação.", e1);
-			DialogHelper.openError("Erro ao gerar movimentação.\n"+e1.getMessage());
+			DialogHelper.openErrorMultiStatus("Erro ao gerar movimentação.", e1.getMessage());
 		}
 		
 		viewerMovimentacoes.setInput(movs);
@@ -487,9 +487,9 @@ public class PgtoRecContaView extends ViewPart {
 		tvbContas.createColumn("Origem").setPercentWidth(1).bindToProperty("origem.nome").build();
 		
 		if(isPagamento){
-			tvbContas.createColumn("Valor").setPercentWidth(1).bindToProperty("valor").alignRight().format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
+			tvbContas.createColumn("Valor").setPercentWidth(1).bindToProperty("valor").format(FormatterHelper.getDefaultValueFormatterToMoney()).build();
 			
-			tvbContas.createColumn("Valor com Juros e Descontos").setPercentWidth(1).alignRight().bindToValue(new IValue() {
+			tvbContas.createColumn("Valor com Juros e Descontos").setPercentWidth(1).bindToValue(new IValue() {
 				
 				@Override
 				public void setValue(Object element, Object value) {
@@ -511,7 +511,7 @@ public class PgtoRecContaView extends ViewPart {
 			
 		}
 		
-		tvbContas.createColumn("Juros / Desconto").setPercentWidth(1).alignRight().bindToValue(new BaseValue<ContaPagarReceber>() {
+		tvbContas.createColumn("Juros / Desconto").setPercentWidth(1).bindToValue(new BaseValue<ContaPagarReceber>() {
 			@Override
 			public Object get(ContaPagarReceber element) {
 				return element.getValorJurDescTratado().abs();

@@ -103,7 +103,7 @@ public class PhotoComposite extends Composite {
 					FileHelper.openFile(tempFolder, gal.getSelection()[0].getText());
 				} catch (IOException e1) {
 					log.error("Erro ao abrir as fotos.", e1);
-					DialogHelper.openError("Erro ao abrir as fotos do imóvel.");
+					DialogHelper.openErrorMultiStatus("Erro ao abrir as fotos do imóvel.", e1.getMessage());
 				}
 			}
 		});

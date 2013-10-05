@@ -102,7 +102,7 @@ public class ImovelView extends GenericView<Imovel>{
 					FileHelper.openFile(FileHelper.criarDiretorioArquivos(arquivos), arquivos.get(0).getNome());
 				} catch (IOException e2) {
 					log.error("Erro ao abrir fotos.", e2);
-					DialogHelper.openError("Erro ao abrir as fotos do imóvel.\n" + e2.getMessage());
+					DialogHelper.openErrorMultiStatus("Erro ao abrir as fotos do imóvel.", e2.getMessage());
 				}
 			}
 		});

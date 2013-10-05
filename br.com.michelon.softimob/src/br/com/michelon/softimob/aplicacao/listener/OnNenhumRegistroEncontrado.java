@@ -1,6 +1,6 @@
 package br.com.michelon.softimob.aplicacao.listener;
 
-public interface OnErrorListener {
+public interface OnNenhumRegistroEncontrado {
 
 	void onError(String message);
 	

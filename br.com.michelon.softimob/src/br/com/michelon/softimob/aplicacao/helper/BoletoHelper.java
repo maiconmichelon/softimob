@@ -12,9 +12,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.jrimum.bopepo.BancosSuportados;
 import org.jrimum.bopepo.Boleto;
 import org.jrimum.bopepo.view.BoletoViewer;
@@ -98,21 +96,16 @@ public class BoletoHelper {
 				BoletoViewer boletoViewer = new BoletoViewer(boleto);
 				boletoViewer.getPdfAsFile(file);
 				
+				try {
+					Desktop.getDesktop().open(file);
+				} catch (IOException e) {
+					log.error("Erro ao abrir boleto.", e);
+				}
+				
 				return Status.OK_STATUS;
 			}
 		};
 
-		job.addJobChangeListener(new JobChangeAdapter() {
-			@Override
-			public void done(final IJobChangeEvent event) {
-				try {
-					Desktop.getDesktop().open(new File(diretorioArquivos + "/" + NAME_FILE_BOLETO));
-				} catch (IOException e) {
-					log.error("Erro ao abrir boleto.", e);
-				}
-			}
-		});
-		
 		job.setUser(true);
 		job.schedule();
 	}
@@ -129,7 +122,15 @@ public class BoletoHelper {
 	private static Titulo crieOsDadosDoNovoTitulo(Titulo titulo, ContaPagarReceber conta) {
 		
 		titulo.setNumeroDoDocumento("78180");
-		titulo.setNossoNumero(formatarOitoNumeros(String.valueOf(conta.getId())));
+		
+		Calendar c = Calendar.getInstance();
+		String ano = String.valueOf(c.get(Calendar.YEAR));
+		int length = ano.length();
+		
+		String nossoNumero = formatarSeisNumeros(String.valueOf(conta.getId()));
+		nossoNumero = ano.substring(length - 2, length) + nossoNumero;
+		
+		titulo.setNossoNumero(nossoNumero);
 		titulo.setValor(conta.getValor());
 
 		titulo.setDataDoDocumento(new Date());
@@ -170,7 +171,12 @@ public class BoletoHelper {
 		return new Cedente(param.getRazaoSocial(), param.getCnpj());
 	}
 
-	private static ContaBancaria crieUmaContaBancaria(ParametrosEmpresa param) {
+	private static ContaBancaria crieUmaContaBancaria(ParametrosEmpresa param) throws Exception {
+		if(param.getCarteira().length() != 1)
+			throw new Exception("A carteira parametrizada para a geração do boleto deve conter apenas 1 dígito.");
+		if(param.getContaCorrente().concat(param.getDigitoContaCorrente().toString()).length() > 10)
+			throw new Exception("A conta parametrizada deve ter no máximo 10 digitos.");
+		
 		ContaBancaria contaBancaria = new ContaBancaria(BancosSuportados.BANCOOB.create());
 		contaBancaria.setNumeroDaConta(new NumeroDaConta(Integer.parseInt(param.getContaCorrente()), param.getDigitoContaCorrente().toString()));
 		contaBancaria.setCarteira(new Carteira(Integer.parseInt(param.getCarteira())));
@@ -179,8 +185,8 @@ public class BoletoHelper {
 		return contaBancaria;
 	}
 
-	private static String formatarOitoNumeros(String s){
-		while(s.length() != 8){
+	private static String formatarSeisNumeros(String s){
+		while(s.length() != 6){
 			s = "0" + s;
 		}
 		return s;

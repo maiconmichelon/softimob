@@ -302,7 +302,7 @@ public class MovimentacaoContabilEditor extends GenericEditor<MovimentacaoContab
 		}
 
 		if (valorTotalCredito.compareTo(valorTotalDebito) != 0) {
-			DialogHelper.openError("O valor total dos lançamentos de crédito deve ser igual o valor dos lançamentos de débito");
+			DialogHelper.openWarning("O valor total dos lançamentos de crédito deve ser igual o valor dos lançamentos de débito");
 			return;
 		}
 

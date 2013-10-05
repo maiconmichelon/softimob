@@ -340,7 +340,7 @@ public abstract class GenericView<T> extends ViewPart{
 			
 			DialogHelper.openInformation((String.format("Registro %s com sucesso.", addGroupAtivadoDesativado ? "desativado/ativado" : "removido")));
 		} catch (Exception e) {
-			DialogHelper.openError("Houveram erros ao remover registro.");
+			DialogHelper.openErrorMultiStatus("Houveram erros ao remover registro.", e.getMessage());
 			log.error("Erro ao remover registro.", e);
 		}
 	}

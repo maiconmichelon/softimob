@@ -22,12 +22,14 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 import br.com.michelon.softimob.aplicacao.service.FuncionarioService;
 import br.com.michelon.softimob.aplicacao.service.PendenciaService;
+import br.com.michelon.softimob.aplicacao.service.PessoaFisicaService;
 import br.com.michelon.softimob.modelo.Aluguel;
 import br.com.michelon.softimob.modelo.ChamadoReforma;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.Pendencia;
+import br.com.michelon.softimob.modelo.PessoaFisica;
 import br.com.michelon.softimob.modelo.Proposta;
 import br.com.michelon.softimob.modelo.Reserva;
 import br.com.michelon.softimob.tela.popup.notifier.NotificationType;
@@ -85,16 +87,21 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 	private void showNotifications() {
 		
-		List<Funcionario> aniversariantes = new FuncionarioService().findAniversariantes();
-		if(aniversariantes != null && !aniversariantes.isEmpty()){
+		List<Funcionario> funcionariosAniversariantes = new FuncionarioService().findAniversariantes();
+		List<PessoaFisica> clientesAniversariantes = new PessoaFisicaService().findAniversariantes();
+
+		if((funcionariosAniversariantes != null && !funcionariosAniversariantes.isEmpty()) || (clientesAniversariantes != null && !clientesAniversariantes.isEmpty())){
 			StringBuilder sb = new StringBuilder();
 			
-			for(Funcionario f : aniversariantes)
+			for(Funcionario f : funcionariosAniversariantes)
 				sb.append(String.format("%s esta de aniversário.\n", f.getNome()));
+			for(PessoaFisica pf : clientesAniversariantes)
+				sb.append(String.format("%s esta de aniversário.\n", pf.getNome()));
 				
-			NotifierDialog.notify(String.format("Feliz Aniversário !\n%s Aniversariante(s) no dia.", aniversariantes.size()),
+			NotifierDialog.notify(String.format("Feliz Aniversário !\n%s Aniversariante(s) no dia.", funcionariosAniversariantes.size() + clientesAniversariantes.size()),
 					sb.toString(), NotificationType.INFO);
 		}
+
 		
 		List<Pendencia> pendencias = new PendenciaService().findPendencias();
 		if(pendencias != null && !pendencias.isEmpty()){

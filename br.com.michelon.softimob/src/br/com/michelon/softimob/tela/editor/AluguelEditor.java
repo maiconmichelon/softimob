@@ -803,7 +803,10 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	
 	@Override
 	public void saveCurrentObject(GenericService<Aluguel> service) {
-		if(validarComMensagem(getCurrentObject()) && getCurrentObject().getId() == null && getCurrentObject().getParcelas().isEmpty()){
+		if(!validarComMensagem(getCurrentObject()))
+			return;
+		
+		if(getCurrentObject().getId() == null && getCurrentObject().getParcelas().isEmpty()){
 		
 			ContaPagarReceberService contaService = new ContaPagarReceberService();
 			ParametrosEmpresa parametros = ParametrosEmpresa.getInstance();
@@ -838,7 +841,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	protected void addFinalizacaoChamado(WritableValue value){
 		// O Usuario deve salvar primeiro o chamado de reforma para depois finalizar
 		if(((ChamadoReforma)valueChamado.getValue()).getId() == null){
-			DialogHelper.openError("O chamado deve ser salvo primeiro antes de ser finalizado.");
+			DialogHelper.openWarning("O chamado deve ser salvo primeiro antes de ser finalizado.");
 			return;
 		}
 		
@@ -955,7 +958,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 					DialogHelper.openInformation("Chamado de reforma removido com sucesso.");
 				} catch (Exception e1) {
 					log.error("Erro ao remover chamado de reforma.", e1);
-					DialogHelper.openError("Erro ao excluir os chamados de reforma.");
+					DialogHelper.openErrorMultiStatus("Erro ao excluir os chamados de reforma.", e1.getMessage());
 				}
 			}
 		});

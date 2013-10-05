@@ -1065,7 +1065,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	}
 	
 	private void addProposta() {
-		addItens(new PropostaService(), valueProposta, propostaXViewer, getCurrentObject().getPropostas());
+		addItens(new PropostaService(), valueProposta, propostaXViewer, getCurrentObject().getPropostas(), false);
+		propostaXViewer.setInput(getCurrentObject().getPropostas());
 	}
 	
 	private void addComodo() {
@@ -1093,6 +1094,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 	
 	@Override
 	public void saveCurrentObject(GenericService<Imovel> service) {
+
 		boolean isNewObject = getCurrentObject().getId() == null;
 		
 		if(validarComMensagem(getCurrentObject().getEndereco()) && validarComMensagem(getCurrentObject())){

@@ -121,7 +121,7 @@ public class GerarBoletoDialog extends TitleAreaDialog {
 			BoletoHelper.gerarBoleto(conta, cliente);
 		} catch (Exception e) {
 			log.error("Erro ao gerar boleto.", e);
-			DialogHelper.openError("Erro ao gerar boleto.\n" + e.getMessage());
+			DialogHelper.openErrorMultiStatus("Erro ao gerar boleto.", e.getMessage());
 		}
 	}
 }

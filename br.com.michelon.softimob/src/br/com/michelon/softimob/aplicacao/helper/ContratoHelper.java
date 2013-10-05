@@ -33,7 +33,6 @@ public class ContratoHelper {
 					Display.getDefault().asyncExec(new Runnable() {
 						@Override
 						public void run() {
-							DialogHelper.openError("Erro ao gerar contrato:\n" + e.getMessage());
 							log.error("Erro ao alterar documento .docx .", e);
 						}
 					});

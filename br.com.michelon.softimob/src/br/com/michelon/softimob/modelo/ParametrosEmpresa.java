@@ -123,7 +123,14 @@ public class ParametrosEmpresa implements Serializable{
 		try{
 			if(parametrosEmpresaService == null)
 				parametrosEmpresaService = new ParametrosEmpresaService();
-			return parametrosEmpresaService.findParametrosEmpresa();
+			ParametrosEmpresa params = parametrosEmpresaService.findParametrosEmpresa();
+			
+			if(params == null){
+				params = new ParametrosEmpresa();
+				parametrosEmpresaService.salvar(params);
+			}
+				
+			return params;
 		}catch(Exception e){
 			log.error("Erro ao buscar parametros da empresa.", e);
 			return null;

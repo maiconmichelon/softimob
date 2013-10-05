@@ -17,7 +17,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import br.com.michelon.softimob.aplicacao.listener.OnErrorListener;
+import br.com.michelon.softimob.aplicacao.listener.OnNenhumRegistroEncontrado;
 import br.com.michelon.softimob.aplicacao.listener.OnSuccessfulListener;
 import br.com.michelon.softimob.aplicacao.reports.ReportGen;
 import br.com.michelon.softimob.tela.view.ReportView;
@@ -26,7 +26,22 @@ public class ReportHelper {
 
 	private static JasperPrint jprint;
 	
-	public static void gerarRelatorio(Map<String,Object> params, final String caminho, final OnErrorListener errorListener, final OnSuccessfulListener onSuccessfulListener){
+	
+	
+	public static void gerarRelatorio(Map<String,Object> params, final String caminho){
+		gerarRelatorio(params, caminho, new OnNenhumRegistroEncontrado() {
+			@Override
+			public void onError(String message) {
+				DialogHelper.openWarning("Nenhum registro encontrado.");
+			}
+		}, new OnSuccessfulListener() {
+			// Só para não aparecer o dialog chato :D
+			@Override
+			public void onSucessful(String message) {}
+		});
+	}
+	
+	public static void gerarRelatorio(Map<String,Object> params, final String caminho, final OnNenhumRegistroEncontrado errorListener, final OnSuccessfulListener onSuccessfulListener){
 		final Map<String, Object> parametros = params;
 		Job job = new Job("Gerando relatório.") {
 
@@ -54,8 +69,8 @@ public class ReportHelper {
 								IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 								ReportView showView = (ReportView) page.showView(ReportView.ID, String.valueOf(Calendar.getInstance().getTimeInMillis()), IWorkbenchPage.VIEW_CREATE);
 								page.bringToTop(showView);
-								showView.getReportViewer().setDocument(jprint);
-								onSuccessfulListener.onSucessful("Relatatório gerado com sucesso!");
+								showView.getReportViewer().setDocument(jprint); 
+								onSuccessfulListener.onSucessful("Relatatório gerado com sucesso!"); // Aqui acho qeu só vai servir pro ReportDialog para sobrepor a mensagem de erro do TitleDialog
 							} catch (PartInitException e) {
 								Logger.getLogger(getClass()).error("Erro ao abrir tela de visualização de relatório.", e);
 							}
