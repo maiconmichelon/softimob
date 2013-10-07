@@ -1,7 +1,7 @@
 package br.com.michelon.softimob.aplicacao.main;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IStatusLineManager;
@@ -36,12 +36,6 @@ import br.com.michelon.softimob.tela.popup.notifier.NotificationType;
 import br.com.michelon.softimob.tela.popup.notifier.NotifierDialog;
 import br.com.michelon.softimob.tela.view.PgtoRecContaView;
 import br.com.michelon.softimob.tela.widget.SucessfulContributionItem;
-
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
@@ -103,48 +97,48 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		}
 
 		
-		List<Pendencia> pendencias = new PendenciaService().findPendencias();
+		Map<Class<? extends Pendencia>, Long> pendencias = new PendenciaService().findQuantidadePendencias();
 		if(pendencias != null && !pendencias.isEmpty()){
 			StringBuilder sb = new StringBuilder();
+			int tot = 0;
 			
-			Multimap<Class<?>,Pendencia> map = Multimaps.index(pendencias, new Function<Pendencia, Class<?>>() {
-				@Override
-				public Class<?> apply(Pendencia arg0) {
-					return arg0.getClass();
-				}
-			});
+			Long quantidade = pendencias.get(Aluguel.class);
+			if(quantidade != null && quantidade != 0){
+				tot+=quantidade;
+				sb.append(String.format("%s aluguél(is) para vencer.\n", quantidade));
+			}
 			
-			Collection<Pendencia> alugueis = map.get(Aluguel.class);
-			if(!alugueis.isEmpty())
-				sb.append(String.format("%s aluguél(is) para vencer.\n", alugueis.size()));
+			quantidade = pendencias.get(ContaPagarReceber.class);
+			if(quantidade != null && quantidade != 0){
+				tot+=quantidade;
+				sb.append(String.format("%s conta(s) para pagar/receber.\n", quantidade));
+			}
 			
-			//Diferente pois podem haver varios tipos de contas a pagar/receber então se eu pegasse pela classe da problema, quando fosse comissão ele iria ignorar :(
-			Collection<Pendencia> contasPagarReceber = Collections2.filter(pendencias, new Predicate<Pendencia>() {
-				@Override
-				public boolean apply(Pendencia arg0) {
-					return arg0 instanceof ContaPagarReceber;
-				}
-			});
-			if(!contasPagarReceber.isEmpty())
-				sb.append(String.format("%s conta(s) para pagar/receber.\n", contasPagarReceber.size()));
+			quantidade = pendencias.get(ContratoPrestacaoServico.class);
+			if(quantidade != null && quantidade != 0){
+				tot+=quantidade;
+				sb.append(String.format("%s contrato(s) de prestação de serviço para vencer.\n", quantidade));
+			}
 			
-			Collection<Pendencia> contratoPrestacaoServico = map.get(ContratoPrestacaoServico.class);
-			if(!contratoPrestacaoServico.isEmpty())
-				sb.append(String.format("%s contrato(s) de prestação de serviço para vencer.\n", contratoPrestacaoServico.size()));
-
-			Collection<Pendencia> chamadosReforma = map.get(ChamadoReforma.class);
-			if(!chamadosReforma.isEmpty())
-				sb.append(String.format("%s chamado(s) de reforma em aberto.\n", chamadosReforma.size()));
+			quantidade = pendencias.get(ChamadoReforma.class);
+			if(quantidade != null && quantidade != 0){
+				tot+=quantidade;
+				sb.append(String.format("%s chamado(s) de reforma em aberto.\n", quantidade));
+			}
 			
-			Collection<Pendencia> reservas = map.get(Reserva.class);
-			if(!reservas.isEmpty())
-				sb.append(String.format("%s reservas(s) em para vencer.\n", reservas.size()));
+			quantidade = pendencias.get(Reserva.class);
+			if(quantidade != null && quantidade != 0){
+				tot+=quantidade;
+				sb.append(String.format("%s reservas(s) em para vencer.\n", quantidade));
+			}
 			
-			Collection<Pendencia> propostas = map.get(Proposta.class);
-			if(!propostas.isEmpty())
-				sb.append(String.format("%s propostas(s) em aberto.\n", propostas.size()));
+			quantidade = pendencias.get(Proposta.class);
+			if(quantidade != null && quantidade != 0){
+				tot+=quantidade;
+				sb.append(String.format("%s propostas(s) em aberto.\n", quantidade));
+			}
 			
-			NotifierDialog.notify(String.format("Olá, você possui %s pendência(s) !", pendencias.size()), sb.toString(), NotificationType.WARN, new MouseAdapter() {
+			NotifierDialog.notify(String.format("Olá, você possui %s pendência(s) !", tot), sb.toString(), NotificationType.WARN, new MouseAdapter() {
 				@Override
 				public void mouseDoubleClick(MouseEvent e) {
 					try {

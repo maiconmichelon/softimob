@@ -1,6 +1,7 @@
 package br.com.michelon.softimob.tela.view;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ColumnViewer;
@@ -118,7 +119,12 @@ public class ImovelView extends GenericView<Imovel>{
 		MenuItem miMapsSelecionado = new MenuItem(menuMaps, SWT.NONE);
 		miMapsSelecionado.setText("Imóvel selecionado");
 		miMapsSelecionado.setImage(ImageRepository.IMOVEL_16.getImage());
-		miMapsSelecionado.addSelectionListener(abrirTelaMaps(null));
+		miMapsSelecionado.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				abrirTelaMaps(Arrays.asList(getSelecionado()));
+			}
+		});
 		
 		MenuItem miMapsLocacao = new MenuItem(menuMaps, SWT.NONE);
 		miMapsLocacao.setText("Locação");
@@ -134,29 +140,39 @@ public class ImovelView extends GenericView<Imovel>{
 		miMapsLocacaoVenda.setText("Venda/Locação");
 		miMapsLocacaoVenda.addSelectionListener(abrirTelaMaps(TipoContrato.LOCACAOVENDA));
 		miMapsLocacaoVenda.setImage(ImageRepository.PLACA_16.getImage());
+		
+		MenuItem miMapsTodos= new MenuItem(menuMaps, SWT.NONE);
+		miMapsTodos.setText("Todos");
+		miMapsTodos.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				abrirTelaMaps(getInput());
+			}
+		});
 	}
 	
 	private SelectionAdapter abrirTelaMaps(final TipoContrato tipoContrato){
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				try {
-					ImovelMapView showView = (ImovelMapView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ImovelMapView.ID);
-					if(getSelecionado() == null)
-						return;
-					if(getSelecionado().getEndereco() != null)
-						showView.setEnderecoPadrao(getSelecionado().getEndereco());
-					if(tipoContrato != null){
-						List<Imovel> imoveis = new ImovelService().findByTipoContrato(tipoContrato);
-						showView.setMarkers(imoveis);
-					} else {
-						showView.setMarkers(getSelecionados());
-					}
-				} catch (PartInitException e1) {
-					log.error("Erro ao abrir imóvel na view de Mapa.", e1);
-				}
+				abrirTelaMaps(new ImovelService().findByTipoContrato(tipoContrato));
 			}
 		};
+	}
+	
+	private void abrirTelaMaps(final List<Imovel> imoveis){
+		try {
+			ImovelMapView showView = (ImovelMapView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ImovelMapView.ID);
+			
+			if(imoveis == null || imoveis.isEmpty())
+				return;
+			if(imoveis.get(0).getEndereco() != null)
+				showView.setEnderecoPadrao(imoveis.get(0).getEndereco());
+			
+			showView.setMarkers(imoveis);
+		} catch (PartInitException e1) {
+			log.error("Erro ao abrir imóvel na view de Mapa.", e1);
+		}
 	}
 	
 	@Override

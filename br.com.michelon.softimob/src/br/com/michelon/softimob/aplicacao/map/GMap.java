@@ -14,8 +14,9 @@ package br.com.michelon.softimob.aplicacao.map;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.ProgressEvent;
@@ -24,6 +25,8 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Layout;
 
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
+import br.com.michelon.softimob.modelo.Comodo;
 import br.com.michelon.softimob.modelo.Endereco;
 import br.com.michelon.softimob.modelo.Imovel;
 
@@ -35,6 +38,8 @@ public class GMap extends Composite {
 	public final static int TYPE_HYBRID = 2;
 	public final static int TYPE_TERRAIN = 3;
 
+	private Logger log = Logger.getLogger(getClass());
+	
 	private final Browser browser;
 	private int type = TYPE_ROADMAP;
 	private String address = "";
@@ -191,27 +196,47 @@ public class GMap extends Composite {
 				script.append(zoom + ",");
 				script.append(createJsMapType());
 				script.append(");");
+				
 				try {
 					browser.evaluate(script.toString());
-				} catch (SWTException e) {
-					e.printStackTrace();
-				}
-				
-				createBrowserFunctions();
 
-				if(markers != null){
-					for(Imovel i : markers){
-						String enderecoFormatado = formatarEndereco(i.getEndereco());
-						String mensagemTipoContrato = i.getEstadoDeContrato() == null ? "" : " para " + i.getEstadoDeContrato().toString();
-						addMarker(enderecoFormatado, i.getTipo().getNome() + mensagemTipoContrato );
+					createBrowserFunctions();
+					
+					if(markers != null){
+						for(Imovel i : markers){
+							String enderecoFormatado = formatarEndereco(i.getEndereco());
+							String mensagemTipoContrato = i.getEstadoDeContrato() == null ? "" : " para " + i.getEstadoDeContrato().toString();
+							String comodosFormatado = getComodosFormatado(i);
+							addMarker(enderecoFormatado, i.getTipo().getNome() + mensagemTipoContrato + comodosFormatado);
+						}
 					}
+					
+					if(endereco == null || endereco.isEmpty())
+						gotoAddress("Toledo - PR");
+					else{
+						gotoAddress(endereco);
+					}
+				} catch (Exception e) {
+					log.error("Erro ao carregar mapa.", e);
+					DialogHelper.openErrorMultiStatus("Falha ao carregar o mapa, verifique a conexão com a internet.", e.getMessage());
+				}
+			}
+
+			private String getComodosFormatado(Imovel i) {
+				List<Comodo> comodos = i.getComodos();
+				
+				if(comodos == null)
+					return StringUtils.EMPTY;
+				
+				StringBuffer sb = new StringBuffer();
+				sb.append(" - ");
+				for (Comodo c : comodos) {
+					sb.append(String.format("%s %s(s), ", c.getQuantidade(), c.getTipoComodo().getNome()));
 				}
 				
-				if(endereco == null || endereco.isEmpty())
-					gotoAddress("Toledo - PR");
-				else{
-					gotoAddress(endereco);
-				}
+				sb.delete(sb.length() - 2, sb.length());
+				
+				return sb.toString();
 			}
 
 			public void changed(ProgressEvent event) {

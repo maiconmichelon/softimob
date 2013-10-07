@@ -20,7 +20,7 @@ public class PendenciaFilter extends ViewerFilter{
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		Pendencia p = (Pendencia) element;
 		
-		if(tipo != null && !tipo.getClazz().isInstance(element))
+		if(tipo != null && !tipo.getClazz().equals(element.getClass()))
 			return false;
 		
 		if(VENCIDA.equals(status) && !DateHelper.isVencida(p.getDataVencimento()))

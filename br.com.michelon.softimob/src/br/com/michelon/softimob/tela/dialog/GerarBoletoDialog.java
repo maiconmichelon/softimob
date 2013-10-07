@@ -1,7 +1,6 @@
 package br.com.michelon.softimob.tela.dialog;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
@@ -18,29 +17,22 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 
-import br.com.michelon.softimob.aplicacao.helper.BoletoHelper;
-import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.OkListElementDialogListener;
 import br.com.michelon.softimob.modelo.Cliente;
-import br.com.michelon.softimob.modelo.ContaPagarReceber;
 
 public class GerarBoletoDialog extends TitleAreaDialog {
 	
 	private Text txtCliente;
 	private Cliente cliente;
-	private ContaPagarReceber conta;
-	
-	private Logger log = Logger.getLogger(getClass());
 	
 	/**
 	 * Create the dialog.
 	 * @param parentShell
 	 */
-	public GerarBoletoDialog(Shell parentShell, ContaPagarReceber conta) {
+	public GerarBoletoDialog(Shell parentShell) {
 		super(parentShell);
-		this.conta = conta;
 	}
 
 	/**
@@ -116,12 +108,10 @@ public class GerarBoletoDialog extends TitleAreaDialog {
 			setErrorMessage("Selecione um cliente.");
 			return;
 		}
-		
-		try {
-			BoletoHelper.gerarBoleto(conta, cliente);
-		} catch (Exception e) {
-			log.error("Erro ao gerar boleto.", e);
-			DialogHelper.openErrorMultiStatus("Erro ao gerar boleto.", e.getMessage());
-		}
+		super.okPressed();
+	}
+
+	public Cliente getCliente() {
+		return cliente;
 	}
 }

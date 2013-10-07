@@ -53,4 +53,8 @@ public class ReservaService extends GenericService<Reserva>{
 		}
 	}
 
+	public Long findContPendencias(Date dataHoje) {
+		return getRepository().findContPendencias(dataHoje);
+	}
+
 }

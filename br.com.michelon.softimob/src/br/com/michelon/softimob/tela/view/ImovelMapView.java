@@ -115,7 +115,7 @@ public class ImovelMapView extends ViewPart {
 		Label label = new Label(parent, SWT.None);
 		label.setText("Endereço");
 		addr = new Text(parent, SWT.BORDER);
-		addr.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
+		addr.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		addr.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -124,7 +124,7 @@ public class ImovelMapView extends ViewPart {
 		});
 		addr.setFont(new Font(parent.getDisplay(), "Arial", 9, SWT.NORMAL));
 		Button goToAddr = new Button(parent, SWT.PUSH);
-		goToAddr.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		goToAddr.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, false, 1, 1));
 		goToAddr.setText("Ir até");
 		goToAddr.addSelectionListener(new SelectionAdapter() {
 			@Override

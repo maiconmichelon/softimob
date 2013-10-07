@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -114,6 +116,9 @@ public class ParametrosEmpresa implements Serializable{
 	
 	@Column
 	private String instrucaoExtra;
+	
+	@Enumerated(EnumType.STRING)
+	private AceiteSofitmob aceite;
 	
 	private ParametrosEmpresa(){}
 	
@@ -384,6 +389,14 @@ public class ParametrosEmpresa implements Serializable{
 	
 	public void setLocalPagamento(String localPagamento) {
 		this.localPagamento = localPagamento;
+	}
+	
+	public AceiteSofitmob getAceite() {
+		return aceite;
+	}
+
+	public void setAceite(AceiteSofitmob aceite) {
+		this.aceite = aceite;
 	}
 	
 	@Override

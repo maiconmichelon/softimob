@@ -196,6 +196,10 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 		return getRepository().findByDataPagamentoIsNullAndDataVencimentoLessThan(dataHoje);
 	}
 	
+	public Long findPendencia(Date data){
+		return getRepository().findPendencia(data);
+	}
+	
 	public List<ContaPagarReceber> buscarContas(Date dataInicio, Date dataFinal){
 		return getRepository().buscarContas(dataInicio, dataFinal);
 	}

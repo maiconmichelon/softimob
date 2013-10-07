@@ -4,6 +4,10 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
+import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -22,6 +26,7 @@ import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDi
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ParametrosEmpresaService;
+import br.com.michelon.softimob.modelo.AceiteSofitmob;
 import br.com.michelon.softimob.modelo.CheckList;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.ModeloContrato;
@@ -34,7 +39,6 @@ import br.com.michelon.softimob.tela.widget.NumberTextField;
 public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 	
 	public static final String ID = "br.com.michelon.softimob.tela.editor.ParametrosEmpresaEditor";
-	
 	private ParametrosEmpresaService service = new ParametrosEmpresaService();
 	
 	private Text txtCnpj;
@@ -67,6 +71,7 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 	private Text txtLocalPagamento;
 	private Text txtInstrucaoSacado;
 	private Text txtInstrucaoExtra;
+	private RadioGroupViewer rgAceite;
 	
 	public ParametrosEmpresaEditor() {
 		super(ParametrosEmpresa.class, false);
@@ -496,6 +501,12 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		txtInstrucaoExtra = new Text(composite_7, SWT.BORDER);
 		txtInstrucaoExtra.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		rgAceite = new RadioGroupViewer(composite_7, SWT.None);
+		RadioGroup radioGroup = rgAceite.getRadioGroup();
+		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		rgAceite.setContentProvider(ArrayContentProvider.getInstance());
+		rgAceite.setInput(AceiteSofitmob.values());
 	}
 	
 	@Override
@@ -630,6 +641,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		IObservableValue observeTextInstrucaoExtraObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtInstrucaoExtra);
 		IObservableValue valueInstrucaoExtraObserveDetailValue = PojoProperties.value(ParametrosEmpresa.class, "instrucaoExtra", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextInstrucaoExtraObserveWidget, valueInstrucaoExtraObserveDetailValue, null, null);
+		//
+		IObservableValue observeSingleSelectionRgAceite = ViewerProperties.singleSelection().observe(rgAceite);
+		IObservableValue valueAceiteObserveDetailValue = PojoProperties.value(ParametrosEmpresa.class, "aceite", AceiteSofitmob.class).observeDetail(value);
+		bindingContext.bindValue(observeSingleSelectionRgAceite, valueAceiteObserveDetailValue, null, null);
 		//
 		return bindingContext;
 	}

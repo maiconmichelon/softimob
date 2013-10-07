@@ -15,4 +15,7 @@ public interface ChamadoReformaDAO extends CrudRepository<ChamadoReforma, Long>{
 	@Query(value = "SELECT distinct(c) FROM ChamadoReforma c WHERE c.finalizacao is null")
 	List<ChamadoReforma> findByFinalizacaoIsNull();
 
+	@Query(value = "SELECT count(distinct(c)) FROM ChamadoReforma c WHERE c.finalizacao is null")
+	Long findContPendencias();
+	
 }

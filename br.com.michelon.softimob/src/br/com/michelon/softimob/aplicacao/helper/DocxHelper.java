@@ -88,7 +88,7 @@ public class DocxHelper {
 					}while(!coringa.contains("</"+tag.getTagWord()+">"));
 					i--;
 					
-					String afterTag = coringa.substring(coringa.indexOf("</"+tag.getTagWord()+">") + 3, coringa.length()-1);
+					String afterTag = coringa.substring(coringa.indexOf("</"+tag.getTagWord()+">") + 4, coringa.length());
 					
 					coringa = coringa.substring(coringa.indexOf("<"+tag.getTagWord()+">") + 3, coringa.indexOf("</"+tag.getTagWord()+">"));
 					coringa = coringa.trim();
@@ -105,7 +105,11 @@ public class DocxHelper {
 						txtFormat = "Parâmetro não encontrado";
 					}
 					
+					if(txtFormat == null)
+						txtFormat = StringUtils.EMPTY;
+					
 					cleanList.get(0).setValue(beforeTag.concat(txtFormat).concat(afterTag));
+					i = 0;
 				}
 			}
 		}

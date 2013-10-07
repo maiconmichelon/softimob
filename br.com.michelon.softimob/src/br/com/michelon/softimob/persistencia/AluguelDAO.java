@@ -18,5 +18,8 @@ public interface AluguelDAO extends CrudRepository<Aluguel, Long>, Serializable{
 	List<Aluguel> findByImovel(@Param(value = "imovel")Imovel imovel);
 	
 	List<Pendencia> findByResolvidoFalseAndDataVencimentoLessThan(Date dataHoje);
+
+	@Query(value = "SELECT count(c) FROM Aluguel c WHERE c.resolvido = false AND c.dataVencimento <= :data")
+	Long findContPendencia(@Param(value = "data")Date data);
 	
 }

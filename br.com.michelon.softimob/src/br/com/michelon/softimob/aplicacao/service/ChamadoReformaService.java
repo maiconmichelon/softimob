@@ -40,4 +40,8 @@ public class ChamadoReformaService extends GenericService<ChamadoReforma>{
 		}
 	}
 
+	public Long findContPendencias() {
+		return getRepository().findContPendencias();
+	}
+
 }

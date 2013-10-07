@@ -1,5 +1,9 @@
 package br.com.michelon.softimob.tela.view;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -13,6 +17,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -35,6 +40,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
@@ -52,6 +58,7 @@ import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInp
 import br.com.michelon.softimob.aplicacao.exception.ContaNaoParametrizadaException;
 import br.com.michelon.softimob.aplicacao.filter.ContaFilter;
 import br.com.michelon.softimob.aplicacao.filter.PropertyFilter;
+import br.com.michelon.softimob.aplicacao.helper.BoletoHelper;
 import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
@@ -110,6 +117,7 @@ public class PgtoRecContaView extends ViewPart {
 	private Action actAdd;
 	private Action actRefresh;
 	private ContaFilter contaFilter = new ContaFilter();
+	private Action actArqRetorno;
 	
 	public PgtoRecContaView() {
 		createActions();
@@ -137,6 +145,33 @@ public class PgtoRecContaView extends ViewPart {
 				}
 			};
 			actRefresh.setImageDescriptor(ImageRepository.REFRESH_16.getImageDescriptor());
+		}
+		{
+			actArqRetorno = new Action("New Action") {				@Override
+				public void run() {
+					FileDialog dialog = new FileDialog(ShellHelper.getActiveShell());
+					dialog.setFilterExtensions(new String[]{"*.txt"});
+					String file = dialog.open();
+					
+					if(file == null || file.isEmpty())
+						return;
+					
+					List<String> linhas = Lists.newArrayList();
+					try {
+						File arq = new File(file);
+						BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+						
+						while(bufferedReader.ready())
+							linhas.add(bufferedReader.readLine());
+						
+						BoletoHelper.importarArquivoRetorno(linhas);
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			actArqRetorno.setImageDescriptor(ImageRepository.SAVE_16.getImageDescriptor());
 		}
 	}
 	
@@ -419,6 +454,7 @@ public class PgtoRecContaView extends ViewPart {
 		
 		frmContasAPagarreceber.getToolBarManager().add(actAdd);
 		frmContasAPagarreceber.getToolBarManager().add(actRefresh);
+		frmContasAPagarreceber.getToolBarManager().add(actArqRetorno);
 		
 		frmContasAPagarreceber.updateToolBar();
 		frmContasAPagarreceber.update();
@@ -573,7 +609,17 @@ public class PgtoRecContaView extends ViewPart {
 			miGerarBoleto.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					new GerarBoletoDialog(ShellHelper.getActiveShell(), (ContaPagarReceber) SelectionHelper.getObject(tvbContas.getTableViewer())).open();
+					GerarBoletoDialog dialog = new GerarBoletoDialog(ShellHelper.getActiveShell());
+					if(dialog.open() == IDialogConstants.OK_ID){
+						ContaPagarReceber conta = (ContaPagarReceber) SelectionHelper.getObject(tvbContas.getTableViewer());
+						
+						try {
+							BoletoHelper.gerarBoleto(conta, dialog.getCliente());
+						} catch (Exception e1) {
+							log.error("Erro ao gerar boleto.", e1);
+							DialogHelper.openErrorMultiStatus("Erro ao gerar boleto.", e1.getMessage());
+						}
+					}
 				}
 			});
 			miGerarBoleto.setImage(ImageRepository.BOLETO_16.getImage());

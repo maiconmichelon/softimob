@@ -7,6 +7,7 @@ import java.util.List;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -48,7 +49,8 @@ public class ParcelaDialog extends TitleAreaDialog{
 		setMessage("Adicionar parcelas");
 		setTitle("Parcelas");
 		
-		Composite composite = new Composite(parent, SWT.NONE);
+		Composite area = (Composite) super.createDialogArea(parent);
+		Composite composite = new Composite(area, SWT.NONE);
 		composite.setLayout(new GridLayout(3, false));
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
@@ -84,10 +86,16 @@ public class ParcelaDialog extends TitleAreaDialog{
 		
 		btnReceber = new Button(composite, SWT.RADIO);
 		btnReceber.setText("Receber");
+		new Label(composite, SWT.NONE);
 		
 		return composite;
 	}
 
+	@Override
+	protected Point getInitialSize() {
+		return new Point(274, 261);
+	}
+	
 	protected void configureShell(Shell newShell) {
 		newShell.setText("Adicionar parcelas");
 		super.configureShell(newShell);

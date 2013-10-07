@@ -43,5 +43,9 @@ public class AluguelService extends GenericService<Aluguel>{
 	public String geraObservacoesContaAluguel(Aluguel aluguel) {
 		return String.format("Aluguel da casa %s para %s", aluguel.getContrato().getImovel().toString(), aluguel.getCliente());
 	}
+
+	public Long findContPendencias(Date dataHoje) {
+		return getRepository().findContPendencia(dataHoje);
+	}
 	
 }

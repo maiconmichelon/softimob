@@ -16,5 +16,8 @@ public interface PropostaDAO extends CrudRepository<Proposta, Long>{
 	List<Proposta> findByImovel(@Param(value = "imovel")Imovel imovel);
 
 	List<Proposta> findByStatusIsNull();
+
+	@Query(value = "SELECT count(p) FROM Proposta p WHERE p.status is null")
+	Long findCountPendencias();
 	
 }

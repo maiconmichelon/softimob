@@ -38,5 +38,9 @@ public class PropostaService extends GenericService<Proposta>{
 			log.error("Erro ao abrir tela de imóveis com chamado de reforma");
 		}		
 	}
+
+	public Long findContPendencias() {
+		return getRepository().findCountPendencias();
+	}
 	
 }

@@ -43,5 +43,9 @@ public class ContratoPrestacaoServicoService extends GenericService<ContratoPres
 		
 		super.removerAtivarOuDesativar(registro);
 	}
+
+	public Long findPendencia(Date dataHoje) {
+		return getRepository().findPendencia(dataHoje);
+	}
 	
 }
