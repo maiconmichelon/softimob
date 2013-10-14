@@ -92,7 +92,7 @@ public class AluguelView extends GenericView<Aluguel>{
 				Aluguel aluguel = getSelecionado();
 				
 				if(!aluguel.isOkCheckList()){
-					DialogHelper.openWarning("Para gerar o contrato é necessário que todos os itens da check-list, tidos como obrigatório, sejam finalizados.");
+					DialogHelper.openWarning("Para gerar o contrato é necessário que todos os itens da checklist, tidos como obrigatório, sejam finalizados.");
 					return;
 				}
 				
@@ -109,7 +109,7 @@ public class AluguelView extends GenericView<Aluguel>{
 				Aluguel aluguel = getSelecionado();
 				
 				if(!aluguel.isOkCheckList()){
-					DialogHelper.openWarning("Para reajustar é necessário que todos os itens da check-list, tidos como obrigatório, sejam finalizados.");
+					DialogHelper.openWarning("Para reajustar é necessário que todos os itens da checklist, tidos como obrigatório, sejam finalizados.");
 					return;
 				} else if(aluguel.getReajuste() == null){
 					DialogHelper.openWarning("Para reajustar é necessário colocar o indice do aluguel.");

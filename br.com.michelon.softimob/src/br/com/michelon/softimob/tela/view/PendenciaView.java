@@ -23,7 +23,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -116,13 +115,13 @@ public class PendenciaView extends GenericView<Pendencia>{
 	
 	@Override
 	public void createComponentsCpBotton(Composite parent, FormToolkit formToolkit2) {
-		Group group = new Group(parent, SWT.NONE);
-		group.setLayout(new GridLayout(3, false));
-		group.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false, 3, 1));
-		formToolkit.adapt(group);
-		formToolkit.paintBordersFor(group);
+		Composite cp = new Composite(parent, SWT.NONE);
+		cp.setLayout(new GridLayout(3, false));
+		cp.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false, 3, 1));
+		formToolkit.adapt(cp);
+		formToolkit.paintBordersFor(cp);
 		
-		Button btnTodas = new Button(group, SWT.RADIO);
+		Button btnTodas = new Button(cp, SWT.RADIO);
 		btnTodas.setSelection(true);
 		formToolkit.adapt(btnTodas, true, true);
 		btnTodas.setText("Todas");
@@ -134,7 +133,7 @@ public class PendenciaView extends GenericView<Pendencia>{
 			}
 		});
 		
-		Button btnVencidas = new Button(group, SWT.RADIO);
+		Button btnVencidas = new Button(cp, SWT.RADIO);
 		formToolkit.adapt(btnVencidas, true, true);
 		btnVencidas.setText("Vencidas");
 		btnVencidas.addSelectionListener(new SelectionAdapter() {
@@ -145,7 +144,7 @@ public class PendenciaView extends GenericView<Pendencia>{
 			}
 		});
 		
-		Button btnAVencer = new Button(group, SWT.RADIO);
+		Button btnAVencer = new Button(cp, SWT.RADIO);
 		formToolkit.adapt(btnAVencer, true, true);
 		btnAVencer.setText("A vencer");
 		btnAVencer.addSelectionListener(new SelectionAdapter() {

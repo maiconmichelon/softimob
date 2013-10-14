@@ -368,7 +368,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		createPhotoComposite(tbtmFotos);
 		
 		CTabItem tbtmCheckList = new CTabItem(tabFolder_1, SWT.NONE);
-		tbtmCheckList.setText("Check List");
+		tbtmCheckList.setText("Checklist");
 		
 		Composite composite_2 = new Composite(tabFolder_1, SWT.NONE);
 		tbtmCheckList.setControl(composite_2);
@@ -382,7 +382,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 		});
 		
 		CTabItem tbtmCheckList_1 = new CTabItem(tabFolder, SWT.NONE);
-		tbtmCheckList_1.setText("Check List");
+		tbtmCheckList_1.setText("Checklist");
 		
 		Composite composite_3 = new Composite(tabFolder, SWT.NONE);
 		tbtmCheckList_1.setControl(composite_3);

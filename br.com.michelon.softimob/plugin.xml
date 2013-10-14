@@ -222,7 +222,7 @@
             class="br.com.michelon.softimob.tela.view.CheckListView"
             icon="icons/checkList/checkList16.png"
             id="br.com.michelon.softimob.tela.view.CheckListView"
-            name="Check List"
+            name="Checklist"
             restorable="true">
       </view>
       <view
@@ -468,7 +468,7 @@
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/checkList/checkList16.png"
-                  label="Check List"
+                  label="Checklist"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"

@@ -237,7 +237,7 @@ public class Proposta implements Serializable, Pendencia{
 		if(status == null)
 			return "Em aberto";
 		if(status == CONTRAPROPOSTA)
-			return "Contra-Proposta";
+			return "Contraproposta";
 		if(status == ACEITA)
 			return "Aceito";
 		if(status == RECUSADA)

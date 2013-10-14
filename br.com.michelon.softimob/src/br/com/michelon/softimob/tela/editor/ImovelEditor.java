@@ -954,7 +954,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		WidgetHelper.createMenuItemAlterar(menu, valueProposta, propostaXViewer);
 		
 		MenuItem miContraProposta = new MenuItem(menu, SWT.BORDER);
-		miContraProposta.setText("Contra-proposta");
+		miContraProposta.setText("Contraproposta");
 		miContraProposta.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -964,12 +964,12 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 					return;
 				
 				if(propostaSelecionada.getContraProposta() != null){
-					DialogHelper.openWarning("A proposta selecionada já possui uma contra-proposta.");
+					DialogHelper.openWarning("A proposta selecionada já possui uma contraproposta.");
 					return;
 				}
 				
 				if(propostaSelecionada.getStatus() != null){
-					DialogHelper.openWarning("A proposta já foi fechada, para realizar uma contra-proposta é preciso que ela seja aberta.");
+					DialogHelper.openWarning("A proposta já foi fechada, para realizar uma contraproposta é preciso que ela seja aberta.");
 					return;
 				}
 				
@@ -991,7 +991,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 					return;
 				
 				if(propostaSelecionada.getContraProposta() != null){
-					DialogHelper.openWarning("A proposta selecionada possui uma contra-proposta.");
+					DialogHelper.openWarning("A proposta selecionada possui uma contraproposta.");
 					return;
 				}
 				
@@ -1127,6 +1127,8 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 					value.setValue(imovel);
 
 					tvComodos.setInput(imovel.getComodos());
+					
+					tfImovel.setSelection(1);
 				} catch (Exception e) {
 					log.error("Erro ao salvar cômodos do imóvel.", e);
 				}

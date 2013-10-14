@@ -87,7 +87,8 @@ public enum ImageRepository{
 	SOLVED_16("icons/solved/solved16.png"),
 	FOTO_16("icons/foto/foto16.png"),
 	MAP_16("icons/map/map16.png"),
-	DESEMPENHO_16("icons/desempenho/desempenho16.png")
+	DESEMPENHO_16("icons/desempenho/desempenho16.png"),
+	IMPORTACAO_ARQUIVORETORNO("icons/importacao/import16.png")
 	;
 	
 	private String caminho;

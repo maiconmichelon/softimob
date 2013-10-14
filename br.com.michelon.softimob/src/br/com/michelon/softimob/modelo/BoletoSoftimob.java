@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -28,8 +29,10 @@ import org.jrimum.domkee.financeiro.banco.febraban.Cedente;
 import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
 import org.jrimum.domkee.financeiro.banco.febraban.NumeroDaConta;
 import org.jrimum.domkee.financeiro.banco.febraban.Sacado;
+import org.jrimum.domkee.financeiro.banco.febraban.TipoDeCobranca;
 import org.jrimum.domkee.financeiro.banco.febraban.TipoDeTitulo;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
+import org.jrimum.domkee.financeiro.banco.febraban.Titulo.Aceite;
 
 import br.com.michelon.softimob.aplicacao.exception.ClienteIncompletoException;
 import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
@@ -99,9 +102,6 @@ public class BoletoSoftimob implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private TipoDeTitulo tipoDeDocumento;
 
-	@Enumerated(EnumType.STRING)
-	private AceiteSofitmob aceite;
-
 	@Column(precision = 12, scale = 2)
 	private BigDecimal deducao;
 
@@ -111,7 +111,7 @@ public class BoletoSoftimob implements Serializable{
 	@Column(precision = 12, scale = 2)
 	private BigDecimal valorCobrado;
 	
-	@OneToOne
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private ContaPagarReceber conta;
 	
 	public Long getId() {
@@ -274,14 +274,6 @@ public class BoletoSoftimob implements Serializable{
 		this.tipoDeDocumento = tipoDeDocumento;
 	}
 
-	public AceiteSofitmob getAceite() {
-		return aceite;
-	}
-
-	public void setAceite(AceiteSofitmob aceite) {
-		this.aceite = aceite;
-	}
-
 	public BigDecimal getDeducao() {
 		return deducao;
 	}
@@ -324,8 +316,7 @@ public class BoletoSoftimob implements Serializable{
 		desconto = conta.getValorJurosDesconto().signum() > 0 ? BigDecimal.ZERO : conta.getValorJurosDesconto().abs();
 		mora = conta.getValorJurDescZeroCasoNegativo();
 
-		tipoDeDocumento = TipoDeTitulo.OUTROS;
-		aceite = br.com.michelon.softimob.modelo.AceiteSofitmob.NAOACEITE;
+		tipoDeDocumento = TipoDeTitulo.DM_DUPLICATA_MERCANTIL;
 		deducao = BigDecimal.ZERO;
 		acrecimo = BigDecimal.ZERO;
 		
@@ -344,22 +335,18 @@ public class BoletoSoftimob implements Serializable{
 	}
 	
 	private void setDadosAgencia(ParametrosEmpresa param) throws Exception{
-		if(param.getCarteira().length() != 1)
-			throw new Exception("A carteira parametrizada para a geração do boleto deve conter apenas 1 dígito.");
 		if(param.getContaCorrente().concat(param.getDigitoContaCorrente().toString()).length() > 10)
 			throw new Exception("A conta parametrizada deve ter no máximo 10 digitos.");
 		
 		banco = BancosSuportados.BANCOOB;
 		codigoConta = Integer.parseInt(param.getContaCorrente());
 		digitoConta = param.getDigitoContaCorrente().toString();
-		carteira = Integer.parseInt(param.getCarteira());
+		carteira = 1;
 		codigoAgencia = Integer.parseInt(param.getAgencia());
 		digitoAgencia = param.getDigitoAgencia().toString();
 	}
 	
-	public static BoletoSoftimob create(ParametrosEmpresa param, Cliente cliente, ContaPagarReceber conta) throws Exception {
-		BoletoSoftimob boletoSoftimob = new BoletoSoftimob();
-		
+	public static BoletoSoftimob insertData(BoletoSoftimob boletoSoftimob, ParametrosEmpresa param, Cliente cliente, ContaPagarReceber conta) throws Exception {
 		boletoSoftimob.setConta(conta);
 		boletoSoftimob.setCliente(cliente);
 		boletoSoftimob.setDadosAgencia(param);
@@ -392,10 +379,14 @@ public class BoletoSoftimob implements Serializable{
 		return nossoNumero;
 	}
 	
+	public static Long extractNossoNumero(String nossoNumero) {
+		return Long.parseLong(nossoNumero.substring(2, nossoNumero.length()));
+	}
+	
 	private ContaBancaria crieUmaContaBancaria() {
 		ContaBancaria contaBancaria = new ContaBancaria(getBanco().create());
 		contaBancaria.setNumeroDaConta(new NumeroDaConta(getCodigoConta(), getDigitoConta()));
-		contaBancaria.setCarteira(new Carteira(getCarteira()));
+		contaBancaria.setCarteira(new Carteira(getCarteira(), TipoDeCobranca.SEM_REGISTRO));
 		contaBancaria.setAgencia(new Agencia(getCodigoAgencia(), getDigitoAgencia()));
 
 		return contaBancaria;
@@ -436,15 +427,32 @@ public class BoletoSoftimob implements Serializable{
 		titulo.setMora(getMora());
 
 		titulo.setTipoDeDocumento(getTipoDeDocumento());
-		titulo.setAceite(getAceite().getAceite());
+		titulo.setAceite(Aceite.N);
 		titulo.setDeducao(getDeducao());
 		titulo.setAcrecimo(getAcrecimo());
 		
 		titulo.setValorCobrado(getValorCobrado());
 
+		titulo.setDigitoDoNossoNumero(getDigitioVerificador(getNossoNumeroFormatado()));
 		titulo.setNossoNumero(getNossoNumeroFormatado());
 		
 		return titulo;
+	}
+	
+	public static String getDigitioVerificador(String nossoNumero){
+		String[] cs = nossoNumero.split("");
+		boolean m = false;
+		
+		int soma = 0;
+		for(String s : cs)  {
+			if(!s.isEmpty()) {
+				int val = Integer.parseInt(s);
+				soma += !m ? val : val*2;
+				m = !m;
+			}
+		}
+		
+		return String.valueOf(10 - (soma % 10));
 	}
 	
 	private Boleto crieOsDadosDoNovoBoleto(Boleto boleto) {

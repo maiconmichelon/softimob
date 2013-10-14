@@ -31,7 +31,7 @@ public class CheckListView extends GenericView<CheckList>{
 
 	@Override
 	protected String getTitleView() {
-		return "Check List";
+		return "Checklist";
 	}
 
 	@Override

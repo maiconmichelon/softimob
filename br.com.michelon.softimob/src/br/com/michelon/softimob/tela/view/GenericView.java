@@ -42,6 +42,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.GenericEditorInput;
+import br.com.michelon.softimob.aplicacao.exception.ViolacaoForeignKey;
 import br.com.michelon.softimob.aplicacao.filter.AtivadoDesativadoFilter;
 import br.com.michelon.softimob.aplicacao.filter.AtivadoDesativadoFilter.AtivadoDesativado;
 import br.com.michelon.softimob.aplicacao.filter.GenericFilter;
@@ -146,9 +147,6 @@ public abstract class GenericView<T> extends ViewPart{
 		viewer = createTable(cpBody);
 		
 		createComponentsCpBotton(frmNewForm.getBody(), formToolkit);
-		
-		new Label(frmNewForm.getBody(), SWT.NONE);
-		new Label(frmNewForm.getBody(), SWT.NONE);
 		
 		if(addGroupAtivadoDesativado){
 			ativadoDesativadoFilter = new AtivadoDesativadoFilter();
@@ -339,6 +337,8 @@ public abstract class GenericView<T> extends ViewPart{
 			getService(objeto).removerAtivarOuDesativar(objeto);
 			
 			DialogHelper.openInformation((String.format("Registro %s com sucesso.", addGroupAtivadoDesativado ? "desativado/ativado" : "removido")));
+		} catch (ViolacaoForeignKey e) {
+			DialogHelper.openWarning(e.getMessage());
 		} catch (Exception e) {
 			DialogHelper.openErrorMultiStatus("Houveram erros ao remover registro.", e.getMessage());
 			log.error("Erro ao remover registro.", e);
@@ -457,6 +457,9 @@ public abstract class GenericView<T> extends ViewPart{
 	
 	public void createComponentsCpTop(Composite parent, FormToolkit formToolkit2) {}
 	
-	public void createComponentsCpBotton(Composite parent, FormToolkit formToolkit2){}
+	public void createComponentsCpBotton(Composite parent, FormToolkit formToolkit2){
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+	}
 	
 }

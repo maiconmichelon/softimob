@@ -61,8 +61,8 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		setMessage("Adicionar itens a Check List");
-		setTitle("Check List");
+		setMessage("Adicionar itens a Checklist");
+		setTitle("Checklist");
 
 		Composite area = (Composite) super.createDialogArea(parent);
 		Composite composite = new Composite(area, SWT.NONE);
@@ -71,7 +71,7 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 		
 		Label lblCheckList = new Label(composite, SWT.NONE);
 		lblCheckList.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblCheckList.setText("Check List");
+		lblCheckList.setText("Checklist");
 		
 		txtCheckList = new Text(composite, SWT.BORDER);
 		txtCheckList.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -200,13 +200,13 @@ public class CheckListEditorDialog extends TitleAreaDialog{
 			}
 		} catch (Exception e1) {
 			new ValidationErrorDialog(ShellHelper.getActiveShell(), e1.getMessage());
-			log.error("Erro ao salvar check list", e1);
+			log.error("Erro ao salvar checklist", e1);
 		}
 	}
 	
 	@Override
 	protected void configureShell(Shell newShell) {
-		newShell.setText("Check-List");
+		newShell.setText("Checklist");
 		
 		super.configureShell(newShell);
 	}

@@ -1,9 +1,6 @@
 package br.com.michelon.softimob.tela.view;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -65,9 +62,12 @@ import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.helper.ShellHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
+import br.com.michelon.softimob.aplicacao.service.BoletoSoftimobService;
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
 import br.com.michelon.softimob.aplicacao.service.OrigemContaService;
+import br.com.michelon.softimob.modelo.BoletoSoftimob;
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
+import br.com.michelon.softimob.modelo.ArquivoRetorno;
 import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.modelo.PlanoConta;
@@ -147,31 +147,41 @@ public class PgtoRecContaView extends ViewPart {
 			actRefresh.setImageDescriptor(ImageRepository.REFRESH_16.getImageDescriptor());
 		}
 		{
-			actArqRetorno = new Action("New Action") {				@Override
+			actArqRetorno = new Action("Importar arquivo de retorno") {				@Override
 				public void run() {
 					FileDialog dialog = new FileDialog(ShellHelper.getActiveShell());
-					dialog.setFilterExtensions(new String[]{"*.txt"});
+					dialog.setFilterExtensions(new String[]{"*.ret"});
 					String file = dialog.open();
 					
 					if(file == null || file.isEmpty())
 						return;
 					
-					List<String> linhas = Lists.newArrayList();
 					try {
-						File arq = new File(file);
-						BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+						BoletoSoftimobService service = new BoletoSoftimobService();
 						
-						while(bufferedReader.ready())
-							linhas.add(bufferedReader.readLine());
+						List<ArquivoRetorno> retornos = BoletoHelper.getRetorno(new File(file));
 						
-						BoletoHelper.importarArquivoRetorno(linhas);
+						for(ArquivoRetorno retorno : retornos) {
+							Long nossoNumero = BoletoSoftimob.extractNossoNumero(retorno.getNossoNumero());
+							BoletoSoftimob boleto = service.findOne(nossoNumero);
+							
+							if(boleto == null)
+								throw new Exception("Boleto não encontrado.");
+							
+							service.efetuarBaixa(boleto, retorno);
+							
+							service.salvar(boleto);
+						}
 						
-					} catch (Exception e) {
-						e.printStackTrace();
+						DialogHelper.openInformation("Arquivo de retorno importado com sucesso.");
+						buscar();
+					} catch (Exception e1) {
+						DialogHelper.openErrorMultiStatus("Erro ao importar arquivo de retorno.", e1.getMessage());
+						log.error("Erro ao importar arquivo de retorno.");
 					}
 				}
 			};
-			actArqRetorno.setImageDescriptor(ImageRepository.SAVE_16.getImageDescriptor());
+			actArqRetorno.setImageDescriptor(ImageRepository.IMPORTACAO_ARQUIVORETORNO.getImageDescriptor());
 		}
 	}
 	

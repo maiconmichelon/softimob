@@ -148,7 +148,7 @@ public class ListElementDialogHelper {
 		CONTRATO_SERVICO_TODOS("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
 		CONTRATO_SERVICO_LOCACAO("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
 		CONTRATO_SERVICO_VENDA("Contratos de prestação de serviço", "Selecione um contrato", ImageRepository.CONTRATO_16, ContratoPrestacaoServico.class),
-		CHECK_LIST("Modelos de check list", "Selecione uma check list", ImageRepository.CHECKLIST_16, CheckList.class),
+		CHECK_LIST("Modelos de checklist", "Selecione uma checklist", ImageRepository.CHECKLIST_16, CheckList.class),
 		INDICE("Índices", "Selecione um índice", ImageRepository.INDICE_16, Indice.class), 
 		PESSOA_FISICA("Pessoas Físicas", "Selecione uma pessoa física", ImageRepository.CLIENTE_16, PessoaFisica.class),
 		ORIGEM_CONTA("Origens de Contas", "Selecione uma origem para sua conta", ImageRepository.ORIGEM_CONTA_16, OrigemConta.class)

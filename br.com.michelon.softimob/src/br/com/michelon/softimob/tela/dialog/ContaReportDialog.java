@@ -112,7 +112,7 @@ public class ContaReportDialog extends ReportDialog{
 
 	@Override
 	public String getMessage() {
-		return "";
+		return "Informe o tipo e o período desejado.";
 	}
 
 	@Override

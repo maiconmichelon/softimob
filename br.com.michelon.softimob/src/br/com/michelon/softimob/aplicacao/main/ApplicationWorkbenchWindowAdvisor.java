@@ -96,7 +96,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 					sb.toString(), NotificationType.INFO);
 		}
 
-		
 		Map<Class<? extends Pendencia>, Long> pendencias = new PendenciaService().findQuantidadePendencias();
 		if(pendencias != null && !pendencias.isEmpty()){
 			StringBuilder sb = new StringBuilder();
@@ -137,6 +136,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 				tot+=quantidade;
 				sb.append(String.format("%s propostas(s) em aberto.\n", quantidade));
 			}
+			
+			if(tot == 0)
+				return;
 			
 			NotifierDialog.notify(String.format("Olá, você possui %s pendência(s) !", tot), sb.toString(), NotificationType.WARN, new MouseAdapter() {
 				@Override

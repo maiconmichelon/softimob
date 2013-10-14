@@ -22,7 +22,7 @@ public class CheckList {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty(message = "Nome da check list não pode ser vazia")
+	@NotEmpty(message = "Nome da checklist não pode ser vazia")
 	@Column(nullable = false)
 	private String nome;
 	

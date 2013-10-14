@@ -36,7 +36,8 @@ public class ComodoDialog extends TitleAreaDialog{
 		setMessage("Informe as descrições do cômodo.");
 		setTitle("Seleção de cômodo");
 		
-		Composite composite = new Composite(parent, SWT.NONE);
+		Composite area = (Composite) super.createDialogArea(parent);
+		Composite composite = new Composite(area, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
@@ -65,7 +66,7 @@ public class ComodoDialog extends TitleAreaDialog{
 		text_2 = new Text(composite, SWT.BORDER);
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		return composite;
+		return area;
 	}
 
 	@Override
@@ -86,6 +87,12 @@ public class ComodoDialog extends TitleAreaDialog{
 		comodo.setTipoComodo(tipo);
 		
 		super.okPressed();
+	}
+	
+	@Override
+	protected void configureShell(Shell newShell) {
+		newShell.setText("Softimob");
+		super.configureShell(newShell);
 	}
 	
 	@Override

@@ -144,18 +144,8 @@ public abstract class GenericEditor<T> extends EditorPart {
 			label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 3));
 			formToolkit.adapt(label, true, true);
 
-			Label lblDataDeCadastro = new Label(cpOpcoes, SWT.NONE);
-			lblDataDeCadastro.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
-			lblDataDeCadastro.setText("Última Alteração");
-			lblDataDeCadastro.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
-			
-			lblDataAlteracao = new Label(cpOpcoes, SWT.NONE);
-			lblDataAlteracao.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
-			lblDataAlteracao.setText("");
-			lblDataAlteracao.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-			
 			Label lblNewLabel = new Label(cpOpcoes, SWT.NONE);
-			lblNewLabel.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
+			lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.BOTTOM, false, false, 1, 1));
 			lblNewLabel.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 			lblNewLabel.setText("Usuário Cadastro");
 			
@@ -166,13 +156,23 @@ public abstract class GenericEditor<T> extends EditorPart {
 			lblUsuarioCadastro.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 			
 			Label lblNewLabel_1 = new Label(cpOpcoes, SWT.NONE);
-			lblNewLabel_1.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+			lblNewLabel_1.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 			lblNewLabel_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
-			lblNewLabel_1.setText("Ultima Alteração");
+			lblNewLabel_1.setText("Usuário Alteração");
 			
 			lblUsuarioAlteracao = new Label(cpOpcoes, SWT.NONE);
 			lblUsuarioAlteracao.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
 			lblUsuarioAlteracao.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+			
+			Label lblDataDeCadastro = new Label(cpOpcoes, SWT.NONE);
+			lblDataDeCadastro.setLayoutData(new GridData(SWT.RIGHT, SWT.BOTTOM, false, false, 1, 1));
+			lblDataDeCadastro.setText("Data Alteração");
+			lblDataDeCadastro.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
+			
+			lblDataAlteracao = new Label(cpOpcoes, SWT.NONE);
+			lblDataAlteracao.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 1, 1));
+			lblDataAlteracao.setText("");
+			lblDataAlteracao.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		}
 		
 		//PARA ABRIR NO WINDOW BUILDER

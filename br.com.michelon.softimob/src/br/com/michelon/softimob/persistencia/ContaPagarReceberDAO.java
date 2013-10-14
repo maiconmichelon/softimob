@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import br.com.michelon.softimob.modelo.ContaPagarReceber;
+import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.Pendencia;
 
 public interface ContaPagarReceberDAO extends CrudRepository<ContaPagarReceber, Long>{
@@ -41,5 +42,7 @@ public interface ContaPagarReceberDAO extends CrudRepository<ContaPagarReceber, 
 			"WHERE c.dataVencimento >= :dataInicio AND c.dataVencimento <= :dataFinal " +
 			"ORDER BY c.dataConta")
 	List<ContaPagarReceber> buscarContas(@Param(value = "dataInicio")Date dataInicio, @Param(value = "dataFinal")Date dataFinal);
+	
+	ContaPagarReceber findByMovimentacao(MovimentacaoContabil mov);
 	
 }

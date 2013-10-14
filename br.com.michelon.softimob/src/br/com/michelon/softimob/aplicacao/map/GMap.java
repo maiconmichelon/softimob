@@ -43,8 +43,8 @@ public class GMap extends Composite {
 	private final Browser browser;
 	private int type = TYPE_ROADMAP;
 	private String address = "";
-	private LatLng center = new LatLng(0, 0);
-	private int zoom = 8;
+	private LatLng center = new LatLng(-24.724302,-53.745302);
+	private int zoom = 13;
 	private boolean loaded = false;
 	private final List<MapListener> listeners = new ArrayList<MapListener>();
 	private String endereco;

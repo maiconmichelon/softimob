@@ -10,7 +10,7 @@ public class DBConnector {
 		Connection con = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/softimob", "postgres", "admin");
+			con = DriverManager.getConnection("jdbc:postgresql://localhost:5433/softimob", "postgres", "admin");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

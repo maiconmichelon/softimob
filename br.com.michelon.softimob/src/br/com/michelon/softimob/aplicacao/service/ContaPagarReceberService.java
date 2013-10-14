@@ -242,4 +242,8 @@ public class ContaPagarReceberService extends GenericService<ContaPagarReceber>{
 		return contas;
 	}
 	
+	public ContaPagarReceber findByMovimentacao(MovimentacaoContabil mov){
+		return getRepository().findByMovimentacao(mov);
+	}
+	
 }

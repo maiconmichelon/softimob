@@ -88,7 +88,7 @@ public class VendaView extends GenericView<Venda>{
 				Venda venda = getSelecionado();
 				
 				if(!venda.isOkCheckList()){
-					DialogHelper.openWarning("Para gerar o contrato é necessário que todos os itens da check-list, tidos como obrigatório, sejam finalizados.");
+					DialogHelper.openWarning("Para gerar o contrato é necessário que todos os itens da checklist, tidos como obrigatório, sejam finalizados.");
 					return;
 				}
 				

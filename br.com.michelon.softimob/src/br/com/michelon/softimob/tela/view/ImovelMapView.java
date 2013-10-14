@@ -28,7 +28,6 @@ public class ImovelMapView extends ViewPart {
 
 	public static final String ID = "br.com.michelon.softimob.tela.view.ImovelMapView"; //$NON-NLS-1$
 
-	static final private String INIT_CENTER = "33.0,5.0";
 	static final private int INIT_TYPE = GMap.TYPE_HYBRID;
 	private GMap gmap = null;
 	private Composite controls;
@@ -66,8 +65,6 @@ public class ImovelMapView extends ViewPart {
 	private void createMap(Composite parent) {
 		gmap = new GMap(parent, SWT.NONE);
 
-		gmap.setCenter(stringToLatLng(INIT_CENTER));
-
 		gmap.setType(INIT_TYPE);
 	}
 
@@ -76,7 +73,6 @@ public class ImovelMapView extends ViewPart {
 		new Label(parent, SWT.None).setText("Localização:");
 		location = new Text(parent, SWT.BORDER);
 		location.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		location.setText(INIT_CENTER);
 		location.setFont(new Font(parent.getDisplay(), "Arial", 9, SWT.NORMAL));
 		location.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent event) {

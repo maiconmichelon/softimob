@@ -29,7 +29,7 @@ public class Endereco implements Serializable{
 	private Rua rua;
 	
 	@Column
-	private String numero;
+	private String numero = "";
 	
 	@Column
 	private String complemento;

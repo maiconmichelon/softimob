@@ -11,7 +11,7 @@ window.init = function( center, zoom, type ) {
     window.geocoderMarker = new google.maps.Geocoder();
     _registerEventListener();
   } else {
-    parent.innerHTML = '<p style="padding: 10px;">Failed to load Google Maps</p>';
+    parent.innerHTML = '<p style="padding: 10px;">Falha ao conectar ao Google Maps. Verifique sua conexão com a internet.</p>';
   }
 };
 

@@ -114,7 +114,7 @@ public class ContraPropostaDialog extends TitleAreaDialog {
 			if (ValidatorHelper.validarComMensagem(proposta) && ValidatorHelper.validarComMensagem(getCurrentValue())){
 				
 				if(getCurrentValue().getTipoContraProposta() == null || getCurrentValue().getTipoContraProposta().equals(Proposta.PRIMEIRA)){
-					DialogHelper.openWarning("Selecione quem fez a contra-proposta.");
+					DialogHelper.openWarning("Selecione quem fez a contraproposta.");
 					return;
 				}
 				
@@ -123,19 +123,19 @@ public class ContraPropostaDialog extends TitleAreaDialog {
 				proposta.setDataFechamento(((Proposta)valueContraProposta.getValue()).getData());
 				
 				new PropostaService().salvar(proposta);
-				DialogHelper.openInformation("Contra-proposta salva com sucesso.");
+				DialogHelper.openInformation("Contraproposta salva com sucesso.");
 				
 				super.okPressed();
 			}
 		} catch (Exception e) {
-			log.error("Erro ao salvar contra-proposta.", e);
-			DialogHelper.openErrorMultiStatus("Erro ao gerar contra-proposta.", e.getMessage());
+			log.error("Erro ao salvar contraproposta.", e);
+			DialogHelper.openErrorMultiStatus("Erro ao gerar contraproposta.", e.getMessage());
 		}
 	};
 
 	@Override
 	protected void configureShell(Shell newShell) {
-		newShell.setText("Contra-Proposta");
+		newShell.setText("Contraproposta");
 		super.configureShell(newShell);
 	}
 	
@@ -144,8 +144,8 @@ public class ContraPropostaDialog extends TitleAreaDialog {
 	}
 	
 	private void setTitleAndMessage() {
-		setTitle("Contra proposta");
-		setMessage("Informe os valores da contra-proposta");
+		setTitle("Contraproposta");
+		setMessage("Informe os valores da contraproposta");
 	}
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();

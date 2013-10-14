@@ -131,4 +131,15 @@ public class FormatterHelper {
 		return s;
 	}
 	
+	/**
+	 * Passando a string "Ola" com 5 letras vai voltar "Ola  "
+	 */
+	public static String preencherBranco(String s, int lenght){
+		String retorno = StringUtils.EMPTY;
+		for (int i = 0; i < lenght; i++) {
+			retorno = retorno + (i < s.length() ? s.charAt(i) : ' ');
+		}
+		return retorno;
+	}
+	
 }

@@ -4,10 +4,6 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.jface.databinding.viewers.ViewerProperties;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.nebula.jface.viewer.radiogroup.RadioGroupViewer;
-import org.eclipse.nebula.widgets.radiogroup.RadioGroup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -26,7 +22,6 @@ import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDi
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ParametrosEmpresaService;
-import br.com.michelon.softimob.modelo.AceiteSofitmob;
 import br.com.michelon.softimob.modelo.CheckList;
 import br.com.michelon.softimob.modelo.Funcionario;
 import br.com.michelon.softimob.modelo.ModeloContrato;
@@ -66,12 +61,10 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 	private Text txtDigito;
 	private Text txtAgencia;
 	private Text txtContaCorrente;
-	private Text txtCarteira;
 	private Text text;
 	private Text txtLocalPagamento;
 	private Text txtInstrucaoSacado;
 	private Text txtInstrucaoExtra;
-	private RadioGroupViewer rgAceite;
 	
 	public ParametrosEmpresaEditor() {
 		super(ParametrosEmpresa.class, false);
@@ -221,7 +214,7 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Label lblChecklist = new Label(composite, SWT.NONE);
 		lblChecklist.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblChecklist.setText("Check List");
+		lblChecklist.setText("Checklist");
 		
 		txtCheckListVenda = new Text(composite, SWT.BORDER);
 		txtCheckListVenda.setEditable(false);
@@ -279,7 +272,7 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Label lblChecklist_1 = new Label(composite_1, SWT.NONE);
 		lblChecklist_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblChecklist_1.setText("Check List");
+		lblChecklist_1.setText("Checklist");
 		
 		txtCheckListAluguel = new Text(composite_1, SWT.BORDER);
 		txtCheckListAluguel.setEditable(false);
@@ -338,7 +331,7 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		Label lblChecklist_2 = new Label(composite_5, SWT.NONE);
 		lblChecklist_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblChecklist_2.setText("Check List");
+		lblChecklist_2.setText("Checklist");
 		
 		txtCheckListVistoria = new Text(composite_5, SWT.BORDER);
 		txtCheckListVistoria.setEditable(false);
@@ -465,14 +458,6 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		txtNumero = formattedText.getControl();
 		txtNumero.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Label lblCarteira = new Label(composite_7, SWT.NONE);
-		lblCarteira.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblCarteira.setText("Carteira");
-		
-		NumberTextField formattedText_4 = new NumberTextField(composite_7);
-		txtCarteira = formattedText_4.getControl();
-		txtCarteira.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
 		Label lblNmero = new Label(composite_7, SWT.NONE);
 		lblNmero.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNmero.setText("Número Convenio");
@@ -501,12 +486,6 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		
 		txtInstrucaoExtra = new Text(composite_7, SWT.BORDER);
 		txtInstrucaoExtra.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		rgAceite = new RadioGroupViewer(composite_7, SWT.None);
-		RadioGroup radioGroup = rgAceite.getRadioGroup();
-		radioGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		rgAceite.setContentProvider(ArrayContentProvider.getInstance());
-		rgAceite.setInput(AceiteSofitmob.values());
 	}
 	
 	@Override
@@ -622,10 +601,6 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		IObservableValue valueDigitoContaCorrenteObserveDetailValue = PojoProperties.value(ParametrosEmpresa.class, "digitoContaCorrente", Character.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTxtNumeroObserveWidget, valueDigitoContaCorrenteObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextTxtCarteiraObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtCarteira);
-		IObservableValue valueCarteiraObserveDetailValue = PojoProperties.value(ParametrosEmpresa.class, "carteira", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextTxtCarteiraObserveWidget, valueCarteiraObserveDetailValue, null, null);
-		//
 		IObservableValue observeTextNumeroConvenioObserveWidget = WidgetProperties.text(SWT.Modify).observe(text);
 		IObservableValue valueNumeroConvenioObserveDetailValue = PojoProperties.value(ParametrosEmpresa.class, "numeroConvenio", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextNumeroConvenioObserveWidget, valueNumeroConvenioObserveDetailValue, null, null);
@@ -641,10 +616,6 @@ public class ParametrosEmpresaEditor extends GenericEditor<ParametrosEmpresa>{
 		IObservableValue observeTextInstrucaoExtraObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtInstrucaoExtra);
 		IObservableValue valueInstrucaoExtraObserveDetailValue = PojoProperties.value(ParametrosEmpresa.class, "instrucaoExtra", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextInstrucaoExtraObserveWidget, valueInstrucaoExtraObserveDetailValue, null, null);
-		//
-		IObservableValue observeSingleSelectionRgAceite = ViewerProperties.singleSelection().observe(rgAceite);
-		IObservableValue valueAceiteObserveDetailValue = PojoProperties.value(ParametrosEmpresa.class, "aceite", AceiteSofitmob.class).observeDetail(value);
-		bindingContext.bindValue(observeSingleSelectionRgAceite, valueAceiteObserveDetailValue, null, null);
 		//
 		return bindingContext;
 	}

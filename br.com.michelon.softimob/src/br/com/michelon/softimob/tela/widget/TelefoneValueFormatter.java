@@ -11,7 +11,7 @@ public class TelefoneValueFormatter implements IValueFormatter<String, String> {
 
 	@Override
 	public String format(String arg0) {
-		f.setValue(arg0);
+		f.setValue(arg0 != null && arg0.isEmpty() ? null : arg0);
 		return f.getDisplayString();
 	}
 

@@ -486,7 +486,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		createPhotoComposite(tbtmFotos);
 		
 		CTabItem tbtmCheckList = new CTabItem(tabFolder_1, SWT.NONE);
-		tbtmCheckList.setText("Check List");
+		tbtmCheckList.setText("Checklist");
 		
 		Composite composite_2 = new Composite(tabFolder_1, SWT.NONE);
 		tbtmCheckList.setControl(composite_2);
@@ -763,7 +763,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		tfItens.setSelection(0);
 		
 		CTabItem tbtmCheckList_1 = new CTabItem(tfItens, SWT.NONE);
-		tbtmCheckList_1.setText("Check List");
+		tbtmCheckList_1.setText("Checklist");
 		
 		Composite composite_3 = new Composite(tfItens, SWT.NONE);
 		tbtmCheckList_1.setControl(composite_3);
