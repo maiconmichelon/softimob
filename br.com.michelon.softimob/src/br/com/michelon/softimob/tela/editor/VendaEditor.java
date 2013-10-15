@@ -1,7 +1,9 @@
 package br.com.michelon.softimob.tela.editor;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -24,6 +26,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -68,10 +71,10 @@ public class VendaEditor extends GenericEditor<Venda>{
 	
 	private Logger log = Logger.getLogger(getClass());
 	
-	private Text text;
-	private Text text_1;
-	private Text text_3;
-	private Text text_2;
+	private Text txtContratoPrestacaoServico;
+	private Text txtComprador;
+	private Text txtDataVenda;
+	private Text txtValorVenda;
 	private Text txtVendedor;
 	private Text text_5;
 	private Text text_6;
@@ -93,6 +96,28 @@ public class VendaEditor extends GenericEditor<Venda>{
 	private Composite cpComissao;
 	
 	private Text txtProprietario;
+
+	private PhotoComposite photoComposite;
+
+	private Button btnAddContratoPrestacaoServico;
+
+	private Button btnRemoveContratoPrestacaoServico;
+
+	private Button btnAddComprador;
+
+	private Button btnRemoveComprador;
+
+	private Button btnAddVendedor;
+
+	private Button btnRemoveVendedor;
+
+	private Button btnAddContrato;
+
+	private Button btnRemoverContrato;
+
+	private DateTextField dtVenda;
+
+	private MoneyTextField mtfValorVenda;
 	
 	
 	public VendaEditor() {
@@ -109,33 +134,33 @@ public class VendaEditor extends GenericEditor<Venda>{
 		lblImvel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblImvel.setText("Imóvel");
 		
-		text = new Text(parent, SWT.BORDER);
-		text.setEditable(false);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtContratoPrestacaoServico = new Text(parent, SWT.BORDER);
+		txtContratoPrestacaoServico.setEditable(false);
+		txtContratoPrestacaoServico.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnSelecionar = new Button(parent, SWT.NONE);
-		btnSelecionar.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CONTRATO_SERVICO_VENDA, btnSelecionar, value, "contrato");
+		btnAddContratoPrestacaoServico = new Button(parent, SWT.NONE);
+		btnAddContratoPrestacaoServico.setImage(ImageRepository.SEARCH_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CONTRATO_SERVICO_VENDA, btnAddContratoPrestacaoServico, value, "contrato");
 		
-		Button button_3 = new Button(parent, SWT.NONE);
-		button_3.setImage(ImageRepository.REMOVE_16.getImage());
-		ListElementDialogHelper.addSelectionToRemoveButton(button_3, value, "contrato", ContratoPrestacaoServico.class);
+		btnRemoveContratoPrestacaoServico = new Button(parent, SWT.NONE);
+		btnRemoveContratoPrestacaoServico.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoveContratoPrestacaoServico, value, "contrato", ContratoPrestacaoServico.class);
 		
 		Label lblComprado = new Label(parent, SWT.NONE);
 		lblComprado.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblComprado.setText("Comprador");
 		
-		text_1 = new Text(parent, SWT.BORDER);
-		text_1.setEditable(false);
-		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtComprador = new Text(parent, SWT.BORDER);
+		txtComprador.setEditable(false);
+		txtComprador.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button button = new Button(parent, SWT.NONE);
-		button.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, button, value, "cliente");
+		btnAddComprador = new Button(parent, SWT.NONE);
+		btnAddComprador.setImage(ImageRepository.SEARCH_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnAddComprador, value, "cliente");
 		
-		Button button_4 = new Button(parent, SWT.NONE);
-		button_4.setImage(ImageRepository.REMOVE_16.getImage());
-		ListElementDialogHelper.addSelectionToRemoveButton(button_4, value, "cliente", Cliente.class);
+		btnRemoveComprador = new Button(parent, SWT.NONE);
+		btnRemoveComprador.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoveComprador, value, "cliente", Cliente.class);
 		
 		Label lblVendedor = new Label(parent, SWT.NONE);
 		lblVendedor.setText("Vendedor");
@@ -145,13 +170,13 @@ public class VendaEditor extends GenericEditor<Venda>{
 		txtVendedor.setEditable(false);
 		txtVendedor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button button_1 = new Button(parent, SWT.NONE);
-		button_1.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, button_1, value, "funcionario");
+		btnAddVendedor = new Button(parent, SWT.NONE);
+		btnAddVendedor.setImage(ImageRepository.SEARCH_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnAddVendedor, value, "funcionario");
 		
-		Button button_5 = new Button(parent, SWT.NONE);
-		button_5.setImage(ImageRepository.REMOVE_16.getImage());
-		ListElementDialogHelper.addSelectionToRemoveButton(button_5, value, "funcionario", Funcionario.class);
+		btnRemoveVendedor = new Button(parent, SWT.NONE);
+		btnRemoveVendedor.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoveVendedor, value, "funcionario", Funcionario.class);
 		
 		Label lblProprietrio = new Label(parent, SWT.NONE);
 		lblProprietrio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -171,11 +196,11 @@ public class VendaEditor extends GenericEditor<Venda>{
 		txtContrato.setEditable(false);
 		txtContrato.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnAddContrato = new Button(parent, SWT.NONE);
+		btnAddContrato = new Button(parent, SWT.NONE);
 		btnAddContrato.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.MODELO_CONTRATO, btnAddContrato, value, "modeloContrato");
 		
-		Button btnRemoverContrato = new Button(parent, SWT.NONE);
+		btnRemoverContrato = new Button(parent, SWT.NONE);
 		btnRemoverContrato.setImage(ImageRepository.REMOVE_16.getImage());
 		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoverContrato, value, "modeloContrato", ModeloContrato.class);
 		
@@ -183,9 +208,9 @@ public class VendaEditor extends GenericEditor<Venda>{
 		lblData.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblData.setText("Data");
 		
-		DateTextField dateTextField = new DateTextField(parent);
-		text_3 = dateTextField.getControl();
-		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		dtVenda = new DateTextField(parent);
+		txtDataVenda = dtVenda.getControl();
+		txtDataVenda.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 		
@@ -193,15 +218,9 @@ public class VendaEditor extends GenericEditor<Venda>{
 		lblValor_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblValor_1.setText("Valor");
 		
-		MoneyTextField moneyTextField = new MoneyTextField(parent);
-		text_2 = moneyTextField.getControl();
-		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
+		mtfValorVenda = new MoneyTextField(parent);
+		txtValorVenda = mtfValorVenda.getControl();
+		txtValorVenda.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		tabFolder = new CTabFolder(parent, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 8, 1));
@@ -416,7 +435,7 @@ public class VendaEditor extends GenericEditor<Venda>{
 	}
 	
 	private void createPhotoComposite(CTabItem tbtmFotos) {
-		PhotoComposite photoComposite = new PhotoComposite(tbtmFotos.getParent(), SWT.NONE, valueVistoria);
+		photoComposite = new PhotoComposite(tbtmFotos.getParent(), SWT.NONE, valueVistoria);
 		tbtmFotos.setControl(photoComposite);
 	}
 
@@ -512,11 +531,11 @@ public class VendaEditor extends GenericEditor<Venda>{
 	protected DataBindingContext initBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
-		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.NONE).observe(text);
+		IObservableValue observeTextTextObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtContratoPrestacaoServico);
 		IObservableValue valueContratonomeObserveDetailValue = PojoProperties.value(Venda.class, "contrato", ContratoPrestacaoServico.class).observeDetail(value);
 		bindingContext.bindValue(observeTextTextObserveWidget, valueContratonomeObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.NONE).observe(text_1);
+		IObservableValue observeTextText_1ObserveWidget = WidgetProperties.text(SWT.NONE).observe(txtComprador);
 		IObservableValue valueClienteObserveDetailValue = PojoProperties.value(Venda.class, "cliente.nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_1ObserveWidget, valueClienteObserveDetailValue, null, null);
 		//
@@ -532,12 +551,12 @@ public class VendaEditor extends GenericEditor<Venda>{
 		IObservableValue valueModeloContratoObserveDetailValue = PojoProperties.value(Venda.class, "modeloContrato.nome", String.class).observeDetail(value);
 		bindingContext.bindValue(observeTextModeloContratoObserveWidget, valueModeloContratoObserveDetailValue, null, null);
 		//
-		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_2);
+		IObservableValue observeTextText_2ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtValorVenda);
 		IObservableValue valueValorObserveDetailValue = PojoProperties.value(Venda.class, "valor", BigDecimal.class).observeDetail(value);
 		Binding bindValue = bindingContext.bindValue(observeTextText_2ObserveWidget, valueValorObserveDetailValue, UVSHelper.uvsStringToBigDecimal(), UVSHelper.uvsBigDecimalToString());
 		ControlDecorationSupport.create(bindValue, SWT.LEFT | SWT.TOP);
 		//
-		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_3);
+		IObservableValue observeTextText_3ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtDataVenda);
 		IObservableValue valueDataAssinaturaContratoObserveDetailValue = PojoProperties.value(Venda.class, "dataAssinaturaContrato", Date.class).observeDetail(value);
 		bindingContext.bindValue(observeTextText_3ObserveWidget, valueDataAssinaturaContratoObserveDetailValue, UVSHelper.uvsStringToDate(), UVSHelper.uvsDateToString());
 		//
@@ -577,6 +596,15 @@ public class VendaEditor extends GenericEditor<Venda>{
 		IObservableValue valuePropostaIdObserveDetailValue = PojoProperties.value(Venda.class, "id", Long.class).observeDetail(value);
 		bindingContext.bindValue(observeEnabledTfImovelObserveWidget, valuePropostaIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
 		//
+		IObservableValue observeEnabledTfFotoObserveWidget = WidgetProperties.enabled().observe(photoComposite);
+		IObservableValue valueFotoIdObserveDetailValue = PojoProperties.value(Vistoria.class, "id", Long.class).observeDetail(valueVistoria);
+		bindingContext.bindValue(observeEnabledTfFotoObserveWidget, valueFotoIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
+		//
 		bindingContext.bindValue(WidgetProperties.enabled().observe(cpComissao), PojoProperties.value(Venda.class, "id", Long.class).observeDetail(value), null, UVSHelper.uvsLongIsNull());
+		//
+		List<Control> controls = Arrays.asList(btnAddComprador, btnAddContrato, btnAddContratoPrestacaoServico, btnAddVendedor, btnRemoveComprador, btnRemoveContratoPrestacaoServico, btnRemoverContrato, btnRemoveVendedor, dtVenda, txtValorVenda);
+		for (Control control : controls) {
+			bindingContext.bindValue(WidgetProperties.enabled().observe(control), PojoProperties.value(Venda.class, "id", Long.class).observeDetail(value), null, UVSHelper.uvsLongIsNotNull());
+		}
 	}
 }

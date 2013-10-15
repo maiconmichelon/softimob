@@ -34,9 +34,9 @@ public class ModeloContrato implements Serializable{
 	@OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Arquivo arquivo;
 	
-	@Column
+	@Column(nullable = false)
 	@DeactivateOnDelete
-	private Boolean ativo;
+	private Boolean ativo = true;
 	
 	@OneToOne(cascade=CascadeType.ALL, orphanRemoval = true)
 	@br.com.michelon.softimob.aplicacao.annotation.Log

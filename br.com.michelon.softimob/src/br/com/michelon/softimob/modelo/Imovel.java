@@ -200,7 +200,7 @@ public class Imovel implements Serializable, ContainsPhotos{
 	
 	@Override
 	public String toString() {
-		return this.id + " - " + this.endereco.toString() ;
+		return getDescricao();
 	}
 	
 	@Override

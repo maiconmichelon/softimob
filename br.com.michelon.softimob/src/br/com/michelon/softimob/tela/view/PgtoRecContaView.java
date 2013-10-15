@@ -264,7 +264,9 @@ public class PgtoRecContaView extends ViewPart {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				contaFilter.setStatus((String) SelectionHelper.getObject(cvStatus.getSelection()));
+				
 				tvbContaPgto.getTableViewer().refresh();
+				tvbEstorno.getTableViewer().refresh();
 			}
 		});
 		
@@ -289,7 +291,9 @@ public class PgtoRecContaView extends ViewPart {
 			public void selectionChanged(SelectionChangedEvent event) {
 				Object object = SelectionHelper.getObject(cvTipo.getSelection());
 				contaFilter.setOrigemConta((OrigemConta) (object instanceof OrigemConta ? object : null));
+				
 				tvbContaPgto.getTableViewer().refresh();
+				tvbEstorno.getTableViewer().refresh();
 			}
 		});
 		
@@ -574,9 +578,9 @@ public class PgtoRecContaView extends ViewPart {
 			
 		}).build();
 		
-		
 		tvbContas.getTableViewer().addFilter(propertyFilter);
 		tvbContas.getTableViewer().addFilter(contaFilter);
+		
 		if(isPagamento){
 			tvbContas.getTableViewer().addFilter(new ViewerFilter() {
 				@Override

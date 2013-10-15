@@ -237,13 +237,13 @@ public class ListElementDialogHelper {
 			} else if(equals(TIPO_IMOVEL)){
 				return new TipoImovelService().findAtivados();
 			} else if(equals(MODELO_CONTRATO)){
-				return new ModeloContratoService().findAll();
+				return new ModeloContratoService().findAtivos();
 			} else if(equals(CONTRATO_SERVICO_TODOS)){
 				return new ContratoPrestacaoServicoService().findAll();
 			} else if(equals(CONTRATO_SERVICO_LOCACAO)){
-				return new ContratoPrestacaoServicoService().findByTipo(TipoContrato.LOCACAO);
+				return new ContratoPrestacaoServicoService().findByTipoAndNotResolvido(TipoContrato.LOCACAO);
 			} else if(equals(CONTRATO_SERVICO_VENDA)){
-				return new ContratoPrestacaoServicoService().findByTipo(TipoContrato.VENDA);
+				return new ContratoPrestacaoServicoService().findByTipoAndNotResolvido(TipoContrato.VENDA);
 			} else if(equals(CHECK_LIST)){
 				return new CheckListService().findAll();
 			} else if(equals(INDICE)){

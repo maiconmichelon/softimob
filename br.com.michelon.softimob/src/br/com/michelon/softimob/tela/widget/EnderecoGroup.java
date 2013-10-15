@@ -94,9 +94,6 @@ public class EnderecoGroup {
 			
 			@Override
 			public void focusLost(FocusEvent e) {
-				if(getEndereco().getRua() != null)
-					return ;
-				
 				Text txt = (Text) e.widget;
 				String txtCep = NumberHelper.extractNumbers(txt.getText());
 				Rua rua = null;

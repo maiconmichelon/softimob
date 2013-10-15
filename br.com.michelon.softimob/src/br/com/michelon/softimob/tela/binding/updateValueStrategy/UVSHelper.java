@@ -209,5 +209,30 @@ public class UVSHelper {
 			}
 		};
 	}
+
+	public static UpdateValueStrategy uvsLongIsNotNull() {
+		return new UpdateValueStrategy(){
+			@Override
+			protected IConverter createConverter(Object fromType, Object toType) {
+				return new IConverter() {
+					
+					@Override
+					public Object getToType() {
+						return Boolean.class;
+					}
+					
+					@Override
+					public Object getFromType() {
+						return Long.class;
+					}
+					
+					@Override
+					public Object convert(Object fromObject) {
+						return fromObject == null ;
+					}
+				};
+			}
+		};
+	}
 	
 }

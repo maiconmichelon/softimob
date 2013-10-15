@@ -241,7 +241,7 @@ public class ContratoPrestacaoServico implements Pendencia{
 	
 	@Override
 	public String toString() {
-		return imovel.toString();
+		return imovel.getDescricao();
 	}
 
 	@Override

@@ -195,7 +195,7 @@ public abstract class GenericView<T> extends ViewPart{
 			
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				AtivadoDesativado selecao = SelectionHelper.getObject(radioGroupViewer);
+				AtivadoDesativado selecao = (AtivadoDesativado) SelectionHelper.getObject(event.getSelection());
 				if(selecao != null)
 					ativadoDesativadoFilter.setEstado(selecao);
 				

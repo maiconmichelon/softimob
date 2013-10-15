@@ -30,7 +30,7 @@ public class ContratoPrestacaoServicoService extends GenericService<ContratoPres
 		return getRepository().findByResolvidoFalseAndDataVencimentoLessThan(data);
 	}
 	
-	public List<ContratoPrestacaoServico> findByTipo(TipoContrato tipo){
+	public List<ContratoPrestacaoServico> findByTipoAndNotResolvido(TipoContrato tipo){
 		return getDaoImpl(ContratoPrestacaoServicoDAOImpl.class).findByTipo(tipo);
 	}
 	

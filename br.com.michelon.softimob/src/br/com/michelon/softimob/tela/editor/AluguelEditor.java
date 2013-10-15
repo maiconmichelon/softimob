@@ -1,8 +1,10 @@
 package br.com.michelon.softimob.tela.editor;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -36,6 +38,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -60,6 +63,7 @@ import br.com.michelon.softimob.aplicacao.service.ChamadoReformaService;
 import br.com.michelon.softimob.aplicacao.service.CheckListService;
 import br.com.michelon.softimob.aplicacao.service.ComissaoService;
 import br.com.michelon.softimob.aplicacao.service.ContaPagarReceberService;
+import br.com.michelon.softimob.aplicacao.service.ContratoPrestacaoServicoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.IndiceService;
 import br.com.michelon.softimob.aplicacao.service.VistoriaService;
@@ -126,7 +130,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private Text txtValorComissao;
 	private Text txtIdChamado;
 	private Text txtDataVencimentoComissao;
-
 	private TableViewerBuilder tvbChamadoGeral;
 	private TableViewerBuilder tvbAcontecimentoChamado;
 	private TableViewerBuilder tvbVistoria;
@@ -137,9 +140,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private TableViewer tvCheckListAluguel;
 	private TableViewer tvCheckListVistoria;
 	private TableViewer tvParcelas;
-
 	private RadioGroupViewer radiouGroupStatusReforma;
-
 	private CTabFolder tfItens;
 	private Composite cpChamados;
 	private Composite cpVistoria;
@@ -147,6 +148,19 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	private Table tableContasFinalizacaoReforma;
 	private TableViewer tvContasFinalizacaoChamadoReforma;
 	private ComboViewer cvAjuste;
+	private PhotoComposite photoComposite;
+	private Button btnSelecionarContrato;
+	private Button btnRemoveContrato;
+	private Button btnSelecionarCliente;
+	private Button btnRemoveCliente;
+	private Button btnSelecionarFiador;
+	private Button btnRemoverFiador;
+	private Button btnRemoveFuncionario;
+	private Button btnSelecFuncionario;
+	private Button btnAddContrato;
+	private Button btnRemoverContrato;
+	private DateTextField dtVencimento;
+	private DateTextField dtAssinaturaContrato;
 
 	public AluguelEditor() {
 		super(Aluguel.class);
@@ -165,13 +179,13 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		text = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnSelecionar = new Button(parent, SWT.NONE);
-		btnSelecionar.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CONTRATO_SERVICO_LOCACAO, btnSelecionar, value, "contrato");
+		btnSelecionarContrato = new Button(parent, SWT.NONE);
+		btnSelecionarContrato.setImage(ImageRepository.SEARCH_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CONTRATO_SERVICO_LOCACAO, btnSelecionarContrato, value, "contrato");
 		
-		Button button_3 = new Button(parent, SWT.NONE);
-		button_3.setImage(ImageRepository.REMOVE_16.getImage());
-		ListElementDialogHelper.addSelectionToRemoveButton(button_3, value, "contrato", ContratoPrestacaoServico.class);
+		btnRemoveContrato = new Button(parent, SWT.NONE);
+		btnRemoveContrato.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoveContrato, value, "contrato", ContratoPrestacaoServico.class);
 		
 		Label lblFuncionrio = new Label(parent, SWT.NONE);
 		lblFuncionrio.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -181,13 +195,13 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		txtFuncionario.setEditable(false);
 		txtFuncionario.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button button_2 = new Button(parent, SWT.NONE);
-		button_2.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, button_2, value, "funcionario");
+		btnSelecFuncionario = new Button(parent, SWT.NONE);
+		btnSelecFuncionario.setImage(ImageRepository.SEARCH_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.FUNCIONARIO, btnSelecFuncionario, value, "funcionario");
 		
-		Button btnt = new Button(parent, SWT.NONE);
-		btnt.setImage(ImageRepository.REMOVE_16.getImage());
-		ListElementDialogHelper.addSelectionToRemoveButton(btnt, value, "funcionario", Funcionario.class);
+		btnRemoveFuncionario = new Button(parent, SWT.NONE);
+		btnRemoveFuncionario.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoveFuncionario, value, "funcionario", Funcionario.class);
 		
 		Label lblValor = new Label(parent, SWT.NONE);
 		lblValor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -197,14 +211,14 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		txtCliente.setEditable(false);
 		txtCliente.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button button = new Button(parent, SWT.NONE);
-		button.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, button, value, "cliente");
+		btnSelecionarCliente = new Button(parent, SWT.NONE);
+		btnSelecionarCliente.setImage(ImageRepository.SEARCH_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionarCliente, value, "cliente");
 		
-		Button button_4 = new Button(parent, SWT.NONE);
-		button_4.setImage(ImageRepository.REMOVE_16.getImage());
-		button_4.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-		ListElementDialogHelper.addSelectionToRemoveButton(button_4, value, "cliente", Cliente.class);
+		btnRemoveCliente = new Button(parent, SWT.NONE);
+		btnRemoveCliente.setImage(ImageRepository.REMOVE_16.getImage());
+		btnRemoveCliente.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
+		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoveCliente, value, "cliente", Cliente.class);
 		
 		Label lblFiador = new Label(parent, SWT.NONE);
 		lblFiador.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -214,13 +228,13 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		txtFiador.setEditable(false);
 		txtFiador.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button button_1 = new Button(parent, SWT.NONE);
-		button_1.setImage(ImageRepository.SEARCH_16.getImage());
-		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, button_1, value, "fiador");
+		btnSelecionarFiador = new Button(parent, SWT.NONE);
+		btnSelecionarFiador.setImage(ImageRepository.SEARCH_16.getImage());
+		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.CLIENTE, btnSelecionarFiador, value, "fiador");
 		
-		Button btnt_1 = new Button(parent, SWT.NONE);
-		btnt_1.setImage(ImageRepository.REMOVE_16.getImage());
-		ListElementDialogHelper.addSelectionToRemoveButton(btnt_1, value, "fiador", Cliente.class);
+		btnRemoverFiador = new Button(parent, SWT.NONE);
+		btnRemoverFiador.setImage(ImageRepository.REMOVE_16.getImage());
+		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoverFiador, value, "fiador", Cliente.class);
 		
 		Label lblModeloContrato = new Label(parent, SWT.NONE);
 		lblModeloContrato.setText("Modelo de Contrato");
@@ -230,11 +244,11 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		txtModeloContrato.setEditable(false);
 		txtModeloContrato.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnAddContrato = new Button(parent, SWT.NONE);
+		btnAddContrato = new Button(parent, SWT.NONE);
 		btnAddContrato.setImage(ImageRepository.SEARCH_16.getImage());
 		ListElementDialogHelper.addSelectionListDialogToButton(TipoDialog.MODELO_CONTRATO, btnAddContrato, value, "modeloContrato");
 		
-		Button btnRemoverContrato = new Button(parent, SWT.NONE);
+		btnRemoverContrato = new Button(parent, SWT.NONE);
 		btnRemoverContrato.setImage(ImageRepository.REMOVE_16.getImage());
 		ListElementDialogHelper.addSelectionToRemoveButton(btnRemoverContrato, value, "modeloContrato", ModeloContrato.class);
 		
@@ -252,16 +266,16 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		lblData.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblData.setText("Data");
 		
-		DateTextField dateTextField = new DateTextField(parent);
-		dateTextField.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
-		txtDataAssinaturaContrato = dateTextField.getControl();
+		dtAssinaturaContrato = new DateTextField(parent);
+		dtAssinaturaContrato.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		txtDataAssinaturaContrato = dtAssinaturaContrato.getControl();
 		txtDataAssinaturaContrato.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblDurao = new Label(parent, SWT.NONE);
 		lblDurao.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDurao.setText("Data de Vencimento");
 		
-		DateTextField dtVencimento = new DateTextField(parent);
+		dtVencimento = new DateTextField(parent);
 		dtVencimento.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
 		txtDataVencimento = dtVencimento.getControl();
 		txtDataVencimento.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -273,12 +287,6 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		MoneyTextField moneyTextField = new MoneyTextField(parent);
 		txtValor = moneyTextField.getControl();
 		txtValor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
-		new Label(parent, SWT.NONE);
 		
 		tfItens = new CTabFolder(parent, SWT.BORDER);
 		tfItens.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
@@ -783,7 +791,7 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	}
 	
 	private void createPhotoComposite(CTabItem tbtmFotos) {
-		PhotoComposite photoComposite = new PhotoComposite(tbtmFotos.getParent(), SWT.NONE, valueVistoria);
+		photoComposite = new PhotoComposite(tbtmFotos.getParent(), SWT.NONE, valueVistoria);
 		tbtmFotos.setControl(photoComposite);
 	}
 
@@ -805,6 +813,15 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 	public void saveCurrentObject(GenericService<Aluguel> service) {
 		if(!validarComMensagem(getCurrentObject()))
 			return;
+		
+		try {
+			if (!getCurrentObject().getContrato().getResolvido()) {
+				getCurrentObject().getContrato().setResolvido(true);
+				new ContratoPrestacaoServicoService().salvar(getCurrentObject().getContrato());
+			}
+		} catch (Exception e) {
+			log.error("Erro ao setar resolvido ao contrato de prestação de servico.", e);
+		}
 		
 		if(getCurrentObject().getId() == null && getCurrentObject().getParcelas().isEmpty()){
 		
@@ -1152,6 +1169,13 @@ public class AluguelEditor extends GenericEditor<Aluguel>{
 		//
 		IObservableValue observeEnabledCpVistoriaObserveWidget = WidgetProperties.enabled().observe(cpVistoria);
 		bindingContext.bindValue(observeEnabledCpVistoriaObserveWidget, valueIdObserveDetailValue, null, UVSHelper.uvsLongIsNull());
+		//
+		bindingContext.bindValue(WidgetProperties.enabled().observe(photoComposite), PojoProperties.value(Vistoria.class, "id", Long.class).observeDetail(valueVistoria), null, UVSHelper.uvsLongIsNull());
+		//
+		List<Control> controls = Arrays.asList(dtAssinaturaContrato, dtVencimento, btnAddContrato, btnRemoveCliente, btnRemoveContrato, btnRemoveFuncionario, btnRemoverContrato, btnRemoverContrato, btnRemoverFiador, btnSelecFuncionario, btnSelecionarCliente, btnSelecionarContrato, btnSelecionarFiador, txtDataAssinaturaContrato, txtDataVencimento, txtValor, cvAjuste.getControl());
+		for (Control control : controls) {
+			bindingContext.bindValue(WidgetProperties.enabled().observe(control), PojoProperties.value(Aluguel.class, "id", Long.class).observeDetail(value), null, UVSHelper.uvsLongIsNotNull());
+		}
 	}
 	
 }
