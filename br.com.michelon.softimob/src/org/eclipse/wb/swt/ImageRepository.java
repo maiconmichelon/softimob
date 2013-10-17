@@ -74,6 +74,7 @@ public enum ImageRepository{
 	CHECKLIST_32("icons/checkList/checkList32.png"), 
 	ALTERAR16("icons/alterar/alteracao16.png"), 
 	BOLETO_16("icons/boleto/boleto16.png"), 
+	BOLETO_32("icons/boleto/boleto32.png"), 
 	INFO_16("icons/typeMessage/info16.png"), 
 	INFO_32("icons/typeMessage/info32.png"), 
 	WARN_16("icons/typeMessage/warn16.png"), 

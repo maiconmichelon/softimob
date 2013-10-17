@@ -81,7 +81,10 @@ public class FinalizarPropostaDialog extends TitleAreaDialog {
 			Integer selecao = (Integer) SelectionHelper.getObject(radioGroupViewer.getSelection());
 
 			if (selecao == null){
-				DialogHelper.openWarning("Informe o status da proposta.");
+				setErrorMessage("Informe o status da proposta.");
+				return;
+			} else if(dtData.getValue() == null) {
+				setErrorMessage("A data não pode ser vazia.");
 				return;
 			}
 				

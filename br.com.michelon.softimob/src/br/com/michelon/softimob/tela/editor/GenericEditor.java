@@ -116,7 +116,6 @@ public abstract class GenericEditor<T> extends EditorPart {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				saveCurrentObject(getService());
-				setFocus();
 			}
 		});
 		

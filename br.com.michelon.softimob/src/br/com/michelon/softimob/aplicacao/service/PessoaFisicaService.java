@@ -27,4 +27,12 @@ public class PessoaFisicaService extends GenericService<PessoaFisica>{
 		return getRepository().findAnivesariantes(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1);
 	}
 
+	public PessoaFisica findByCpf(String cpf) {
+		return getRepository().findByCpf(cpf);
+	}
+
+	public PessoaFisica findByRg(String rg) {
+		return getRepository().findByRg(rg);
+	}
+	
 }

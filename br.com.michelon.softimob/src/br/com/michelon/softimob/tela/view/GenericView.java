@@ -265,13 +265,11 @@ public abstract class GenericView<T> extends ViewPart{
 	 * @param menu que será adicionado na tabela
 	 */
 	protected void createMenuItens(Menu menu){
-		WidgetHelper.createMenuItemAlterar(menu, new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				alterar(getSelecionado());
-			}
-		});
-		
+		createMenuItemAlterar(menu);
+		createMenuItemRemover(menu);
+	};
+	
+	protected void createMenuItemRemover(Menu menu) {
 		MenuItem miRemover = WidgetHelper.createMenuItemRemover(menu, new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -287,8 +285,17 @@ public abstract class GenericView<T> extends ViewPart{
 		});
 		miRemover.setText(addGroupAtivadoDesativado ? "Desativar / Reativar" : "Remover");
 		miRemover.setImage(addGroupAtivadoDesativado ? null : ImageRepository.DELETE_16.getImage());
-	};
-	
+	}
+
+	protected void createMenuItemAlterar(Menu menu) {
+		WidgetHelper.createMenuItemAlterar(menu, new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				alterar(getSelecionado());
+			}
+		});
+	}
+
 	/**
 	 * Adiciona um filter para a tabela
 	 * @return Filter

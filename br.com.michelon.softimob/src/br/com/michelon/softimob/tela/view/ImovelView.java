@@ -94,6 +94,8 @@ public class ImovelView extends GenericView<Imovel>{
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
+					if(!(getSelecionado() instanceof Imovel))
+						return;
 					List<Arquivo> arquivos = getSelecionado().getFotos();
 					if(arquivos.isEmpty()){
 						DialogHelper.openWarning("Este imóvel não possui nenhuma foto.");

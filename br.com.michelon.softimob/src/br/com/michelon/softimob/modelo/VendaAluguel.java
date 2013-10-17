@@ -50,7 +50,7 @@ public abstract class VendaAluguel implements Serializable{
 	private ModeloContrato modeloContrato;
 	
 	//Cliente que vai alugar ou comprar a casa
-	@NotNull(message = "O cliente não pode ser vazio.")
+	@NotNull(message = "O comprador/locatário não pode ser vazio.")
 	@ManyToOne
 	private Cliente cliente;
 	

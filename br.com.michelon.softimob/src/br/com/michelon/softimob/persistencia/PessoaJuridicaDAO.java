@@ -6,4 +6,8 @@ import br.com.michelon.softimob.modelo.PessoaJuridica;
 
 public interface PessoaJuridicaDAO extends CrudRepository<PessoaJuridica, Long>{
 
+	PessoaJuridica findByCnpj(String cnpj);
+
+	PessoaJuridica findByInscrisaoEstadual(String inscrisaoEstadual);
+	
 }

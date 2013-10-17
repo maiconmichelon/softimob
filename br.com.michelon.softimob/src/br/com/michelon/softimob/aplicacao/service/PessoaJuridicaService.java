@@ -9,4 +9,17 @@ public class PessoaJuridicaService extends GenericService<PessoaJuridica>{
 		super(PessoaJuridicaDAO.class);
 	}
 
+	@Override
+	protected PessoaJuridicaDAO getRepository() {
+		return (PessoaJuridicaDAO) super.getRepository();
+	}
+	
+	public PessoaJuridica findByCnpj(String cnpj) {
+		return getRepository().findByCnpj(cnpj);
+	}
+
+	public PessoaJuridica findByInscricaoEstadual(String inscrisaoEstadual) {
+		return getRepository().findByInscrisaoEstadual(inscrisaoEstadual);
+	}
+
 }

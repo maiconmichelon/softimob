@@ -37,7 +37,7 @@ public class PessoaFisica extends Cliente{
 	private static final long serialVersionUID = 1L;
 	
 	@Index
-	@CPF(message = "CPF informardo é inválido.", formatted = true)
+	@CPF(message = "CPF informado é inválido.", formatted = true)
 	@NotEmpty(message = "O CPF não pode ser vazio.")
 	@Column(nullable = false, unique = true)
 	private String cpf;

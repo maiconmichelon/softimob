@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ImageRepository;
 
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper;
 import br.com.michelon.softimob.aplicacao.helper.listElementDialog.ListElementDialogHelper.TipoDialog;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
@@ -152,6 +153,14 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 
 	@Override
 	public void saveCurrentObject(GenericService<PessoaJuridica> service) {
+		if (this.service.findByCnpj(getCurrentObject().getCnpj()) != null ) {
+			DialogHelper.openWarning("Já existe um cliente com o CNPJ informado.");
+			return;
+		} else if(this.service.findByInscricaoEstadual(getCurrentObject().getInscrisaoEstadual()) != null) {
+			DialogHelper.openWarning("Já existe um cliente com a inscrição estadual informada.");
+			return;
+		}
+		
 		getCurrentObject().setEndereco(grpEndereco.getEndereco());
 		
 		if(!validarComMensagem(grpEndereco.getEndereco()))
@@ -188,11 +197,11 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 		//
 		IObservableValue observeTextText_16ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_16);
 		IObservableValue valueTelefoneObserveDetailValue = PojoProperties.value(PessoaJuridica.class, "telefone", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_16ObserveWidget, valueTelefoneObserveDetailValue, UVSHelper.uvsStringToPhoneTextField(), UVSHelper.uvsPhoneToStringTextField());
+		bindingContext.bindValue(observeTextText_16ObserveWidget, valueTelefoneObserveDetailValue, UVSHelper.uvsExtractNumbers(), UVSHelper.uvsPhoneToString());
 		//
 		IObservableValue observeTextText_13ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_13);
 		IObservableValue valueCelularObserveDetailValue = PojoProperties.value(PessoaJuridica.class, "celular", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_13ObserveWidget, valueCelularObserveDetailValue, UVSHelper.uvsStringToPhoneTextField(), UVSHelper.uvsPhoneToStringTextField());
+		bindingContext.bindValue(observeTextText_13ObserveWidget, valueCelularObserveDetailValue, UVSHelper.uvsExtractNumbers(), UVSHelper.uvsPhoneToString());
 		//
 		IObservableValue observeTextText_17ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_17);
 		IObservableValue valueEmailObserveDetailValue = PojoProperties.value(PessoaJuridica.class, "email", String.class).observeDetail(value);

@@ -16,4 +16,8 @@ public interface PessoaFisicaDAO extends CrudRepository<PessoaFisica, Long>{
 	@Query("SELECT r FROM PessoaFisica r WHERE r.ativo = true AND SQL('EXTRACT (MONTH FROM ?)', r.dataNascimento) = :mes AND SQL('EXTRACT (DAY FROM ?)', r.dataNascimento) = :dia")
 	List<PessoaFisica> findAnivesariantes(@Param(value="dia")Integer dia, @Param(value="mes")Integer mes);
 
+	PessoaFisica findByCpf(String cpf);
+
+	PessoaFisica findByRg(String rg);
+	
 }

@@ -19,11 +19,12 @@ public class PessoaJuridica extends Cliente{
 	private static final long serialVersionUID = 1L;
 	
 	@CNPJ(message = "CNPJ informado é invalido", formatted = true)
-	@NotEmpty(message = "O cnpj não pode ser vazio.")
+	@NotEmpty(message = "O CNPJ não pode ser vazio.")
 	@Index
 	@Column(nullable = false)
 	private String cnpj;
 	
+	@Index
 	@NotEmpty(message = "A inscrição estadual não pode ser vazia")
 	@Column(nullable = false)
 	private String inscrisaoEstadual;

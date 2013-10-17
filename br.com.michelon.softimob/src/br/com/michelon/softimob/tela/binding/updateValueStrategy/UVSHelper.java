@@ -7,14 +7,12 @@ import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.internal.databinding.conversion.StringToDateConverter;
 import org.eclipse.core.internal.databinding.validation.StringToDateValidator;
 import org.eclipse.core.internal.databinding.validation.StringToIntegerValidator;
-import org.eclipse.nebula.widgets.formattedtext.MaskFormatter;
 
-import br.com.michelon.softimob.aplicacao.helper.NumberHelper;
+import br.com.michelon.softimob.aplicacao.helper.FormatterHelper;
 import br.com.michelon.softimob.tela.binding.convert.DateTimeToStringConverter;
 import br.com.michelon.softimob.tela.binding.convert.DateToStringConverter;
 import br.com.michelon.softimob.tela.binding.convert.ExtractNumbersConverter;
 import br.com.michelon.softimob.tela.binding.convert.StringToDateTimeConverter;
-import br.com.michelon.softimob.tela.widget.PhoneTextField;
 
 @SuppressWarnings("restriction")
 public class UVSHelper {
@@ -26,8 +24,6 @@ public class UVSHelper {
 		updateValueStrategy.setConverter(converter);
 		
 		StringToIntegerValidator validator = new StringToIntegerValidator(converter);
-//		updateValueStrategy.setAfterConvertValidator(validator);
-//		updateValueStrategy.setBeforeSetValidator(validator);
 		updateValueStrategy.setAfterGetValidator(validator);
 		
 		return updateValueStrategy;
@@ -157,38 +153,23 @@ public class UVSHelper {
 		};
 	}
 	
-	public static UpdateValueStrategy uvsStringToPhoneTextField() {
-		return new UpdateValueStrategy(){
-			@Override
-			protected IConverter createConverter(Object fromType, Object toType) {
-				return new IConverter() {
-					
-					@Override
-					public Object getToType() {
-						return String.class;
-					}
-					
-					@Override
-					public Object getFromType() {
-						return String.class;
-					}
-					
-					@Override
-					public Object convert(Object fromObject) {
-						return NumberHelper.extractNumbers(fromObject.toString().trim());
-					}
-				};
-			}
-		};
+	public static UpdateValueStrategy uvsCnpjToString() {
+		return uvsMaskToString("##.###.###/####-##");
+	}
+
+	public static UpdateValueStrategy uvsCpfToString() {
+		return uvsMaskToString("###.###.###-##");
+	}
+
+	public static UpdateValueStrategy uvsPhoneToString() {
+		return uvsMaskToString("(##)####-####");
 	}
 	
-	public static UpdateValueStrategy uvsPhoneToStringTextField() {
+	public static UpdateValueStrategy uvsMaskToString(final String mask) {
 		return new UpdateValueStrategy(){
 			@Override
 			protected IConverter createConverter(Object fromType, Object toType) {
 				return new IConverter() {
-					
-					private MaskFormatter f = new MaskFormatter(PhoneTextField.FORMATTER_TELEFONE);
 					
 					@Override
 					public Object getToType() {
@@ -202,9 +183,9 @@ public class UVSHelper {
 					
 					@Override
 					public Object convert(Object fromObject) {
-						f.setValue(fromObject);
-						return f.getDisplayString();
+						return FormatterHelper.format(fromObject.toString(), mask);
 					}
+					
 				};
 			}
 		};

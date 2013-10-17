@@ -39,7 +39,7 @@ public abstract class Comissionado implements Serializable{
 	
 	@Column(length=10, nullable = false)
 	@Length(max = 10, min = 10, message = "O telefone deve ter 10 caracteres.")
-	@NotNull(message = "O telefone deve ter 13 caracteres.")
+	@NotNull(message = "O telefone deve ter 10 caracteres.")
 	private String telefone;
 	
 	@Column(length=10)

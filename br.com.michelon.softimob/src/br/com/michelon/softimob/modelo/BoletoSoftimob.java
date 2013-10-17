@@ -368,7 +368,7 @@ public class BoletoSoftimob implements Serializable{
 		return crieOsDadosDoNovoBoleto(new Boleto(crieOsDadosDoNovoTitulo(new Titulo(crieUmaContaBancaria(), sacado, crieUmCedente()))));
 	}
 	
-	private String getNossoNumeroFormatado(){
+	public String getNossoNumeroFormatado(){
 		Calendar c = Calendar.getInstance();
 		c.setTime(dataDocumento);
 		String ano = String.valueOf(c.get(Calendar.YEAR));

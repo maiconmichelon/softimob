@@ -142,4 +142,26 @@ public class FormatterHelper {
 		return retorno;
 	}
 	
+	public static String format(String from, String mask) {
+		int t = 0;
+		StringBuilder to = new StringBuilder();
+		
+		for (int i = 0; i < from.length(); i++) {
+			char charAt = from.charAt(i);
+			
+			while(mask.charAt(t) != '#' && t < mask.length()) {
+				to.append(mask.charAt(t));
+				t++;
+			}
+				
+			if(t + 1 == mask.length() && i + 1 != from.length())
+				break;
+			
+			to.append(charAt);
+			t++;
+		}
+		
+		return to.toString();
+	}
+	
 }

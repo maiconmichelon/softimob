@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import br.com.michelon.softimob.aplicacao.helper.DialogHelper;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.PessoaFisicaService;
 import br.com.michelon.softimob.modelo.PessoaFisica;
@@ -170,6 +171,14 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 
 	@Override
 	public void saveCurrentObject(GenericService<PessoaFisica> service) {
+		if (this.service.findByCpf(getCurrentObject().getCpf()) != null ) {
+			DialogHelper.openWarning("Já existe um cliente com o CPF informado.");
+			return;
+		} else if(this.service.findByRg(getCurrentObject().getRg()) != null) {
+			DialogHelper.openWarning("Já existe um cliente com o RG informado.");
+			return;
+		}
+		
 		if(validarComMensagem(getCurrentObject().getEndereco()))
 			super.saveCurrentObject(service);
 	}
@@ -204,11 +213,11 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 		//
 		IObservableValue observeTextText_4ObserveWidget = WidgetProperties.text(SWT.Modify).observe(txtTelefone);
 		IObservableValue valueTelefoneObserveDetailValue = PojoProperties.value(PessoaFisica.class, "telefone", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_4ObserveWidget, valueTelefoneObserveDetailValue, UVSHelper.uvsStringToPhoneTextField(), UVSHelper.uvsPhoneToStringTextField());
+		bindingContext.bindValue(observeTextText_4ObserveWidget, valueTelefoneObserveDetailValue, UVSHelper.uvsExtractNumbers(), UVSHelper.uvsPhoneToString());
 		//
 		IObservableValue observeTextText_7ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_7);
 		IObservableValue valueCelularObserveDetailValue = PojoProperties.value(PessoaFisica.class, "celular", String.class).observeDetail(value);
-		bindingContext.bindValue(observeTextText_7ObserveWidget, valueCelularObserveDetailValue, UVSHelper.uvsStringToPhoneTextField(), UVSHelper.uvsPhoneToStringTextField());
+		bindingContext.bindValue(observeTextText_7ObserveWidget, valueCelularObserveDetailValue, UVSHelper.uvsExtractNumbers(), UVSHelper.uvsPhoneToString());
 		//
 		IObservableValue observeTextText_6ObserveWidget = WidgetProperties.text(SWT.Modify).observe(text_6);
 		IObservableValue valueEmailObserveDetailValue = PojoProperties.value(PessoaFisica.class, "email", String.class).observeDetail(value);
