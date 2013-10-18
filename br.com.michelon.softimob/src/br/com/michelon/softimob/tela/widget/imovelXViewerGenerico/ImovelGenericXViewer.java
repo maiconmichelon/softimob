@@ -62,7 +62,7 @@ public class ImovelGenericXViewer {
 		m3.put(Feedback.class, new XViewerColumnProperties("cliente.nome"));
 		m3.put(Proposta.class, new XViewerColumnProperties("funcionario.nome"));
 		m3.put(Reserva.class, new XViewerColumnProperties("cliente.nome"));
-		m3.put(ContratoPrestacaoServico.class, new XViewerColumnProperties("valor"));
+		m3.put(ContratoPrestacaoServico.class, new XViewerColumnProperties("valorImovel"));
 		GenericXViewerColumn c3 = new GenericXViewerColumn("Angariador", 170, m3);
 		
 		Map<Class<?>, XViewerColumnProperties> m4 = Maps.newHashMap();

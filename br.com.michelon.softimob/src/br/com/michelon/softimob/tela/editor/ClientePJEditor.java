@@ -153,10 +153,13 @@ public class ClientePJEditor extends GenericEditor<PessoaJuridica> {
 
 	@Override
 	public void saveCurrentObject(GenericService<PessoaJuridica> service) {
-		if (this.service.findByCnpj(getCurrentObject().getCnpj()) != null ) {
+		PessoaJuridica findByCnpj = this.service.findByCnpj(getCurrentObject().getCnpj());
+		PessoaJuridica findByInscricaoEstadual = this.service.findByInscricaoEstadual(getCurrentObject().getInscrisaoEstadual());
+
+		if (findByCnpj != null && !findByCnpj.equals(getCurrentObject())) {
 			DialogHelper.openWarning("Já existe um cliente com o CNPJ informado.");
 			return;
-		} else if(this.service.findByInscricaoEstadual(getCurrentObject().getInscrisaoEstadual()) != null) {
+		} else if(findByInscricaoEstadual != null && !findByInscricaoEstadual.equals(getCurrentObject())) {
 			DialogHelper.openWarning("Já existe um cliente com a inscrição estadual informada.");
 			return;
 		}

@@ -181,11 +181,22 @@ public class Proposta implements Serializable, Pendencia{
 		this.tipoContraProposta = tipoContraProposta;
 	}
 
-	public String getRealizador() {
-		return tipoContraProposta == null || CONTRA_PROPOSTA_CLIENTE == tipoContraProposta ? 
-				"Cliente - " + getCliente().getNome() : "Proprietário - " + getImovel().getProprietario().getNome();
+	public String getRealizadorFormatado() {
+		return String.format("%s - %s", isClienteRealizador() ? "Cliente" : "Proprietário", getRealizador().getNome());
 	}
 
+	public Cliente getRealizador() {
+		return isClienteRealizador() ? getCliente() : getImovel().getProprietario();
+	}
+	
+	public Cliente getReceptor() {
+		return !isClienteRealizador() ? getCliente() : getImovel().getProprietario();
+	}
+	
+	public boolean isClienteRealizador() {
+		return tipoContraProposta == null || CONTRA_PROPOSTA_CLIENTE == tipoContraProposta;
+	}
+	
 	@Override
 	public Date getDataGeracao() {
 		return getData();
@@ -198,7 +209,7 @@ public class Proposta implements Serializable, Pendencia{
 
 	@Override
 	public String getDescricao() {
-		return String.format("Proposta de %s para %s referente ao %s", getCliente().getNome(), getImovel().getProprietario().getNome(), getImovel().getDescricao());
+		return String.format("Proposta de %s para %s referente ao %s", getRealizador().getNome(), getReceptor().getNome(), getImovel().getDescricao());
 	}
 
 	@Override

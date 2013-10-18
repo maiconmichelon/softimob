@@ -68,6 +68,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		statusLineManager.update(true);
 		configurer.setShowStatusLine(true);
 		configurer.setShowProgressIndicator(true);
+		configurer.setShowFastViewBars(true);
 		
 		configurer.setTitle("SoftImob");
 	}

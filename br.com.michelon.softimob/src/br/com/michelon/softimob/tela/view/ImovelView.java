@@ -25,6 +25,7 @@ import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.ImovelService;
 import br.com.michelon.softimob.modelo.Arquivo;
 import br.com.michelon.softimob.modelo.ContratoPrestacaoServico.TipoContrato;
+import br.com.michelon.softimob.modelo.Endereco;
 import br.com.michelon.softimob.modelo.Imovel;
 import br.com.michelon.softimob.tela.editor.ImovelEditor;
 import br.com.michelon.softimob.tela.widget.ColumnProperties;
@@ -124,7 +125,8 @@ public class ImovelView extends GenericView<Imovel>{
 		miMapsSelecionado.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				abrirTelaMaps(Arrays.asList(getSelecionado()));
+				if(getSelecionado() instanceof Imovel)
+					abrirTelaMaps(Arrays.asList(getSelecionado()));
 			}
 		});
 		
@@ -148,7 +150,8 @@ public class ImovelView extends GenericView<Imovel>{
 		miMapsTodos.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				abrirTelaMaps(getInput());
+				if(getSelecionado() instanceof Imovel)
+					abrirTelaMaps(getInput());
 			}
 		});
 	}
@@ -157,7 +160,8 @@ public class ImovelView extends GenericView<Imovel>{
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				abrirTelaMaps(new ImovelService().findByTipoContrato(tipoContrato));
+				if(getSelecionado() instanceof Imovel)
+					abrirTelaMaps(new ImovelService().findByTipoContrato(tipoContrato));
 			}
 		};
 	}
@@ -168,8 +172,11 @@ public class ImovelView extends GenericView<Imovel>{
 			
 			if(imoveis == null || imoveis.isEmpty())
 				return;
-			if(imoveis.get(0).getEndereco() != null)
-				showView.setEnderecoPadrao(imoveis.get(0).getEndereco());
+			if(imoveis.get(0).getEndereco() != null) {
+				Endereco endereco = imoveis.get(0).getEndereco();
+				showView.setEnderecoPadrao(String.format("%s-%s, %s", endereco.getRua().getBairro().getCidade().getNome(), endereco.getRua().getBairro().getCidade().getEstado().getUf(), 
+						endereco.getRua().getBairro().getNome()));
+			}
 			
 			showView.setMarkers(imoveis);
 		} catch (PartInitException e1) {

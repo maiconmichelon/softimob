@@ -39,8 +39,20 @@ public class PropostaService extends GenericService<Proposta>{
 		}		
 	}
 
+	@Override
+	public void removerAtivarOuDesativar(Proposta registro) throws Exception {
+		Proposta proposta = getRepository().findByContraProposta(registro);
+		if(proposta != null) {
+			proposta.setContraProposta(null);
+			proposta.setStatus(null);
+			salvar(proposta);
+		} else {
+			super.removerAtivarOuDesativar(registro);
+		}
+	}
+	
 	public Long findContPendencias() {
 		return getRepository().findCountPendencias();
 	}
-	
+
 }

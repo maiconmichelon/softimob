@@ -1014,7 +1014,34 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 			}
 		});
 		
-		WidgetHelper.createMenuItemRemover(propostaXViewer, new PropostaService(), menu);
+		WidgetHelper.createMenuItemRemover(menu, new SelectionAdapter(){
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(!DialogHelper.openConfirmation("Deseja remover a proposta selecionada ?"))
+					return;
+				
+				Proposta proposta = (Proposta) SelectionHelper.getObject(propostaXViewer.getSelection());
+				if (proposta.getContraProposta() != null) {
+					DialogHelper.openWarning("Para excluir-la é preciso que para a proposta não haja nenhuma contraproposta.");
+					return;
+				
+				}
+				
+				PropostaService propostaService = new PropostaService();
+				
+				try {
+					propostaService.removerAtivarOuDesativar(proposta);
+					
+					propostaXViewer.setSelection(null);
+					propostaXViewer.setInput(getCurrentObject().getPropostas());
+					
+					DialogHelper.openInformation("Proposta removida com sucesso.");
+				} catch (Exception e1) {
+					log.error("Erro ao excluir proposta.", e1);
+					DialogHelper.openErrorMultiStatus("Erro ao remover proposta.", e1.getMessage());
+				}
+			}
+		});
 	}
 
 	private void criarTabelaLocacoes(Composite composite) {

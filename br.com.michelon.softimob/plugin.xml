@@ -273,6 +273,13 @@
             name="Contrato de Prestação de Serviço"
             restorable="true">
       </view>
+      <view
+            class="br.com.michelon.softimob.tela.view.BoletoView"
+            icon="icons/boleto/boleto16.png"
+            id="br.com.michelon.softimob.tela.view.BoletoView"
+            name="Boletos"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -548,6 +555,16 @@
          </menu>
          <menu
                label="Financeiro">
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="icons/boleto/boleto16.png"
+                  label="Boleto"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="br.com.michelon.softimob.tela.view.BoletoView">
+               </parameter>
+            </command>
             <command
                   commandId="org.eclipse.ui.views.showView"
                   icon="icons/contaPagar/contaPagar16.png"

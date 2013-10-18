@@ -96,6 +96,16 @@ public class AdicionarContaPagarReformaDialog extends TitleAreaDialog{
 		return area;
 	}
 	
+	@Override
+	protected void okPressed() {
+		if (getConta().getValor() == null) {
+			setErrorMessage("Informe o valor da conta");
+			return;
+		}
+		
+		super.okPressed();
+	}
+	
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//

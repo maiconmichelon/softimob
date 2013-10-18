@@ -274,7 +274,7 @@ public abstract class GenericView<T> extends ViewPart{
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				T selecionado = getSelecionado();
-				if(selecionado == null)
+				if(selecionado == null || !mainClass.isInstance(selecionado))
 					return;
 				
 				if(DialogHelper.openConfirmation("Deseja remover o registro selecionado ?"))
@@ -342,7 +342,6 @@ public abstract class GenericView<T> extends ViewPart{
 	protected void excluirDesativarAtivar(T objeto){
 		try {
 			getService(objeto).removerAtivarOuDesativar(objeto);
-			
 			DialogHelper.openInformation((String.format("Registro %s com sucesso.", addGroupAtivadoDesativado ? "desativado/ativado" : "removido")));
 		} catch (ViolacaoForeignKey e) {
 			DialogHelper.openWarning(e.getMessage());

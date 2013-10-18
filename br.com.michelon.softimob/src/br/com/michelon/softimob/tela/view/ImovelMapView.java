@@ -176,6 +176,10 @@ public class ImovelMapView extends ViewPart {
 	}
 
 	public void setEnderecoPadrao(Endereco endereco) {
+		setEnderecoPadrao(endereco.toString());
+	}
+	
+	public void setEnderecoPadrao(String endereco) {
 		gmap.setEnderecoPadrao(endereco.toString());
 		addr.setText(endereco.toString());
 	}

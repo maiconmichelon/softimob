@@ -93,7 +93,7 @@ public class ParcelaDialog extends TitleAreaDialog{
 
 	@Override
 	protected Point getInitialSize() {
-		return new Point(274, 261);
+		return new Point(350, 261);
 	}
 	
 	protected void configureShell(Shell newShell) {
@@ -106,7 +106,24 @@ public class ParcelaDialog extends TitleAreaDialog{
 		if(buttonId == IDialogConstants.OK_ID){
 			Date dataInicio = dtfInicio.getValue();
 			BigDecimal valor = FormatterHelper.getDefaultValueFormatterToMoney().parse(txtValor.getText());
-			Integer numParcelas = Integer.parseInt(txtNumParcelas.getText());
+			Integer numParcelas = null;
+
+			try {
+				numParcelas = Integer.parseInt(txtNumParcelas.getText());
+			} catch(Exception e) {
+				numParcelas = null;
+			}
+			
+			if (dataInicio == null) {
+				setErrorMessage("Informe a data de inicio.");
+				return;
+			} else if(numParcelas == null) {
+				setErrorMessage("Número de parcelas informado é inválido.");
+				return;
+			} else if(valor == null) {
+				setErrorMessage("Informe o valor de cada parcela.");
+				return;
+			}
 			
 			ParametrosEmpresa parametrosEmpresa = ParametrosEmpresa.getInstance();
 			

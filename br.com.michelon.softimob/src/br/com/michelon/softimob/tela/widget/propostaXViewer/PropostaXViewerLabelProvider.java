@@ -31,7 +31,7 @@ public class PropostaXViewerLabelProvider extends XViewerLabelProvider {
 			if(xCol.equals(PropostaXViewerFactory.observacoes))
 				return proposta.getObservacoes() == null ? StringUtils.EMPTY : proposta.getObservacoes();
 			if(xCol.equals(PropostaXViewerFactory.realizador))
-				return proposta.getRealizador();
+				return proposta.getRealizadorFormatado();
 			if(xCol.equals(PropostaXViewerFactory.valor))
 				return proposta.getValor() == null ? StringUtils.EMPTY : proposta.getValor().toString();
 		}

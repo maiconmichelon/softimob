@@ -171,10 +171,13 @@ public class ClientePFEditor extends GenericEditor<PessoaFisica> {
 
 	@Override
 	public void saveCurrentObject(GenericService<PessoaFisica> service) {
-		if (this.service.findByCpf(getCurrentObject().getCpf()) != null ) {
+		PessoaFisica findByCpf = this.service.findByCpf(getCurrentObject().getCpf());
+		PessoaFisica findByRg = this.service.findByRg(getCurrentObject().getRg());
+		
+		if ( findByCpf != null && !getCurrentObject().equals(findByCpf)) {
 			DialogHelper.openWarning("Já existe um cliente com o CPF informado.");
 			return;
-		} else if(this.service.findByRg(getCurrentObject().getRg()) != null) {
+		} else if(findByRg != null && !getCurrentObject().equals(findByRg)) {
 			DialogHelper.openWarning("Já existe um cliente com o RG informado.");
 			return;
 		}

@@ -19,5 +19,7 @@ public interface PropostaDAO extends CrudRepository<Proposta, Long>{
 
 	@Query(value = "SELECT count(p) FROM Proposta p WHERE p.status is null")
 	Long findCountPendencias();
+
+	Proposta findByContraProposta(Proposta registro);
 	
 }

@@ -109,7 +109,7 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		
 		return area;
 	}
-	
+
 	private void setItens(IndiceMes indice){
 		current = indice;
 		dtIndice.setValue(indice.getData());
@@ -122,16 +122,18 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		txtPorcentagem.setText(StringUtils.EMPTY);
 	}
 	
-	private IndiceMes getIndiceMes(){
+	private IndiceMes getIndiceMes() throws NumberFormatException {
 		if(current == null)
 			current = new IndiceMes();
 		
 		current.setData((Date) dtIndice.getValue());
 		try{
-			current.setPorcentagem(new Double(txtPorcentagem.getText()));
-		}catch(NumberFormatException ne){}
-		
-		return current;
+			String text = txtPorcentagem.getText().replaceAll(",", ".");
+			current.setPorcentagem(new Double(text));
+			return current;
+		} catch(NumberFormatException ne) {
+			throw ne;
+		}
 	}
 	
 	private TableViewerBuilder criarTabelaIndices(Composite cp, List<IndiceMes> indices){
@@ -167,24 +169,29 @@ public class IndiceEditorDialog extends TitleAreaDialog{
 		btnRegistrar.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-
-				if(isNovo()){ 
+				try {
 					IndiceMes indiceMes = getIndiceMes();
 					
-					if(ValidatorHelper.validarComMensagem(indiceMes))
-						indice.getIndices().add(indiceMes);
-					else {
-						current = null;
-						return;
+					if(isNovo()){ 
+						if(ValidatorHelper.validarComMensagem(indiceMes))
+							indice.getIndices().add(indiceMes);
+						else {
+							current = null;
+							return;
+						}
 					}
-				} else {
-					getIndiceMes();
+					
+					tvIndices.refresh();
+					
+					limpar();
+					txtNome.forceFocus();
+					
+					setErrorMessage(null);
+				} catch(NumberFormatException ne) {
+					setErrorMessage("Número informado é inválido.");
+					log.warn(ne);
+					return;
 				}
-				
-				tvIndices.refresh();
-				
-				limpar();
-				txtNome.forceFocus();
 			}
 		});
 		btnRegistrar.setImage(ImageRepository.SAVE_16.getImage());
