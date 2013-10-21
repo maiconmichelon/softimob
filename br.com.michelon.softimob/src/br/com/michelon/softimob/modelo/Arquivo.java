@@ -1,15 +1,17 @@
 package br.com.michelon.softimob.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+
+import com.google.common.collect.Lists;
 
 @Entity
 public class Arquivo implements Serializable{
@@ -22,8 +24,8 @@ public class Arquivo implements Serializable{
 	@Column
 	private String nome;
 	
-	@OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private ArquivoBytes arquivo;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ArquivoBytes> arquivos = Lists.newArrayListWithCapacity(1);
 
 	public Long getId() {
 		return id;
@@ -34,11 +36,11 @@ public class Arquivo implements Serializable{
 	}
 
 	public ArquivoBytes getArquivo() {
-		return arquivo;
+		return arquivos.isEmpty() ? null : arquivos.get(0);
 	}
 	
 	public void setArquivo(ArquivoBytes arquivo) {
-		this.arquivo = arquivo;
+		arquivos.set(0, arquivo);
 	}
 	
 	public String getNome() {

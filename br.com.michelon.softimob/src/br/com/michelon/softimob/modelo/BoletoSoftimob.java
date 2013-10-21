@@ -93,6 +93,9 @@ public class BoletoSoftimob implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date dataVencimento;
 
+	@Temporal(TemporalType.DATE)
+	private Date dataPagamento;
+
 	@Column(precision = 12, scale = 2)
 	private BigDecimal desconto;
 
@@ -282,6 +285,14 @@ public class BoletoSoftimob implements Serializable{
 		this.deducao = deducao;
 	}
 
+	public Date getDataPagamento() {
+		return dataPagamento;
+	}
+	
+	public void setDataPagamento(Date dataPagamento) {
+		this.dataPagamento = dataPagamento;
+	}
+	
 	public BigDecimal getAcrecimo() {
 		return acrecimo;
 	}
@@ -309,18 +320,21 @@ public class BoletoSoftimob implements Serializable{
 	private void setDadosBoleto(ParametrosEmpresa param, ContaPagarReceber conta){
 		numeroDoDocumento = conta.getId().toString();
 		
-		valor = conta.getValor();
+//		valor = conta.getValor();
 
 		dataDocumento = new Date();
 		dataVencimento = conta.getDataVencimento();		
-		desconto = conta.getValorJurosDesconto().signum() > 0 ? BigDecimal.ZERO : conta.getValorJurosDesconto().abs();
-		mora = conta.getValorJurDescZeroCasoNegativo();
+//		desconto = conta.getValorJurosDesconto().signum() > 0 ? BigDecimal.ZERO : conta.getValorJurosDesconto().abs();
+		desconto = BigDecimal.ZERO;
+//		mora = conta.getValorJurDescZeroCasoNegativo();
+		mora = BigDecimal.ZERO;
 
 		tipoDeDocumento = TipoDeTitulo.DM_DUPLICATA_MERCANTIL;
 		deducao = BigDecimal.ZERO;
 		acrecimo = BigDecimal.ZERO;
 		
 		valorCobrado = conta.getValor().add(conta.getValorJurosDesconto());
+		valor = valorCobrado;
 	}
 	
 	private void setDadosInstrucoes(ParametrosEmpresa param){

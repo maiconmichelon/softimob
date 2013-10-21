@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -57,7 +58,6 @@ public class BairroEditor extends GenericEditor<Bairro>{
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				Estado estado = (Estado) SelectionHelper.getObject(event.getSelection());
-				
 				cvCidade.setInput(estado.getCidades());
 			}
 		});
@@ -84,6 +84,11 @@ public class BairroEditor extends GenericEditor<Bairro>{
 		text = new Text(parent, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
+		try {
+			cvUF.setSelection(new StructuredSelection(getCurrentObject().getCidade().getEstado()));
+			cvCidade.setInput(getCurrentObject().getCidade().getEstado().getCidades());
+			cvCidade.setSelection(new StructuredSelection(getCurrentObject().getCidade().getEstado()));
+		} catch(Exception e) {}
 		
 	}
 	

@@ -52,6 +52,7 @@ import org.eclipse.wb.swt.ImageRepository;
 import org.eclipse.wb.swt.ResourceManager;
 
 import br.com.michelon.softimob.aplicacao.editorInput.ContaPagarReceberEditorInput;
+import br.com.michelon.softimob.aplicacao.exception.BoletoNaoEncontradoException;
 import br.com.michelon.softimob.aplicacao.exception.ContaNaoParametrizadaException;
 import br.com.michelon.softimob.aplicacao.filter.ContaFilter;
 import br.com.michelon.softimob.aplicacao.filter.PropertyFilter;
@@ -72,6 +73,7 @@ import br.com.michelon.softimob.modelo.MovimentacaoContabil;
 import br.com.michelon.softimob.modelo.OrigemConta;
 import br.com.michelon.softimob.modelo.PlanoConta;
 import br.com.michelon.softimob.tela.dialog.GerarBoletoDialog;
+import br.com.michelon.softimob.tela.dialog.ImportarRetornoDialog;
 import br.com.michelon.softimob.tela.editor.ContaPagarReceberEditor;
 import br.com.michelon.softimob.tela.widget.DateStringValueFormatter;
 import br.com.michelon.softimob.tela.widget.DateTextField;
@@ -160,24 +162,35 @@ public class PgtoRecContaView extends ViewPart {
 						BoletoSoftimobService service = new BoletoSoftimobService();
 						
 						List<ArquivoRetorno> retornos = BoletoHelper.getRetorno(new File(file));
+						List<BoletoSoftimob> boletos = Lists.newArrayList();
 						
 						for(ArquivoRetorno retorno : retornos) {
 							Long nossoNumero = BoletoSoftimob.extractNossoNumero(retorno.getNossoNumero());
 							BoletoSoftimob boleto = service.findOne(nossoNumero);
 							
 							if(boleto == null)
-								throw new Exception("Boleto não encontrado.");
+								throw new BoletoNaoEncontradoException(String.format("Boleto %s não encontrado.", retorno.getNossoNumero()));
+
+							if(boleto.getDataPagamento() == null)
+								boleto.setDataPagamento(retorno.getDataPagamento());
 							
-							service.efetuarBaixa(boleto, retorno);
-							
-							service.salvar(boleto);
+							boletos.add(boleto);
+						}
+
+						if(IDialogConstants.OK_ID == new ImportarRetornoDialog(boletos).open()) {
+							for(BoletoSoftimob boleto : boletos) {
+								boleto.getConta().getMovimentacao().setData(boleto.getDataPagamento());
+								service.salvar(boleto);
+							}
+							DialogHelper.openInformation("Arquivo de retorno importado com sucesso.");
 						}
 						
-						DialogHelper.openInformation("Arquivo de retorno importado com sucesso.");
 						buscar();
+					} catch (BoletoNaoEncontradoException e1) {
+						DialogHelper.openWarning(e1.getMessage());
 					} catch (Exception e1) {
 						DialogHelper.openErrorMultiStatus("Erro ao importar arquivo de retorno.", e1.getMessage());
-						log.error("Erro ao importar arquivo de retorno.");
+						log.error("Erro ao importar arquivo de retorno.", e1);
 					}
 				}
 			};

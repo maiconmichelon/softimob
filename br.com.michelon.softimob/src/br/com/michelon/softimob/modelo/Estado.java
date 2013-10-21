@@ -87,11 +87,15 @@ public class Estado implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Estado other = (Estado) obj;
+		if(other != null)
+			if(this.id == other.id)
+				return true;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		
 		if (nome == null) {
 			if (other.nome != null)
 				return false;

@@ -1114,7 +1114,7 @@ public class ImovelEditor extends GenericEditor<Imovel>{
 		List<Reserva> intersecao = reservaService.findIntersecao(reserva);
 		for(Reserva i : intersecao)
 			if(!i.equals(reserva))
-				throw new ValidationException("Já existe uma reserva entre que acaba ou começa entre os mesmos dias.");
+				throw new ValidationException("O imóvel já esta reservado neste período.");
 		
 		addItens(reservaService, valueReserva, tvReservas, getCurrentObject().getReservas());
 	}

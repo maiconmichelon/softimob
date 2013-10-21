@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -19,7 +20,6 @@ import org.eclipse.swt.widgets.Text;
 
 import br.com.michelon.softimob.aplicacao.helper.SelectionHelper;
 import br.com.michelon.softimob.aplicacao.service.BairroService;
-import br.com.michelon.softimob.aplicacao.service.CidadeService;
 import br.com.michelon.softimob.aplicacao.service.EstadoService;
 import br.com.michelon.softimob.aplicacao.service.GenericService;
 import br.com.michelon.softimob.aplicacao.service.RuaService;
@@ -66,6 +66,10 @@ public class RuaEditor extends GenericEditor<Rua>{
 				
 				if(cvCidade != null && estado != null)
 					cvCidade.setInput(estado.getCidades());
+				if(SelectionHelper.getObject(cvBairro.getSelection()) != null) {
+					getCurrentObject().setBairro(null);
+					cvBairro.setInput(null);
+				}
 			}
 		});
 		
@@ -79,7 +83,6 @@ public class RuaEditor extends GenericEditor<Rua>{
 		gd_combo_1.widthHint = 228;
 		combo_1.setLayoutData(gd_combo_1);
 		cvCidade.setContentProvider(ArrayContentProvider.getInstance());
-		cvCidade.setInput(new CidadeService().findAll());
 		cvCidade.addPostSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -109,6 +112,16 @@ public class RuaEditor extends GenericEditor<Rua>{
 		text = new Text(parent, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
+		try {
+			cvUF.setSelection(new StructuredSelection(getCurrentObject().getBairro().getCidade().getEstado()));
+
+			cvCidade.setInput(getCurrentObject().getBairro().getCidade().getEstado().getCidades());
+			cvCidade.setSelection(new StructuredSelection(getCurrentObject().getBairro().getCidade()));
+			
+			cvBairro.setInput(getCurrentObject().getBairro().getCidade().getBairros());
+			cvBairro.setSelection(new StructuredSelection(getCurrentObject().getBairro()));
+		} catch(Exception e) {
+		}
 		
 	}
 
